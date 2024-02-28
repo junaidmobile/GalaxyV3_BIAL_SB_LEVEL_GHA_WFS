@@ -1,0 +1,28 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-camera": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+",
+      "PACKAGE_NAME": "com.GMRHYD.Galaxy"
+    },
+    "cordova-plugin-dialogs": {
+      "PACKAGE_NAME": "com.GMRHYD.Galaxy"
+    },
+    "cordova-plugin-network-information": {
+      "PACKAGE_NAME": "com.GMRHYD.Galaxy"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "com.GMRHYD.Galaxy"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.GMRHYD.Galaxy"
+    }
+  },
+  "dependent_plugins": {}
+}
