@@ -3,6 +3,10 @@ var GHAImportFlightserviceURL = window.localStorage.getItem("GHAImportFlightserv
 var AirportCity = window.localStorage.getItem("SHED_AIRPORT_CITY");
 var UserID = window.localStorage.getItem("UserID");
 var UserName = window.localStorage.getItem("UserName");
+var companyCode = window.localStorage.getItem("companyCode");
+var PreferredLanguage = window.localStorage.getItem("PreferredLanguage");
+var GHAImportFlightserviceURL = window.localStorage.getItem("GHAImportFlightserviceURL");
+var GHAExportFlightserviceURL = window.localStorage.getItem("GHAExportFlightserviceURL");
 var SelectedHawbId;
 var SelectedHawbIdCMS;
 var SelectedHawbNo;
@@ -133,12 +137,13 @@ function GetHAWBDetailsForMAWBOnSearchButton() {
     //    return;
     //}
 
+    var inputXML = '<Root><GroupId>' + $('#txtGroupId').val() + '</GroupId><CompanyCode>' + companyCode + '</CompanyCode><UserId>' + UserID + '</UserId><AirportCity>' + AirportCity + '</AirportCity><Culture>' + PreferredLanguage + '</Culture></Root>';
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: 'POST',
-            url: CMSserviceURL + "GetLocationDetailFromGroupId",
-            data: JSON.stringify({ 'pi_strGroupId': txtGroupId }),
+            url: GHAImportFlightserviceURL + "GetLocationDetailByGroupId",
+            data: JSON.stringify({ 'InputXML': inputXML }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function doStuff() {
@@ -286,11 +291,13 @@ function GetHAWBDetailsForMAWB() {
     }
 
 
+    var inputXML = '<Root><GroupId>' + $('#txtGroupId').val() + '</GroupId><CompanyCode>' + companyCode + '</CompanyCode><UserId>' + UserID + '</UserId><AirportCity>' + AirportCity + '</AirportCity><Culture>' + PreferredLanguage + '</Culture></Root>';
+
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: 'POST',
-            url: CMSserviceURL + "GetLocationDetailFromGroupId",
-            data: JSON.stringify({ 'pi_strGroupId': txtGroupId }),
+            url: GHAImportFlightserviceURL + "GetLocationDetailByGroupId",
+            data: JSON.stringify({ 'InputXML': inputXML }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function doStuff() {
@@ -324,7 +331,7 @@ function GetHAWBDetailsForMAWB() {
                         $('#divSplitField').hide();
                         $('#divVCTDetail').empty();
 
-                        
+
 
                     } else {
                         $('#txtNewGroupId').focus();
@@ -369,8 +376,23 @@ function GetHAWBDetailsForMAWB() {
                         _IsOutOfWarehouse = $(this).find('IsOutOfWarehouse').text();
                         CMSGHAFlag = $(this).find('CMSGHAFlag').text();
                         _FlightSeqNo = $(this).find('FlightSeqNo').text();
-
                         NOG = $(this).find('NOG').text();
+
+                        //                    <OutMsg />
+                        //<MAWBNo>12540003013</MAWBNo>
+                        //<HAWBNo />
+                        //<LocId>3369</LocId>
+                        //<HAWBId>5243</HAWBId>
+                        //<LocCode>ECOL3</LocCode>
+                        //<LocPieces>8</LocPieces>
+                        //<IGMNo>96578</IGMNo>
+                        //<GroupId>GRP098761</GroupId>
+                        //<Remarks />
+                        //<IsOutOfWarehouse>false</IsOutOfWarehouse>
+                        //<NOG>COCONUT</NOG>
+                        //<FlightSeqNo>4224</FlightSeqNo>
+
+
 
 
                         $('#txtLocationShow').val(_LocCode);
@@ -490,6 +512,11 @@ function SplitGroupId() {
     }
 
     var txtLocation = $("#txtLocation").val().toUpperCase();
+    var totalPieces = Number(_LocPieces) - Number(_LocNewPieces);
+
+    var inputXML = '<Root><GroupId>' + $("#txtGroupId").val() + '</GroupId><NewGroupId>' + $("#txtNewGroupId").val() + '</NewGroupId><OldGroupPieces>' + totalPieces + '</OldGroupPieces><NewGroupPieces>' + _LocNewPieces + '</NewGroupPieces><NewLocation>' + $("#txtLocation").val() + '</NewLocation><ShipRowId>' + _HAWBId + '</ShipRowId><LOCID>' + _LocId + '</LOCID><CompanyCode>' + companyCode + '</CompanyCode><UserId>' + UserID + '</UserId><AirportCity>' + AirportCity + '</AirportCity><Culture>' + PreferredLanguage + '</Culture></Root>';
+
+
     if ($("#txtLocation").val() == '') {
         //errmsg = "Please enter location.";
         //$.alert(errmsg);
@@ -502,37 +529,14 @@ function SplitGroupId() {
 
 
 
-    // if (CMSGHAFlag == 'G') {
-    //     SaveForwardDetailsForGHA();
-    //     return;
-    // }
-
-    var totalPieces = Number(_LocPieces) - Number(_LocNewPieces);
-
-    // console.log('pi_strGroupId' + '=' + txtGroupId,
-    //             'pi_intGroupPieces' + '=' + totalPieces,
-    //             'pi_strNewGroupId' + '=' + txtNewGroupId,
-    //             'pi_intNewGroupPieces' + '=' + _LocNewPieces,
-    //             'pi_strNewLocation' + '=' + txtLocation,
-    //             'pi_intHAWBId' + '=' + _HAWBId,
-    //             'pi_intIGMNo' + '=' + _IGMNo,
-    //              'pi_strApplication' + '=' + 'H',
-    //             'pi_strUserId' + '=' + UserName);
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: 'POST',
-            url: CMSserviceURL + "SplitGroupId",
+            url: GHAImportFlightserviceURL + "SplitGroupId",
             data: JSON.stringify({
-                'pi_strGroupId': txtGroupId,
-                'pi_intGroupPieces': totalPieces,
-                'pi_strNewGroupId': txtNewGroupId,
-                'pi_intNewGroupPieces': _LocNewPieces,
-                'pi_strNewLocation': txtLocation,
-                'pi_intHAWBId': _HAWBId,
-                'pi_intIGMNo': _IGMNo,
-                'pi_strApplication': 'H',
-                'pi_strUserId': UserName
+                'InputXML': inputXML,
+
             }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -562,8 +566,8 @@ function SplitGroupId() {
                         $('#txtGroupId').val('');
                         $('#txtGroupId').focus();
                         $('#tblNewsForGatePass').empty();
-                        
-                        
+
+
                     } else {
                         $('#spnErrormsg').text('');
                     }
@@ -684,8 +688,8 @@ function ImportDataList() {
                     minLength: 1,
                     select: function (event, ui) {
                         log(ui.item ?
-                          "Selected: " + ui.item.label :
-                          "Nothing selected, input was " + this.value);
+                            "Selected: " + ui.item.label :
+                            "Nothing selected, input was " + this.value);
                     },
                     open: function () {
                         $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
