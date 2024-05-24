@@ -1,7 +1,7 @@
 ﻿
 //BAIL QA INTL
-var GHAImportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3/services/hhtImpservices.asmx/';
-var GHAExportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3/services/hhtExpservices.asmx/';
+var GHAImportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3_Dev/Services/HHTImpServices.asmx/';
+var GHAExportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3_Dev/Services/hhtExpservices.asmx/';
 
 //WFS QA
 //var GHAImportFlightserviceURL = 'https://wfsuat.kalelogistics.com/Galaxy/services/hhtImpservices.asmx/';

@@ -195,7 +195,18 @@ function LoadNavBar() {
     else if (window.location.pathname.split("/").pop() == "EXP_DocumentAcceptance.html") {
         $('#navhdrName').html("Document Acceptance");
     }
-
+    else if (window.location.pathname.split("/").pop() == "EXP_ShipmentDeclaration.html") {
+        $('#navhdrName').html("Shipment Declaration");
+    }
+    else if (window.location.pathname.split("/").pop() == "EXP_AWBRegularization.html") {
+        $('#navhdrName').html("AWB Regularization");
+    }
+    else if (window.location.pathname.split("/").pop() == "EXP_TSP.html") {
+        $('#navhdrName').html("TSP");
+    }
+    else if (window.location.pathname.split("/").pop() == "EXP_SecurityScreening.html") {
+        $('#navhdrName').html("Security Screening");
+    }
 
 }
 function NumberOnly(e) {

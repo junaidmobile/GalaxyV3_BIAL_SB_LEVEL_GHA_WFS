@@ -97,6 +97,34 @@ function RedirectPage(pagename) {
     else if (pagename == 'EXP_DocumentAcceptance.html')
         window.location.href = pagename;
 
+    if (pagename == 'EXP_ShipmentDeclaration.html' && window.localStorage.getItem("RoleIMPDocUpload") == '0') {
+        $.alert('You are not authorized to view this page');
+        return;
+    }
+    else if (pagename == 'EXP_ShipmentDeclaration.html')
+        window.location.href = pagename;
+
+    if (pagename == 'EXP_AWBRegularization.html' && window.localStorage.getItem("RoleIMPDocUpload") == '0') {
+        $.alert('You are not authorized to view this page');
+        return;
+    }
+    else if (pagename == 'EXP_AWBRegularization.html')
+        window.location.href = pagename;
+
+    if (pagename == 'EXP_TSP.html' && window.localStorage.getItem("RoleIMPDocUpload") == '0') {
+        $.alert('You are not authorized to view this page');
+        return;
+    }
+    else if (pagename == 'EXP_TSP.html')
+        window.location.href = pagename;
+
+    if (pagename == 'EXP_SecurityScreening.html' && window.localStorage.getItem("RoleIMPDocUpload") == '0') {
+        $.alert('You are not authorized to view this page');
+        return;
+    }
+    else if (pagename == 'EXP_SecurityScreening.html')
+        window.location.href = pagename;
+
 
    
     
