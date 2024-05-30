@@ -117,10 +117,6 @@
         .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
             vertical-align: inherit;
         }
-
-        .txtRight {
-            text-align: right;
-        }
     </style>
 </head>
 <body>
@@ -152,85 +148,65 @@
                                     <input type="radio" name="radSize" id="rdoIntlMovement" value="IntlMovement" checked="checked" />
                                     <label for="sizeLarge">Intl. Movement</label>
                                     <input type="radio" name="radSize" id="rdoForwarding" value="Forwarding" />
-                                    <label for="sizeSmall"></label>
+                                    <label for="sizeSmall">Forwarding/Backwarding</label>
                                 </div>
                             </div>
 
                             <div class="row form-group" id="divInternalMvmt">
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                  
+                                    <!--<div class="col-xs-6 col-form-label">
+                                        <label id="lblAgentName" for="">Agent Name</label>
+                                        <font color="red">*</font>
+                                    </div>-->
+                                    <!--<div class="col-xs-12 NoPadding">
+                                        <input id="txtAgentName" class="form-control" type="text" placeholder="JOB ID" style="text-align:center;" disabled>
+                                    </div>-->
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-6 col-form-label">
                                         <label id="lblAWBNo" for="">Old AWB No.</label>
                                         <font color="red">*</font>
                                     </div>
-                                   
+                                    <!--<div class="col-xs-2 NoPadding">
+                                        <input id="txtAWBPrifix" onchange="CheckEmpty();" class="form-control" type="text" maxlength="15">
+                                    </div>-->
                                     <div class="col-xs-6 NoPadding">
-                                        <input onkeypress="return blockSpecialChar(event)" onkeyup="ChkMaxLength(this, '14');" onblur="ChangeAWBNo_GetData();" autofocus id="txtAWBNo" class="form-control" type="text">
+                                        <input id="txtAWBNo" class="form-control" type="text">
                                     </div>
                                 </div>
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
 
                                     <div class="col-xs-12 NoPadding">
-                                        
+                                        <!--<input id="txtAgentName" class="form-control" type="text" placeholder="New AWB No." style="text-align:center;" disabled>
+                                    </div>-->
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-6 col-form-label">
+                                        <label id="lblNewAWBNo" for="">New AWB No.</label>
+                                        <font color="red">*</font>
                                     </div>
-                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                        <div class="col-xs-6 col-form-label">
-                                            <label id="lblNewAWBNo" for="">New AWB No.</label>
-                                            <font color="red">*</font>
-                                        </div>
-                                        <div class="col-xs-6 NoPadding">
-                                            <input onkeypress="return blockSpecialChar(event)" onkeyup="ChkMaxLength(this, '14'); NumberOnly(event);" id="txtNewAWBNo"  class="form-control" type="number" maxlength="15">
-                                        </div>
-
+                                    <div class="col-xs-6 NoPadding">
+                                        <input id="txtNewAWBNo" onchange="CheckEmpty();" class="form-control" type="text" maxlength="15">
                                     </div>
-
-
 
                                 </div>
-                                <div id="divVCTDetail">
-                                    <!--<table id="tblNewsForGatePass" class="table table-striped table-bordered" style="font-size: 20px; margin-top: 10px !important; margin-bottom: 0px; ">
-                                        <thead style="background-color:rgb(208, 225, 244);">
-                                            <tr>
-                                                <th>Pcs.</th>
-                                                <th>Gr. Wt.</th>
-                                                <th>Ch. Wt.</th>
-                                                <th>NOG </th>
-                                                <th>Agt. </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td class="txtRight">20</td>
-                                                <td class="txtRight">200.90</td>
-                                                <td class="txtRight">1900.80</td>
-                                                <td>Dry Ice</td>
-                                                <td>Test XYZ</td>
-                                            </tr>
 
+                              
 
-                                        </tbody>
-                                    </table>-->
-
-                                </div>
                             </div>
 
-
-
-
-                            <div class="row form-group" style="margin-top:20px;">
+                            <div class="row form-group" style="margin-top:10px;">
 
                                 <div class="form-group col-xs-12 col-sm-12 col-md-12">
-                                    <input type="button" id="btnChangeAWBNo" class="form-control ButtonColor" value="Change AWB No." onclick="ChangeAWBNo_SaveData();">
+                                    <input type="button" id="btnChangeAWBNo" class="form-control ButtonColor" value="Change AWB No.">
                                 </div>
 
 
-                                <div class="form-group col-xs-6 col-sm-6 col-md-6" style="margin-top:20px;">
-                                    <input type="button" id="btnExit" class="form-control ButtonColor" value="Exit" onclick="window.location.href = 'EXP_Dashboard.html'">
+                                <div class="form-group col-xs-6 col-sm-6 col-md-6">
+                                    <input type="button" id="btnExit" class="form-control ButtonColor" value="Exit" onclick="clickOnNextButton();">
                                 </div>
-                                <div class="form-group col-xs-6 col-sm-6 col-md-6" style="margin-top:20px;">
+                                <div class="form-group col-xs-6 col-sm-6 col-md-6">
                                     <input type="button" id="btnClear" class="form-control ButtonColor" value="Clear" onclick="clearALL();">
                                 </div>
 

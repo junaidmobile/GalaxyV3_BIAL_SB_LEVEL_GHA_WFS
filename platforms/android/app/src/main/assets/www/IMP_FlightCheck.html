@@ -152,6 +152,9 @@
                                 </div>
                             </div>
 
+
+
+
                             <div class="row" style="margin-top:5px;">
                                 <div class="form-group col-xs-4 col-sm-4 col-md-4">
                                     <input type="button" id="btnClear" class="form-control ButtonColor" value="Clear" onclick="clearALL()">
@@ -164,8 +167,41 @@
                                 </div>
                             </div>
 
+                            <div class="row" style="margin-top:10px;">
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblFlightNoATA" for="txtFlightATA" class="control-label">ATA</label>
+                                        <font color="red">*</font>
+                                    </div>
+
+                                    <div class="col-xs-5 NoPadding ClearFields">
+                                        <!--<input type="datetime-local" id="txtFlightATA" class="form-control">-->
+                                        <input type="date" style="text-transform: none;"
+                                               id="txtFlightATA" class="form-control"
+                                               title="Date">
+                                    </div>
+                                    <div class="col-xs-3 NoPadding ClearFields">
+                                        <!--<input type="datetime-local" id="txtFlightATA" class="form-control">-->
+                                        <input type="time" style="text-transform: none;"
+                                               id="txtFlightTime" class="form-control"
+                                               title="Time">
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group col-xs-6 col-sm-6 col-md-6 " style="margin-top:10px;">
+                                    <input type="button" id="btnATA" class="form-control ButtonColor" value="Record ATA" onclick="FlightATA_V4()">
+                                </div>
+
+                                <div class="form-group col-xs-6 col-sm-6 col-md-6 " style="margin-top:10px;">
+                                    <input type="button" id="btnFinalize" class="form-control ButtonColor" value="Finalize Flight" onclick="FlightFinalize_V4();" disabled>
+                                </div>
+
+                            </div>
+
                             <font size="2" id="lblFlightStatus" style="font-weight: bold;color:green;"></font>
-                            <font  size="2" id="lblFlightStatusError" style="font-weight: bold;color:red;"></font>
+                            <font size="2" id="lblFlightStatusError" style="font-weight: bold;color:red;"></font>
                         </form>
                     </div>
                 </div>
@@ -315,6 +351,27 @@
             dateFormat: 'dd-M-yy',
 
         });
+
+
+
+        var date1 = new Date();
+
+        var day1 = date1.getDate(),
+            month1 = date1.getMonth() + 1,
+            year1 = date1.getFullYear(),
+            hour1 = date1.getHours(),
+            min1 = date1.getMinutes();
+
+        month1 = (month1 < 10 ? "0" : "") + month1;
+        day1 = (day1 < 10 ? "0" : "") + day1;
+        hour1 = (hour1 < 10 ? "0" : "") + hour1;
+        min1 = (min1 < 10 ? "0" : "") + min1;
+
+        var today1 = year1 + "-" + month1 + "-" + day1,
+            displayTime = hour1 + ":" + min1;
+
+        $('#txtFlightTime').val(displayTime);
+        $('#txtFlightATA').val(today1);
 
         //        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
         //"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"

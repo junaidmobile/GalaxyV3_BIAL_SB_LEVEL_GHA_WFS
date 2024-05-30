@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\www"
+    "\\www",
+    "\\www\\js"
   ],
-  "SelectedNode": "\\www\\Login.html",
+  "SelectedNode": "\\www\\EXP_AWBLocation.html",
   "PreviewInSolutionExplorer": false
 }

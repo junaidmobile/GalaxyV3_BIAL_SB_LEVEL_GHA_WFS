@@ -848,10 +848,15 @@ function GetVCTUnScannedDetails_v3(VCTNo) {
                 $(xmlDoc).find('Table').each(function (index) {
                     Status = $(this).find('Status').text();
                     StrMessage = $(this).find('StrMessage').text();
-                    //if (Status == 'E') {
-                    //    $.alert(StrMessage);
-                    //    return;
-                    //}
+                    if (Status == 'E') {
+                        //    $.alert(StrMessage);
+                        //    return;
+                        //}
+                        $("#spnMsg").text(StrMessage).css({ 'color': 'red' });
+                        return;
+                    } else {
+                        $("#spnMsg").text('');
+                    }
 
                 });
                 // $('#ddlEquTrolley').empty();
@@ -1425,7 +1430,7 @@ function MoveToHei(Pcsobj) {
 
 
 function removeRow(rowID) {
-   
+
     //if (counter == 1) {
     //    alert("No more textbox to remove");
     //    return false;

@@ -199,7 +199,7 @@ function LoadNavBar() {
         $('#navhdrName').html("Shipment Declaration");
     }
     else if (window.location.pathname.split("/").pop() == "EXP_AWBRegularization.html") {
-        $('#navhdrName').html("AWB Regularization");
+        $('#navhdrName').html("Change Of AWB");
     }
     else if (window.location.pathname.split("/").pop() == "EXP_TSP.html") {
         $('#navhdrName').html("TSP");

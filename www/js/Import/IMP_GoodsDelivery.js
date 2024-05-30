@@ -184,9 +184,11 @@ function GetGatePassDetails() {
                             $("#spnMsg").text('');
                             $("#spnMsg").text(StrMessage).css({ 'color': 'red' });
                             $('#btnGoodsDelever').attr('disabled', 'disabled');
-                            //$('#divVCTDetail').empty();
-                            //$('#divVCTDetail').hide();
+                            $('#divVCTDetail').empty();
+                            $('#divVCTDetail').hide();
                             html = '';
+                            $('#txtGatePassScanNo').val('');
+                            $('#txtGatePassScanNo').focus();
                             return true;
                         }
 
@@ -195,18 +197,20 @@ function GetGatePassDetails() {
 
                     if (response != null && response != "") {
 
-                        //html = '';
+                        html = '';
 
-                        //html += '<table id="tblNewsForGatePass" border="1" style="width:100%;table-layout:fixed;word-break:break-word;border-color: white;margin-top: 2%;">';
-                        //html += '<thead>';
-                        //html += '<tr>';
-                        //html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center" font-weight:bold">MAWB No.</th>';
-                        //html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center" font-weight:bold">HAWB No.</th>';
-                        //html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center" font-weight:bold">Pieces</th>';
-                        ////html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center" font-weight:bold">Remarks</th>';
-                        //html += '</tr>';
-                        //html += '</thead>';
-                        //html += '<tbody>';
+                        html += '<table id="tblNewsForGatePass" class="table table-striped table-bordered" style="font-size: 20px; margin-top: 10px !important; margin-bottom: 0px; ">';
+                        html += '<thead style="background-color:rgb(208, 225, 244);">';
+                        html += '<tr>';
+                        html += '<th>AWB No.</th>';
+                        html += '<th>Pieces </th>';
+                        html += '<th>BIN/Group Id.</th>';
+                        html += '<th>Location.</th>';
+                        html += '</tr>';
+                        html += '</thead>';
+                        html += '<tbody>';
+
+                        
 
                         //var xmlDoc = $.parseXML(response);
                         //var flag = '0';
@@ -226,6 +230,12 @@ function GetGatePassDetails() {
 
                             WDOSeqNo = $(this).find('WDOSeqNo').text();
                             WDONo = $(this).find('WDONo').text();
+                            AWBNo = $(this).find('AWBNo').text();
+                            Pieces = $(this).find('Pieces').text();
+                            GroupId = $(this).find('GroupId').text();
+                            Location = $(this).find('Location').text();
+                            
+                            WDONoDetails(AWBNo, Pieces, GroupId, Location);
 
                             //  VCTNoDetails(MAWBNO, HAWBNO, DlvblPkgs, Remarks);
                             //if (DeliveryStatus == 'Delivered') {
@@ -241,9 +251,9 @@ function GetGatePassDetails() {
                             //}
 
                         });
-                        //html += "</tbody></table>";
-                        //$('#divVCTDetail').show();
-                        //$('#divVCTDetail').append(html);
+                        html += "</tbody></table>";
+                        $('#divVCTDetail').show();
+                        $('#divVCTDetail').append(html);
                         //if (GPNo != '') {
 
                         //}
@@ -255,11 +265,11 @@ function GetGatePassDetails() {
                         $("#spnMsg").text('GP No. does not exists.').css('color', 'red');
                     }
                 },
-                error: function (msg) {
-                    //debugger;
+                error: function (xhr, textStatus, errorThrown) {
                     $("body").mLoading('hide');
-                    var r = jQuery.parseJSON(msg.responseText);
-                    $.alert(r.Message);
+                    //alert('Server not responding...');
+                    console.log(xhr.responseText);
+                    alert(xhr.responseText);
                 }
             });
         } else if (connectionStatus == "offline") {
@@ -433,13 +443,13 @@ function RecordGoodsDelivery_PDA() {
 }
 
 
-function VCTNoDetails(MAWBNO, HAWBNO, DlvblPkgs, Remarks) {
+function WDONoDetails(AWBNo, Pieces, GroupId, Location) {
 
     html += '<tr>';
-    html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;">' + MAWBNO + '</td>';
-    html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;">' + HAWBNO + '</td>';
-    html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:center;">' + DlvblPkgs + '</td>';
-    //html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:right;padding-right: 4px;">' + Remarks + '</td>';
+    html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;">' + AWBNo + '</td>';
+    html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:right;">' + Pieces + '</td>';
+    html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:center;">' + GroupId + '</td>';
+    html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:right;padding-right: 4px;">' + Location + '</td>';
     html += '</tr>';
 }
 

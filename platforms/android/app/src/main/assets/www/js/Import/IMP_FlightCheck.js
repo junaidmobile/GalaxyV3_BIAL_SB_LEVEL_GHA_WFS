@@ -2,7 +2,8 @@
 
 var GHAImportFlightserviceURL = window.localStorage.getItem("GHAImportFlightserviceURL");
 var AirportCity = window.localStorage.getItem("SHED_AIRPORT_CITY");
-
+var companyCode = window.localStorage.getItem("companyCode");
+var UserID = window.localStorage.getItem("UserID");
 var html;
 var flightSeqNo;
 var flightPrefix;
@@ -98,7 +99,7 @@ $(function () {
     //    flagRdoAll = 'S';
     //    ViewFlightRelatedDetails();
     //});
-
+    $('#btnATA').attr('disabled', 'disabled');
 });
 
 function NexttoULDDetails() {
@@ -268,6 +269,7 @@ function GetFlightDetails() {
                         }
                         else
                             $("#btnNext").removeAttr("disabled");
+                        $("#btnFinalize").removeAttr("disabled");
                         $('#lblFlightStatusError').text('');
 
                         $('#txtIGMNo').val($(this).find('CustomRef').text());
@@ -283,7 +285,7 @@ function GetFlightDetails() {
                         var newdate = date.split("-").reverse().join("-");
 
                         const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
                         ];
 
                         var d = new Date(date);
@@ -337,12 +339,26 @@ function GetFlightDetails() {
                         $('#txtDamagePieces').val($(this).find('DamagePkgs').text());
 
 
+                        //if ($(this).find('FlightStatus').text() == 'Arrived') {
+                        //    $('#lblFlightStatus').text('Flight Status:' + ' ' + $(this).find('FlightStatus').text());
+                        //    $('#lblFlightStatusError').text('');
+                        //} else {
+                        //    $('#lblFlightStatusError').text('Flight Status:' + ' ' + $(this).find('FlightStatus').text());
+                        //    $('#lblFlightStatus').text('');
+                        //}
+
                         if ($(this).find('FlightStatus').text() == 'Arrived') {
-                            $('#lblFlightStatus').text('Flight Status:' + ' ' + $(this).find('FlightStatus').text());
-                            $('#lblFlightStatusError').text('');
-                        } else {
-                            $('#lblFlightStatusError').text('Flight Status:' + ' ' + $(this).find('FlightStatus').text());
-                            $('#lblFlightStatus').text('');
+                            $('#lblFlightStatus').text('Flight Status:' + ' ' + $(this).find('FlightStatus').text()).css('color', 'green');
+                            // $('#lblFlightStatus').text('');
+                            $('#btnATA').attr('disabled', 'disabled');
+                        }
+                        else if ($(this).find('FlightStatus').text() == 'Not Arrived') {
+                            $('#lblFlightStatus').text('Flight Status:' + ' ' + $(this).find('FlightStatus').text()).css('color', 'red');
+                            $('#btnATA').removeAttr('disabled');
+                        }
+                        else {
+                            $('#lblFlightStatus').text('Flight Status:' + ' ' + $(this).find('FlightStatus').text()).css('color', 'green');
+                            $('#btnATA').attr('disabled', 'disabled');
                         }
 
 
@@ -537,7 +553,7 @@ function ViewFlightRelatedDetails() {
                         var newdate = date.split("-").reverse().join("-");
 
                         const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
                         ];
 
                         var d = new Date(newdate);
@@ -664,7 +680,7 @@ function SelectedFlightInfo(a) {
 
 
 function clearALL() {
-    
+
     $('#lblFlightStatusError').text('');
     $('#txtIGMNo').val('');
     //$('#txtIGMYear').val('');
@@ -779,3 +795,224 @@ function ClearFields() {
 //    });
 //}
 
+
+function FlightATA_V4() {
+
+
+
+    $('#lblFlightStatus').text('');
+    $('#lblFlightStatusError').text('');
+    var inputxml = "";
+    var IGMNo = $('#txtIGMNo').val();
+    var IGMYear = $("#txtIGMYear").val();
+    var FlightPrefix = $("#txtFlightPrefix").val();
+    var FlightNo = $("#txtFlightNo").val();
+    var ATAFlightDateTime = $("#txtFlightATA").val();
+    var ATATime = $("#txtFlightTime").val();
+    
+
+    const myArrayTime = ATATime.split(":");
+    var ATAHours = myArrayTime[0];
+    var ATAMins = myArrayTime[1];
+    //var date = $('#txtFlightDate').val();
+    //var newdate = date.split("-").reverse().join("-");
+    //var FlightDate = newdate;
+
+    var FlightDate = $('#txtFlightDate').val();// $("#year").val() + '-' + $("#month").val() + '-' + $("#day").val();
+
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+
+    var errmsg = "";
+
+    if (IGMNo == "" || IGMYear == "") {
+        if (FlightPrefix == "" || FlightNo == "" || $('#txtFlightDate').val() == "") {
+
+            errmsg = "Please enter IGM No. & IGM Yr. or </br> Flight No. & Flight Date</br>";
+            $.alert(errmsg);
+
+            //  $("#btnGetDetail").attr('disabled', 'disabled');
+            // $("#btnView").attr('disabled', 'disabled');
+
+            return;
+        } else {
+            //  $("#btnGetDetail").removeAttr('disabled');
+            //  $("#btnView").removeAttr('disabled');
+        }
+
+        if (IGMYear != "") {
+            if (IGMYear.length < Number(4)) {
+                errmsg = "Please enter valid IGM year";
+                $.alert(errmsg);
+                return;
+            }
+        }
+    } else {
+        //$("#btnGetDetail").removeAttr('disabled');
+        //$("#btnView").removeAttr('disabled');
+    }
+
+    //if ($('#txtFlightDate').val().length > 0) {
+    //    var formattedDate = new Date($('#txtFlightDate').val());
+    //    var d = formattedDate.getDate();
+    //    if (d.toString().length < Number(2))
+    //        d = '0' + d;
+    //    var m = formattedDate.getMonth();
+    //    m += 1;  // JavaScript months are 0-11
+    //    if (m.toString().length < Number(2))
+    //        m = '0' + m;
+    //    var y = formattedDate.getFullYear();
+
+    //    FlightDate = m + "/" + d + "/" + y;
+    //}
+
+    inputxml = '<Root><FlightSeqNo>' + flightSeqNo + '</FlightSeqNo><ATA>' + ATAFlightDateTime + " " + ATATime + '</ATA><AirportCity>' + AirportCity + '</AirportCity><ATAHours>' + ATAHours + '</ATAHours><ATAMins>' + ATAMins + '</ATAMins><CustomRef>' + IGMNo + '</CustomRef><AirTypeCode>' + AirportCity + '</AirTypeCode><CompanyCode>' + companyCode + '</CompanyCode><UserID>' + UserID + '</UserID></Root >';
+
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: "POST",
+            url: GHAImportFlightserviceURL + "FlightATA_V4",
+            data: JSON.stringify({
+                'InputXML': inputxml,
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                //$('.dialog-background').css('display', 'block');
+                $('body').mLoading({
+                    text: "Please Wait..",
+                });
+            },
+            success: function (response) {
+                $("body").mLoading('hide');
+                var str = response.d
+                var xmlDoc = $.parseXML(str);
+                console.log(xmlDoc)
+                $(xmlDoc).find('Table').each(function (index) {
+                    var Status = $(this).find('Status').text();
+                    var StrMessage = $(this).find('StrMessage').text();
+
+                    if (Status == 'E') {
+                        $('#lblFlightStatusError').text(StrMessage).css('color', 'red');
+
+                    } else {
+                        $('#lblFlightStatusError').text(StrMessage).css('color', 'green');
+                        $('#btnNext').attr('disabled', 'disabled');
+                        $('#btnATA').attr('disabled', 'disabled');
+                    }
+                });
+            },
+            error: function (msg) {
+                $("body").mLoading('hide');
+                $.alert('Data could not be loaded');
+            }
+        });
+        return false;
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}
+
+
+function FinalizeFlight() {
+    navigator.notification.confirm("Some of the shipments are pending for acceptance, Do you want to continue?", onconfirm, 'Confirm', ['Yes', 'No']);
+}
+
+function onconfirm(buttonIndex) {
+    if (parseInt(_finNPX) != parseInt(_finNPR)) {
+        if (buttonIndex == 1) {
+            FlightFinalize_V4();
+        }
+    } else {
+        FlightFinalize_V4();
+    }
+}
+
+
+function FlightFinalize_V4() {
+
+    // clearPiecesInfoOnGet();
+    //if ($("#txtScanAWBNo").val() == '') {
+    //    return;
+    //}
+    $('#lblFlightStatus').text('');
+    $('#lblFlightStatusError').text('');
+
+    var inputxml = "";
+
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+
+    var errmsg = "";
+
+
+    //inputxml = '<Root><FlightSeqNo>' + flightSeqNo + '</FlightSeqNo><UlDSeqNo></UlDSeqNo><AirportCity>' + AirportCity + '</AirportCity></Root>';
+
+    inputxml = '<Root><FltSeqNo>' + flightSeqNo + '</FltSeqNo><AirportCity>' + AirportCity + '</AirportCity><UserId>' + UserId + '</UserId></Root>';
+
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: "POST",
+            url: GHAImportFlightserviceURL + "FlightFinalize_V4",
+            data: JSON.stringify({
+                'InputXML': inputxml,
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (Result) {
+                $("body").mLoading('hide');
+                $('#ddlDamageType').empty();
+                Result = Result.d;
+                var xmlDoc = $.parseXML(Result);
+
+                xmlDamageType = xmlDoc;
+
+                $(xmlDoc).find('Table').each(function (index) {
+                    var Status = $(this).find('Status').text();
+                    var StrMessage = $(this).find('StrMessage').text();
+
+                    if (Status == 'E') {
+                        $('#lblFlightStatus').text(StrMessage).css('color', 'red');
+
+                    } else {
+                        $('#lblFlightStatus').text(StrMessage).css('color', 'green');
+                        $('#btnNext').attr('disabled', 'disabled');
+                    }
+                });
+
+
+            },
+            error: function (msg) {
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+        return false;
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}
