@@ -7,10 +7,16 @@
     <script type="text/javascript" src="scripts/platformOverrides.js"></script>
     <script src="bootstrap-3.3.7-dist/js/jquery-1.12.0.min.js"></script>
     <link href="bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet" />
-    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script src="scripts/jquery-ui.js"></script>
 
-    <script src="bootstrap-3.3.7-dist/js/jquery-ui.min.js"></script>
-    <link href="bootstrap-3.3.7-dist/css/jquery-ui.css" rel="stylesheet" />
+    <!--<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>-->
+
+    <script src="js/select2.min.js"></script>
+    <link href="css/select2.min.css" rel="stylesheet" />
+
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/jquery-ui.css">
 
     <link href="css/style.css" rel="stylesheet" />
     <link href="css/sticky-footer.css" rel="stylesheet" />
@@ -24,6 +30,10 @@
     <link href="css/Loader.css" rel="stylesheet" />
     <link href="css/dialog.css" rel="stylesheet" />
     <link href="css/alert.mob.css" rel="stylesheet" />
+    <script src="js/amplify.min.js"></script>
+    <link href="css/select2.min.css" rel="stylesheet" />
+    <script src="js/select2.min.js"></script>
+
     <script src="js/Export/EXP_ShipmentDeclaration.js"></script>
     <style>
 
@@ -146,9 +156,9 @@
                             <div class="row form-group">
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" style="display:none">
                                     <input type="radio" name="radSize" id="rdoIntlMovement" value="IntlMovement" checked="checked" />
-                                    <label for="sizeLarge">Intl. Movement</label>
+                                    <label for="sizeLarge"></label>
                                     <input type="radio" name="radSize" id="rdoForwarding" value="Forwarding" />
-                                    <label for="sizeSmall">Forwarding/Backwarding</label>
+                                    <label for="sizeSmall"></label>
                                 </div>
                             </div>
 
@@ -174,7 +184,7 @@
                                     </div>-->
                                     <div class="col-xs-8 NoPadding">
                                         <input id="txtAWBNo" class="form-control" type="number" onkeypress="return blockSpecialChar(event)"
-                                               oninput="checkSpecialChar();" maxlength="15" onkeyup="ChkMaxLength(this, '15');" onblur="GetHAWBDetailsForMAWB()"
+                                               oninput="checkSpecialChar();" maxlength="15" onkeyup="ChkMaxLength(this, '15');" onblur="GetAWBDetailSearch_V3();"
                                                autofocus onchange="CheckEmpty();">
                                     </div>
                                 </div>
@@ -183,7 +193,7 @@
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-4 col-form-label">
                                         <label id="lblDestination" for="">Origin/Dest.</label>
-                                        <!--<font color="red">*</font>-->
+                                        <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-4 NoPadding">
                                         <input id="txtOrigin" onchange="CheckEmpty();" class="form-control" type="text" maxlength="15">
@@ -197,10 +207,19 @@
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-4 col-form-label">
                                         <label id="lblFlightNo" for="">Flight No./Date</label>
-                                        <!--<font color="red">*</font>-->
+                                        <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-4 NoPadding">
-                                        <input id="txtFlightNo" onchange="CheckEmpty();" class="form-control" type="text" maxlength="15">
+                                        <select class="form-control" id="ddlFlightNo"
+                                                onchange="GetAWBDetailSearch_V3_onChangeFlight($('#ddlFlightNo').val())"
+                                                style="display: none;">
+                                            <option value="0">Select</option>
+                                        </select>
+                                        <input id="txtFlightNo" autocomplete="off" onkeypress="return blockSpecialChar(event)" oninput="checkSpecialChar();" class="form-control" type="text" maxlength="15">
+                                        <!--<select class="form-control" id="ddlFlightNo"
+                                        onchange="GetAWBDetailSearch_V3_onChangeFlight($('#ddlFlightNo').val())"></select>-->
+
+
                                     </div>
                                     <div class="col-xs-4 NoPadding ClearFields">
 
@@ -213,7 +232,7 @@
                                 <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-4 col-form-label">
                                         <label id="lblFlightNo" for="txtFlightDate" class="control-label">Flight Date</label>
-                                       
+
                                     </div>
 
                                     <div class="col-xs-8 NoPadding ClearFields">
@@ -228,10 +247,10 @@
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-4 col-form-label">
                                         <label id="lblPieces" for="">Pieces</label>
-                                        <!--<font color="red">*</font>-->
+                                        <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-8 NoPadding">
-                                        <input id="txtPieces" class="form-control" type="text">
+                                        <input id="txtPieces" class="form-control" type="text" style="text-align:right;">
                                     </div>
 
                                 </div>
@@ -239,10 +258,10 @@
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-4 col-form-label">
                                         <label id="lblGrWt" for="">Gr. Wt.</label>
-                                        <!--<font color="red">*</font>-->
+                                        <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-8 NoPadding">
-                                        <input id="txtGrWt" class="form-control" type="text">
+                                        <input id="txtGrWt" class="form-control" type="text" style="text-align:right;">
                                     </div>
 
                                 </div>
@@ -250,10 +269,10 @@
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-4 col-form-label">
                                         <label id="lblCharWt" for="">Ch. Wt.</label>
-                                        <!--<font color="red">*</font>-->
+                                        <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-8 NoPadding">
-                                        <input id="txtCharWt" class="form-control" type="text">
+                                        <input id="txtCharWt" class="form-control" type="text" style="text-align:right;">
                                     </div>
 
                                 </div>
@@ -263,7 +282,7 @@
                                         <!--<font color="red">*</font>-->
                                     </div>
                                     <div class="col-xs-8 NoPadding">
-                                        <input id="txtVolume" class="form-control" type="text">
+                                        <input id="txtVolume" class="form-control" type="text" style="text-align:right;">
                                     </div>
 
                                 </div>
@@ -271,13 +290,17 @@
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-4 col-form-label">
                                         <label id="lblShipper" for="">Shipper </label>
-                                        <!--<font color="red">*</font>-->
+                                        <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-2 NoPadding">
-                                        <input id="txtShipperPrifix" class="form-control" type="text">
+                                        <input id="txtShipperPrifix" maxlength="3" class="form-control" onkeypress="return blockSpecialChar(event)" type="text" onblur="Shipper_GetShipperConsigneeWithShortCode_V3();">
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <input id="txtShipper" class="form-control" type="text">
+                                        <select class="form-control" id="ddlShipper"
+                                                style="display: none;">
+                                            <!--<option value="0">Select</option>-->
+                                        </select>
+                                        <input id="txtShipper" maxlength="30" onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
                                     </div>
 
                                 </div>
@@ -285,43 +308,49 @@
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-4 col-form-label">
                                         <label id="lblConsignee" for="">Consignee </label>
-                                        <!--<font color="red">*</font>-->
+                                        <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-2 NoPadding">
-                                        <input id="txtConsigneePrifix" class="form-control" type="text">
+                                        <input id="txtConsigneePrifix" maxlength="3" class="form-control" onkeypress="return blockSpecialChar(event)" type="text" onblur="Consignee_GetShipperConsigneeWithShortCode_V3();">
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <input id="txtConsignee" class="form-control" type="text">
+                                        <input id="txtConsignee" maxlength="30" onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
+                                        <select class="form-control" id="ddlConsignee"
+                                                style="display: none;"></select>
                                     </div>
 
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-4 col-form-label">
                                         <label id="lblAgentName" for="">Agent Name</label>
-                                        <!--<font color="red">*</font>-->
+                                        <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-2 NoPadding">
-                                        <input id="txtAgentNamePrifix" class="form-control" type="text">
+                                        <input id="txtAgentNamePrifix" maxlength="3" class="form-control" onkeypress="return blockSpecialChar(event)" type="text" onblur="AgentName_GetShipperConsigneeWithShortCode_V3();">
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <input id="txtAgentName" class="form-control" type="text">
+                                        <input id="txtAgentName" onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
+                                        <select class="form-control" id="ddlAgentName"
+                                                style="display: none;"></select>
                                     </div>
                                 </div>
 
-
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <label id="AllMsg" for=""></label>
+                                </div>
                             </div>
 
                             <div class="row form-group" style="margin-top:10px;">
 
                                 <div class="form-group col-xs-4 col-sm-4 col-md-4 ">
-                                    <input type="button" id="btnExit" class="form-control ButtonColor" value="Exit" onclick="window.location.href = 'IMP_Dashboard.html'">
+                                    <input type="button" id="btnExit" class="form-control ButtonColor" value="Exit" onclick="window.location.href = 'EXP_Dashboard.html'">
                                 </div>
 
                                 <div class="form-group col-xs-4 col-sm-4 col-md-4 ">
                                     <input type="button" id="btnClear" class="form-control ButtonColor" value="Clear" onclick="clearALL();">
                                 </div>
                                 <div class="form-group col-xs-4 col-sm-4 col-md-4   ">
-                                    <input type="button" id="btnSubmit" class="form-control ButtonColor" value="Submit" onclick="clickOnNextButton();">
+                                    <input type="button" id="btnSubmit" class="form-control ButtonColor" value="Submit" onclick="GetAWBDetailSave_V3();">
                                 </div>
 
 

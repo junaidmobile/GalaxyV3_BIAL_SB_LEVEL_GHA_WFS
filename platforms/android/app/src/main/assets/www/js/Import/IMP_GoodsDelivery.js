@@ -184,9 +184,11 @@ function GetGatePassDetails() {
                             $("#spnMsg").text('');
                             $("#spnMsg").text(StrMessage).css({ 'color': 'red' });
                             $('#btnGoodsDelever').attr('disabled', 'disabled');
-                            //$('#divVCTDetail').empty();
-                            //$('#divVCTDetail').hide();
+                            $('#divVCTDetail').empty();
+                            $('#divVCTDetail').hide();
                             html = '';
+                            $('#txtGatePassScanNo').val('');
+                            $('#txtGatePassScanNo').focus();
                             return true;
                         }
 
@@ -200,9 +202,9 @@ function GetGatePassDetails() {
                         html += '<table id="tblNewsForGatePass" class="table table-striped table-bordered" style="font-size: 20px; margin-top: 10px !important; margin-bottom: 0px; ">';
                         html += '<thead style="background-color:rgb(208, 225, 244);">';
                         html += '<tr>';
-                        html += '<th>AWB No</th>';
+                        html += '<th>AWB No.</th>';
                         html += '<th>Pieces </th>';
-                        html += '<th>BIN/Group Id</th>';
+                        html += '<th>BIN/Group Id.</th>';
                         html += '<th>Location</th>';
                         html += '</tr>';
                         html += '</thead>';
@@ -447,7 +449,7 @@ function WDONoDetails(AWBNo, Pieces, GroupId, Location) {
     html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;">' + AWBNo + '</td>';
     html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:right;">' + Pieces + '</td>';
     html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:center;">' + GroupId + '</td>';
-    html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:right;padding-right: 4px;">' + Location + '</td>';
+    html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:center;padding-right: 4px;">' + Location + '</td>';
     html += '</tr>';
 }
 

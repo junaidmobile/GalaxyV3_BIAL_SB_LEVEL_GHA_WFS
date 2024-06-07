@@ -205,7 +205,7 @@ function GetGatePassDetails() {
                         html += '<th>AWB No.</th>';
                         html += '<th>Pieces </th>';
                         html += '<th>BIN/Group Id.</th>';
-                        html += '<th>Location.</th>';
+                        html += '<th>Location</th>';
                         html += '</tr>';
                         html += '</thead>';
                         html += '<tbody>';
@@ -449,7 +449,7 @@ function WDONoDetails(AWBNo, Pieces, GroupId, Location) {
     html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;">' + AWBNo + '</td>';
     html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:right;">' + Pieces + '</td>';
     html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:center;">' + GroupId + '</td>';
-    html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:right;padding-right: 4px;">' + Location + '</td>';
+    html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:center;padding-right: 4px;">' + Location + '</td>';
     html += '</tr>';
 }
 

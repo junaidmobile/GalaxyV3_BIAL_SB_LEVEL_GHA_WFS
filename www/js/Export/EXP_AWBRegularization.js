@@ -134,17 +134,17 @@ function ChangeAWBNo_GetData() {
                     $('#tblOldAWBDetails').empty();
                     html = '';
 
-                    html += '<table id="tblOldAWBDetails" class="table table-striped table-bordered" style="font-size: 20px; margin-top: 10px !important; margin-bottom: 0px; ">';
-                    html += '<thead style="background-color:rgb(208, 225, 244);">';
-                    html += '<tr>';
-                    html += '<th>Pcs.</th>';
-                    html += '<th>Gr. Wt.</th>';
-                    html += '<th>Ch. Wt.</th>';
-                    html += '<th>NOG </th>';
-                    html += '<th>Agt. </th>';
-                    html += '</tr>';
-                    html += '</thead>';
-                    html += '<tbody>';
+                    //html += '<table id="tblOldAWBDetails" class="table table-striped table-bordered" style="font-size: 20px; margin-top: 10px !important; margin-bottom: 0px; ">';
+                    //html += '<thead style="background-color:rgb(208, 225, 244);">';
+                    //html += '<tr>';
+                    //html += '<th>Pcs.</th>';
+                    //html += '<th>Gr. Wt.</th>';
+                    //html += '<th>Ch. Wt.</th>';
+                    //html += '<th>NOG </th>';
+                    //html += '<th>Agt. </th>';
+                    //html += '</tr>';
+                    //html += '</thead>';
+                    //html += '<tbody>';
 
                     var xmlDoc = $.parseXML(response);
                     var flag = '0';
@@ -236,13 +236,34 @@ function grplength() {
 
 function OldAWBNoDetails(Pieces, GrWt, ChWt, Commodity, Agent) {
 
+    html += '<table id="tblOldAWBDetails" class="table table-striped table-bordered" style="font-size: 20px; margin-top: 10px !important; margin-bottom: 0px; ">';
+   // html += '<thead style="background-color:rgb(208, 225, 244);">';
+    html += '<tbody>';
     html += '<tr>';
-    html += '<td style="background: rgb(224, 243, 215);">' + Pieces + '</td>';
-    html += '<td style="background: rgb(224, 243, 215);">' + GrWt + '</td>';
-    html += '<td style="background: rgb(224, 243, 215);">' + ChWt + '</td>';
-    html += '<td style="background: rgb(224, 243, 215);">' + Commodity + '</td>';
-    html += '<td style="background: rgb(224, 243, 215);">' + Agent + '</td>';
+    html += '<td>Pieces</td><td class="txtRight">' + Pieces + '</td>';
     html += '</tr>';
+    html += '<tr>';
+    html += '<td>Gr. Wt.</td><td class="txtRight">' + GrWt + '</td>';
+    html += '</tr>';
+    html += '<tr>';
+    html += '<td>Ch. Wt.</td><td class="txtRight">' + ChWt + '</td>';
+    html += '</tr>';
+    html += '<tr>';
+    html += '<td>NOG </td><td>' + Commodity + '</td>';
+    html += '</tr>';
+    html += '<tr>';
+    html += '<td>Agent Name </td><td>' + Agent + '</td>';
+    html += '</tr>';
+   // html += '</thead>';
+   
+
+    //html += '<tr>';
+    //html += '<td style="background: rgb(224, 243, 215);">' + Pieces + '</td>';
+    //html += '<td style="background: rgb(224, 243, 215);">' + GrWt + '</td>';
+    //html += '<td style="background: rgb(224, 243, 215);">' + ChWt + '</td>';
+    //html += '<td style="background: rgb(224, 243, 215);">' + Commodity + '</td>';
+    //html += '<td style="background: rgb(224, 243, 215);">' + Agent + '</td>';
+    //html += '</tr>';
 }
 
 
