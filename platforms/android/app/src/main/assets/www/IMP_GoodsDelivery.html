@@ -64,7 +64,7 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <input id="txtGatePassScanNo" class="form-control" type="text" onkeyup="onKeypreessVTNo();" maxlength="20" onblur="GetGatePassDetails()" autofocus>
+                                        <input id="txtGatePassScanNo"  class="form-control" type="text" onkeyup="onKeypreessVTNo();" oninput="checkSpecialChar();" maxlength="20" onblur="GetGatePassDetails()" autofocus>
                                     </div>
                                 </div>
 
@@ -138,7 +138,7 @@
                                     <!--<input type="button" id="cameraTakePicture" class="form-control ButtonColor" value="Take Photo" onclick="RecordGoodsDelivery_PDA()" style="display:none;">-->
                                 </div>
                                 <div class="form-group col-xs-6 col-sm-6 col-md-6" style="margin-top:15px;">
-                                    <input disabled type="button" id="btnGoodsDelever" class="form-control ButtonColor" value="Record Delivery" onclick="RecordGoodsDelivery_PDA()">
+                                    <input  type="button" id="btnGoodsDelever" class="form-control ButtonColor" value="Record Delivery" onclick="RecordGoodsDelivery_PDA()">
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 " style="margin-top:15px;">
                                     <label id="spnMsg"></label>

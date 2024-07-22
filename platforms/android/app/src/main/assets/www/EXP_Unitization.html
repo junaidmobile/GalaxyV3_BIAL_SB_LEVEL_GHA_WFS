@@ -28,6 +28,50 @@
     <link href="css/alert.mob.css" rel="stylesheet" />
     <script src="js/Export/EXP_Unitization.js"></script>
     <style>
+
+        input[type=checkbox] {
+            position: relative;
+            cursor: pointer;
+        }
+
+            input[type=checkbox]:before {
+                content: "";
+                display: block;
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                top: 0;
+                left: 0;
+                background-color: #e9e9e9;
+                border: thin solid black
+            }
+
+            input[type=checkbox]:checked:before {
+                content: "";
+                display: block;
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                top: 0;
+                left: 0;
+                background-color: #1E80EF;
+            }
+
+            input[type=checkbox]:checked:after {
+                content: "";
+                display: block;
+                width: 8px;
+                height: 13px;
+                border: solid white;
+                border-width: 0 2px 2px 0;
+                -webkit-transform: rotate(45deg);
+                -ms-transform: rotate(45deg);
+                transform: rotate(45deg);
+                position: absolute;
+                top: 2px;
+                left: 6px;
+            }
+
         table, td, th {
             /* border: 1px solid black;*/
             background: rgb(224, 243, 215);
@@ -128,12 +172,12 @@
         #TextBoxDiv {
             margin-bottom: 0px !important;
             margin-top: 5px;
-            
         }
+
         .blink_me {
             animation: blinker 1s linear infinite;
             background-color: yellow;
-           /* padding: 15px;*/
+            /* padding: 15px;*/
             text-align: center;
             /*line-height: 50px;*/
             font-weight: bolder;
@@ -435,6 +479,17 @@
                     <div class="form-body">
                         <form>
                             <div class="row">
+                                <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+        <div class="col-xs-6 col-form-label" id="">
+            <div class="checkbox">
+                <label style=" font-weight: 700; font-size: small; line-height: 2;"
+                       id="lblAuto">
+                    <input onclick="AutoChkCheck();" checked id="chkAuto" type="checkbox">
+                    &nbsp;&nbsp;Auto
+                </label>
+            </div>
+        </div>
+    </div>-->
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-6 col-form-label">
                                         <label for="txtULDNo">ULD No.</label>
@@ -444,67 +499,82 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                    <div class="col-xs-6 col-form-label">
-                                        <label for="txtAWBNo">AWB No.</label>
-                                        <font color="red">*</font>
-                                    </div>
+                                    <!--<div class="col-xs-6 col-form-label">
+            <label for="txtScannedID">Scan ID</label>
+        </div>-->
                                     <!--<div class="col-xs-2" style="padding-left:0px;padding-right:0px;">
-                                        <input id="txtAWBPrefix" class="form-control" type="number" style="text-align:right;" onkeyup="ChkMaxLength(this, '3'); countChar(this, '3');" name="textbox[]">
-                                    </div>-->
-                                    <div class="col-xs-6" style="padding-left:0px;padding-right:0px;">
-                                        <input id="txtAWBNo" class="form-control" type="number" style="text-align:right;"
-                                               onkeyup="ChkMaxLength(this, '11'); onChangeLenthCheck();"
-                                               onblur="GetShipmentInfoForAWB($('#txtAWBNo').val());" name="textbox[]">
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                    <div class="col-xs-6 col-form-label">
-                                        <label id="lblShipmentNo">EWR No.</label>
-                                        <font color="red">*</font>
-                                    </div>
-                                    <div class="col-xs-6 NoPadding">
-                                        <select class="form-control" id="ddlShipmentNo" onchange="ChangeEWRInfo($('#ddlShipmentNo').find('option:selected').text())" style="text-align:right;">
-                                            <option value="0">Select</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                    <div class="col-xs-6 col-form-label">
-                                        <label id="lblAWBNo" for="">NOG.</label>
-                                        <!--<font color="red">*</font>-->
-                                    </div>
-                                    <div class="col-xs-6 NoPadding">
-                                        <input id="txtNOG" class="form-control" type="text" disabled>
+            <input id="txtAWBPrefix" class="form-control" type="number" style="text-align:right;" onkeyup="ChkMaxLength(this, '3'); countChar(this, '3');" name="textbox[]">
+        </div>-->
+                                    <!--<div class="col-xs-6" style="padding-left:0px;padding-right:0px;">
+            <input id="txtScannedID" class="form-control" type="text"
+                   style="text-align:left;"
+                   onkeyup="ChkMaxLength(this, '50'); onChangeLenthCheck();"
+                   onblur="GetShipmentInfoForAWB();" name="textbox[]">
+        </div>-->
+                                    <!--</div>-->
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-6 col-form-label">
+                                            <label for="txtAWBNo">AWB No.</label>
+                                            <font color="red">*</font>
+                                        </div>
+                                        <!--<div class="col-xs-2" style="padding-left:0px;padding-right:0px;">
+                <input id="txtAWBPrefix" class="form-control" type="number" style="text-align:right;" onkeyup="ChkMaxLength(this, '3'); countChar(this, '3');" name="textbox[]">
+            </div>-->
+                                        <div class="col-xs-6" style="padding-left:0px;padding-right:0px;">
+                                            <input id="txtAWBNo" class="form-control" type="number" style="text-align:right;"
+                                                   onkeyup="ChkMaxLength(this, '11'); onChangeLenthCheck();"
+                                                   onblur="GetShipmentInfoForAWB($('#txtAWBNo').val());" name="textbox[]">
+                                        </div>
                                     </div>
 
-                                </div>
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                    <!--<div class="col-xs-3 col-form-label">
-                                        <label id="lblSHCCode" for="lblSHCCode" class="control-label labelFont">
-                                            SHC Code
-                                        </label>
-                                    </div>-->
-                                    <!--<div class="col-xs-1  ButtonColor" style="display: flex; justify-content: center; align-items: center;">
-                                        <span style="font-size: 20px;" class="glyphicon glyphicon-pencil "></span>
-                                    </div>-->
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-6 col-form-label">
+                                            <label id="lblShipmentNo">EWR No.</label>
+                                            <font color="red">*</font>
+                                        </div>
+                                        <div class="col-xs-6 NoPadding">
+                                            <select class="form-control" id="ddlShipmentNo" onchange="ChangeEWRInfo($('#ddlShipmentNo').find('option:selected').text())" style="text-align:right;">
+                                                <option value="0">Select</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
-                                    <div class="col-xs-12 NoPadding">
-                                        <table class="table" id="TextBoxDiv">
-                                        </table>
-                                    </div>
-                                </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-6 col-form-label">
+                                            <label id="lblAWBNo" for="">NOG.</label>
+                                            <!--<font color="red">*</font>-->
+                                        </div>
+                                        <div class="col-xs-6 NoPadding">
+                                            <input id="txtNOG" class="form-control" type="text" disabled>
+                                        </div>
 
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                    <div class="col-xs-6 col-form-label">
-                                        <label id="lblUnitizedTotalPkgs" for="txtReceivedRemainingPkgs" class="control-label labelFont">Unitized/Total Pkgs</label>
                                     </div>
-                                    <div class="col-xs-3 NoPadding">
-                                        <input type="number" style="text-align:right;" id="txtUnitizedPkgs" class="form-control" onkeyup="ChkMaxLength(this, '7');" disabled>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <!--<div class="col-xs-3 col-form-label">
+                <label id="lblSHCCode" for="lblSHCCode" class="control-label labelFont">
+                    SHC Code
+                </label>
+            </div>-->
+                                        <!--<div class="col-xs-1  ButtonColor" style="display: flex; justify-content: center; align-items: center;">
+                <span style="font-size: 20px;" class="glyphicon glyphicon-pencil "></span>
+            </div>-->
+
+                                        <div class="col-xs-12 NoPadding">
+                                            <table class="table" id="TextBoxDiv">
+                                            </table>
+                                        </div>
                                     </div>
-                                    <div class="col-xs-3 NoPadding">
-                                        <input type="number" style="text-align:right;" id="txtTotalPkgs" class="form-control" onkeyup="ChkMaxLength(this, '7');" disabled>
+
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-6 col-form-label">
+                                            <label id="lblUnitizedTotalPkgs" for="txtReceivedRemainingPkgs" class="control-label labelFont">Unitized/Total Pkgs</label>
+                                        </div>
+                                        <div class="col-xs-3 NoPadding">
+                                            <input type="number" style="text-align:right;" id="txtUnitizedPkgs" class="form-control" onkeyup="ChkMaxLength(this, '7');" disabled>
+                                        </div>
+                                        <div class="col-xs-3 NoPadding">
+                                            <input type="number" style="text-align:right;" id="txtTotalPkgs" class="form-control" onkeyup="ChkMaxLength(this, '7');" disabled>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

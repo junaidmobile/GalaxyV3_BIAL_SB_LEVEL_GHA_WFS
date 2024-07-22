@@ -100,7 +100,7 @@ $(function () {
                     $('#txtHAWB').val(HAWBNo);
 
                     // $('#txPieces').val($(this).find('SDA_PackageCount_I').text());
-                    $('#txPieces').val($(this).find('RemainingPkg').text());
+                    // $('#txPieces').val($(this).find('RemainingPkg').text());
                     $('#txtCommodityType').val($(this).find('NOG').text());
                     ConsignmentRowIDForSave = $(this).find('ConsignmentRowID').text();
                     IsSecured = $(this).find('IsSecured').text();
@@ -116,7 +116,7 @@ $(function () {
                     SHCSpanHtml(newSHC);
 
                     // $('#txtScaleWt').val($(this).find('SDA_GrossWt_I').text());
-                    $('#txtScaleWt').val($(this).find('RemainingWt').text());
+                    //  $('#txtScaleWt').val($(this).find('RemainingWt').text());
                     $('#txtGroupId').focus();
 
                     aaSDA_SBNo_C = SDA_SBNo_C;
@@ -398,20 +398,6 @@ $(function () {
         }
     });
 
-
-
-    $("input").keyup(function () {
-        var string = $(this).val();
-        // var string = $('#txtOrigin').val();
-        if (string.match(/[`!₹£•√Π÷×§∆€¥¢©®™✓π@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
-            /*$('#txtOrigin').val('');*/
-            $(this).val('');
-            return true;    // Contains at least one special character or space
-        } else {
-            return false;
-        }
-
-    });
 
 });
 
@@ -1277,8 +1263,7 @@ function SaveVCTCargoDetails_v3() {
     //}
 
     // inputxml = "<Root><VCTNo>" + VCTNo + "</VCTNo><VCTID>" + VCTId + "</VCTID><ISULD>False</ISULD><ConsignmentRowID>" + ConsignmentRowID + "</ConsignmentRowID><HouseRowId></HouseRowId><AWBULDNo>" + $("#ddlMAWBNo").val() + "</AWBULDNo><HAWB>" + $("#ddlHAWBNo option:selected").text() + "</HAWB><Package>" + $("#txPieces").val() + "</Package><GrossWt>" + $("#txtScaleWt").val() + "</GrossWt><WtUOM>KG</WtUOM><TrolleyCode>" + IDENTIFIER + "</TrolleyCode><TrolleyWt>" + REFERENCE + "</TrolleyWt><IsSecured>" + IsSecuredTF + "</IsSecured><GroupId>" + $("#txtGroupId").val() + "</GroupId><DimUOM>" + $("#ddlUnit").val() + "</DimUOM><DimDetails>" + inputRows + "</DimDetails><AirportCity>" + SHED_AIRPORT_CITY + "</AirportCity><Culture>" + language + "</Culture><UserId>" + Userid + "</UserId><NOG>" + $("#txtNOG").val() + "</NOG><CommSrNo>" + $("#ddlComCode").val() + "</CommSrNo>" + allSHCCodeSave + "</Root>"
-    // var inputxml = "<Root><VCTNo>" + VCTNo + "</VCTNo><VCTID>" + VCTId + "</VCTID><ISULD>False</ISULD><ConsignmentRowID>" + ConsignmentRowIDForSave + "</ConsignmentRowID><HouseRowId></HouseRowId><AWBULDNo></AWBULDNo><HAWB></HAWB><Package>" + $("#txPieces").val() + "</Package><GrossWt>" + $("#txtScaleWt").val() + "</GrossWt><WtUOM>" + WtUOM + "</WtUOM><TrolleyCode>" + IDENTIFIER + "</TrolleyCode><TrolleyWt>" + REFERENCE + "</TrolleyWt><IsSecured>" + isSecuredFlag + "</IsSecured><GroupId>" + $("#txtGroupId").val() + "</GroupId><DimUOM>" + $("#ddlUnit1").val() + "</DimUOM><DimDetails>" + inputRows + "</DimDetails><AirportCity>" + AirportCity + "</AirportCity><Culture>" + PreferredLanguage + "</Culture><UserId>" + UserId + "</UserId><NOG></NOG><CommSrNo>" + CommSrNo + "</CommSrNo><SHC1></SHC1><SHC2></SHC2><SHC3></SHC3><SHC4></SHC4><SHC5></SHC5><SHC6></SHC6><SHC7></SHC7><SHC8></SHC8><SHC9></SHC9></Root>";
-    var inputxml = "<Root><VCTNo>" + VCTNo + "</VCTNo><AWBNo>" + $("#ddlAWBNo option:selected").text() + "</AWBNo><SBNumber>" + $("#txtSBNo").val() + "</SBNumber><VCTID>" + VCTId + "</VCTID><ISULD>False</ISULD><ConsignmentRowID>" + ConsignmentRowIDForSave + "</ConsignmentRowID><HouseRowId></HouseRowId><AWBULDNo></AWBULDNo><HAWB></HAWB><Package>" + $("#txPieces").val() + "</Package><GrossWt>" + $("#txtScaleWt").val() + "</GrossWt><WtUOM>" + WtUOM + "</WtUOM><TrolleyCode>" + IDENTIFIER + "</TrolleyCode><TrolleyWt>" + REFERENCE + "</TrolleyWt><IsSecured>" + isSecuredFlag + "</IsSecured><GroupId>" + $("#txtGroupId").val() + "</GroupId><DimUOM>" + $("#ddlUnit1").val() + "</DimUOM><DimDetails>" + inputRows + "</DimDetails><AirportCity>" + AirportCity + "</AirportCity><Culture>" + PreferredLanguage + "</Culture><UserId>" + UserId + "</UserId><NOG></NOG><CommSrNo>" + CommSrNo + "</CommSrNo><SHC1></SHC1><SHC2></SHC2><SHC3></SHC3><SHC4></SHC4><SHC5></SHC5><SHC6></SHC6><SHC7></SHC7><SHC8></SHC8><SHC9></SHC9></Root>";
+    var inputxml = "<Root><VCTNo>" + VCTNo + "</VCTNo><VCTID>" + VCTId + "</VCTID><ISULD>False</ISULD><ConsignmentRowID>" + ConsignmentRowIDForSave + "</ConsignmentRowID><HouseRowId></HouseRowId><AWBULDNo></AWBULDNo><HAWB></HAWB><Package>" + $("#txPieces").val() + "</Package><GrossWt>" + $("#txtScaleWt").val() + "</GrossWt><WtUOM>" + WtUOM + "</WtUOM><TrolleyCode>" + IDENTIFIER + "</TrolleyCode><TrolleyWt>" + REFERENCE + "</TrolleyWt><IsSecured>" + isSecuredFlag + "</IsSecured><GroupId>" + $("#txtGroupId").val() + "</GroupId><DimUOM>" + $("#ddlUnit1").val() + "</DimUOM><DimDetails>" + inputRows + "</DimDetails><AirportCity>" + AirportCity + "</AirportCity><Culture>" + PreferredLanguage + "</Culture><UserId>" + UserId + "</UserId><NOG></NOG><CommSrNo>" + CommSrNo + "</CommSrNo><SHC1></SHC1><SHC2></SHC2><SHC3></SHC3><SHC4></SHC4><SHC5></SHC5><SHC6></SHC6><SHC7></SHC7><SHC8></SHC8><SHC9></SHC9></Root>";
     console.log(inputxml);
 
     if (errmsg == "" && connectionStatus == "online") {

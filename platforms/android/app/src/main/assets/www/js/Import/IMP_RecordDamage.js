@@ -1,4 +1,4 @@
-var CMSserviceURL = window.localStorage.getItem("CMSserviceURL");
+﻿var CMSserviceURL = window.localStorage.getItem("CMSserviceURL");
 var GHAImportFlightserviceURL = window.localStorage.getItem("GHAImportFlightserviceURL");
 var AirportCity = window.localStorage.getItem("SHED_AIRPORT_CITY");
 var UserID = window.localStorage.getItem("UserID");
@@ -64,7 +64,18 @@ $(document).ready(function () {
         }
     });
 
+    $("input").keyup(function () {
+        var string = $(this).val();
+        // var string = $('#txtOrigin').val();
+        if (string.match(/[`!₹£•√Π÷×§∆€¥¢©®™✓π@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
+            /*$('#txtOrigin').val('');*/
+            $(this).val('');
+            return true;    // Contains at least one special character or space
+        } else {
+            return false;
+        }
 
+    });
 
 });// JavaScript source code
 
@@ -417,7 +428,7 @@ function ChkAndValidate() {
 
     var ScanCode = $('#txtAWBNo').val();
     ScanCode = ScanCode.replace(/\s+/g, '');
-    ScanCode = ScanCode.replace("-", "").replace("�", "");
+    ScanCode = ScanCode.replace("-", "").replace("–", "");
 
     if (ScanCode.length >= 11) {
 

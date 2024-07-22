@@ -171,6 +171,19 @@ $(function () {
     //var stringos = 'ECC,PER,GEN,DGR,HEA,AVI,BUP,EAW,EAP';
     //SHCSpanHtml(stringos);
 
+    $("input").keyup(function () {
+        var string = $(this).val();
+        // var string = $('#txtOrigin').val();
+        if (string.match(/[`!₹@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
+            /*$('#txtOrigin').val('');*/
+            $(this).val('');
+            return true;    // Contains at least one special character or space
+        } else {
+            return false;
+        }
+
+    });
+
 });
 
 function checkSpecialChar() {
@@ -1153,8 +1166,8 @@ function SaveImportMaifestDetailsV3() {
                         $('#ddlAWBNo').empty();
                         // GetULDDetails();
                     } else if (Status == 'E') {
-                        $('#txtScanGroupId').val('');
-                        $('#txtScanGroupId').focus();
+                        //$('#txtScanGroupId').val('');
+                        //$('#txtScanGroupId').focus();
                         $('#successMsg').text(StrMessage).css('color', 'red');
                     }
 
@@ -1443,7 +1456,7 @@ function GetHAWBLevelPiecesDetails(HAWBid) {
                     var newSHC = $(this).find('SHCAll').text();
                     $("#TextBoxDiv").empty();
                     SHCSpanHtml(newSHC);
-                    $('#txtScanGroupId').focus();
+                    $('#txtArrivedPkgs').focus();
 
 
                 });

@@ -147,6 +147,20 @@ $(function () {
     //    }
     //var stringos = 'ECC~N,PER~N,GEN~N,DGR~Y,HEA~N,AVI~N,BUP~Y,EAW~N,EAP~Y';
     //SHCSpanHtml(stringos);
+
+
+    $("input").keyup(function () {
+        var string = $(this).val();
+        // var string = $('#txtOrigin').val();
+        if (string.match(/[`!₹£•√Π÷×§∆€¥¢©®™✓π@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
+            /*$('#txtOrigin').val('');*/
+            $(this).val('');
+            return true;    // Contains at least one special character or space
+        } else {
+            return false;
+        }
+
+    });
 });
 function SHCSpanHtml(newSHC) {
     var spanStr = "<tr class=''>";
@@ -1379,6 +1393,7 @@ function SaveAWBforULDDetails() {
                         $('#txtPackages').val('');
                         $('#txtNOG').val('');
                         $('#ddlShipmentNo').empty();
+                        GetAWBDetailsForULD();
                         return;
                     }
 

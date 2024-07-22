@@ -1,7 +1,16 @@
 ﻿
 //BAIL QA INTL
-var GHAImportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3_Dev/Services/HHTImpServices.asmx/';
-var GHAExportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3_Dev/Services/hhtExpservices.asmx/';
+var GHAImportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3dom/services/HHTImpServices.asmx/';
+var GHAExportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3dom/services/hhtExpservices.asmx/';
+
+//var GHAImportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3/services/HHTImpServices.asmx/';
+//var GHAExportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3/services/hhtExpservices.asmx/';
+
+
+//var GHAImportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3_Dev/Services/HHTImpServices.asmx/';
+//var GHAExportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3_Dev/Services/HHTExpServices.asmx/';
+
+
 
 //WFS QA
 //var GHAImportFlightserviceURL = 'https://wfsuat.kalelogistics.com/Galaxy/services/hhtImpservices.asmx/';
@@ -130,10 +139,11 @@ function ProcessLogin() {
                 HideLoader();
                 var str = response.d;
                 if (str != null && str != "" && str != "<NewDataSet />") {
-
+                    flagValid = '0';
                     var xmlDoc = $.parseXML(str);
                     console.log('Details got via login: ', xmlDoc);
                     $(xmlDoc).find('Table').each(function (index) {
+                        flagValid = '1';
                         window.localStorage.setItem("UserID", $(this).find('Userid').text());
                         window.localStorage.setItem("UserName", $(this).find('User_Name').text());
                         window.localStorage.setItem("companyCode", $(this).find('CompanyCode').text());
@@ -150,11 +160,20 @@ function ProcessLogin() {
                         window.location = "GalaxyHome.html";
                     });
 
+                    if (flagValid == '0') {
+                        HideLoader();
+                        errmsg = errmsg + 'Invalid username and/or password.';
+                        $.alert(errmsg);
+                    }
+
                 }
                 else {
-                    HideLoader();
-                    errmsg = errmsg + 'Invalid username and/or password.';
-                    $.alert(errmsg);
+                    if (flagValid == '0') {
+                        HideLoader();
+                        errmsg = errmsg + 'Invalid username and/or password.';
+                        $.alert(errmsg);
+                    }
+
                 }
             },
             error: function (msg) {

@@ -183,8 +183,8 @@
                                         <input id="txtAWBPrifix" onchange="CheckEmpty();" class="form-control" type="text" maxlength="15">
                                     </div>-->
                                     <div class="col-xs-8 NoPadding">
-                                        <input id="txtAWBNo" class="form-control" type="number" onkeypress="return blockSpecialChar(event)"
-                                               oninput="checkSpecialChar();" maxlength="15" onkeyup="ChkMaxLength(this, '15');" onblur="GetAWBDetailSearch_V3();"
+                                        <input id="txtAWBNo" class="form-control" type="text" onkeypress="return blockSpecialChar(event)"
+                                               oninput="checkSpecialCharforAWBNo();" maxlength="15" onkeyup="ChkMaxLength(this, '15');" onblur="GetAWBDetailSearch_V3();"
                                                autofocus onchange="CheckEmpty();">
                                     </div>
                                 </div>
@@ -196,10 +196,10 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-4 NoPadding">
-                                        <input id="txtOrigin" onchange="CheckEmpty();" class="form-control" type="text" maxlength="15">
+                                        <input id="txtOrigin" oninput="checkSpecialCharforOrigin();" onblur="compareOriginDest();" class="form-control" type="text" maxlength="3">
                                     </div>
                                     <div class="col-xs-4 NoPadding">
-                                        <input id="txtDestination" onchange="CheckEmpty();" class="form-control" type="text" maxlength="15">
+                                        <input id="txtDestination" oninput="checkSpecialCharforDestination();" onblur="compareOriginDest();" class="form-control" type="text" maxlength="3">
                                     </div>
 
                                 </div>
@@ -215,7 +215,7 @@
                                                 style="display: none;">
                                             <option value="0">Select</option>
                                         </select>
-                                        <input id="txtFlightNo" autocomplete="off" onkeypress="return blockSpecialChar(event)" oninput="checkSpecialChar();" class="form-control" type="text" maxlength="15">
+                                        <input id="txtFlightNo" autocomplete="off" onkeypress="return blockSpecialChar(event)" oninput="checkSpecialCharforFlightNo();" class="form-control" type="text" maxlength="6">
                                         <!--<select class="form-control" id="ddlFlightNo"
                                         onchange="GetAWBDetailSearch_V3_onChangeFlight($('#ddlFlightNo').val())"></select>-->
 
@@ -250,7 +250,7 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-8 NoPadding">
-                                        <input id="txtPieces" class="form-control" type="text" style="text-align:right;">
+                                        <input id="txtPieces" onkeyup="ChkMaxLength(this, '4');" onkeypress="return blockSpecialChar(event)" class="form-control" type="number" style="text-align:right;">
                                     </div>
 
                                 </div>
@@ -261,7 +261,7 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-8 NoPadding">
-                                        <input id="txtGrWt" class="form-control" type="text" style="text-align:right;">
+                                        <input id="txtGrWt" onkeyup="ChkMaxLength(this, '4');" class="form-control" type="number" style="text-align:right;">
                                     </div>
 
                                 </div>
@@ -272,7 +272,7 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-8 NoPadding">
-                                        <input id="txtCharWt" class="form-control" type="text" style="text-align:right;">
+                                        <input id="txtCharWt" onkeyup="ChkMaxLength(this, '4');" class="form-control" type="number" style="text-align:right;">
                                     </div>
 
                                 </div>
@@ -282,7 +282,7 @@
                                         <!--<font color="red">*</font>-->
                                     </div>
                                     <div class="col-xs-8 NoPadding">
-                                        <input id="txtVolume" class="form-control" type="text" style="text-align:right;">
+                                        <input id="txtVolume" onkeyup="ChkMaxLength(this, '4');" class="form-control" type="number" style="text-align:right;">
                                     </div>
 
                                 </div>

@@ -100,6 +100,20 @@ $(function () {
     //    ViewFlightRelatedDetails();
     //});
     $('#btnATA').attr('disabled', 'disabled');
+
+
+    $("input").keyup(function () {
+        var string = $(this).val();
+        // var string = $('#txtOrigin').val();
+        if (string.match(/[`!₹£•√Π÷×§∆€¥¢©®™✓π@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
+            /*$('#txtOrigin').val('');*/
+            $(this).val('');
+            return true;    // Contains at least one special character or space
+        } else {
+            return false;
+        }
+
+    });
 });
 
 function NexttoULDDetails() {
@@ -169,6 +183,8 @@ function GetFlightDetails() {
     $('#divMainDetails').show();
     $('#divFlightInfo').hide();
     $('#divFlightInfo').empty();
+    $('#lblFlightStatus').text('');
+    $('#lblFlightStatusError').text('');
     html = '';
 
     var inputxml = "";
@@ -269,7 +285,7 @@ function GetFlightDetails() {
                         }
                         else
                             $("#btnNext").removeAttr("disabled");
-                        $("#btnFinalize").removeAttr("disabled");
+
                         $('#lblFlightStatusError').text('');
 
                         $('#txtIGMNo').val($(this).find('CustomRef').text());
@@ -361,6 +377,11 @@ function GetFlightDetails() {
                             $('#btnATA').attr('disabled', 'disabled');
                         }
 
+                        if ($(this).find('FlightStatus').text() == 'Finalized') {
+                            $("#btnFinalize").attr('disabled', 'disabled');
+                        } else {
+                            $("#btnFinalize").removeAttr("disabled");
+                        }
 
                         var statusNext = $(this).find('IsNext').text();
                         if (statusNext == 'Y')
@@ -569,6 +590,13 @@ function ViewFlightRelatedDetails() {
                         $('#txtFlightDate').val(ulddate);
 
                         $('#lblFlightStatus').text('Flight Status:' + ' ' + $(this).find('Status').text());
+
+                        if ($(this).find('FlightStatus').text() == 'Finalized') {
+                            $("#btnFinalize").attr('disabled', 'disabled');
+                        } else {
+                            $("#btnFinalize").removeAttr("disabled");
+                        }
+
                     });
 
                     $(xmlDoc).find('Table1').each(function (index) {
@@ -809,7 +837,7 @@ function FlightATA_V4() {
     var FlightNo = $("#txtFlightNo").val();
     var ATAFlightDateTime = $("#txtFlightATA").val();
     var ATATime = $("#txtFlightTime").val();
-    
+
 
     const myArrayTime = ATATime.split(":");
     var ATAHours = myArrayTime[0];
@@ -865,7 +893,7 @@ function FlightATA_V4() {
     //    FlightDate = m + "/" + d + "/" + y;
     //}
 
-    inputxml = '<Root><FlightSeqNo>' + flightSeqNo + '</FlightSeqNo><ATA>' + ATAFlightDateTime + " " + ATATime + '</ATA><AirportCity>' + AirportCity + '</AirportCity><ATAHours>' + ATAHours + '</ATAHours><ATAMins>' + ATAMins + '</ATAMins><CustomRef>' + IGMNo + '</CustomRef><AirTypeCode>' + AirportCity + '</AirTypeCode><CompanyCode>' + companyCode + '</CompanyCode><UserID>' + UserID + '</UserID></Root >';
+    inputxml = '<Root><FlightSeqNo>' + flightSeqNo + '</FlightSeqNo><ATA>' + ATAFlightDateTime + '</ATA><AirportCity>' + AirportCity + '</AirportCity><ATAHours>' + ATAHours + '</ATAHours><ATAMins>' + ATAMins + '</ATAMins><CustomRef>' + IGMNo + '</CustomRef><AirTypeCode>' + AirportCity + '</AirTypeCode><CompanyCode>' + companyCode + '</CompanyCode><UserID>' + UserID + '</UserID></Root >';
 
 
     if (errmsg == "" && connectionStatus == "online") {

@@ -11,6 +11,10 @@ var deviceUUID = window.localStorage.getItem("deviceUUID");
 $(function () {
     LoadNavBar();
     $('input').attr('autocomplete', 'off');
+
+   
+
+
     //setTimeout(function () {
 
     //    // window.localStorage.clear();
@@ -184,7 +188,7 @@ function LoadNavBar() {
         $('#navhdrName').html("Out Of Warehouse");
     }
     else if (window.location.pathname.split("/").pop() == "IMP_GoodsDelivery.html") {
-        $('#navhdrName').html("Goods Delivery");
+        $('#navhdrName').html("Release");
 
     } else if (window.location.pathname.split("/").pop() == "EXP_DockInDockOutStatus.html") {
         $('#navhdrName').html("Dock In/Dock Out Status");

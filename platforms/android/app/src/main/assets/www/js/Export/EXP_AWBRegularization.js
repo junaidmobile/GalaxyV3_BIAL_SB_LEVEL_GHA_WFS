@@ -1,4 +1,4 @@
-var CMSserviceURL = window.localStorage.getItem("CMSserviceURL");
+﻿var CMSserviceURL = window.localStorage.getItem("CMSserviceURL");
 var GHAImportFlightserviceURL = window.localStorage.getItem("GHAImportFlightserviceURL");
 var GHAExportFlightserviceURL = window.localStorage.getItem("GHAExportFlightserviceURL");
 var AirportCity = window.localStorage.getItem("SHED_AIRPORT_CITY");
@@ -38,7 +38,7 @@ $(function () {
         window.location.href = 'IMP_Dashboard.html';
     }
 
-    document.addEventListener('deviceready', AddLocation, false);
+  //  document.addEventListener('deviceready', AddLocation, false);
     //document.addEventListener('deviceready', AddingTestLocation, false);
 
     // ImportDataList();
@@ -47,7 +47,31 @@ $(function () {
 
     //SHCSpanHtml(stringos);
 
+    $("input").keyup(function () {
+        var string = $(this).val();
+        // var string = $('#txtOrigin').val();
+        if (string.match(/[`!₹@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
+            /*$('#txtOrigin').val('');*/
+            $(this).val('');
+            return true;    // Contains at least one special character or space
+        } else {
+            return false;
+        }
+
+    });
+
 });
+
+
+function checkSpecialChar() {
+    var string = $('#txtAWBNo').val();
+    if (string.match(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
+        $('#txtAWBNo').val('');
+        return true;    // Contains at least one special character or space
+    } else {
+        return false;
+    }
+}
 
 
 
@@ -82,15 +106,7 @@ function SHCSpanHtml(newSHC) {
 
 }
 
-function checkSpecialChar() {
-    var string = $('#txtGroupId').val();
-    if (string.match(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
-        $('#txtGroupId').val('');
-        return true;    // Contains at least one special character or space
-    } else {
-        return false;
-    }
-}
+
 
 function ChangeAWBNo_GetData() {
 
@@ -369,7 +385,7 @@ function ChkAndValidate() {
 
     var ScanCode = $('#txtAWBNo').val();
     ScanCode = ScanCode.replace(/\s+/g, '');
-    ScanCode = ScanCode.replace("-", "").replace("�", "");
+    ScanCode = ScanCode.replace("-", "").replace("–", "");
 
     if (ScanCode.length >= 11) {
 

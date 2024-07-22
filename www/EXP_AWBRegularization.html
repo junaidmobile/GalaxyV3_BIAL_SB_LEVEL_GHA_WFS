@@ -167,7 +167,7 @@
                                     </div>
                                    
                                     <div class="col-xs-6 NoPadding">
-                                        <input onkeypress="return blockSpecialChar(event)" onkeyup="ChkMaxLength(this, '14');" onblur="ChangeAWBNo_GetData();" autofocus id="txtAWBNo" class="form-control" type="text">
+                                        <input oninput="checkSpecialChar();" onkeyup="ChkMaxLength(this, '14');" onblur="ChangeAWBNo_GetData();" autofocus id="txtAWBNo" class="form-control" type="text">
                                     </div>
                                 </div>
 

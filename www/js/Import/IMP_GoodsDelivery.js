@@ -43,8 +43,8 @@ $(function () {
     }
 
 
-    document.getElementById("cameraTakePicture").addEventListener
-        ("click", cameraTakePicture);
+    //document.getElementById("cameraTakePicture").addEventListener
+    //    ("click", cameraTakePicture);
 
     //var formattedDate = new Date();
     //var d = formattedDate.getDate();
@@ -64,6 +64,21 @@ $(function () {
     //var h = date.getHours();
     //var m = date.getMinutes();
     //var s = date.getSeconds();
+
+    $("input").keyup(function () {
+        var string = $(this).val();
+        // var string = $('#txtOrigin').val();
+        if (string.match(/[`!₹£•√Π÷×§∆€¥¢©®™✓@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
+            /*$('#txtOrigin').val('');*/
+            $(this).val('');
+            return true;    // Contains at least one special character or space
+        } else {
+            return false;
+        }
+
+    });
+
+    $('#btnGoodsDelever').attr('disabled', 'disabled');
 
 });
 
@@ -104,7 +119,15 @@ function onFail(message) {
     alert('Failed because: ' + message);
 }
 
-
+function checkSpecialChar() {
+    var string = $('#txtGatePassScanNo').val();
+    if (string.match(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
+        $('#txtGatePassScanNo').val('');
+        return true;    // Contains at least one special character or space
+    } else {
+        return false;
+    }
+}
 
 
 function checkLocation() {
@@ -128,7 +151,17 @@ function onKeypreessVTNo() {
     }
 }
 
+
+
 function GetGatePassDetails() {
+    WDOSeqNo = '';
+    if ($('#txtGatePassScanNo').val() == '') {
+        // $("#spnMsg").text('Please enter WDO No.').css({ 'color': 'red' });
+        return;
+        //  signitureDataURL = '';
+    }
+
+
 
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
@@ -136,14 +169,20 @@ function GetGatePassDetails() {
     var txtGatePassScanNo = $('#txtGatePassScanNo').val().toUpperCase();
 
     if (txtGatePassScanNo.length >= "8") {
-        $('#btnGoodsDelever').removeAttr('disabled');
+        //  $('#btnGoodsDelever').removeAttr('disabled');
+        $("#spnMsg").text('');
     } else {
-        $('#btnGoodsDelever').attr('disabled', 'disabled');
+        // $('#btnGoodsDelever').attr('disabled', 'disabled');
+        $("#spnMsg").text('Please enter valid WDO No.').css({ 'color': 'red' });
+        // $('#txtGatePassScanNo').val('');
+        $('#divVCTDetail').empty();
+        signaturePad.clear();
         return;
     }
     $('#spnMsg').text('');
+    signaturePad.clear();
     var InputXML = '<Root><WDONo>' + $('#txtGatePassScanNo').val() + '</WDONo><AirportCity>' + AirportCity + '</AirportCity><Culture>' + PreferredLanguage + '</Culture></Root>';
-   
+
     if (txtGatePassScanNo.length >= '8') {
         if (errmsg == "" && connectionStatus == "online") {
             $.ajax({
@@ -170,6 +209,7 @@ function GetGatePassDetails() {
 
                     $('#divVCTDetail').html('');
                     $('#divVCTDetail').empty();
+
                     console.log(xmlDoc);
                     var StrMessage;
                     $(xmlDoc).find('Table').each(function () {
@@ -187,9 +227,13 @@ function GetGatePassDetails() {
                             $('#divVCTDetail').empty();
                             $('#divVCTDetail').hide();
                             html = '';
-                            $('#txtGatePassScanNo').val('');
-                            $('#txtGatePassScanNo').focus();
+                            // $('#txtGatePassScanNo').val('');
+                            //$('#txtGatePassScanNo').focus();
+                            signaturePad.clear();
                             return true;
+                        } else {
+                            $('#btnGoodsDelever').removeAttr('disabled');
+
                         }
 
 
@@ -210,10 +254,10 @@ function GetGatePassDetails() {
                         html += '</thead>';
                         html += '<tbody>';
 
-                        
+
 
                         //var xmlDoc = $.parseXML(response);
-                        //var flag = '0';
+                        var flag = '0';
                         $(xmlDoc).find('Table1').each(function (index) {
 
                             //var Status = $(this).find('Status').text();
@@ -234,7 +278,7 @@ function GetGatePassDetails() {
                             Pieces = $(this).find('Pieces').text();
                             GroupId = $(this).find('GroupId').text();
                             Location = $(this).find('Location').text();
-                            
+
                             WDONoDetails(AWBNo, Pieces, GroupId, Location);
 
                             //  VCTNoDetails(MAWBNO, HAWBNO, DlvblPkgs, Remarks);
@@ -251,12 +295,12 @@ function GetGatePassDetails() {
                             //}
 
                         });
-                        html += "</tbody></table>";
-                        $('#divVCTDetail').show();
-                        $('#divVCTDetail').append(html);
-                        //if (GPNo != '') {
 
-                        //}
+                        if (flag == '1') {
+                            html += "</tbody></table>";
+                            $('#divVCTDetail').show();
+                            $('#divVCTDetail').append(html);
+                        }
 
 
                     } else {
@@ -348,6 +392,16 @@ signaturePad.fromData(data, { clear: false });
 
 function RecordGoodsDelivery_PDA() {
 
+    if ($('#txtGatePassScanNo').val() == '') {
+        $("#spnMsg").text('Please enter WDO No.').css({ 'color': 'red' });
+        $('#divVCTDetail').empty();
+        signaturePad.clear();
+        return;
+        //  signitureDataURL = '';
+    } else {
+        $("#spnMsg").text('');
+    }
+
     if (signaturePad.isEmpty()) {
         $("#spnMsg").text('Signature is mandatory.').css({ 'color': 'red' });
         return;
@@ -408,7 +462,9 @@ function RecordGoodsDelivery_PDA() {
                         return;
                     } else {
                         $("#spnMsg").text($(this).find('OutMsg').text()).css('color', 'green');
-
+                        if ($(this).find('OutMsg').text() == 'Shipment released Successfully.') {
+                            $('#btnGoodsDelever').attr('disabled', 'disabled');
+                        }
                     }
 
                 });
@@ -464,6 +520,8 @@ function clearAWBDetails() {
     $('#txtGatePassScanNo').focus();
     $('#btnGoodsDelever').attr('disabled', 'disabled');
     signaturePad.clear();
+
+
 
 }
 
