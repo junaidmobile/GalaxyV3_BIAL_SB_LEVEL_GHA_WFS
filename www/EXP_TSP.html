@@ -116,11 +116,13 @@
 
         .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
             vertical-align: inherit;
+            font-weight: 700 !important;
+            font-size: small !important;
         }
 
         .tdInvoice {
             margin-bottom: 5px !important;
-            font-weight:bold;
+            font-weight: bold;
         }
 
             .tdInvoice td {
@@ -128,11 +130,12 @@
             }
 
             .tdInvoice tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
-           padding:3px;
-                }
-            .txtRight{
-                text-align:right;
+                padding: 3px;
             }
+
+        .txtRight {
+            text-align: right;
+        }
     </style>
 </head>
 <body>
@@ -162,9 +165,9 @@
                             <div class="row form-group">
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" style="display:none">
                                     <input type="radio" name="radSize" id="rdoIntlMovement" value="IntlMovement" checked="checked" />
-                                    <label for="sizeLarge">Intl. Movement</label>
+                                    <label for="sizeLarge"></label>
                                     <input type="radio" name="radSize" id="rdoForwarding" value="Forwarding" />
-                                    <label for="sizeSmall">Forwarding/Backwarding</label>
+                                    <label for="sizeSmall"></label>
                                 </div>
                             </div>
 
@@ -189,7 +192,7 @@
                                         <input id="txtAWBPrifix" onchange="CheckEmpty();" class="form-control" type="text" maxlength="15">
                                     </div>-->
                                     <div class="col-xs-6 NoPadding">
-                                        <input id="txtAWBNo" class="form-control" type="text">
+                                        <input id="txtAWBNo" onkeyup="ChkMaxLength(this, '15');" onblur="CalculateTSP();" autofocus class="form-control" type="number">
                                     </div>
                                 </div>
 
@@ -201,24 +204,24 @@
 
                                         <tr>
                                             <td>Pieces</td>
-                                            <td class="txtRight">10</td>
+                                            <td class="txtRight" id="tdPieces"></td>
                                         </tr>
 
                                         <tr>
                                             <td>Gr. Wt.</td>
-                                            <td class="txtRight">340.38</td>
+                                            <td class="txtRight" id="tdGrWt"></td>
                                         </tr>
 
                                         <tr>
                                             <td>Ch. Wt.</td>
-                                            <td class="txtRight">225.38</td>
+                                            <td class="txtRight" id="tdChWt"></td>
                                         </tr>
 
                                     </table>
 
                                 </div>
 
-                               
+
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-6 col-form-label">
@@ -226,7 +229,7 @@
                                         <!--<font color="red">*</font>-->
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <input id="txtCommodity" class="form-control" type="text">
+                                        <input id="txtCommodity" disabled class="form-control" type="text">
                                     </div>
 
                                 </div>
@@ -241,17 +244,17 @@
                                         <!--<font color="red">*</font>-->
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <input disabled  id="txtConsignee" class="form-control" type="text">
+                                        <input disabled id="txtAgentName" class="form-control" type="text">
                                     </div>
                                 </div>
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-6 col-form-label">
-                                        <label id="lblConsignee" for="">GSTIN </label>
+                                        <label id="lblGSTIN" for="">GSTIN </label>
                                         <!--<font color="red">*</font>-->
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <input id="txtConsignee" class="form-control" type="text">
+                                        <input id="txtGSTIN" onkeyup="ChkMaxLength(this, '17');" onblur="checkGSTNumber();" class="form-control" type="text">
                                     </div>
 
                                 </div>
@@ -262,8 +265,8 @@
                                         <!--<font color="red">*</font>-->
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <select class="form-control" id="ddlPaymentMode" onchange="GetULDs($('#ddlPaymentMode').find('option:selected').text());">
-                                            <option value="0">Select</option>
+                                        <select class="form-control" id="ddlPaymentMode">
+                                            <!--<option value="0">Select</option>-->
                                         </select>
                                     </div>
                                 </div>
@@ -274,52 +277,55 @@
 
                                         <tr>
                                             <td>Amount</td>
-                                            <td class="txtRight">191.00</td>
+                                            <td class="txtRight" id="tdAmount"></td>
                                         </tr>
 
                                         <tr>
                                             <td>Tex Amount</td>
-                                            <td class="txtRight">34.38</td>
+                                            <td class="txtRight" id="tdTexAmount"></td>
                                         </tr>
 
                                         <tr>
                                             <td>Total Invoice Amount </td>
-                                            <td class="txtRight">225.38</td>
+                                            <td class="txtRight" id="tdTotalInvoicAmount"></td>
                                         </tr>
 
                                         <tr>
                                             <td>Round Off</td>
-                                            <td class="txtRight">06.0</td>
+                                            <td class="txtRight" id="tdRoundOffAmount"></td>
                                         </tr>
 
                                         <tr>
                                             <td>Final Invoice Amount</td>
-                                            <td class="txtRight">226.00</td>
+                                            <td class="txtRight" id="tdFinalInvoiceAmount"></td>
                                         </tr>
                                     </table>
                                 </div>
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-4 col-form-label">
-                                        <label id="lblPaymentMode" for="">Remark</label>
+                                        <label id="lblRemark" for="">Remark</label>
                                         <!--<font color="red">*</font>-->
                                     </div>
                                     <div class="col-xs-8 NoPadding">
-                                        <textarea class="form-control"></textarea>
+                                        <textarea id="txtRemark" onkeyup="ChkMaxLength(this, '30');" class="form-control"></textarea>
                                     </div>
                                 </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
 
+                                    <label id="spnErrormsg"></label>
+                                </div>
                             </div>
 
                             <div class="row form-group" style="margin-top:10px;">
 
                                 <div class="form-group col-xs-6 col-sm-6 col-md-6">
-                                    <input type="button" id="btnUpload" class="form-control ButtonColor" value="Upload" onclick="clickOnNextButton();">
+                                    <input type="button" id="btnUpload" disabled class="form-control ButtonColor" value="Upload" onclick="clickOnNextButton();">
                                 </div>
 
 
                                 <div class="form-group col-xs-6 col-sm-6 col-md-6">
-                                    <input type="button" id="btnPayTSP" class="form-control ButtonColor" value="Pay TSP" onclick="clickOnNextButton();">
+                                    <input type="button" id="btnPayTSP" class="form-control ButtonColor" value="Pay TSP" onclick="PayTSP();">
                                 </div>
 
 
@@ -334,9 +340,7 @@
 
                             </div>
 
-                            <div class="row form-group">
-                                <span id="spnErrormsg"></span>
-                            </div>
+
 
                         </form>
                     </div>

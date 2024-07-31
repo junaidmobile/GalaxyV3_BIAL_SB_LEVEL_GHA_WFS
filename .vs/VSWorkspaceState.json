@@ -3,9 +3,8 @@
     "",
     "\\www",
     "\\www\\js",
-    "\\www\\js\\Export",
-    "\\www\\js\\Import"
+    "\\www\\js\\Export"
   ],
-  "SelectedNode": "\\www\\js\\Export\\EXP_ShipmentDeclaration.js",
+  "SelectedNode": "\\www\\EXP_ScanningLocationMain.html",
   "PreviewInSolutionExplorer": false
 }

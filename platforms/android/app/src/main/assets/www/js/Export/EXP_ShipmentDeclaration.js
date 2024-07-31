@@ -562,15 +562,16 @@ function grplength() {
 //}
 
 function Shipper_GetShipperConsigneeWithShortCode_V3() {
+    if ($("#txtShipperPrifix").val().length != '3') {
+        return;
+    }
     if ($("#txtShipperPrifix").val() == '') {
         $("#txtShipper").val('');
         // $("#txtShipper").focus();
         getShiperList();
         return;
     }
-    if ($("#txtShipperPrifix").val().length != '3') {
-        return;
-    }
+    
 
 
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
@@ -694,16 +695,18 @@ function Shipper_GetShipperConsigneeWithShortCode_V3() {
 
 
 function Consignee_GetShipperConsigneeWithShortCode_V3() {
+    if ($("#txtConsigneePrifix").val().length != '3') {
+        return;
+    }
+
+
     if ($("#txtConsigneePrifix").val() == '') {
         $("#txtConsignee").val('');
         // $("#txtShipper").focus();
         getConsigneeList();
         return;
     }
-    if ($("#txtConsigneePrifix").val().length != '3') {
-        return;
-    }
-
+    
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
 
@@ -809,16 +812,16 @@ function Consignee_GetShipperConsigneeWithShortCode_V3() {
 
 
 function AgentName_GetShipperConsigneeWithShortCode_V3() {
-
+    if ($("#txtAgentNamePrifix").val().length != '3') {
+        return;
+    }
     if ($("#txtAgentNamePrifix").val() == '') {
         $("#txtAgentName").val('');
         // $("#txtShipper").focus();
         getAgentList();
         return;
     }
-    if ($("#txtAgentNamePrifix").val().length != '3') {
-        return;
-    }
+    
 
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
@@ -1051,7 +1054,10 @@ function getAgentList() {
                     $(_xmlDocTableAgentName).find('Table1').each(function (index) {
                         if (ConsigneeID == $(this).find('Id').text()) {
                             ShortCode = $(this).find('ShortCode').text();
-                            $('#txtAgentNamePrifix').val(ShortCode);
+                            if ($('#txtAgentName').val() != '') {
+                                $('#txtAgentNamePrifix').val(ShortCode);
+
+                            }
 
                         }
                     });
@@ -1219,7 +1225,10 @@ function getShiperList() {
                     $(_xmlDocTable).find('Table1').each(function (index) {
                         if (shipperID == $(this).find('Id').text()) {
                             ShortCode = $(this).find('ShortCode').text();
-                            $('#txtShipperPrifix').val(ShortCode);
+                            if ($('#txtShipper').val() != '') {
+                                $('#txtShipperPrifix').val(ShortCode);
+
+                            }
 
                         }
                     });
@@ -1370,7 +1379,10 @@ function getConsigneeList() {
                     $(_xmlDocTableConsignee).find('Table1').each(function (index) {
                         if (ConsigneeID == $(this).find('Id').text()) {
                             ShortCode = $(this).find('ShortCode').text();
-                            $('#txtConsigneePrifix').val(ShortCode);
+                            if ($('#txtConsignee').val() != '') {
+                                $('#txtConsigneePrifix').val(ShortCode);
+
+                            }
 
                         }
                     });

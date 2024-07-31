@@ -41,7 +41,7 @@ $(function () {
     document.addEventListener('deviceready', AddLocation, false);
     //document.addEventListener('deviceready', AddingTestLocation, false);
 
-    // ImportDataList();
+    ImportDataList();
 
     //var stringos = 'ECC~N,PER~N,GEN~N,DGR~Y,HEA~N,AVI~N,BUP~Y,EAW~N,EAP~Y';
 
@@ -265,8 +265,8 @@ function GetHAWBDetailsForMAWB() {
                     html += '<tr>';
                     html += '<th style="background-color:rgb(208, 225, 244);">MAWB No.</th>';
                     html += '<th style="background-color:rgb(208, 225, 244);">HAWB No.</th>';
-                   // html += '<th style="background-color:rgb(208, 225, 244);">SB No.</th>';
-                   // html += '<th style="background-color:rgb(208, 225, 244);">Remark</th>';
+                    // html += '<th style="background-color:rgb(208, 225, 244);">SB No.</th>';
+                    // html += '<th style="background-color:rgb(208, 225, 244);">Remark</th>';
                     html += '<th style="background-color:rgb(208, 225, 244);">NOP</th>';
                     html += '</tr>';
                     html += '</thead>';
@@ -361,8 +361,8 @@ function VCTNoDetails(MAWBNo, HAWBNo, SBNo, Remarks, LocPieces) {
     html += '<tr>';
     html += '<td style="background: rgb(224, 243, 215);">' + MAWBNo + '</td>';
     html += '<td style="background: rgb(224, 243, 215);">' + HAWBNo + '</td>';
-  //  html += '<td style="background: rgb(224, 243, 215);">' + SBNo + '</td>';
-   // html += '<td style="background: rgb(224, 243, 215);">' + Remarks + '</td>';
+    //  html += '<td style="background: rgb(224, 243, 215);">' + SBNo + '</td>';
+    // html += '<td style="background: rgb(224, 243, 215);">' + Remarks + '</td>';
     html += '<td style="background: rgb(224, 243, 215);">' + LocPieces + '</td>';
     html += '</tr>';
 }
@@ -480,8 +480,8 @@ function ImportDataList() {
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: 'POST',
-            url: CMSserviceURL + "ImportDataList",
-            data: JSON.stringify({ 'pi_strQueryType': 'E' }),
+            url: GHAImportFlightserviceURL + "ImportDataList",
+            data: JSON.stringify({ 'pi_strQueryType': 'I' }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function doStuff() {
@@ -704,7 +704,7 @@ function GetMovementDetails() {
                 var xmlDoc = $.parseXML(response);
                 console.log(xmlDoc)
                 $(xmlDoc).find('Table').each(function (index) {
-                    
+
                     var Status = $(this).find('Status').text();
                     var OutMsg = $(this).find('OutMsg').text();
                     var ColorCode = $(this).find('ColorCode').text();
@@ -732,7 +732,7 @@ function GetMovementDetails() {
                         $("#TextBoxDiv").empty();
                     } else {
                         $('#spnErrormsg').text(OutMsg).css('color', 'green');
-                       // $('#spnErrormsg').text('');
+                        // $('#spnErrormsg').text('');
                         $('#txtLocation').val('');
                         $('#txtGroupId').val('');
                         $('#txtLocation').val('');
