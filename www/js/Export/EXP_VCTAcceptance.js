@@ -262,64 +262,66 @@ $(function () {
 
     $('#txtGroupId').focus();
 
-    //$('#txPieces').blur(function (event) {
-
-    //    if ($("#txPieces").val() == '') {
-    //        return;
-    //    }
-
-    //    if (parseInt($("#txPieces").val()) > parseInt(remPCS)) {
-
-    //        $("#txPieces").val(remPCS);
-    //        //errmsg = "Entered pieces should not be greater than remaining pieces.</br>";
-    //        //$.alert(errmsg);
-    //        $("#spnMsg").text("Entered pieces should not be greater than remaining pieces.").css({ 'color': 'red' });
-    //        $("#txPieces").focus();
-    //        return;
-
-    //    } else {
-    //        $("#spnMsg").text('');
-    //    }
-
-    //    if (parseInt($("#txPieces").val()) <= 0) {
-
-    //        $("#txPieces").val(remPCS);
-    //        $("#spnMsg").text('Entered pieces must be greater than 0.').css({ 'color': 'red' });
-    //        //$.alert(errmsg);
-    //        $("#txPieces").focus();
-    //        return;
-
-    //    }
 
 
+    $('#txPieces').blur(function (event) {
 
-    //    if (remPCS == '0') {
+        if ($("#txPieces").val() == '') {
+            return;
+        }
 
-    //        //errmsg = "Entered Pieces are greater than remaining packages; Action canceled.</br>";
-    //        //$.alert(errmsg);
-    //        return;
+        if (parseInt($("#txPieces").val()) > parseInt(remPCS)) {
 
-    //    }
+            $("#txPieces").val(remPCS);
+            //errmsg = "Entered pieces should not be greater than remaining pieces.</br>";
+            //$.alert(errmsg);
+            $("#spnMsg").text("Entered pieces should not be greater than remaining pieces.").css({ 'color': 'red' });
+            $("#txPieces").focus();
+            return;
 
-    //    $('#Pieces1').val($("#txPieces").val())
+        } else {
+            $("#spnMsg").text('');
+        }
 
-    //    GetRemainingPackgs();
+        if (parseInt($("#txPieces").val()) <= 0) {
 
-    //    //if (IsBaggage != 'Y') {
-    //    //    if (parseInt($("#txPieces").val()) > parseInt(RemainingPkg)) {
-    //    //        $("body").mLoading('hide');
-    //    //        errmsg = "Entered Package(s) " + $("#txPieces").val() + " must be less than or equal to remaining Package(s) " + RemainingPkg + "</br>";
-    //    //        $.alert(errmsg);
-    //    //        $(".alert_btn_ok").click(function () {
-    //    //            $("#txPieces").focus();
-    //    //        });
-    //    //    }
-    //    //    else
-    //    //        GetRemainingPackgs();
-    //    //}
-    //    //else
-    //    //    GetRemainingPackgs();
-    //});
+            $("#txPieces").val(remPCS);
+            $("#spnMsg").text('Entered pieces must be greater than 0.').css({ 'color': 'red' });
+            //$.alert(errmsg);
+            $("#txPieces").focus();
+            return;
+
+        }
+
+
+
+        if (remPCS == '0') {
+
+            //errmsg = "Entered Pieces are greater than remaining packages; Action canceled.</br>";
+            //$.alert(errmsg);
+            return;
+
+        }
+
+        $('#Pieces1').val($("#txPieces").val())
+
+        GetRemainingPackgs();
+
+        //if (IsBaggage != 'Y') {
+        //    if (parseInt($("#txPieces").val()) > parseInt(RemainingPkg)) {
+        //        $("body").mLoading('hide');
+        //        errmsg = "Entered Package(s) " + $("#txPieces").val() + " must be less than or equal to remaining Package(s) " + RemainingPkg + "</br>";
+        //        $.alert(errmsg);
+        //        $(".alert_btn_ok").click(function () {
+        //            $("#txPieces").focus();
+        //        });
+        //    }
+        //    else
+        //        GetRemainingPackgs();
+        //}
+        //else
+        //    GetRemainingPackgs();
+    });
 
 
     $("#ddlEquTrolley").change(function () {
@@ -541,45 +543,45 @@ function dynamicTrCreate() {
     //     //alert("Only 10 textboxes allow");
     //     return false;
     // }
-    let i = 0;
-    while (i < 10) {
-        if (i < 5) {
-            // console.log('The Number is ' + i + '<br>');
-            var newTextBoxDiv = $(document.createElement('tr'))
-                .attr("id", 'TextBoxDiv' + counter);
+    //let i = 0;
+    //while (i < 10) {
+    //    if (i < 5) {
+    // console.log('The Number is ' + i + '<br>');
+    var newTextBoxDiv = $(document.createElement('tr'))
+        .attr("id", 'TextBoxDiv' + counter);
 
-            newTextBoxDiv.after().html('<td><input onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right"  name="textpackges' + parseInt(counter + 1) + '" id="Pieces' + parseInt(counter + 1) + '" onkeypress="MoveToLen(this);" type="number" /></td>' +
-                '<td><input onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Length' + parseInt(counter + 1) + '" onkeypress="MoveToWid(this);"  type="number" /></td>' +
-                '<td><input onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Width' + parseInt(counter + 1) + '" onkeypress="MoveToHei(this);"  type="number" /></td>' +
-                '<td><input onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Height' + parseInt(counter + 1) + '"  type="number" /></td>' +
-                //'<td></td>' +
-                '<td><button disabled onclick="removeRow(' + counter + ');" type="button" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>');
+    newTextBoxDiv.after().html('<td><input onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right"  name="textpackges' + parseInt(counter + 1) + '" id="Pieces' + parseInt(counter + 1) + '" onkeypress="MoveToLen(this);" type="number" /></td>' +
+        '<td><input onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Length' + parseInt(counter + 1) + '" onkeypress="MoveToWid(this);"  type="number" /></td>' +
+        '<td><input onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Width' + parseInt(counter + 1) + '" onkeypress="MoveToHei(this);"  type="number" /></td>' +
+        '<td><input onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Height' + parseInt(counter + 1) + '"  type="number" /></td>');
+    //'<td></td>' +
+    // '<td><button disabled onclick="removeRow(' + counter + ');" type="button" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>');
 
 
-            var one = parseInt($("#Pieces1").val());
-            var two = parseInt($("#Pieces2").val());
-            var sumOfTwoTextBox = one + two;
+    var one = parseInt($("#Pieces1").val());
+    var two = parseInt($("#Pieces2").val());
+    var sumOfTwoTextBox = one + two;
 
-            // if (parseInt($("#Pieces1").val()) == RemainingPkg) {
-            //     errmsg = "Sum of packages are equal to entered packages; Action canceled.</br>";
-            //     $.alert(errmsg);
+    // if (parseInt($("#Pieces1").val()) == RemainingPkg) {
+    //     errmsg = "Sum of packages are equal to entered packages; Action canceled.</br>";
+    //     $.alert(errmsg);
 
-            // } else if (sumOfTwoTextBox == RemainingPkg) {
-            //     $("#textpackges1").val(nextValue);
-            //     errmsg = "Sum of packages are equal to entered packages; Action canceled.</br>";
-            //     $.alert(errmsg);
+    // } else if (sumOfTwoTextBox == RemainingPkg) {
+    //     $("#textpackges1").val(nextValue);
+    //     errmsg = "Sum of packages are equal to entered packages; Action canceled.</br>";
+    //     $.alert(errmsg);
 
-            // } else {
-            newTextBoxDiv.appendTo("#TextBoxesGroup");
-            $("#textpackges1").val(nextValue);
-            counter++;
+    // } else {
+    newTextBoxDiv.appendTo("#TextBoxesGroup");
+    $("#textpackges1").val(nextValue);
+    counter++;
 
-            // }
-            GetRemainingPackgs();
-            $("#Pieces" + counter).focus();
-        }
-        i++;
-    }
+    // }
+    GetRemainingPackgs();
+    $("#Pieces" + counter).focus();
+    //    }
+    //    i++;
+    //}
 
 }
 
@@ -596,7 +598,7 @@ function dynamicTrCreateaddRow(piecesValue) {
         '<td><input onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Length' + parseInt(counter + 1) + '" onkeypress="MoveToWid(this);"  type="number" /></td>' +
         '<td><input onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Width' + parseInt(counter + 1) + '" onkeypress="MoveToHei(this);"  type="number" /></td>' +
         '<td><input onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Height' + parseInt(counter + 1) + '"  type="number" /></td>' +
-        '<td><select id="ddlUnit' + parseInt(counter + 1) + '"><option value="cm">cm</option><option value="inch">inch</option></select></td>' +
+        //'<td><select id="ddlUnit' + parseInt(counter + 1) + '"><option value="cm">cm</option><option value="inch">inch</option></select></td>' +
         '<td><button onclick="removeRow(' + counter + ');" type="button" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>');
 
 
@@ -665,6 +667,21 @@ function GetRemainingPackgs() {
                     $(this).val(rpkg);
 
                 }
+            }
+
+        });
+
+    });
+
+    $('#TextBoxesGroup tr').each(function () {
+
+        $(this).find("input").each(function () {
+
+            ItemCode = $(this).val();
+            var id = $(this).attr('id');
+
+            if (id.toString().indexOf('Pieces') != -1) {
+                $(this).val($('#txPieces').val());
             }
 
         });
@@ -973,6 +990,71 @@ function returnToBack() {
 }
 
 
+function onchangeddlEquTrolley(valOfTrolley) {
+    var arr = valOfTrolley.split('~')
+    var is1 = arr[0];
+    var isFixed = arr[1];
+    var isLength = arr[2];
+    var isWidth = arr[3];
+    var isHeight = arr[4];
+    var isUnit = arr[5];
+    var L;
+    var W;
+    var H;
+    if (isFixed == 1) {
+        $('#TextBoxesGroup tr').each(function () {
+            $(this).find("input").each(function () {
+                ItemCode = $(this).val();
+                var id = $(this).attr('id');
+                if (id.toString().indexOf('Length') != -1) {
+                    L = isLength;
+                    $(this).val(L).attr('disabled', 'disabled');
+                }
+                if (id.toString().indexOf('Width') != -1) {
+                    W = isWidth;
+                    $(this).val(W).attr('disabled', 'disabled');
+
+                }
+                if (id.toString().indexOf('Heigh') != -1) {
+                    if (isHeight > 0) {
+                        H = isHeight;
+                        $(this).val(H).attr('disabled', 'disabled');
+                    } else {
+                        $(this).val('').removeAttr('disabled');
+                    }
+
+                }
+
+            });
+        });
+        //30,75~1~10~70~0~c
+        $('#ddlUnit1').val(isUnit);
+        $('#addButton').attr('disabled', 'disabled');
+
+    } else {
+        $('#TextBoxesGroup tr').each(function () {
+            $(this).find("input").each(function () {
+                ItemCode = $(this).val();
+                var id = $(this).attr('id');
+                if (id.toString().indexOf('Length') != -1) {
+                    $(this).val('').removeAttr('disabled');
+                }
+                if (id.toString().indexOf('Width') != -1) {
+                    $(this).val('').removeAttr('disabled');
+                }
+                if (id.toString().indexOf('Heigh') != -1) {
+                    $(this).val('').removeAttr('disabled');
+
+                }
+
+            });
+        });
+        $('#addButton').removeAttr('disabled');
+    }
+}
+
+
+
 
 function GetAWBDetailsForULDOnChange(_AWBNo) {
 
@@ -1199,15 +1281,15 @@ function SaveVCTCargoDetails_v3() {
         $("#spnMsg").text('');
     }
 
-    if ($('#txtGroupId').val() == "") {
-        //errmsg = "Please enter valid flight No.";
-        //$.alert(errmsg);
-        $("#spnMsg").text('Please enter group Id.').css({ 'color': 'red' });
-        $('#txtGroupId').focus();
-        return;
-    } else {
-        $("#spnMsg").text('');
-    }
+    //if ($('#txtGroupId').val() == "") {
+    //    //errmsg = "Please enter valid flight No.";
+    //    //$.alert(errmsg);
+    //    $("#spnMsg").text('Please enter group Id.').css({ 'color': 'red' });
+    //    $('#txtGroupId').focus();
+    //    return;
+    //} else {
+    //    $("#spnMsg").text('');
+    //}
 
     if (parseInt($("#txPieces").val()) <= 0) {
 

@@ -223,6 +223,13 @@ function LoadNavBar() {
         $('#navhdrName').html("TSP");
     }
 
+    else if (window.location.pathname.split("/").pop() == "EXP_AirsideRelease_Search.html") {
+        $('#navhdrName').html("GP Release");
+    }
+    else if (window.location.pathname.split("/").pop() == "EXP_GatePassDetails.html") {
+        $('#navhdrName').html("Airside Gate Pass");
+    }
+    
 }
 function NumberOnly(e) {
     e.target.value = e.target.value.replace(/[^0-9\.]/g, '');

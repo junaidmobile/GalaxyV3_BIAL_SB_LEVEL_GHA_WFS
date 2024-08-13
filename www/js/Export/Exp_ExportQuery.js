@@ -146,7 +146,7 @@ function GetShipmentStatus() {
 
                         eventName = $(this).find('EventName').text();
                         dateTime = $(this).find('EventDateTime').text();
-                        userName = $(this).find('Username').text();
+                        userName = $(this).find('UserName').text();
 
                         AddTableLocation(eventName, dateTime, userName);
 

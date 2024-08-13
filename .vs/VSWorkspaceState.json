@@ -3,8 +3,9 @@
     "",
     "\\www",
     "\\www\\js",
-    "\\www\\js\\Export"
+    "\\www\\js\\Export",
+    "\\www\\js\\Import"
   ],
-  "SelectedNode": "\\www\\EXP_ScanningLocationMain.html",
+  "SelectedNode": "\\www\\js\\Export\\EXP_AirsideRelease_Search.js",
   "PreviewInSolutionExplorer": false
 }

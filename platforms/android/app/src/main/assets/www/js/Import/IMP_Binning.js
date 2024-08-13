@@ -41,7 +41,7 @@ $(function () {
     document.addEventListener('deviceready', AddLocation, false);
     //document.addEventListener('deviceready', AddingTestLocation, false);
 
-    // ImportDataList();
+    ImportDataList();
 
     //var stringos = 'ECC~N,PER~N,GEN~N,DGR~Y,HEA~N,AVI~N,BUP~Y,EAW~N,EAP~Y';
 
@@ -481,7 +481,7 @@ function ImportDataList() {
         $.ajax({
             type: 'POST',
             url: GHAImportFlightserviceURL + "ImportDataList",
-            data: JSON.stringify({ 'pi_strQueryType': 'E' }),
+            data: JSON.stringify({ 'pi_strQueryType': 'I' }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function doStuff() {

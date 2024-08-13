@@ -212,6 +212,24 @@ function LoadNavBar() {
         $('#navhdrName').html("Security Screening");
     }
 
+    else if (window.location.pathname.split("/").pop() == "EXP_BackToTown.html") {
+        $('#navhdrName').html("Back To Town");
+    }
+
+    else if (window.location.pathname.split("/").pop() == "EXP_OffloadULDShipment.html") {
+        $('#navhdrName').html("Remove/Offload Shipment");
+    }
+    else if (window.location.pathname.split("/").pop() == "IMP_TSP.html") {
+        $('#navhdrName').html("TSP");
+    }
+
+    else if (window.location.pathname.split("/").pop() == "EXP_AirsideRelease_Search.html") {
+        $('#navhdrName').html("GP Release");
+    }
+    else if (window.location.pathname.split("/").pop() == "EXP_GatePassDetails.html") {
+        $('#navhdrName').html("Airside Gate Pass");
+    }
+    
 }
 function NumberOnly(e) {
     e.target.value = e.target.value.replace(/[^0-9\.]/g, '');

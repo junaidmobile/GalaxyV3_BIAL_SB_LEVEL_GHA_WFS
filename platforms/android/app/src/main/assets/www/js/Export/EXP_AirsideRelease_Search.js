@@ -33,48 +33,63 @@ var CMSGHAFlag;
 var _SBId;
 var autoLocationArray;
 $(function () {
-
+    ExportAirside_Search_V3();
     if (window.localStorage.getItem("RoleIMPBinning") == '0') {
         window.location.href = 'IMP_Dashboard.html';
     }
 
-    
+
     // ImportDataList();
 
     //var stringos = 'ECC~N,PER~N,GEN~N,DGR~Y,HEA~N,AVI~N,BUP~Y,EAW~N,EAP~Y';
 
     //SHCSpanHtml(stringos);
 
-    $("input").keyup(function () {
-        var string = $(this).val();
-        // var string = $('#txtOrigin').val();
-        if (string.match(/[`!₹£•√Π÷×§∆€¥¢©®™✓π@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
-            /*$('#txtOrigin').val('');*/
-            $(this).val('');
-            return true;    // Contains at least one special character or space
-        } else {
-            return false;
-        }
+    //$("input").keyup(function () {
+    //    var string = $(this).val();
+    //    // var string = $('#txtOrigin').val();
+    //    if (string.match(/[`!₹£•√Π÷×§∆€¥¢©®™✓π@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
+    //        /*$('#txtOrigin').val('');*/
+    //        $(this).val('');
+    //        return true;    // Contains at least one special character or space
+    //    } else {
+    //        return false;
+    //    }
 
-    });
+    //});
 
-    $("textarea").keyup(function () {
-        var string = $(this).val();
-        // var string = $('#txtOrigin').val();
-        if (string.match(/[`!₹£•√Π÷×§∆€¥¢©®™✓π@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
-            /*$('#txtOrigin').val('');*/
-            $(this).val('');
-            return true;    // Contains at least one special character or space
-        } else {
-            return false;
-        }
+    //$("textarea").keyup(function () {
+    //    var string = $(this).val();
+    //    // var string = $('#txtOrigin').val();
+    //    if (string.match(/[`!₹£•√Π÷×§∆€¥¢©®™✓π@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
+    //        /*$('#txtOrigin').val('');*/
+    //        $(this).val('');
+    //        return true;    // Contains at least one special character or space
+    //    } else {
+    //        return false;
+    //    }
 
-    });
+    //});
 
     $('#btnPayTSP').attr('disabled', 'disabled');
 
+    //JsBarcode("#barcode", "GP123456789", {
+
+    //    width: 2,
+    //    height: 40,
+    //    displayValue: false
+    //});
+
 
 });
+
+function goToGPDetailsPage(flSQ, uldSQ,uldtyp) {
+
+    localStorage.setItem('flSeqID', flSQ + '~' + uldSQ);
+    localStorage.setItem('_uldtyp', uldtyp);
+    
+    window.location.href = 'EXP_GatePassDetails.html';
+}
 
 
 function SHCSpanHtml(newSHC) {
@@ -110,25 +125,23 @@ function SHCSpanHtml(newSHC) {
 
 
 
-function CalculateTSP() {
-    clearALLBeforeSearch();
 
-    if ($('#txtAWBNo').val() == '') {
-        return;
-    }
+
+
+function ExportAirside_Search_V3() {
+    //  clearALLBeforeSearch();
 
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
 
-    var MAWBNo = $('#txtAWBNo').val();
+    var SacnULD = $('#txtSacnULD').val();
 
-    var InputXML = '<Root><AWBNumber>' + MAWBNo + '</AWBNumber><AirportCity>' + AirportCity + '</AirportCity><Culture>' + PreferredLanguage + '</Culture><UserId>' + UserID + '</UserId><PaymentMode></PaymentMode><GSTIN></GSTIN><Remark></Remark></Root>';
-
+    var InputXML = '<Root><BarCode></BarCode><AirportCity>' + AirportCity + '</AirportCity><UserId>' + UserID + '</UserId></Root>';
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: 'POST',
-            url: GHAExportFlightserviceURL + "CalculateTSP",
+            url: GHAExportFlightserviceURL + "ExportAirside_Search_V3",
             data: JSON.stringify({ 'InputXML': InputXML }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -142,116 +155,75 @@ function CalculateTSP() {
                 $("body").mLoading('hide');
                 response = response.d;
                 var xmlDoc = $.parseXML(response);
-                $('#ddlPaymentMode').empty();
+                str = response;
                 console.log(xmlDoc);
-                var Status
-                var StrMessage
 
+                var flag = '0';
                 $(xmlDoc).find('Table').each(function () {
-                    Status = $(this).find('Status').text();
-                    StrMessage = $(this).find('StrMessage').text();
 
+                    var Status = $(this).find('Status').text();
+                    var StrMessage = $(this).find('StrMessage').text();
+
+                    if (Status == 'E') {
+                        // $.alert(StrMessage).css('color', 'red');
+                        $("#errorMsg").text(StrMessage).css({ 'color': 'red' });
+                        // clearALL();
+                        return true;
+                    }
                 });
 
-                $(xmlDoc).find('Table2').each(function () {
-                    Status = $(this).find('Status').text();
-                    StrMessage = $(this).find('StrMessage').text();
+                if (str != null && str != "") {
 
-                });
-                $(xmlDoc).find('Table3').each(function () {
-                    Status = $(this).find('Status').text();
-                    StrMessage = $(this).find('StrMessage').text();
+                    $('#divVCTDetail').empty();
+                    html = '';
+                    html += '<table id="tblNewsForGatePass" class="table table-striped table-bordered">';
+                    html += '<thead>';
+                    html += '<tr>';
+                    html += '<th style="background-color:rgb(208, 225, 244);">Gate Pass No.</th>';
+                    html += '<th style="background-color:rgb(208, 225, 244);">Status</th>';
+                    html += '<th style="background-color:rgb(208, 225, 244);">Action</th>';
+                    html += '</tr >';
+                    html += '</thead >';
+                    html += '<tbody>';
 
-                });
-                $(xmlDoc).find('Table4').each(function () {
-                    Status = $(this).find('Status').text();
-                    StrMessage = $(this).find('StrMessage').text();
+                    // var xmlDoc = $.parseXML(str);
 
-                });
-                $(xmlDoc).find('Table5').each(function () {
-                    Status = $(this).find('Status').text();
-                    StrMessage = $(this).find('StrMessage').text();
+                    $(xmlDoc).find('Table1').each(function (index) {
 
-                });
-                $(xmlDoc).find('Table6').each(function () {
-                    Status = $(this).find('Status').text();
-                    StrMessage = $(this).find('StrMessage').text();
+                        ULDNo = $(this).find('ULDNo').text();
+                        RTUnit = $(this).find('RTUnit').text();
+                        Scale_Weight = $(this).find('Scale_Weight').text();
+                        Status = $(this).find('Status').text();
+                        IsReleased = $(this).find('IsReleased').text();
+                        hdnValue = $(this).find('hdnValue').text();
+                        //location = $(this).find('location').text();
+                        FltSeqNo = $(this).find('FltSeqNo').text();
+                        USeqNo = $(this).find('USeqNo').text();
+                        GatepassNo = $(this).find('GatepassNo').text();
+                        ULDType = $(this).find('ULDType').text();
+                        
+                        gatePassNoDetails(GatepassNo, Status, IsReleased, FltSeqNo, USeqNo, ULDType);
+                    });
+                    html += "</tbody ></table>";
+                    $('#divVCTDetail').show();
+                    $('#divVCTDetail').append(html);
+                    //if (_GroupId != '') {
+                    //    $('#divVCTDetail').show();
+                    //    $('#divVCTDetail').append(html);
+                    //}
 
-                });
+                    html += "</tbody></table>";
 
-                if (Status == 'E') {
-                    $("#spnErrormsg").text(StrMessage).css({ 'color': 'red' });
-                    $('#btnPayTSP').attr('disabled', 'disabled');
-
-                    return;
-                } else {
-                    $("#spnErrormsg").text('');
-                    $('#btnPayTSP').removeAttr('disabled');
-
+                    if (locPieces != '0')
+                        $('#divAddTestLocation').append(html);
+                }
+                else {
+                    errmsg = 'Shipment does not exists';
+                    $.alert(errmsg);
                 }
 
-                $(xmlDoc).find('Table1').each(function () {
 
-                    var Totalchargeamount = $(this).find('TotalCharge').text();
-                    var TotalTax = $(this).find('TotalTax').text();
-                    var TotalAmount = $(this).find('TotalAmount').text();
-                    var TotalAdjustableAmt = $(this).find('TotalAdjustableAmt').text();
-                    var TotalPayableAmount = $(this).find('TotalPayableAmount').text();
 
-                    $("#tdAmount").text(Totalchargeamount);
-                    $("#tdTexAmount").text(TotalTax);
-                    $("#tdTotalInvoicAmount").text(TotalAmount);
-                    $("#tdRoundOffAmount").text(TotalAdjustableAmt);
-                    $("#tdFinalInvoiceAmount").text(TotalPayableAmount);
-
-                });
-
-                $(xmlDoc).find('Table3').each(function () {
-
-                    var PaymentId = $(this).find('PaymentId').text();
-                    var PaymentMode = $(this).find('PaymentMode').text();
-
-                    var newOption = $('<option></option>');
-                    newOption.val(PaymentId).text(PaymentMode);
-                    newOption.appendTo('#ddlPaymentMode');
-                });
-
-                $(xmlDoc).find('Table4').each(function () {
-                    Pieces = $(this).find('Pieces').text();
-                    ChargebleWeight = $(this).find('ChargebleWeight').text();
-                    GrossWeight = $(this).find('GrossWeight').text();
-                    Commodity = $(this).find('Commodity').text();
-                    SHC = $(this).find('SHC').text();
-                    AgentId = $(this).find('AgentId').text();
-                    Agent = $(this).find('Agent').text();
-                    AgentShortCode = $(this).find('AgentShortCode').text();
-                    DocType = $(this).find('DocType').text();
-                    RefType = $(this).find('RefType').text();
-                    DocumentId = $(this).find('DocumentId').text();
-                    DueDate = $(this).find('DueDate').text();
-                    ShipperId = $(this).find('ShipperId').text();
-                    PaymentMode = $(this).find('PaymentMode').text();
-                    TaxId = $(this).find('TaxId').text();
-                    AgentShortCode = $(this).find('AgentShortCode').text();
-                    
-
-                    if (AgentShortCode == 'WAK') {
-                        $("#txtGSTIN").attr('disabled', 'disabled');
-                    } else {
-                        $("#txtGSTIN").removeAttr('disabled');
-                        $("#txtGSTIN").val(TaxId);
-                    }
-
-                    $("#tdPieces").text(Pieces);
-                    $("#tdGrWt").text(GrossWeight);
-                    $("#tdChWt").text(ChargebleWeight);
-                    $("#txtAgentName").val(Agent);
-                    $("#txtCommodity").val(Commodity);
-                    $("#ddlPaymentMode").val(PaymentMode);
-                  
-                     
-                    SHCSpanHtml(SHC);
-                });
             },
             error: function (msg) {
                 //debugger;
@@ -272,6 +244,18 @@ function CalculateTSP() {
     else {
         $("body").mLoading('hide');
     }
+}
+
+
+function gatePassNoDetails(GatepassNo, Status, IsReleased, FltSeqNo, USeqNo, ULDType) {
+
+
+    html += '<tr>';
+    html += '<td>' + GatepassNo + '</td>';
+    html += '<td>' + Status + '</td>';
+
+    html += '<td style="text-align: center;"><a style="color: #065da1;" class=" glyphicon glyphicon-eye-open" onclick="goToGPDetailsPage(\'' + FltSeqNo + '\',\'' + USeqNo + '\',\'' + ULDType + '\');"></a></td>';
+    html += '</tr>';
 }
 
 function PayTSP() {
@@ -420,5 +404,75 @@ function clearALLafterSave() {
 }
 
 
+function ExportAirside_Search_V3_Onblur() {
+    //  clearALLBeforeSearch();
 
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+    if ($('#txtSacnULD').val() == '') {
+        return;
+    }
 
+    // var MAWBNo = $('#txtAWBNo').val();
+
+    var InputXML = '<Root><BarCode>' + $('#txtSacnULD').val() + '</BarCode><AirportCity>' + AirportCity + '</AirportCity><UserId>' + UserID + '</UserId></Root>';
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "ExportAirside_Search_V3",
+            data: JSON.stringify({ 'InputXML': InputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                str = response;
+                console.log(xmlDoc);
+
+                var flag = '0';
+                $(xmlDoc).find('Table').each(function () {
+
+                    var Status = $(this).find('Status').text();
+                    var StrMessage = $(this).find('StrMessage').text();
+
+                    if (Status == 'E') {
+                        //  $.alert(StrMessage).css('color', 'red');
+                        $("#errorMsg").text(StrMessage).css({ 'color': 'red' });
+                        // clearALL();
+                        return true;
+                    } else {
+
+                        localStorage.setItem('flSeqID', $('#txtSacnULD').val());
+                        window.location.href = 'EXP_GatePassDetails.html';
+                    }
+                });
+
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}

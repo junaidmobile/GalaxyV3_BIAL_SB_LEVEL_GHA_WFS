@@ -147,6 +147,12 @@ function CalculateTSP() {
                 var Status
                 var StrMessage
 
+                $(xmlDoc).find('Table').each(function () {
+                    Status = $(this).find('Status').text();
+                    StrMessage = $(this).find('StrMessage').text();
+
+                });
+
                 $(xmlDoc).find('Table2').each(function () {
                     Status = $(this).find('Status').text();
                     StrMessage = $(this).find('StrMessage').text();
@@ -225,6 +231,16 @@ function CalculateTSP() {
                     DueDate = $(this).find('DueDate').text();
                     ShipperId = $(this).find('ShipperId').text();
                     PaymentMode = $(this).find('PaymentMode').text();
+                    TaxId = $(this).find('TaxId').text();
+                    AgentShortCode = $(this).find('AgentShortCode').text();
+                    
+
+                    if (AgentShortCode == 'WAK') {
+                        $("#txtGSTIN").attr('disabled', 'disabled');
+                    } else {
+                        $("#txtGSTIN").removeAttr('disabled');
+                        $("#txtGSTIN").val(TaxId);
+                    }
 
                     $("#tdPieces").text(Pieces);
                     $("#tdGrWt").text(GrossWeight);
@@ -232,7 +248,8 @@ function CalculateTSP() {
                     $("#txtAgentName").val(Agent);
                     $("#txtCommodity").val(Commodity);
                     $("#ddlPaymentMode").val(PaymentMode);
-
+                  
+                     
                     SHCSpanHtml(SHC);
                 });
             },

@@ -112,12 +112,20 @@ function RedirectPage(pagename) {
     }
     else if (pagename == 'IMP_RecordDamage.html')
 
-        localStorage.removeItem('AWB_Number');
+        if (pagename == 'IMP_TSP.html' && window.localStorage.getItem("RoleRecordDamage") == '0') {
+            $.alert('You are not authorized to view this page');
+            return;
+        }
+        else if (pagename == 'IMP_TSP.html')
+
+
+
+            localStorage.removeItem('AWB_Number');
     localStorage.removeItem('HAWB_Number');
     localStorage.removeItem('Flight_Seq_No');
     localStorage.removeItem('allIDs');
     localStorage.removeItem('remarkOfTextarea');
-    
+
     window.location.href = pagename;
 }
 

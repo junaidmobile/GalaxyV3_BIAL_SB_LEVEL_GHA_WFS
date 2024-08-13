@@ -139,6 +139,12 @@ function RedirectPage(pagename) {
     else if (pagename == 'EXP_OffloadULDShipment.html')
         window.location.href = pagename;
 
+    if (pagename == 'EXP_AirsideRelease_Search.html' && window.localStorage.getItem("RoleIMPDocUpload") == '0') {
+        $.alert('You are not authorized to view this page');
+        return;
+    }
+    else if (pagename == 'EXP_AirsideRelease_Search.html')
+        window.location.href = pagename;
 
    
     

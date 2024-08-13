@@ -33,7 +33,7 @@ var CMSGHAFlag;
 var _SBId;
 var autoLocationArray;
 $(function () {
-
+  
     if (window.localStorage.getItem("RoleIMPBinning") == '0') {
         window.location.href = 'IMP_Dashboard.html';
     }
@@ -251,16 +251,6 @@ function GetHAWBDetailsForMAWB() {
                     $('#tblNewsForGatePass').empty();
                     html = '';
 
-                    //html += '<table id="tblNewsForGatePass" border="1" style="width:100%;table-layout:fixed;word-break:break-word;border-color: white;margin-top: 2%;">';
-                    //html += '<thead>';
-                    //html += '<tr>';
-                    //html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center">Group Id</th>';
-                    //html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center">Peices</th>';
-                    //html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center">Cancel</th>';
-                    //html += '</tr>';
-                    //html += '</thead>';
-                    //html += '<tbody>';
-
                     html += '<table id="tblNewsForGatePass" class="table table-striped table-bordered">';
                     html += '<thead>';
                     html += '<tr>';
@@ -326,8 +316,8 @@ function GetHAWBDetailsForMAWB() {
 
 
                 } else {
-                    errmsg = 'VCT No. does not exists.';
-                    $.alert(errmsg);
+                    //errmsg = 'VCT No. does not exists.';
+                    //$.alert(errmsg);
                 }
             },
             error: function (msg) {
@@ -1173,5 +1163,146 @@ $(function () {
     //});
     //$("#txtBCDate").datepicker().datepicker("setDate", new Date());
 });
+
+
+function ExportAirside_Search_V3() {
+    //  clearALLBeforeSearch();
+
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var MAWBNo = $('#txtAWBNo').val();
+
+    var InputXML = '<Root><BarCode></BarCode><AirportCity>' + AirportCity + '</AirportCity><UserId>' + UserID + '</UserId></Root>';
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "ExportAirside_Search_V3",
+            data: JSON.stringify({ 'InputXML': InputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+
+                console.log(xmlDoc);
+
+                var flag = '0';
+                $(xmlDoc).find('Table').each(function () {
+
+                    var Status = $(this).find('Status').text();
+                    var StrMessage = $(this).find('StrMessage').text();
+
+                    if (Status == 'E') {
+                        $.alert(StrMessage).css('color', 'red');
+                        // clearALL();
+                        return true;
+                    }
+                });
+
+                if (response != null && response != "") {
+
+                    $('#divVCTDetail').empty();
+                    html = '';
+                    //html += '<table id="tblNewsForGatePass" class="table table-striped table-bordered">';
+                    //html += '<thead>';
+                    //html += '<tr>';
+                    //html += '<th style="background-color:rgb(208, 225, 244);">MAWB No.</th>';
+                    //html += '<th style="background-color:rgb(208, 225, 244);">HAWB No.</th>';
+                    //html += '<th style="background-color:rgb(208, 225, 244);">SB No.</th>';
+                    //html += '<th style="background-color:rgb(208, 225, 244);">Remark</th>';
+                    //html += '<th style="background-color:rgb(208, 225, 244);">NOP</th>';
+                    //html += '</tr>';
+                    //html += '</thead>';
+                    //html += '<tbody>';
+
+                    html += '<table class="table table-striped table-bordered" id="">';
+                    html += '<thead>';
+                    html += '<tr style="background-color: rgb(208, 225, 244);">';
+                    html += '<th>Gate Pass No.</th>';
+                    html += '<th>Status</th>';
+                    html += '<th>Action</th>';
+                    html += '</tr>';
+                    html += '</thead>';
+                    html += '<tbody>';
+
+
+                    $(xmlDoc).find('Table1').each(function (index) {
+                        //$('#lblMessage').text('');
+
+
+                        //flag = '1';
+
+                        //_MAWBNo = $(this).find('AWBNO').text();
+                        //_HAWBNo = $(this).find('HAWBNO').text();
+                        //_LocId = $(this).find('LocationId').text();
+                        //_HAWBId = $(this).find('HAWBId').text();
+                        //_LocCode = $(this).find('LocCode').text();
+                        //_LocPieces = $(this).find('NOP').text();
+                        //_SBId = $(this).find('SBId').text();
+                        //_GroupId = $(this).find('GroupId').text();
+                        //_Remarks = $(this).find('Remarks').text();
+                        //_IsOutOfWarehouse = $(this).find('IsOutOfWarehouse').text();
+                        //CMSGHAFlag = $(this).find('CMSGHAFlag').text();
+                        //_FlightSeqNo = $(this).find('FlightSeqNo').text();
+                        //SBNO = $(this).find('SBNO').text();
+
+                        //NOG = $(this).find('NOG').text();
+
+                        ULDNo = $(this).find('ULDNo').text();
+                        RTUnit = $(this).find('RTUnit').text();
+                        Scale_Weight = $(this).find('Scale_Weight').text();
+                        Status = $(this).find('Status').text();
+                        IsReleased = $(this).find('IsReleased').text();
+                        hdnValue = $(this).find('hdnValue').text();
+                        location = $(this).find('location').text();
+                        FltSeqNo = $(this).find('FltSeqNo').text();
+                        USeqNo = $(this).find('USeqNo').text();
+                        GatepassNo = $(this).find('GatepassNo').text();
+
+                        // gatePassNoDetails(GatepassNo, Status);
+                    });
+                    html += "</tbody></table>";
+                    $('#divVCTDetail').show();
+                    $('#divVCTDetail').append(html);
+                    //if (_GroupId != '') {
+                    //    $('#divVCTDetail').show();
+                    //    $('#divVCTDetail').append(html);
+                    //}
+
+
+                } else {
+                    errmsg = 'VCT No. does not exists.';
+                    $.alert(errmsg);
+                }
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}
 
 

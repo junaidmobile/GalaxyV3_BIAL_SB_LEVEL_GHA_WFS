@@ -862,7 +862,17 @@ function GetVCTUnScanDetail() {
             success: function (response) {
                 $("body").mLoading('hide');
                 var str = response.d;
+                var xmlDoc = $.parseXML(str);
                 if (str != null && str != "") {
+
+                    $(xmlDoc).find('Table').each(function () {
+                        Status = $(this).find('Status').text();
+                        StrMessage = $(this).find('StrMessage').text();
+
+                        if (Status == 'E') {
+                            $('#spnErrormsg').text(StrMessage).css('color', 'red');
+                        }
+                    });
 
                     $('#divAddLocation').empty();
                     html = '';
@@ -876,7 +886,7 @@ function GetVCTUnScanDetail() {
                     html += "</tr></thead>";
                     html += "<tbody>";
 
-                    var xmlDoc = $.parseXML(str);
+
 
                     $(xmlDoc).find('Table1').each(function (index) {
 
@@ -1080,7 +1090,7 @@ function clearALL() {
     $('#btnDockIn').attr('disabled', 'disabled');
     $('#btnNext').attr('disabled', 'disabled');
     $('#btnDockOut').attr('disabled', 'disabled');
-    $('#btnUnScanned').attr('disabled', 'disabled');
+    // $('#btnUnScanned').attr('disabled', 'disabled');
 
 }
 
