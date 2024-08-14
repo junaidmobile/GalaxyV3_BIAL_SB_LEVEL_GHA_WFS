@@ -23,9 +23,8 @@
     <link href="css/dialog.css" rel="stylesheet" />
     <link href="css/alert.mob.css" rel="stylesheet" />
     <script src="js/aes.js"></script>
-    <script src="js/Import/IMP_ULDAcceptance.js"></script>
+    <script src="js/Import/IMP_WDO_Retrieval.js"></script>
     <style>
-
 
         hr {
             margin-top: 0px;
@@ -100,18 +99,11 @@
                                     </div>
                                     <div class="col-xs-8 NoPadding">
                                         <input id="txtSacnULD" class="form-control" type="text"
-                                               maxlength="30" onblur="GetImportULDList();">
+                                               maxlength="30" onblur="ImportAirside_Search_V3_OnBlure();">
                                     </div>
 
                                 </div>
-
-
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                    <span id="spnMsg"></span>
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <h6>OR</h6>
                                 </div>
 
@@ -120,65 +112,20 @@
                                         <label id="lblGPNo" for="txtScanFlight" class="control-label labelFont">
                                             Area
                                         </label>
-                                        <!--<font color="red">*</font>-->
                                     </div>
                                     <div class="col-xs-8 NoPadding">
                                         <input id="txtScanFlight" class="form-control" type="number"
                                                onkeyup="ChkMaxLength(this, '9');" onblur="ScanFlightDetail();" style="text-align:right;">
                                     </div>
+                                </div>-->
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <span id="spnMsg"></span>
                                 </div>
-
                             </div>
                             <div class="row form-group">
                                 <div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding" id="divVCTDetail">
 
-                                    <table class="table table-bordered" id="">
-                                        <thead>
-                                            <tr style="background-color: rgb(208, 225, 244);">
-                                                <th>Gate Pass No.</th>
-                                                <th>Document No.</th>
-                                                <th colspan="3">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>GP123456</td>
-                                                <td>125-12345123 H120s</td>
-                                                <td><a style="color: #065da1;" class="glyphicon glyphicon-play"></a></td>
-                                                <td><a style="color: green;padding-left:10%;" class="glyphicon glyphicon-ok"></a></td>
-                                                <td><a style="color: red; padding-left: 10%;" class="glyphicon glyphicon-lock"></a></td>
-                                            </tr>
-                                            <tr>
-                                                <td>GP123456</td>
-                                                <td>125-12345123 H120s</td>
-                                                <td><a style="color: #065da1;" class="glyphicon glyphicon-play"></a></td>
-                                                <td><a style="color: green;padding-left:10%;" class="glyphicon glyphicon-ok"></a></td>
-                                                <td><a style="color: red; padding-left: 10%;" class="glyphicon glyphicon-lock"></a></td>
-                                            </tr>
-                                            <tr>
-                                                <td>GP123456</td>
-                                                <td>125-12345123 H120s</td>
-                                                <td><a style="color: #065da1;" class="glyphicon glyphicon-play"></a></td>
-                                                <td><a style="color: green;padding-left:10%;" class="glyphicon glyphicon-ok"></a></td>
-                                                <td><a style="color: red; padding-left: 10%;" class="glyphicon glyphicon-lock"></a></td>
-                                            </tr>
-                                            <tr>
-                                                <td>GP123456</td>
-                                                <td>125-12345123 H120s</td>
-                                                <td><a style="color: #065da1;" class="glyphicon glyphicon-play"></a></td>
-                                                <td><a style="color: green;padding-left:10%;" class="glyphicon glyphicon-ok"></a></td>
-                                                <td><a style="color: red; padding-left: 10%;" class="glyphicon glyphicon-lock"></a></td>
-                                            </tr>
-                                            <tr>
-                                                <td>GP123456</td>
-                                                <td>125-12345123 H120s</td>
-                                                <td><a style="color: #065da1;" class="glyphicon glyphicon-play"></a></td>
-                                                <td><a style="color: green;padding-left:10%;" class="glyphicon glyphicon-ok"></a></td>
-                                                <td><a style="color: red; padding-left: 10%;" class="glyphicon glyphicon-lock"></a></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <!--onclick="getFormatedPRNText(\'' + HAWBNo + '\',\'' + Destination + '\',\'' + IGMNo + '\',\'' + MAWBNo + '\',\'' + PkgOfPkgCount + '\',\'' + FlightArrivalDate + '\',\'' + FlightArrivalTime + '\',\'' + CleintName + '\',\'' + MPSNo + '\',\'' + PackageId + '\');"-->
+                                   
                                 </div>
                             </div>
 

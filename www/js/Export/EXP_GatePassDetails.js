@@ -94,8 +94,10 @@ $(function () {
     //    signitureDataURL = str.substring(23);
 
     //});
-
+    
 });
+
+
 
 
 function SHCSpanHtml(newSHC) {
@@ -135,7 +137,7 @@ function ExportAirside_Search_V3_Onblur() {
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
 
-    var MAWBNo = $('#txtAWBNo').val();
+   // var MAWBNo = $('#txtAWBNo').val();
 
     var InputXML = '<Root><BarCode>' + flSeqID + '</BarCode><AirportCity>' + AirportCity + '</AirportCity><UserId>' + UserID + '</UserId></Root>';
 
@@ -535,9 +537,9 @@ function ExportAirside_SignUpload_V3_1() {
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
 
-    if ($("#txtCustomerName").val() == "") {
-        return
-    }
+    //if ($("#txtCustomerName").val() == "") {
+    //    return
+    //}
 
     //if ($("#txtCustomerName").val() == "") {
     //    $("#showMsg1").text('Please enter customer name and signature.').css({ 'color': 'red' });
@@ -594,7 +596,7 @@ function ExportAirside_SignUpload_V3_1() {
                         return true;
                     } else {
                         $("#showMsg1").text(StrMessage).css({ 'color': 'green' });
-                        $("#txtCustomerName").val('');
+                       // $("#txtCustomerName").val('');
                         signaturePad.clear();
                     }
                 });
@@ -685,9 +687,9 @@ function ExportAirside_SignUpload_V3_2() {
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
 
-    if ($("#txtSecuirty").val() == "") {
-        return
-    }
+    //if ($("#txtSecuirty").val() == "") {
+    //    return
+    //}
 
     //if ($("#txtSecuirty").val() == "") {
     //    $("#showMsg2").text('Please enter Security name and signature.').css({ 'color': 'red' });
@@ -744,7 +746,7 @@ function ExportAirside_SignUpload_V3_2() {
                         return true;
                     } else {
                         $("#showMsg2").text(StrMessage).css({ 'color': 'green' });
-                        $("#txtSecuirty").val('');
+                       // $("#txtSecuirty").val('');
                         signaturePad_1.clear();
                     }
                 });
@@ -812,9 +814,9 @@ function ExportAirside_SignUpload_V3_3() {
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
 
-    if ($("#txtAirline").val() == "") {
-        return
-    }
+    //if ($("#txtAirline").val() == "") {
+    //    return
+    //}
 
     //if ($("#txtAirline").val() == "") {
     //    $("#showMsg2").text('Please enter Security name and signature.').css({ 'color': 'red' });
@@ -871,7 +873,7 @@ function ExportAirside_SignUpload_V3_3() {
                         return true;
                     } else {
                         $("#showMsg2").text(StrMessage).css({ 'color': 'green' });
-                        $("#txtAirline").val('');
+                      //  $("#txtAirline").val('');
                         // signaturePad.clear();
                     }
                 });
@@ -956,7 +958,8 @@ function ReleaseULDBulk() {
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: "POST",
-            url: GHAExportFlightserviceURL + "UpdateULDRelease",
+            //   url: GHAExportFlightserviceURL + "UpdateULDRelease",
+            url: GHAExportFlightserviceURL + "ExportAirside_Release_V3",
             data: JSON.stringify({ 'InputXML': inputXML }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -993,7 +996,7 @@ function ReleaseULDBulk() {
                     }
                 });
 
-               
+
             },
             error: function (msg) {
                 $("body").mLoading('hide');

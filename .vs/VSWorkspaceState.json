@@ -3,9 +3,8 @@
     "",
     "\\www",
     "\\www\\js",
-    "\\www\\js\\Export",
-    "\\www\\js\\Import"
+    "\\www\\js\\Export"
   ],
-  "SelectedNode": "\\www\\js\\Export\\EXP_AirsideRelease_Search.js",
+  "SelectedNode": "\\www\\js\\Export\\EXP_GatePassDetails.js",
   "PreviewInSolutionExplorer": false
 }

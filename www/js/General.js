@@ -229,6 +229,9 @@ function LoadNavBar() {
     else if (window.location.pathname.split("/").pop() == "EXP_GatePassDetails.html") {
         $('#navhdrName').html("Airside Gate Pass");
     }
+    else if (window.location.pathname.split("/").pop() == "IMP_WDO_Retrieval.html") {
+        $('#navhdrName').html("WDO Retrieval");
+    }
     
 }
 function NumberOnly(e) {

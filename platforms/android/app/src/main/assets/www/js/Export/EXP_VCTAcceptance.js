@@ -8,6 +8,8 @@ var UserName = window.localStorage.getItem("UserName");
 var VCTNo = window.localStorage.getItem("VCTNo");
 var VCTId = window.localStorage.getItem("VCTId");
 var Door = window.localStorage.getItem("Door");
+var companyCode = window.localStorage.getItem("companyCode");
+var AutoTSP;
 var ConsignmentRowIDForSave;
 var flightSeqNo;
 var ULDSeqNo;
@@ -72,10 +74,14 @@ $(function () {
     $('#ddlAWBNo').change(function () {
 
         if ($('#ddlAWBNo').val() == '0') {
-
+            $('#btnComplete').attr('disabled', 'disabled');
+            $('#btnSubmit').attr('disabled', 'disabled');
             clearALL();
             return;
 
+        } else {
+            $('#btnComplete').removeAttr('disabled');
+            $('#btnSubmit').removeAttr('disabled');
         }
 
         var str = $(this).find("option:selected").text();
@@ -110,7 +116,18 @@ $(function () {
                         isSecuredFlag = 'true';
                     }
                     remPCS = $(this).find('RemainingPkg').text();
+                    Type = $(this).find('Type').text();
+                    AutoTSP = $(this).find('AutoTSP').text();
 
+                    if (Type == 'A') {
+                        $('#btnComplete').removeAttr('disabled');
+                        $('#btnSubmit').attr('disabled', 'disabled');
+
+                    } else {
+                        $('#btnComplete').attr('disabled', 'disabled');
+                        $('#btnSubmit').removeAttr('disabled');
+
+                    }
                     var newSHC = $(this).find('SHCAll').text();
                     $("#TextBoxDivforSHCCode").empty();
                     SHCSpanHtml(newSHC);
@@ -283,15 +300,15 @@ $(function () {
             $("#spnMsg").text('');
         }
 
-        if (parseInt($("#txPieces").val()) <= 0) {
+        //if (parseInt($("#txPieces").val()) <= 0) {
 
-            $("#txPieces").val(remPCS);
-            $("#spnMsg").text('Entered pieces must be greater than 0.').css({ 'color': 'red' });
-            //$.alert(errmsg);
-            $("#txPieces").focus();
-            return;
+        //    $("#txPieces").val(remPCS);
+        //    $("#spnMsg").text('Entered pieces must be greater than 0.').css({ 'color': 'red' });
+        //    //$.alert(errmsg);
+        //    $("#txPieces").focus();
+        //    return;
 
-        }
+        //}
 
 
 
@@ -1291,17 +1308,17 @@ function SaveVCTCargoDetails_v3() {
     //    $("#spnMsg").text('');
     //}
 
-    if (parseInt($("#txPieces").val()) <= 0) {
+    //if (parseInt($("#txPieces").val()) <= 0) {
 
-        $("#txPieces").val(remPCS);
-        //errmsg = "Entered pieces must be greater than 0.</br>";
-        //$.alert(errmsg);
-        $("#spnMsg").text('Entered pieces must be greater than 0.').css({ 'color': 'red' });
-        return;
+    //    $("#txPieces").val(remPCS);
+    //    //errmsg = "Entered pieces must be greater than 0.</br>";
+    //    //$.alert(errmsg);
+    //    $("#spnMsg").text('Entered pieces must be greater than 0.').css({ 'color': 'red' });
+    //    return;
 
-    } else {
-        $("#spnMsg").text('');
-    }
+    //} else {
+    //    $("#spnMsg").text('');
+    //}
 
     if ($('#txPieces').val() == "") {
         //errmsg = "Please enter valid flight No.";
@@ -1559,6 +1576,83 @@ function removeRowOnChange() {
     $("#TextBoxDiv" + counter).remove();
 }
 
+function SaveCompleteAcceptance() {
 
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+    if ($('#ddlAWBNo').val() == '0') {
+        $("#spnMsg").text('Please select AWB No.').css({ 'color': 'red' });
+        return;
+
+    } else {
+        $("#spnMsg").text('');
+    }
+    // var txtGatePass = $('#txtGatePass').val();
+    // var txtGroupId = $('#txtGroupId').val();
+    var AWBPrefix = $("#ddlAWBNo option:selected").text().slice(0, 3);
+    var AWBNo = $("#ddlAWBNo option:selected").text().slice(3, 11);
+    var InputXML = '<Root><AWBPrefix>' + AWBPrefix + '</AWBPrefix><AWBNo>' + AWBNo + '</AWBNo><HouseNo>' + $('#txtHAWB').val() + '</HouseNo><SBNo>' + $('#txtSBNo').val() + '</SBNo><AirportCity>' + AirportCity + '</AirportCity><UserId>' + UserId + '</UserId><CompanyId>' + companyCode + '</CompanyId><AutoTSP>' + AutoTSP + '</AutoTSP></Root>';
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "SaveCompleteAcceptance",
+            data: JSON.stringify({ 'InputXML': InputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                $("#btnScanAccpt").removeAttr('disabled');
+                $('#tblNewsForGatePass').hide();
+                // $('#divULDNumberDetails').empty();
+                console.log(xmlDoc);
+                $(xmlDoc).find('Table').each(function () {
+
+                    var Status = $(this).find('Status').text();
+                    var StrMessage = $(this).find('StrMessage').text();
+
+                    if (Status == 'E') {
+                        // $.alert(StrMessage).css('color', 'red');
+                        $("#lblMessage").text(StrMessage).css({ 'color': 'red' });
+                        // clearALL();
+                        return true;
+                    } else {
+                        $("#lblMessage").text('');
+                    }
+                });
+
+                // $(xmlDoc).find('Table1').each(function () {
+
+                //     FlightSeqNo = $(this).find('FltSeqNo').text();
+                // });
+
+                //  GetGroupIdBaseOnGatepass();
+
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    } else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    } else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    } else {
+        $("body").mLoading('hide');
+    }
+}
 
 

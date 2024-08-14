@@ -64,6 +64,18 @@
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-6 col-form-label">
+                                        <label id="lblDocumentNo" for="" class="control-label labelFont">
+                                            Document No.
+                                        </label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-6 NoPadding">
+                                        <input  style=" text-transform: uppercase;" id="DocumentNo" class="form-control" type="text"
+                                               autofocus maxlength="30" onblur="GetGroupIdBaseOnGatepass();">
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-6 col-form-label">
                                         <label id="lblGroupId" for="" class="control-label labelFont">
                                             Group Id Scan
                                         </label>
@@ -125,7 +137,7 @@
 
 
             <div class="form-group col-xs-6 col-sm-6 col-md-6" style="margin-top:15px">
-                <input type="button" id="btnExcLanded" class="form-control ButtonColor" value="Exit" onclick="window.location.href = 'IMP_Dashboard.html'">
+                <input type="button" id="btnExcLanded" class="form-control ButtonColor" value="Exit" onclick="window.location.href = 'IMP_WDO_Retrieval.html'">
             </div>
             <div class="form-group col-xs-6 col-sm-6 col-md-6" style="margin-top:15px">
                 <input type="button" id="btnClear" class="form-control ButtonColor" value="Clear" onclick="clearAWBDetails();">

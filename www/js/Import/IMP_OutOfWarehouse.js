@@ -5,6 +5,8 @@ var CMSserviceURL = window.localStorage.getItem("CMSserviceURL");
 var AirportCity = window.localStorage.getItem("SHED_AIRPORT_CITY");
 var UserId = window.localStorage.getItem("UserID");
 var UserName = window.localStorage.getItem("UserName");
+var _WDONo = window.localStorage.getItem("_WDONo");
+var _DocNo = window.localStorage.getItem("_DocNo");
 var html;
 var LocationRowID;
 var AWBRowID;
@@ -55,7 +57,9 @@ $(function () {
     //var h = date.getHours();
     //var m = date.getMinutes();
     //var s = date.getSeconds();
-
+    $('#txtGatePass').val(_WDONo).attr('disabled', 'disabled');
+    $('#DocumentNo').val(_DocNo).attr('disabled', 'disabled');
+    ImportAirside_Search_V3();
 });
 
 
@@ -68,10 +72,6 @@ function checkSpecialChar() {
         return false;
     }
 }
-
-
-
-
 
 function checkLocation() {
     var location = $('#txtLocation').val().toUpperCase();
@@ -95,167 +95,136 @@ function gatePassChangeFocus() {
     }
 }
 
-function GetGroupIdBaseOnGatepass() {
-    
+function ImportAirside_Search_V3() {
+
     $('#divVCTDetail').html('');
     $('#divVCTDetail').empty();
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
 
-    var txtGatePass = $('#txtGatePass').val().toUpperCase();
-
-    if (txtGatePass == '') {
-
-        return;
-    } else {
-        // $('#txtGroupId').focus();
-    }
-
-    //if (txtGatePass.length == '14') {
-    //    //errmsg = "Please enter valid AWB No.";
-    //    //$.alert(errmsg);
-    //    //$('#txtAWBNo').val('');
-    //    return;
-    //}
-
-
-    //if (txtVCTNo != "") {
-    //    $('#btnGoodsDelever').removeAttr('disabled');
-    //} else {
-    //    $('#btnGoodsDelever').atrr('disabled', 'disabled');
-    //    return;
-    //}
+    var InputXML = '<Root><Gatepass>' + $('#txtGatePass').val() + '</Gatepass><Area></Area><GroupID></GroupID><IsTrans>Y</IsTrans><AirportCity>' + AirportCity + '</AirportCity><UserId>' + UserId + '</UserId><DocumentNo>' + $('#DocumentNo').val() + '</DocumentNo></Root>';
 
     $('#lblMessage').text('');
-    if (txtGatePass.length >= '8') {
-        if (errmsg == "" && connectionStatus == "online") {
-            $.ajax({
-                type: 'POST',
-                url: CMSserviceURL + "GetGroupIdBaseOnGatepass",
-                data: JSON.stringify({
-                    'pi_strGatepassNo': txtGatePass,
-                    //'strUserId': UserId,
-                    //'strVal': deviceUUID
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                beforeSend: function doStuff() {
-                    $('body').mLoading({
-                        text: "Loading..",
-                    });
-                },
+    // if (txtGatePass.length >= '8') {
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAImportFlightserviceURL + "ImportAirside_Search_V3",
+            data: JSON.stringify({ 'InputXML': InputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
 
 
-                success: function (response) {
-                    //debugger;
-                    $("body").mLoading('hide');
-                    response = response.d;
-                    //var str = response.d;
-                    var xmlDoc = $.parseXML(response);
+            success: function (response) {
+                //debugger;
+                $("body").mLoading('hide');
+                response = response.d;
+                //var str = response.d;
+                var xmlDoc = $.parseXML(response);
 
-                    //$('#divVCTDetail').html('');
-                    //$('#divVCTDetail').empty();
-                    console.log(xmlDoc);
-                    $(xmlDoc).find('Table1').each(function () {
-                        var OutMsg = $(this).find('strOutMsg').text();
+                //$('#divVCTDetail').html('');
+                //$('#divVCTDetail').empty();
+                console.log(xmlDoc);
+             
+                $(xmlDoc).find('Table').each(function () {
 
-                        if (OutMsg != '') {
-                            $('#lblMessageSuccess').text('');
-                            $('#lblMessage').text(OutMsg).css('color', 'red');
-                            $('#txtGatePass').val('');
-                            $('#txtGatePass').focus();
-                        } else {
-                            $('#lblMessage').text('');
-                        }
+                    var Status = $(this).find('Status').text();
+                    var StrMessage = $(this).find('StrMessage').text();
 
-                        // var Status = $(this).find('Status').text();
-                        //var StrMessage = $(this).find('strOutMsg').text();
-                        //$.alert(StrMessage).css('color', 'red');
-
-
-
-                    });
-
-                    if (response != null && response != "") {
-
-                        html = '';
-
-                        html += '<table id="tblNewsForGatePass" border="1" style="width:100%;table-layout:fixed;word-break:break-word;border-color: white;margin-top: 2%;">';
-                        html += '<thead>';
-                        html += '<tr>';
-                        html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center">Group Id</th>';
-                        html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center">Pieces</th>';
-                        html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center">Cancel</th>';
-                        html += '</tr>';
-                        html += '</thead>';
-                        html += '<tbody>';
-
-                        var xmlDoc = $.parseXML(response);
-                        var flag = '0';
-                        $(xmlDoc).find('Table').each(function (index) {
-                            $('#lblMessage').text('');
-                            //var Status = $(this).find('Status').text();
-                            //var StrMessage = $(this).find('StrMessage').text();
-                            //if (Status == 'E') {
-                            //    $.alert(StrMessage);
-                            //    $('#divULDNumberDetails').empty();
-                            //    $('#divULDNumberDetails').hide();
-                            //    html = '';
-                            //    return;
-                            //}
-
-                            flag = '1';
-
-                            GroupID = $(this).find('GroupID').text();
-                            NoOfPackages = $(this).find('NoOfPackages').text();
-                            IsOutOfWarehouse = $(this).find('IsOutOfWarehouse').text();
-
-                            VCTNoDetails(GroupID, NoOfPackages, IsOutOfWarehouse);
-                        });
-                        html += "</tbody></table>";
-                        if (flag == '1') {
-                            $('#divVCTDetail').show();
-                            $('#divVCTDetail').append(html);
-                        }
-
-
+                    if (Status == 'E') {
+                        // $.alert(StrMessage).css('color', 'red');
+                        $("#lblMessage").text(StrMessage).css({ 'color': 'red' });
+                        // clearALL();
+                        return true;
                     } else {
-                        errmsg = 'VCT No. does not exists.';
-                        $.alert(errmsg);
+                        $("#lblMessage").text('');
                     }
-                },
-                error: function (msg) {
-                    //debugger;
-                    $("body").mLoading('hide');
-                    var r = jQuery.parseJSON(msg.responseText);
-                    $.alert(r.Message);
+                });
+
+                if (response != null && response != "") {
+
+                    html = '';
+
+                    html += '<table id="tblNewsForGatePass" border="1" style="width:100%;table-layout:fixed;word-break:break-word;border-color: white;margin-top: 2%;">';
+                    html += '<thead>';
+                    html += '<tr>';
+                    html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center">Group Id</th>';
+                    html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center">Pieces</th>';
+                    html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center">Cancel</th>';
+                    html += '</tr>';
+                    html += '</thead>';
+                    html += '<tbody>';
+
+                    var xmlDoc = $.parseXML(response);
+                    var flag = '0';
+                    $(xmlDoc).find('Table1').each(function (index) {
+                        $('#lblMessage').text('');
+                      
+                        flag = '1';
+
+                        WDODT = $(this).find('WDODT').text();
+                        WDONo = $(this).find('WDONo').text();
+                        AWBNo = $(this).find('AWBNo').text();
+                        ReleaseStatus = $(this).find('ReleaseStatus').text();
+                        IsActive = $(this).find('IsActive').text();
+                        PkgRecd = $(this).find('PkgRecd').text();
+                        GroupId = $(this).find('GroupId').text();
+                        WareHouseLocation = $(this).find('WareHouseLocation').text();
+                        IsLocked = $(this).find('IsLocked').text();
+                        IsCompleted = $(this).find('IsCompleted').text();
+                        WDOStatus = $(this).find('WDOStatus').text();
+
+                        VCTNoDetails(GroupId, PkgRecd, WDOStatus);
+                    });
+                    html += "</tbody></table>";
+                    if (flag == '1') {
+                        $('#divVCTDetail').show();
+                        $('#divVCTDetail').append(html);
+                    }
+
+
+                } else {
+                    errmsg = 'VCT No. does not exists.';
+                    $.alert(errmsg);
                 }
-            });
-        } else if (connectionStatus == "offline") {
-            $("body").mLoading('hide');
-            $.alert('No Internet Connection!');
-        } else if (errmsg != "") {
-            $("body").mLoading('hide');
-            $.alert(errmsg);
-        } else {
-            $("body").mLoading('hide');
-        }
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    } else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    } else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    } else {
+        $("body").mLoading('hide');
     }
+    //  }
 }
 
 
 
-function VCTNoDetails(GroupID, NoOfPackages, IsOutOfWarehouse) {
+function VCTNoDetails(GroupId, PkgRecd, WDOStatus) {
 
     html += '<tr>';
-    html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:left;padding-right: 4px;">' + GroupID + '</td>';
-    html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:right;padding-right: 4px;">' + NoOfPackages + '</td>';
-    if (IsOutOfWarehouse == 'false') {
+    html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:left;padding-right: 4px;">' + GroupId + '</td>';
+    html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:right;padding-right: 4px;">' + PkgRecd + '</td>';
+    if (WDOStatus == 'C') {
         //html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:center;color:gray;"><span class="glyphicon glyphicon-remove"></span></td>';
         html += '<td style="font-size:14px;padding: 5px;background: rgb(224, 243, 215);" class="text-center align-middle"><button  class="btn" disabled align="center">Cancel</button></td>';
     } else {
         //html += '<td onclick="SaveOutforWarehouseRevoke(\'' + GroupID + '\');" style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:center;color:red;"><span class="glyphicon glyphicon-remove"></span></td>';
-        html += '<td style="font-size:14px;padding: 5px;background: rgb(224, 243, 215);" class="text-center align-middle"><button onclick="SaveOutforWarehouseRevoke(\'' + GroupID + '\');" class="btn ButtonColor" align="center">Cancel</button></td>';
+        html += '<td style="font-size:14px;padding: 5px;background: rgb(224, 243, 215);" class="text-center align-middle"><button onclick="SaveOutforWarehouseRevoke(\'' + GroupId + '\');" class="btn ButtonColor" align="center">Cancel</button></td>';
     }
 
     html += '</tr>';
@@ -267,33 +236,13 @@ function SaveOutforWarehouse() {
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
 
-    var txtGatePass = $('#txtGatePass').val();
-    var txtGroupId = $('#txtGroupId').val();
-
-
-    if (txtGatePass == "") {
-        $('#lblMessage').text('Please scan/enter gate pass.').css('color', 'red');
-        return;
-    } else {
-        $('#lblMessage').text('');
-    }
-
-    if (txtGroupId == '') {
-        $('#lblMessageSuccess').text('');
-        GetGroupIdBaseOnGatepass();
-        return;
-    }
+    var InputXML = '<Root><Gatepass>' + $('#txtGatePass').val() + '</Gatepass><GroupID>' + $('#txtGroupId').val() + '</GroupID><Mode>O</Mode><AirportCity>' + AirportCity + '</AirportCity><UserId>' + UserId + '</UserId></Root>';
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: 'POST',
-            url: CMSserviceURL + "SaveOutforWarehouse",
-            data: JSON.stringify({
-                'pi_strGatepassNo': txtGatePass,
-                'pi_strGroupId': txtGroupId,
-                'pi_strUserId': UserName,
-                'pi_strMode': 'O'
-            }),
+            url: GHAImportFlightserviceURL + "WDOOutForDelivery",
+            data: JSON.stringify({ 'InputXML': InputXML }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function doStuff() {
@@ -309,31 +258,23 @@ function SaveOutforWarehouse() {
                 response = response.d;
                 var xmlDoc = $.parseXML(response);
                 $("#btnScanAccpt").removeAttr('disabled');
-                $('#tblNewsForGatePass').hide();
-                $('#divULDNumberDetails').empty();
+              //  $('#tblNewsForGatePass').hide();
+                // $('#divULDNumberDetails').empty();
                 console.log(xmlDoc);
                 $(xmlDoc).find('Table').each(function () {
-                    $('#lblMessage').text('');
+
                     var Status = $(this).find('Status').text();
-                    var StrMessage = $(this).find('OutMsg').text();
+                    var StrMessage = $(this).find('StrMessage').text();
 
                     if (Status == 'E') {
-                        $('#txtGroupId').val('');
-                       // $('#txtGroupId').focus();
-                        //$.alert(StrMessage).css('color', 'red');
-                        $('#lblMessageSuccess').text(StrMessage).css('color', 'red');
-
+                        // $.alert(StrMessage).css('color', 'red');
+                        $("#lblMessage").text(StrMessage).css({ 'color': 'red' });
+                        // clearALL();
+                        return true;
                     } else {
-                        $('#lblMessageSuccess').text(StrMessage).css('color', 'green');
+                        $("#lblMessage").text('');
                     }
-
                 });
-
-                // $(xmlDoc).find('Table1').each(function () {
-
-                //     FlightSeqNo = $(this).find('FltSeqNo').text();
-                // });
-                GetGroupIdBaseOnGatepass();
 
 
             },
@@ -361,19 +302,15 @@ function SaveOutforWarehouseRevoke(GroupID) {
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
 
-    var txtGatePass = $('#txtGatePass').val();
+    // var txtGatePass = $('#txtGatePass').val();
     // var txtGroupId = $('#txtGroupId').val();
+    var InputXML = '<Root><Gatepass>' + $('#txtGatePass').val() + '</Gatepass><GroupID>' + $('#txtGroupId').val() + '</GroupID><Mode>R</Mode><AirportCity>' + AirportCity + '</AirportCity><UserId>' + UserId + '</UserId></Root>';
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: 'POST',
-            url: CMSserviceURL + "SaveOutforWarehouse",
-            data: JSON.stringify({
-                'pi_strGatepassNo': txtGatePass,
-                'pi_strGroupId': GroupID,
-                'pi_strUserId': UserName,
-                'pi_strMode': 'R'
-            }),
+            url: GHAImportFlightserviceURL + "WDOOutForDelivery",
+            data: JSON.stringify({ 'InputXML': InputXML }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function doStuff() {
@@ -386,31 +323,24 @@ function SaveOutforWarehouseRevoke(GroupID) {
                 $("body").mLoading('hide');
                 response = response.d;
                 var xmlDoc = $.parseXML(response);
-                $("#btnScanAccpt").removeAttr('disabled');
-                $('#tblNewsForGatePass').hide();
-                $('#divULDNumberDetails').empty();
+                //$("#btnScanAccpt").removeAttr('disabled');
+               // $('#tblNewsForGatePass').hide();
+               // $('#divULDNumberDetails').empty();
                 console.log(xmlDoc);
                 $(xmlDoc).find('Table').each(function () {
 
                     var Status = $(this).find('Status').text();
-                    var StrMessage = $(this).find('OutMsg').text();
+                    var StrMessage = $(this).find('StrMessage').text();
 
-                    //if (Status == 'E') {
-                    //    $.alert(StrMessage).css('color', 'red');
-
-                    //} else {
-                    //    $.alert(StrMessage).css('color', 'green');
-                    //}
                     if (Status == 'E') {
-                        $('#txtGroupId').val('');
-                        $('#txtGroupId').focus();
-                        //$.alert(StrMessage).css('color', 'red');
-                        $('#lblMessageSuccess').text(StrMessage).css('color', 'red');
-
+                        // $.alert(StrMessage).css('color', 'red');
+                        $("#lblMessage").text(StrMessage).css({ 'color': 'red' });
+                        // clearALL();
+                        return true;
                     } else {
-                        $('#lblMessageSuccess').text(StrMessage).css('color', 'green');
+                        $("#lblMessage").text(StrMessage).css({ 'color': 'green' });
+                      
                     }
-
                 });
 
                 // $(xmlDoc).find('Table1').each(function () {
@@ -418,7 +348,7 @@ function SaveOutforWarehouseRevoke(GroupID) {
                 //     FlightSeqNo = $(this).find('FltSeqNo').text();
                 // });
 
-                GetGroupIdBaseOnGatepass();
+                //  GetGroupIdBaseOnGatepass();
 
             },
             error: function (msg) {
