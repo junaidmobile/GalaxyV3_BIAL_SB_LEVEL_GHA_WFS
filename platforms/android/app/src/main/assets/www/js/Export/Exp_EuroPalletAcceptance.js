@@ -171,6 +171,7 @@ function GetVCTDetailsForTDGAcceptance(clearMsg, overwriteMsg) {
         //$.alert(errmsg);
         return;
     }
+
     InputXML = '<Root><VCTNo>' + $('#txtVCTNo').val() + '</VCTNo><ScannedNo></ScannedNo><AirportCity>' + AirportCity + '</AirportCity><Culture>' + PreferredLanguage + '</Culture><UserId>' + UserId + '</UserId></Root>';
 
 
@@ -297,6 +298,10 @@ function GetVCTDetailsForTDGAcceptance(clearMsg, overwriteMsg) {
                         //    if (Number($(this).find('ActualChWt').text()) == Number($(this).find('ActualGrWt').text()))
                         //        $('#txtRcvdchrgWt').val($(this).find('ActualChWt').text());
                         //}
+
+                        if ($('#txtVCTNo').val().length == '11') {
+                            $('#txtVCTNo').val(VCTNo);
+                        }
                     });
                     $('#ddDoor').empty();
                     $(xmlDoc).find('Table').each(function () {

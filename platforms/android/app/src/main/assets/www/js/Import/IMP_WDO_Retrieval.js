@@ -82,13 +82,13 @@ $(function () {
 
 });
 
-function goToGPDetailsPage(flSQ, uldSQ, uldtyp) {
+//function goToGPDetailsPage(flSQ, uldSQ, uldtyp) {
 
-    localStorage.setItem('flSeqID', flSQ + '~' + uldSQ);
-    localStorage.setItem('_uldtyp', uldtyp);
+//    localStorage.setItem('flSeqID', flSQ + '~' + uldSQ);
+//    localStorage.setItem('_uldtyp', uldtyp);
 
-    window.location.href = 'EXP_GatePassDetails.html';
-}
+//    window.location.href = 'EXP_GatePassDetails.html';
+//}
 
 
 function SHCSpanHtml(newSHC) {
@@ -250,9 +250,9 @@ function gatePassNoDetails(WDONo, AWBNo, IsLocked, IsCompleted, WDOStatus) {
         html += '<tr style="background-color:#FFFFED;">';
         html += '<td>' + WDONo + '</td>';
         html += '<td >' + AWBNo + '</td>';
-        html += '<td><a onclick="goToGPDetailsPage(\'' + WDONo + '\',\'' + AWBNo + '\');" style="color: #065da1;" class="glyphicon glyphicon-play"></a></td>';
-        html += '<td><a style="color: green;padding-left:10%;" class="glyphicon glyphicon-ok"></a></td>';
-        html += '<td><img style="width:15px;height:15px;" src="images/OIP.jpeg"</td>';
+        html += '<td style="text-align: center;"><a onclick="goToGPDetailsPage(\'' + WDONo + '\',\'' + AWBNo + '\');" style="color: #065da1;" class="glyphicon glyphicon-play"></a></td>';
+        //html += '<td><a style="color: green;padding-left:10%;" class="glyphicon glyphicon-ok"></a></td>';
+        //html += '<td><img style="width:15px;height:15px;" src="images/OIP.jpeg"</td>';
 
         //if (WDOStatus == 'P') {
         //   // html += '<td >Pending</td>';
@@ -266,9 +266,9 @@ function gatePassNoDetails(WDONo, AWBNo, IsLocked, IsCompleted, WDOStatus) {
         html += '<tr style="background-color:#fff;">';
         html += '<td>' + WDONo + '</td>';
         html += '<td >' + AWBNo + '</td>';
-        html += '<td><a onclick="goToGPDetailsPage(\'' + WDONo + '\',\'' + AWBNo + '\');" style="color: #065da1;" class="glyphicon glyphicon-play"></a></td>';
-        html += '<td><a style="color: green;padding-left:10%;" class="glyphicon glyphicon-ok"></a></td>';
-        html += '<td><img style="width:15px;height:15px;" src="images/OIP.jpeg"</td>';
+        html += '<td style="text-align: center;"><a onclick="goToGPDetailsPage(\'' + WDONo + '\',\'' + AWBNo + '\');" style="color: #065da1;" class="glyphicon glyphicon-play"></a></td>';
+        //html += '<td><a style="color: green;padding-left:10%;" class="glyphicon glyphicon-ok"></a></td>';
+        //html += '<td><img style="width:15px;height:15px;" src="images/OIP.jpeg"</td>';
 
         //if (WDOStatus == 'P') {
         //   // html += '<td >Pending</td>';
@@ -283,9 +283,9 @@ function gatePassNoDetails(WDONo, AWBNo, IsLocked, IsCompleted, WDOStatus) {
         html += '<tr style="background-color:#90EE90;">';
         html += '<td>' + WDONo + '</td>';
         html += '<td >' + AWBNo + '</td>';
-        html += '<td><a onclick="goToGPDetailsPage(\'' + WDONo + '\',\'' + AWBNo + '\');" style="color: #065da1;" class="glyphicon glyphicon-play"></a></td>';
-        html += '<td><a style="color: green;padding-left:10%;" class="glyphicon glyphicon-ok"></a></td>';
-        html += '<td><img style="width:15px;height:15px;" src="images/OIP.jpeg"</td>';
+        html += '<td style="text-align: center;"><a onclick="goToGPDetailsPage(\'' + WDONo + '\',\'' + AWBNo + '\');" style="color: #065da1;" class="glyphicon glyphicon-play"></a></td>';
+        //html += '<td><a style="color: green;padding-left:10%;" class="glyphicon glyphicon-ok"></a></td>';
+        //html += '<td><img style="width:15px;height:15px;" src="images/OIP.jpeg"</td>';
 
         //if (WDOStatus == 'P') {
         //   // html += '<td >Pending</td>';
@@ -448,7 +448,11 @@ function ImportAirside_Search_V3_OnBlure() {
                         IsCompleted = $(this).find('IsCompleted').text();
                         WDOStatus = $(this).find('WDOStatus').text();
 
-                        gatePassNoDetails(WDONo, AWBNo, IsLocked, IsCompleted, WDOStatus);
+                        localStorage.setItem('_WDONo', WDONo);
+                        localStorage.setItem('_DocNo', AWBNo);
+
+                        window.location.href = 'IMP_OutOfWarehouse.html';
+                       // gatePassNoDetails(WDONo, AWBNo, IsLocked, IsCompleted, WDOStatus);
                     });
                     html += "</tbody ></table>";
                     $('#divVCTDetail').show();

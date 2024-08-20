@@ -37,7 +37,7 @@ $(function () {
     if (window.localStorage.getItem("RoleIMPBinning") == '0') {
         window.location.href = 'IMP_Dashboard.html';
     }
-
+   
     
     // ImportDataList();
 

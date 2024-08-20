@@ -130,15 +130,15 @@ function ImportAirside_Search_V3() {
                 //$('#divVCTDetail').html('');
                 //$('#divVCTDetail').empty();
                 console.log(xmlDoc);
-             
+
                 $(xmlDoc).find('Table').each(function () {
 
                     var Status = $(this).find('Status').text();
                     var StrMessage = $(this).find('StrMessage').text();
 
                     if (Status == 'E') {
-                        // $.alert(StrMessage).css('color', 'red');
-                        $("#lblMessage").text(StrMessage).css({ 'color': 'red' });
+                        $.alert(StrMessage).css('color', 'red');
+                        // $("#lblMessage").text(StrMessage).css({ 'color': 'red' });
                         // clearALL();
                         return true;
                     } else {
@@ -164,7 +164,7 @@ function ImportAirside_Search_V3() {
                     var flag = '0';
                     $(xmlDoc).find('Table1').each(function (index) {
                         $('#lblMessage').text('');
-                      
+
                         flag = '1';
 
                         WDODT = $(this).find('WDODT').text();
@@ -219,7 +219,7 @@ function VCTNoDetails(GroupId, PkgRecd, WDOStatus) {
     html += '<tr>';
     html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:left;padding-right: 4px;">' + GroupId + '</td>';
     html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:right;padding-right: 4px;">' + PkgRecd + '</td>';
-    if (WDOStatus == 'C') {
+    if (WDOStatus != 'C') {
         //html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:center;color:gray;"><span class="glyphicon glyphicon-remove"></span></td>';
         html += '<td style="font-size:14px;padding: 5px;background: rgb(224, 243, 215);" class="text-center align-middle"><button  class="btn" disabled align="center">Cancel</button></td>';
     } else {
@@ -258,7 +258,7 @@ function SaveOutforWarehouse() {
                 response = response.d;
                 var xmlDoc = $.parseXML(response);
                 $("#btnScanAccpt").removeAttr('disabled');
-              //  $('#tblNewsForGatePass').hide();
+                //  $('#tblNewsForGatePass').hide();
                 // $('#divULDNumberDetails').empty();
                 console.log(xmlDoc);
                 $(xmlDoc).find('Table').each(function () {
@@ -267,16 +267,19 @@ function SaveOutforWarehouse() {
                     var StrMessage = $(this).find('StrMessage').text();
 
                     if (Status == 'E') {
-                        // $.alert(StrMessage).css('color', 'red');
-                        $("#lblMessage").text(StrMessage).css({ 'color': 'red' });
+                        $.alert(StrMessage).css('color', 'red');
+
+                        // $("#lblMessage").text(StrMessage).css({ 'color': 'red' });
                         // clearALL();
                         return true;
                     } else {
-                        $("#lblMessage").text('');
+                        $("#txtGroupId").val('');
+                        //$("#lblMessage").text('');
+                        $.alert(StrMessage).css('color', 'green');
                     }
                 });
 
-
+                ImportAirside_Search_V3();
             },
             error: function (msg) {
                 //debugger;
@@ -304,7 +307,7 @@ function SaveOutforWarehouseRevoke(GroupID) {
 
     // var txtGatePass = $('#txtGatePass').val();
     // var txtGroupId = $('#txtGroupId').val();
-    var InputXML = '<Root><Gatepass>' + $('#txtGatePass').val() + '</Gatepass><GroupID>' + $('#txtGroupId').val() + '</GroupID><Mode>R</Mode><AirportCity>' + AirportCity + '</AirportCity><UserId>' + UserId + '</UserId></Root>';
+    var InputXML = '<Root><Gatepass>' + $('#txtGatePass').val() + '</Gatepass><GroupID>' + GroupID + '</GroupID><Mode>R</Mode><AirportCity>' + AirportCity + '</AirportCity><UserId>' + UserId + '</UserId></Root>';
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
@@ -324,8 +327,8 @@ function SaveOutforWarehouseRevoke(GroupID) {
                 response = response.d;
                 var xmlDoc = $.parseXML(response);
                 //$("#btnScanAccpt").removeAttr('disabled');
-               // $('#tblNewsForGatePass').hide();
-               // $('#divULDNumberDetails').empty();
+                // $('#tblNewsForGatePass').hide();
+                // $('#divULDNumberDetails').empty();
                 console.log(xmlDoc);
                 $(xmlDoc).find('Table').each(function () {
 
@@ -333,13 +336,14 @@ function SaveOutforWarehouseRevoke(GroupID) {
                     var StrMessage = $(this).find('StrMessage').text();
 
                     if (Status == 'E') {
-                        // $.alert(StrMessage).css('color', 'red');
-                        $("#lblMessage").text(StrMessage).css({ 'color': 'red' });
+                        $.alert(StrMessage).css('color', 'red');
+                        //$("#lblMessage").text(StrMessage).css({ 'color': 'red' });
                         // clearALL();
                         return true;
                     } else {
-                        $("#lblMessage").text(StrMessage).css({ 'color': 'green' });
-                      
+                        // $("#lblMessage").text(StrMessage).css({ 'color': 'green' });
+                        $("#txtGroupId").val('');
+                        $.alert(StrMessage).css('color', 'green');
                     }
                 });
 
@@ -348,7 +352,7 @@ function SaveOutforWarehouseRevoke(GroupID) {
                 //     FlightSeqNo = $(this).find('FltSeqNo').text();
                 // });
 
-                //  GetGroupIdBaseOnGatepass();
+                ImportAirside_Search_V3();
 
             },
             error: function (msg) {
@@ -372,12 +376,12 @@ function SaveOutforWarehouseRevoke(GroupID) {
 
 
 function clearAWBDetails() {
-    $('#txtGatePass').val('');
+    //$('#txtGatePass').val('');
     $('#txtGroupId').val('');
     $('#txtFlightPrefix').val('');
     $('#txtFlightNo').val('');
-    $('#divVCTDetail').hide();
-    $('#divVCTDetail').empty();
+    //$('#divVCTDetail').hide();
+    // $('#divVCTDetail').empty();
     $('#txtFlightDate').val('');
     $('#txtLocation').val('');
     $('#spnMsg').text('');

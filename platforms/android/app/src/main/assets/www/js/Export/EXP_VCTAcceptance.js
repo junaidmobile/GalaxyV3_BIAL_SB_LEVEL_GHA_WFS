@@ -118,14 +118,35 @@ $(function () {
                     remPCS = $(this).find('RemainingPkg').text();
                     Type = $(this).find('Type').text();
                     AutoTSP = $(this).find('AutoTSP').text();
+                    AcceptanceLevel = $(this).find('AcceptanceLevel').text();
+                    CompleteAcceptance = $(this).find('CompleteAcceptance').text();
+                    if (AcceptanceLevel == 'S') {
+                        $('#txtSBNo').removeAttr('disabled');
+                        $('#txtHAWB').removeAttr('disabled');
+                    } else {
+                        $('#txtSBNo').attr('disabled', 'disabled');
+                        $('#txtHAWB').attr('disabled', 'disabled');
+                    }
 
-                    if (Type == 'A') {
+                    if (AcceptanceLevel == 'H') {
+                        $('#txtHAWB').removeAttr('disabled');
+                    } else {
+                        $('#txtHAWB').attr('disabled', 'disabled');
+                    }
+
+                    if (AcceptanceLevel == 'A') {
+                        $('#txtSBNo').attr('disabled', 'disabled');
+                        $('#txtHAWB').attr('disabled', 'disabled');
+                    }
+
+
+                    if (CompleteAcceptance != '0') {
                         $('#btnComplete').removeAttr('disabled');
-                        $('#btnSubmit').attr('disabled', 'disabled');
+                        // $('#btnSubmit').attr('disabled', 'disabled');
 
                     } else {
                         $('#btnComplete').attr('disabled', 'disabled');
-                        $('#btnSubmit').removeAttr('disabled');
+                        // $('#btnSubmit').removeAttr('disabled');
 
                     }
                     var newSHC = $(this).find('SHCAll').text();
@@ -900,9 +921,11 @@ function GetVCTUnScannedDetails_v3(VCTNo) {
                         //    $.alert(StrMessage);
                         //    return;
                         //}
+                        $('#btnSubmit').attr('disabled', 'disabled');
                         $("#spnMsg").text(StrMessage).css({ 'color': 'red' });
                         return;
                     } else {
+                        $('#btnSubmit').removeAttr('disabled');
                         $("#spnMsg").text('');
                     }
 
@@ -942,16 +965,27 @@ function GetVCTUnScannedDetails_v3(VCTNo) {
                     remarkPriority = $(this).find('remarkPriority').text();
                     DisplayText = $(this).find('DisplayText').text();
 
+                    if ($(xmlDoc).find('Table1').length > 1) {
+                        if (index == 0 && $("#ddlAWBNo").val() != "0") {
+                            var newOption = $('<option></option>');
+                            newOption.val(0).text('Select');
+                            newOption.appendTo('#ddlAWBNo');
+                        }
 
-                    if (index == 0 && $("#ddlAWBNo").val() != "0") {
                         var newOption = $('<option></option>');
-                        newOption.val(0).text('Select');
+                        newOption.val(ConsignmentRowID).text(DisplayText);
                         newOption.appendTo('#ddlAWBNo');
+                    } else {
+                        var newOption = $('<option></option>');
+                        newOption.val(ConsignmentRowID).text(DisplayText);
+                        newOption.appendTo('#ddlAWBNo');
+
+                        $('#ddlAWBNo').trigger('change');
                     }
 
-                    var newOption = $('<option></option>');
-                    newOption.val(ConsignmentRowID).text(DisplayText);
-                    newOption.appendTo('#ddlAWBNo');
+                   
+
+
 
                 });
                 $('#ddlEquTrolley').empty();
@@ -1616,16 +1650,17 @@ function SaveCompleteAcceptance() {
                 console.log(xmlDoc);
                 $(xmlDoc).find('Table').each(function () {
 
-                    var Status = $(this).find('Status').text();
-                    var StrMessage = $(this).find('StrMessage').text();
+                    var S = $(this).find('Status').text();
+                    var SM = $(this).find('StrMessage').text();
 
-                    if (Status == 'E') {
+                    if (S == 'E') {
                         // $.alert(StrMessage).css('color', 'red');
-                        $("#lblMessage").text(StrMessage).css({ 'color': 'red' });
+                        $("#spnMsg").text(SM).css({ 'color': 'red' });
                         // clearALL();
                         return true;
                     } else {
-                        $("#lblMessage").text('');
+                        $("#spnMsg").text(SM).css({ 'color': 'green' });
+                        // $("#spnMsg").text('');
                     }
                 });
 

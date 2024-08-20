@@ -12,7 +12,7 @@ $(function () {
     LoadNavBar();
     $('input').attr('autocomplete', 'off');
 
-   
+
 
 
     //setTimeout(function () {
@@ -227,12 +227,16 @@ function LoadNavBar() {
         $('#navhdrName').html("GP Release");
     }
     else if (window.location.pathname.split("/").pop() == "EXP_GatePassDetails.html") {
-        $('#navhdrName').html("Airside Gate Pass");
+        $('#navhdrName').html("GP Release");
     }
     else if (window.location.pathname.split("/").pop() == "IMP_WDO_Retrieval.html") {
         $('#navhdrName').html("WDO Retrieval");
     }
-    
+    else if (window.location.pathname.split("/").pop() == "IMP_GenerateBarcode.html") {
+        $('#navhdrName').html("Barcode");
+    }
+
+
 }
 function NumberOnly(e) {
     e.target.value = e.target.value.replace(/[^0-9\.]/g, '');

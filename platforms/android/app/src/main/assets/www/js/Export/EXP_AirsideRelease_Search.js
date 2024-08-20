@@ -83,10 +83,11 @@ $(function () {
 
 });
 
-function goToGPDetailsPage(flSQ, uldSQ,uldtyp) {
+function goToGPDetailsPage(flSQ, uldSQ, uldtyp, GatepassNo) {
 
     localStorage.setItem('flSeqID', flSQ + '~' + uldSQ);
     localStorage.setItem('_uldtyp', uldtyp);
+    localStorage.setItem('gatePassComing', GatepassNo);
     
     window.location.href = 'EXP_GatePassDetails.html';
 }
@@ -254,7 +255,7 @@ function gatePassNoDetails(GatepassNo, Status, IsReleased, FltSeqNo, USeqNo, ULD
     html += '<td>' + GatepassNo + '</td>';
     html += '<td>' + Status + '</td>';
 
-    html += '<td style="text-align: center;"><a style="color: #065da1;" class=" glyphicon glyphicon-eye-open" onclick="goToGPDetailsPage(\'' + FltSeqNo + '\',\'' + USeqNo + '\',\'' + ULDType + '\');"></a></td>';
+    html += '<td style="text-align: center;"><a style="color: #065da1;" class=" glyphicon glyphicon-eye-open" onclick="goToGPDetailsPage(\'' + FltSeqNo + '\',\'' + USeqNo + '\',\'' + ULDType + '\',\'' + GatepassNo + '\');"></a></td>';
     html += '</tr>';
 }
 

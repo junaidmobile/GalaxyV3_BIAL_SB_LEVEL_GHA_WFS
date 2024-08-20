@@ -9,6 +9,8 @@ var PreferredLanguage = window.localStorage.getItem("PreferredLanguage");
 var flSeqID = localStorage.getItem('flSeqID');
 var SHED_CODE = localStorage.getItem('SHED_CODE');
 var _uldtyp = localStorage.getItem('_uldtyp');
+var gatePassComing = localStorage.getItem('gatePassComing');
+
 var SelectedHawbId;
 var SelectedHawbIdCMS;
 var SelectedHawbNo;
@@ -139,7 +141,7 @@ function ExportAirside_Search_V3_Onblur() {
 
    // var MAWBNo = $('#txtAWBNo').val();
 
-    var InputXML = '<Root><BarCode>' + flSeqID + '</BarCode><AirportCity>' + AirportCity + '</AirportCity><UserId>' + UserID + '</UserId></Root>';
+    var InputXML = '<Root><BarCode>' + gatePassComing + '</BarCode><AirportCity>' + AirportCity + '</AirportCity><UserId>' + UserID + '</UserId></Root>';
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
