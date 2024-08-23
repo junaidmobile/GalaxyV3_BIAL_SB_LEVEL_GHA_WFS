@@ -294,7 +294,7 @@ function GetAWBDetailSearch_V3() {
 
 
                 $(xmlDoc).find('Table1').each(function () {
-
+                    var ExpAwbRowId = $(this).find('ExpAwbRowId').text();
                     var AwbPrefix = $(this).find('AwbPrefix').text();
                     var AwbNo = $(this).find('AwbNo').text();
                     var ShipperId = $(this).find('ShipperId').text();
@@ -315,11 +315,17 @@ function GetAWBDetailSearch_V3() {
                     var ShipperShortCode = $(this).find('ShipperShortCode').text();
                     var ConsigneeShortCode = $(this).find('ConsigneeShortCode').text();
                     var AgentShortCode = $(this).find('AgentShortCode').text();
-                    if (Status != 'E') {
+                    if (Pieces != '') {
                         $('#txtPieces').val(Pieces).css('text-align', 'right').attr('disabled', 'disabled');
                         $('#txtGrWt').val(Weight).css('text-align', 'right').attr('disabled', 'disabled');
                         $('#txtCharWt').val(ChargeableWt).css('text-align', 'right').attr('disabled', 'disabled');
                         $('#txtVolume').val(Volume).css('text-align', 'right').attr('disabled', 'disabled');
+
+
+                        //$('#txtPieces').val(Pieces).css('text-align', 'right');
+                        //$('#txtGrWt').val(Weight).css('text-align', 'right');
+                        //$('#txtCharWt').val(ChargeableWt).css('text-align', 'right');
+                        //$('#txtVolume').val(Volume).css('text-align', 'right');
                         $('#txtOrigin').val(Origin);
                         $('#txtDestination').val(Destination);
                         $('#txtShipperPrifix').val(ShipperShortCode);
@@ -328,10 +334,11 @@ function GetAWBDetailSearch_V3() {
                         $('#txtConsigneePrifix').val(ConsigneeShortCode);
                         $('#txtAgentName').val(AgentName);
                         $('#txtAgentNamePrifix').val(AgentShortCode);
-                        
+
                         $('#txtFlightNo').val(FlightNo);
 
                         var date = FlightDate;
+
                         var newdate = date.split("-").reverse().join("-");
 
                         const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -350,6 +357,11 @@ function GetAWBDetailSearch_V3() {
                         var ulddate = DD + '-' + _Mont + '-' + YY;
                         $('#txtFlightDate').val(ulddate);
 
+                    } else {
+                        $('#txtPieces').removeAttr('disabled', 'disabled');
+                        $('#txtGrWt').removeAttr('disabled', 'disabled');
+                        $('#txtCharWt').removeAttr('disabled', 'disabled');
+                        $('#txtVolume').removeAttr('disabled', 'disabled');
                     }
 
                 });
@@ -571,7 +583,7 @@ function Shipper_GetShipperConsigneeWithShortCode_V3() {
         getShiperList();
         return;
     }
-    
+
 
 
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
@@ -706,7 +718,7 @@ function Consignee_GetShipperConsigneeWithShortCode_V3() {
         getConsigneeList();
         return;
     }
-    
+
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
 
@@ -821,7 +833,7 @@ function AgentName_GetShipperConsigneeWithShortCode_V3() {
         getAgentList();
         return;
     }
-    
+
 
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
@@ -991,7 +1003,7 @@ function getAgentList() {
                     A_List.push({ 'value': Id, 'label': Name });
                     agentCode.push({ 'value': Id, 'label': ShortCode });
                     console.log('AgentNameLists ==> ' + Name)
-                    
+
                 });
 
 
@@ -1317,7 +1329,7 @@ function getConsigneeList() {
                     newOption.appendTo('#ddlConsignee');
                     C_List.push({ 'value': Id, 'label': Name });
                     consigneeCode.push({ 'value': Id, 'label': ShortCode });
-                    
+
                     console.log('consigneeCode ==> ' + ShortCode)
                 });
 
@@ -1356,7 +1368,7 @@ function getConsigneeList() {
                             // if (this.value == "") {
                             //     $(this).autocomplete("search");
                             // }
-                           // $("#txtConsigneePrifix").focus();
+                            // $("#txtConsigneePrifix").focus();
                             $("#txtConsigneePrifix").val(ui.item.label);
                             return false;
                         },
@@ -1615,7 +1627,7 @@ function clearALLafterSave() {
     A_List = [];
     S_List = [];
     C_List = [];
-    
+
     $('#ddlFlightNo').empty();
 }
 
@@ -1716,7 +1728,7 @@ function clearALLNew() {
     A_List = [];
     S_List = [];
     C_List = [];
-    
+
     $('#ddlFlightNo').removeClass('ui-autocomplete-input');
 }
 

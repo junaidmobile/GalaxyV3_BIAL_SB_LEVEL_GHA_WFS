@@ -213,7 +213,7 @@ function ChangeAWBNo_GetData() {
 
 
                 } else {
-                    errmsg = 'VCT No. does not exists.';
+                    errmsg = 'No data found.';
                     $.alert(errmsg);
                 }
             },
