@@ -232,7 +232,7 @@ function LoadNavBar() {
     else if (window.location.pathname.split("/").pop() == "IMP_WDO_Retrieval.html") {
         $('#navhdrName').html("WDO Retrieval");
     }
-    else if (window.location.pathname.split("/").pop() == "IMP_GenerateBarcode.html") {
+    else if (window.location.pathname.split("/").pop() == "EXP_GenerateBarcode.html") {
         $('#navhdrName').html("Barcode");
     }
 

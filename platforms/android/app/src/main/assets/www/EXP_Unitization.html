@@ -217,69 +217,69 @@
             <div class="panel panel-widget forms-panel form-grids widget-shadow">
                 <div class="forms">
                     <div class="form-body">
-                        <form>
-                            <div class="row form-group">
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                    <div class="col-xs-4 col-form-label">
-                                        <label for="txtFlightNo">Flight No.</label>
-                                        <font color="red">*</font>
-                                    </div>
-                                    <div class="col-xs-3 NoPadding">
-                                        <input id="txtFlightPrefix" class="form-control" type="text" maxlength="2" autofocus>
-                                    </div>
-                                    <div class="col-xs-5 NoPadding">
-                                        <input id="txtFlightNo" class="form-control" type="text" style="text-align:right;" onkeyup="ChkMaxLength(this, '5');">
-                                    </div>
+
+                        <div class="row form-group">
+                            <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                <div class="col-xs-4 col-form-label">
+                                    <label for="txtFlightNo">Flight No.</label>
+                                    <font color="red">*</font>
                                 </div>
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                    <div class="col-xs-4 col-form-label">
-                                        <label for="txtFlightDate">Flight Date</label>
-                                        <font color="red">*</font>
-                                    </div>
-                                    <div class="col-xs-8 NoPadding">
-                                        <input id="txtFlightDate" style="text-transform:none;" class="form-control"
-                                               type="text">
-                                        <!--<span class="glyphicon glyphicon-calendar" style=" cursor: pointer;
-                                        text-decoration: none; overflow: hidden;
-                                        position: absolute; pointer-events: auto; right: 0px;  z-index: 100;line-height: 1.7;">
-                                                                              </span>-->
-                                    </div>
-
-                                    <!--<div class="col-xs-2 NoPadding">
-                                        <select class="form-control" id="day"></select>
-
-                                    </div>
-                                    <div class="col-xs-3 NoPadding">
-                                        <select class="form-control" id="month"></select>
-                                    </div>
-
-                                    <div class="col-xs-3 NoPadding">
-                                        <select class="form-control" id="year"></select>
-                                    </div>-->
-                                    <div class="col-xs-4 NoPadding" style="margin-top:10px;">
-                                    </div>
-                                    <div class="col-xs-8 NoPadding" style="margin-top:10px;">
-                                        <input type="button" id="btnGet" class="form-control ButtonColor" value="Get" onclick="GetOffPointForFlight();">
-                                    </div>
+                                <div class="col-xs-3 NoPadding">
+                                    <input id="txtFlightPrefix" class="form-control" type="text" maxlength="2" autofocus>
+                                </div>
+                                <div class="col-xs-5 NoPadding">
+                                    <input id="txtFlightNo" class="form-control" type="text" style="text-align:right;" onkeyup="ChkMaxLength(this, '5');">
                                 </div>
                             </div>
-                            <div class="row form-group" style="margin-top:5px;">
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                    <div class="col-xs-4 col-form-label">
-                                        <label id="lblOffPoint">Off Point</label>
-                                        <font color="red">*</font>
-                                    </div>
-                                    <div class="col-xs-8 NoPadding">
-                                        <select class="form-control" id="ddlOffPoint" onchange="GetULDs($('#ddlOffPoint').find('option:selected').text());">
-                                            <option value="0">Select</option>
-                                        </select>
-                                    </div>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                <div class="col-xs-4 col-form-label">
+                                    <label for="txtFlightDate">Flight Date</label>
+                                    <font color="red">*</font>
                                 </div>
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                <div class="col-xs-8 NoPadding">
+                                    <input id="txtFlightDate" style="text-transform:none;" class="form-control"
+                                           type="text">
+                                    <!--<span class="glyphicon glyphicon-calendar" style=" cursor: pointer;
+                                    text-decoration: none; overflow: hidden;
+                                    position: absolute; pointer-events: auto; right: 0px;  z-index: 100;line-height: 1.7;">
+                                                                          </span>-->
+                                </div>
 
-                                    <span id="spnValMsg"></span>
+                                <!--<div class="col-xs-2 NoPadding">
+                                    <select class="form-control" id="day"></select>
+
+                                </div>
+                                <div class="col-xs-3 NoPadding">
+                                    <select class="form-control" id="month"></select>
+                                </div>
+
+                                <div class="col-xs-3 NoPadding">
+                                    <select class="form-control" id="year"></select>
+                                </div>-->
+                                <div class="col-xs-4 NoPadding" style="margin-top:10px;">
+                                </div>
+                                <div class="col-xs-8 NoPadding" style="margin-top:10px;">
+                                    <input type="button" id="btnGet" class="form-control ButtonColor" value="Get" onclick="GetOffPointForFlight();">
                                 </div>
                             </div>
+                        </div>
+                        <div class="row form-group" style="margin-top:5px;">
+                            <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                <div class="col-xs-4 col-form-label">
+                                    <label id="lblOffPoint">Off Point</label>
+                                    <font color="red">*</font>
+                                </div>
+                                <div class="col-xs-8 NoPadding">
+                                    <select class="form-control" id="ddlOffPoint" onchange="GetULDs($('#ddlOffPoint').find('option:selected').text());">
+                                        <option value="0">Select</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+
+                                <span id="spnValMsg"></span>
+                            </div>
+                        </div>
                         </form>
                     </div>
                 </div>
@@ -479,17 +479,17 @@
                     <div class="form-body">
                         <form>
                             <div class="row">
-                                <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-        <div class="col-xs-6 col-form-label" id="">
-            <div class="checkbox">
-                <label style=" font-weight: 700; font-size: small; line-height: 2;"
-                       id="lblAuto">
-                    <input onclick="AutoChkCheck();" checked id="chkAuto" type="checkbox">
-                    &nbsp;&nbsp;Auto
-                </label>
-            </div>
-        </div>
-    </div>-->
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-6 col-form-label" id="">
+                                        <div class="checkbox">
+                                            <label style=" font-weight: 700; font-size: small; line-height: 2;"
+                                                   id="lblAuto">
+                                                <input onclick="AutoChkCheck();" checked id="chkAuto" type="checkbox">
+                                                &nbsp;&nbsp;Auto
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-6 col-form-label">
                                         <label for="txtULDNo">ULD No.</label>
@@ -499,99 +499,81 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                    <!--<div class="col-xs-6 col-form-label">
-            <label for="txtScannedID">Scan ID</label>
-        </div>-->
-                                    <!--<div class="col-xs-2" style="padding-left:0px;padding-right:0px;">
-            <input id="txtAWBPrefix" class="form-control" type="number" style="text-align:right;" onkeyup="ChkMaxLength(this, '3'); countChar(this, '3');" name="textbox[]">
-        </div>-->
-                                    <!--<div class="col-xs-6" style="padding-left:0px;padding-right:0px;">
-            <input id="txtScannedID" class="form-control" type="text"
-                   style="text-align:left;"
-                   onkeyup="ChkMaxLength(this, '50'); onChangeLenthCheck();"
-                   onblur="GetShipmentInfoForAWB();" name="textbox[]">
-        </div>-->
-                                    <!--</div>-->
-                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                        <div class="col-xs-6 col-form-label">
-                                            <label for="txtAWBNo">AWB No.</label>
-                                            <font color="red">*</font>
-                                        </div>
-                                        <!--<div class="col-xs-2" style="padding-left:0px;padding-right:0px;">
-                <input id="txtAWBPrefix" class="form-control" type="number" style="text-align:right;" onkeyup="ChkMaxLength(this, '3'); countChar(this, '3');" name="textbox[]">
-            </div>-->
-                                        <div class="col-xs-6" style="padding-left:0px;padding-right:0px;">
-                                            <input id="txtAWBNo" class="form-control" type="number" style="text-align:right;"
-                                                   onkeyup="ChkMaxLength(this, '11'); onChangeLenthCheck();"
-                                                   onblur="GetShipmentInfoForAWB($('#txtAWBNo').val());" name="textbox[]">
-                                        </div>
+                                    <div class="col-xs-6 col-form-label">
+                                        <label for="txtScannedID">Scan ID</label>
                                     </div>
 
-                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                        <div class="col-xs-6 col-form-label">
-                                            <label id="lblShipmentNo">EWR No.</label>
-                                            <font color="red">*</font>
-                                        </div>
-                                        <div class="col-xs-6 NoPadding">
-                                            <select class="form-control" id="ddlShipmentNo" onchange="ChangeEWRInfo($('#ddlShipmentNo').find('option:selected').text())" style="text-align:right;">
-                                                <option value="0">Select</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                        <div class="col-xs-6 col-form-label">
-                                            <label id="lblAWBNo" for="">NOG.</label>
-                                            <!--<font color="red">*</font>-->
-                                        </div>
-                                        <div class="col-xs-6 NoPadding">
-                                            <input id="txtNOG" class="form-control" type="text" disabled>
-                                        </div>
-
-                                    </div>
-                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                        <!--<div class="col-xs-3 col-form-label">
-                <label id="lblSHCCode" for="lblSHCCode" class="control-label labelFont">
-                    SHC Code
-                </label>
-            </div>-->
-                                        <!--<div class="col-xs-1  ButtonColor" style="display: flex; justify-content: center; align-items: center;">
-                <span style="font-size: 20px;" class="glyphicon glyphicon-pencil "></span>
-            </div>-->
-
-                                        <div class="col-xs-12 NoPadding">
-                                            <table class="table" id="TextBoxDiv">
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                        <div class="col-xs-6 col-form-label">
-                                            <label id="lblUnitizedTotalPkgs" for="txtReceivedRemainingPkgs" class="control-label labelFont">Unitized/Total Pkgs</label>
-                                        </div>
-                                        <div class="col-xs-3 NoPadding">
-                                            <input type="number" style="text-align:right;" id="txtUnitizedPkgs" class="form-control" onkeyup="ChkMaxLength(this, '7');" disabled>
-                                        </div>
-                                        <div class="col-xs-3 NoPadding">
-                                            <input type="number" style="text-align:right;" id="txtTotalPkgs" class="form-control" onkeyup="ChkMaxLength(this, '7');" disabled>
-                                        </div>
+                                    <div class="col-xs-6" style="padding-left:0px;padding-right:0px;">
+                                        <input id="txtScannedID" class="form-control" type="text"
+                                               style="text-align:left;"
+                                               onkeyup="ChkMaxLength(this, '50'); onChangeLenthCheck();"
+                                               onblur="GetShipmentInfoForAWB();" name="textbox[]">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-
-                                <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-6 col-form-label">
-                                        <label id="lblShipmentNo">Shipment No.</label>
+                                        <label for="txtAWBNo">AWB No.</label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <!--<div class="col-xs-2" style="padding-left:0px;padding-right:0px;">
+                                        <input id="txtAWBPrefix" class="form-control" type="number" style="text-align:right;" onkeyup="ChkMaxLength(this, '3'); countChar(this, '3');" name="textbox[]">
+                                    </div>-->
+                                    <div class="col-xs-6" style="padding-left:0px;padding-right:0px;">
+                                        <input id="txtAWBNo" disabled class="form-control" type="number" style="text-align:right;"
+                                               onkeyup="ChkMaxLength(this, '11'); onChangeLenthCheck();"
+                                               onblur="GetShipmentInfoForAWB($('#txtAWBNo').val());" name="textbox[]">
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-6 col-form-label">
+                                        <label id="lblShipmentNo">EWR No.</label>
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <select class="form-control" id="ddlShipmentNo" onchange="changeShipmentInfo($('#ddlShipmentNo').find('option:selected').text())" style="text-align:right;">
+                                        <select class="form-control" id="ddlShipmentNo" onchange="ChangeEWRInfo($('#ddlShipmentNo').find('option:selected').text())" style="text-align:right;">
                                             <option value="0">Select</option>
                                         </select>
                                     </div>
-                                </div>-->
+                                </div>
 
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-6 col-form-label">
+                                        <label id="lblAWBNo" for="">NOG.</label>
+                                        <!--<font color="red">*</font>-->
+                                    </div>
+                                    <div class="col-xs-6 NoPadding">
+                                        <input id="txtNOG" class="form-control" type="text" disabled>
+                                    </div>
+
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <!--<div class="col-xs-3 col-form-label">
+                                        <label id="lblSHCCode" for="lblSHCCode" class="control-label labelFont">
+                                            SHC Code
+                                        </label>
+                                    </div>-->
+                                    <!--<div class="col-xs-1  ButtonColor" style="display: flex; justify-content: center; align-items: center;">
+                                        <span style="font-size: 20px;" class="glyphicon glyphicon-pencil "></span>
+                                    </div>-->
+
+                                    <div class="col-xs-12 NoPadding">
+                                        <table class="table" id="TextBoxDiv">
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-6 col-form-label">
+                                        <label id="lblUnitizedTotalPkgs" for="txtReceivedRemainingPkgs" class="control-label labelFont">Unitized/Total Pkgs</label>
+                                    </div>
+                                    <div class="col-xs-3 NoPadding">
+                                        <input type="number" style="text-align:right;" id="txtUnitizedPkgs" class="form-control" onkeyup="ChkMaxLength(this, '7');" disabled>
+                                    </div>
+                                    <div class="col-xs-3 NoPadding">
+                                        <input type="number" style="text-align:right;" id="txtTotalPkgs" class="form-control" onkeyup="ChkMaxLength(this, '7');" disabled>
+                                    </div>
+                                </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-6 col-form-label">
                                         <label for="txtPackages">Packages</label>
@@ -602,53 +584,72 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" style="display:none">
-                                    <div class="col-xs-6 col-form-label">
-                                        <label for="txtGrossWt">Gross Wt.</label>
-                                        <font color="red">*</font>
-                                    </div>
-                                    <div class="col-xs-4" style="padding-left:0px;padding-right:0px;">
-                                        <!--<input id="txtGrossWt" class="form-control" type="text" style="text-align:right;">-->
-                                        <input id="txtWeight" class="form-control" type="number" style="text-align:right;" onkeyup="ChkMaxLength(this, '7');" disabled>
-                                    </div>
-                                    <div class="col-xs-2 NoPadding">
-                                        <select class="form-control" id="ddlGrossWtUnit" disabled>
-                                            <option value="0">KG</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" style="display:none">
-                                    <div class="col-xs-6 col-form-label">
-                                        <label for="txtVolume">Volume</label>
-                                        <font color="red">*</font>
-                                    </div>
-                                    <div class="col-xs-6" style="padding-left:0px;padding-right:0px;">
-                                        <input id="txtVolume" class="form-control" type="number" style="text-align:right;" onkeyup="ChkMaxLength(this, '7');">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row" style="margin-top: 5px;">
-                                <div class="form-group col-xs-4 col-sm-4 col-md-4">
-                                    <input type="button" id="btnSave" class="form-control ButtonColor" value="Submit" onclick="SaveAWBforULDDetails();">
-                                </div>
-                                <div class="form-group col-xs-4 col-sm-4 col-md-4">
-                                    <input type="button" id="btnExit" class="form-control ButtonColor" value="Back" onclick="ShowULDGrid();">
-                                </div>
-                                <div class="form-group col-xs-4 col-sm-4 col-md-4">
-                                    <input type="button" id="btnClear" class="form-control ButtonColor" value="Clear" onclick="clearAWBDetails()">
-                                </div>
-                            </div>
-                        </form>
                     </div>
+                    <div class="row">
+
+                        <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                            <div class="col-xs-6 col-form-label">
+                                <label id="lblShipmentNo">Shipment No.</label>
+                                <font color="red">*</font>
+                            </div>
+                            <div class="col-xs-6 NoPadding">
+                                <select class="form-control" id="ddlShipmentNo" onchange="changeShipmentInfo($('#ddlShipmentNo').find('option:selected').text())" style="text-align:right;">
+                                    <option value="0">Select</option>
+                                </select>
+                            </div>
+                        </div>-->
+
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" style="display:none">
+                            <div class="col-xs-6 col-form-label">
+                                <label for="txtGrossWt">Gross Wt.</label>
+                                <font color="red">*</font>
+                            </div>
+                            <div class="col-xs-4" style="padding-left:0px;padding-right:0px;">
+                                <!--<input id="txtGrossWt" class="form-control" type="text" style="text-align:right;">-->
+                                <input id="txtWeight" class="form-control" type="number" style="text-align:right;" onkeyup="ChkMaxLength(this, '7');" disabled>
+                            </div>
+                            <div class="col-xs-2 NoPadding">
+                                <select class="form-control" id="ddlGrossWtUnit" disabled>
+                                    <option value="0">KG</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" style="display:none">
+                            <div class="col-xs-6 col-form-label">
+                                <label for="txtVolume">Volume</label>
+                                <font color="red">*</font>
+                            </div>
+                            <div class="col-xs-6" style="padding-left:0px;padding-right:0px;">
+                                <input id="txtVolume" class="form-control" type="number" style="text-align:right;" onkeyup="ChkMaxLength(this, '7');">
+                            </div>
+                        </div>
+
+                        <div class="form-group col-xs-12 col-sm-6 col-md-6">
+                            <div class="form-group col-xs-4 col-sm-4 col-md-4">
+                                <input type="button" id="btnSave" class="form-control ButtonColor" value="Submit" onclick="SaveAWBforULDDetails();">
+                            </div>
+                            <div class="form-group col-xs-4 col-sm-4 col-md-4">
+                                <input type="button" id="btnExit" class="form-control ButtonColor" value="Back" onclick="ShowULDGrid();">
+                            </div>
+                            <div class="form-group col-xs-4 col-sm-4 col-md-4">
+                                <input type="button" id="btnClear" class="form-control ButtonColor" value="Clear" onclick="clearAWBDetails()">
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
+        </div>
 
-            <div id="divAddTestLocation">
-
-            </div>
+        <div id="divAddTestLocation">
 
         </div>
+
+    </div>
     </div>
     <div>
         <footer class="footer" style="color: white; font-size :12px; background-color:#0967b0;">

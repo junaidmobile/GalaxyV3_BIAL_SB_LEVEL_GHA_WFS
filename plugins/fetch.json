@@ -48,5 +48,21 @@
     },
     "is_top_level": true,
     "variables": {}
+  },
+  "cordova-plugin-datecs-printer": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-datecs-printer"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "cordova-plugin-zebra-printer": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-zebra-printer"
+    },
+    "is_top_level": true,
+    "variables": {}
   }
 }

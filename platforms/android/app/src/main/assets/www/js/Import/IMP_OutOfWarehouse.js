@@ -155,7 +155,7 @@ function ImportAirside_Search_V3() {
                     html += '<tr>';
                     html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center">Group Id</th>';
                     html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center">Pieces</th>';
-                    html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center">Cancel</th>';
+                    html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center">Revoke</th>';
                     html += '</tr>';
                     html += '</thead>';
                     html += '<tbody>';
@@ -221,10 +221,10 @@ function VCTNoDetails(GroupId, PkgRecd, WDOStatus) {
     html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:right;padding-right: 4px;">' + PkgRecd + '</td>';
     if (WDOStatus != 'C') {
         //html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:center;color:gray;"><span class="glyphicon glyphicon-remove"></span></td>';
-        html += '<td style="font-size:14px;padding: 5px;background: rgb(224, 243, 215);" class="text-center align-middle"><button  class="btn" disabled align="center">Cancel</button></td>';
+        html += '<td style="font-size:14px;padding: 5px;background: rgb(224, 243, 215);" class="text-center align-middle"><button  class="btn" disabled align="center">Revoke</button></td>';
     } else {
         //html += '<td onclick="SaveOutforWarehouseRevoke(\'' + GroupID + '\');" style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:center;color:red;"><span class="glyphicon glyphicon-remove"></span></td>';
-        html += '<td style="font-size:14px;padding: 5px;background: rgb(224, 243, 215);" class="text-center align-middle"><button onclick="SaveOutforWarehouseRevoke(\'' + GroupId + '\');" class="btn ButtonColor" align="center">Cancel</button></td>';
+        html += '<td style="font-size:14px;padding: 5px;background: rgb(224, 243, 215);" class="text-center align-middle"><button onclick="SaveOutforWarehouseRevoke(\'' + GroupId + '\');" class="btn ButtonColor" align="center">Revoke</button></td>';
     }
 
     html += '</tr>';

@@ -167,7 +167,7 @@ function ImportAirside_Search_V3() {
 
                     if (Status == 'E') {
                         // $.alert(StrMessage).css('color', 'red');
-                        $("#errorMsg").text(StrMessage).css({ 'color': 'red' });
+                        $("#spnMsg").text(StrMessage).css({ 'color': 'red' });
                         // clearALL();
                         return true;
                     }
@@ -180,8 +180,8 @@ function ImportAirside_Search_V3() {
                     html += '<table id="tblNewsForGatePass" class="table table-striped table-bordered">';
                     html += '<thead>';
                     html += '<tr>';
-                    html += '<th style="background-color:rgb(208, 225, 244);">Gate Pass No.</th>';
-                    html += '<th style="background-color:rgb(208, 225, 244);">Document No.</th>';
+                    html += '<th style="background-color:rgb(208, 225, 244);">WDO No.</th>';
+                    html += '<th style="background-color:rgb(208, 225, 244);">AWB No.</th>';
                     html += '<th colspan="3" style="background-color:rgb(208, 225, 244);">Action</th>';
                     html += '</tr >';
                     html += '</thead >';
@@ -321,33 +321,17 @@ function clearALLBeforeSearch() {
     $('#tdTotalInvoicAmount').text('');
     $('#tdRoundOffAmount').text('');
     $('#tdFinalInvoiceAmount').text('');
-    $('#spnErrormsg').text('');
+    $('#spnMsg').text('');
     $('#btnPayTSP').attr('disabled', 'disabled');
     $('#txtRemark').val('');
 }
 
 
 function clearALL() {
-    $('#txtAWBNo').val('');
-    $('#txtAWBNo').focus();
-    $('#tdPieces').text('');
-    $('#tdGrWt').text('');
-    $('#tdChWt').text('');
-    $('#txtCommodity').val('');
-    $('#txtGSTIN').val('');
-    $('#txtAgentName').val('');
-    $('#tdPieces').text('');
-    $('#TextBoxDiv').empty();
-    $('#ddlPaymentMode').empty();
-    $('#tdAmount').text('');
-    $('#tdTexAmount').text('');
-    $('#tdTotalInvoicAmount').text('');
-    $('#tdRoundOffAmount').text('');
-    $('#tdFinalInvoiceAmount').text('');
-    $('#spnErrormsg').text('');
-    $('#btnPayTSP').attr('disabled', 'disabled');
-    $('#txtRemark').val('');
-
+    $('#txtSacnULD').val('');
+    $('#txtSacnULD').focus();
+    $('#spnMsg').text('');
+    $('#divVCTDetail').empty();
 }
 
 function clearALLafterSave() {
@@ -375,7 +359,7 @@ function clearALLafterSave() {
 
 function ImportAirside_Search_V3_OnBlure() {
     //  clearALLBeforeSearch();
-
+    $("#spnMsg").text('');
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
 
@@ -412,9 +396,13 @@ function ImportAirside_Search_V3_OnBlure() {
 
                     if (Status == 'E') {
                         // $.alert(StrMessage).css('color', 'red');
-                        $("#errorMsg").text(StrMessage).css({ 'color': 'red' });
+                        $("#spnMsg").text(StrMessage).css({ 'color': 'red' });
                         // clearALL();
                         return true;
+                    } else {
+                        if (StrMessage == 'No record found.') {
+                            $("#spnMsg").text(StrMessage).css({ 'color': 'red' });
+                        }
                     }
                 });
 

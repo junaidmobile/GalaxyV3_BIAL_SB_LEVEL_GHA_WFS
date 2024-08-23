@@ -22,6 +22,12 @@
     },
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.GMRHYD.Galaxy"
+    },
+    "cordova-plugin-datecs-printer": {
+      "PACKAGE_NAME": "com.BIAL.GalaxyV3"
+    },
+    "cordova-plugin-zebra-printer": {
+      "PACKAGE_NAME": "com.BIAL.GalaxyV3"
     }
   },
   "dependent_plugins": {}

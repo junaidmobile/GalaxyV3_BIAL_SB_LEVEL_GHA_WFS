@@ -1101,16 +1101,9 @@ function GetShipmentInfoForAWB() {
     var MAWBPrefix = $('#txtAWBNo').val().substr(0, 3);
     var MAWBNo = $('#txtAWBNo').val().substr(3, 11);
 
-    if (MAWBNo == '') {
-        return;
-    }
 
-    if (MAWBNo.length != '8') {
-        //errmsg = "Please enter valid AWB No.";
-        //$.alert(errmsg).css('color', 'red');
-        $('#spnValMsg').text("Please enter valid AWB No.").css('color', 'red');
-        return;
-    }
+
+
 
     $('#txtPackages').val('');
     $('#txtWeight').val('');
@@ -1128,24 +1121,43 @@ function GetShipmentInfoForAWB() {
 
     var getULDNo;
 
-    if (MAWBNo == '')
-        return;
 
-    if (MAWBNo != '') {
-        if (MAWBPrefix.length != '3' || MAWBNo.length != '8') {
+
+
+
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+    var isAuto;
+
+    chkAuto = document.getElementById("chkAuto").checked;
+
+    if (chkAuto == true) {
+        isAuto = 'Y';
+        if ($('#txtScannedID').val() == '') {
+            return;
+        }
+    }
+    if (chkAuto == false) {
+        isAuto = 'N';
+        if (MAWBNo == '') {
+            return;
+        }
+
+        if (MAWBNo.length != '8') {
             //errmsg = "Please enter valid AWB No.";
             //$.alert(errmsg).css('color', 'red');
             $('#spnValMsg').text("Please enter valid AWB No.").css('color', 'red');
             return;
-        } else {
-            $('#spnValMsg').text("");
         }
     }
+    if (isAuto == 'Y') {
+        var inputXML = '<Root><flightSeqNo>' + FlightSeqNo + '</flightSeqNo><Offpoint>' + $('#ddlOffPoint').find('option:selected').text() + '</Offpoint><AirportCity>' + AirportCity + '</AirportCity><AWBPrefix>' + MAWBPrefix + '</AWBPrefix><AWBNo>' + MAWBNo + '</AWBNo><ScanID>' + $('#txtScannedID').val() + '</ScanID><IsAuto>Y</IsAuto></Root>';
+    }
+    if (isAuto == 'N') {
+        var inputXML = '<Root><flightSeqNo>' + FlightSeqNo + '</flightSeqNo><Offpoint>' + $('#ddlOffPoint').find('option:selected').text() + '</Offpoint><AirportCity>' + AirportCity + '</AirportCity><AWBPrefix>' + MAWBPrefix + '</AWBPrefix><AWBNo>' + MAWBNo + '</AWBNo><ScanID></ScanID><IsAuto>N</IsAuto></Root>';
+    }
 
-    var connectionStatus = navigator.onLine ? 'online' : 'offline'
-    var errmsg = "";
-
-    var inputXML = '<Root><flightSeqNo>' + FlightSeqNo + '</flightSeqNo><Offpoint>' + $('#ddlOffPoint').find('option:selected').text() + '</Offpoint><AirportCity>' + AirportCity + '</AirportCity><AWBPrefix>' + MAWBPrefix + '</AWBPrefix><AWBNo>' + MAWBNo + '</AWBNo></Root>';
+    //var inputXML = '<Root><flightSeqNo>' + FlightSeqNo + '</flightSeqNo><Offpoint>' + $('#ddlOffPoint').find('option:selected').text() + '</Offpoint><AirportCity>' + AirportCity + '</AirportCity><AWBPrefix>' + MAWBPrefix + '</AWBPrefix><AWBNo>' + MAWBNo + '</AWBNo><ScanID></ScanID><IsAuto>Y</IsAuto></Root>';
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
@@ -1179,13 +1191,15 @@ function GetShipmentInfoForAWB() {
 
                     }
                 });
-
+                var totalPkgs;
+                var totalWeight;
                 $(xmlDoc).find('Table1').each(function (index) {
 
                     var newOption = $('<option></option>');
                     newOption.val($(this).find('EXPSHIPROWID').text()).text($(this).find('RNo').text());
                     newOption.appendTo('#ddlShipmentNo');
                     $('#txtPackages').focus();
+
                     if (index == 0) {
                         //$('#txtPackages').val($(this).find('NOP').text());
                         //$('#txtWeight').val($(this).find('WEIGHT_KG').text());
@@ -1207,6 +1221,10 @@ function GetShipmentInfoForAWB() {
                         SHCSpanHtml(newSHC);
                     }
                 });
+                chkAuto = document.getElementById("chkAuto").checked;
+                if (chkAuto == true && totalPkgs != undefined && totalWeight != undefined) {
+                    SaveAWBforULDDetails();
+                }
 
             },
             error: function (msg) {
@@ -1263,39 +1281,8 @@ function SaveAWBforULDDetails() {
 
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
-
-    //var AWBPrefix = $('#txtAWBPrefix').val();
+    var chkAuto = document.getElementById("chkAuto").checked;
     var AWBNo = $('#txtAWBNo').val();
-
-    if (AWBNo == '') {
-        //errmsg = "Please enter AWB No.";
-        //$.alert(errmsg).css('color', 'red');
-        $('#spnValMsg').text("Please enter AWB No.").css('color', 'red');
-        $('#txtAWBNo').focus();
-        return;
-    } else {
-        $('#spnValMsg').text("");
-    }
-
-    if (AWBNo.length != '11') {
-        //errmsg = "Please enter valid AWB No.";
-        //$.alert(errmsg).css('color', 'red');
-        $('#spnValMsg').text("Please enter valid AWB No.").css('color', 'red');
-        return;
-    } else {
-        $('#spnValMsg').text("");
-    }
-
-    if ($('#ddlShipmentNo').val() == null || $('#ddlShipmentNo').val() == undefined) {
-        //errmsg = "Please select EWR No.";
-        //$.alert(errmsg).css('color', 'red');
-        $('#spnValMsg').text("Please select EWR No.").css('color', 'red');
-        return;
-    } else {
-        $('#spnValMsg').text("");
-    }
-
-
 
     var ShipmentNo = $('#ddlShipmentNo').find('option:selected').text();
     var Packages = $('#txtPackages').val();
@@ -1305,6 +1292,50 @@ function SaveAWBforULDDetails() {
     var ULDNo;
     var Type;
 
+    if (chkAuto == true) {
+
+    } else {
+        if (AWBNo == '') {
+            //errmsg = "Please enter AWB No.";
+            //$.alert(errmsg).css('color', 'red');
+            $('#spnValMsg').text("Please enter AWB No.").css('color', 'red');
+            $('#txtAWBNo').focus();
+            return;
+        } else {
+            $('#spnValMsg').text("");
+        }
+
+        if (AWBNo.length != '11') {
+            //errmsg = "Please enter valid AWB No.";
+            //$.alert(errmsg).css('color', 'red');
+            $('#spnValMsg').text("Please enter valid AWB No.").css('color', 'red');
+            return;
+        } else {
+            $('#spnValMsg').text("");
+        }
+
+        if ($('#ddlShipmentNo').val() == null || $('#ddlShipmentNo').val() == undefined) {
+            //errmsg = "Please select EWR No.";
+            //$.alert(errmsg).css('color', 'red');
+            $('#spnValMsg').text("Please select EWR No.").css('color', 'red');
+            return;
+        } else {
+            $('#spnValMsg').text("");
+        }
+
+        if (Packages == '') {
+            //errmsg = "Packages enter Packages</br>";
+            //$.alert(errmsg).css('color', 'red');
+            $('#spnValMsg').text("Packages enter Packages").css('color', 'red');
+            return;
+
+        } else {
+            $('#spnValMsg').text("");
+        }
+    }
+
+    //var AWBPrefix = $('#txtAWBPrefix').val();
+   
     if (document.getElementById('rdoULD').checked) {
         Type = 'U';
         ULDNo = $('#ddlULD').find('option:selected').val();
@@ -1322,15 +1353,7 @@ function SaveAWBforULDDetails() {
 
     //}
 
-    if (Packages == '') {
-        //errmsg = "Packages enter Packages</br>";
-        //$.alert(errmsg).css('color', 'red');
-        $('#spnValMsg').text("Packages enter Packages").css('color', 'red');
-        return;
-
-    } else {
-        $('#spnValMsg').text("");
-    }
+    
 
     //if (ShipmentNo == "Select" || ShipmentNo == "") {
 
@@ -1354,7 +1377,17 @@ function SaveAWBforULDDetails() {
         var flightDate = m + "/" + d + "/" + y;
     }
 
-    var inputXML = '<Root><FlightSeqNo>' + FlightSeqNo + '</FlightSeqNo><ULDSeqNo>' + ULDNo + '</ULDSeqNo><Type>' + Type + '</Type><Offpoint>' + $('#ddlOffPoint').find('option:selected').text() + '</Offpoint><AirportCity>' + AirportCity + '</AirportCity><UserID>' + window.localStorage.getItem("UserID") + '</UserID><ULDType></ULDType><ULDNumber></ULDNumber><ULDOwner></ULDOwner><AWBId>-1</AWBId><ShipmentId>' + $('#ddlShipmentNo').find('option:selected').val() + '</ShipmentId><AWBNo>' + AWBNo + '</AWBNo><NOP>' + Packages + '</NOP><Weight>-1</Weight><Volume>-1</Volume></Root>';
+
+    if (chkAuto == true) {
+        var inputXML = '<Root><FlightSeqNo>' + FlightSeqNo + '</FlightSeqNo><ULDSeqNo>' + ULDNo + '</ULDSeqNo><Type>' + Type + '</Type><Offpoint>' + $('#ddlOffPoint').find('option:selected').text() + '</Offpoint><AirportCity>' + AirportCity + '</AirportCity><UserID>' + window.localStorage.getItem("UserID") + '</UserID><ULDType></ULDType><ULDNumber></ULDNumber><ULDOwner></ULDOwner><AWBId>-1</AWBId><ShipmentId>' + $('#ddlShipmentNo').find('option:selected').val() + '</ShipmentId><AWBNo>' + AWBNo + '</AWBNo><NOP>1</NOP><Weight>-1</Weight><Volume>-1</Volume></Root>';
+
+    } else {
+        var inputXML = '<Root><FlightSeqNo>' + FlightSeqNo + '</FlightSeqNo><ULDSeqNo>' + ULDNo + '</ULDSeqNo><Type>' + Type + '</Type><Offpoint>' + $('#ddlOffPoint').find('option:selected').text() + '</Offpoint><AirportCity>' + AirportCity + '</AirportCity><UserID>' + window.localStorage.getItem("UserID") + '</UserID><ULDType></ULDType><ULDNumber></ULDNumber><ULDOwner></ULDOwner><AWBId>-1</AWBId><ShipmentId>' + $('#ddlShipmentNo').find('option:selected').val() + '</ShipmentId><AWBNo>' + AWBNo + '</AWBNo><NOP>' + Packages + '</NOP><Weight>-1</Weight><Volume>-1</Volume></Root>';
+
+    }
+
+
+
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
@@ -1392,6 +1425,7 @@ function SaveAWBforULDDetails() {
                         $('#txtTotalPkgs').val('');
                         $('#txtPackages').val('');
                         $('#txtNOG').val('');
+                        $('#txtScannedID').val('');
                         $('#ddlShipmentNo').empty();
                         GetAWBDetailsForULD();
                         return;
@@ -1429,8 +1463,25 @@ function SaveAWBforULDDetails() {
 
 }
 
+function AutoChkCheck() {
+    chkAuto = document.getElementById("chkAuto").checked;
+    clearAWBDetails();
+    if (chkAuto == true) {
+        $('#txtAWBNo').attr('disabled', 'disabled');
+        $('#txtScannedID').removeAttr('disabled');
+        $('#txtScannedID').focus();
+    }
+
+    if (chkAuto == false) {
+        $('#txtAWBNo').removeAttr('disabled');
+        $('#txtScannedID').attr('disabled', 'disabled');
+        $('#txtAWBNo').focus();
+
+    }
+}
+
 function GetAWBDetailsForULD() {
-    $('#txtAWBNo').focus();
+    $('#txtScannedID').focus();
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
 

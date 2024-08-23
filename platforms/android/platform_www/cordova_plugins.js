@@ -72,6 +72,22 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "clobbers": [
         "navigator.splashscreen"
       ]
+    },
+    {
+      "id": "cordova-plugin-datecs-printer.DatecsPrinter",
+      "file": "plugins/cordova-plugin-datecs-printer/www/printer.js",
+      "pluginId": "cordova-plugin-datecs-printer",
+      "clobbers": [
+        "DatecsPrinter"
+      ]
+    },
+    {
+      "id": "cordova-plugin-zebra-printer.ZebraBluetoothPrinter",
+      "file": "plugins/cordova-plugin-zebra-printer/www/zbtprinter.js",
+      "pluginId": "cordova-plugin-zebra-printer",
+      "clobbers": [
+        "cordova.plugins.zbtprinter"
+      ]
     }
   ];
   module.exports.metadata = {
@@ -79,6 +95,8 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova-plugin-dialogs": "1.3.0",
     "cordova-plugin-network-information": "1.3.0",
     "cordova-plugin-splashscreen": "4.0.0",
-    "cordova-plugin-whitelist": "1.3.4"
+    "cordova-plugin-whitelist": "1.3.4",
+    "cordova-plugin-datecs-printer": "0.10.0",
+    "cordova-plugin-zebra-printer": "2.0.1"
   };
 });

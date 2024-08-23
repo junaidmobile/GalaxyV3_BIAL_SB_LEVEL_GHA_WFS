@@ -120,6 +120,13 @@ $(function () {
                     AutoTSP = $(this).find('AutoTSP').text();
                     AcceptanceLevel = $(this).find('AcceptanceLevel').text();
                     CompleteAcceptance = $(this).find('CompleteAcceptance').text();
+
+                    if (remPCS == '0') {
+                        $('#btnSubmit').attr('disabled', 'disabled');
+                    } else {
+                        $('#btnSubmit').removeAttr('disabled');
+                    }
+
                     if (AcceptanceLevel == 'S') {
                         $('#txtSBNo').removeAttr('disabled');
                         $('#txtHAWB').removeAttr('disabled');
@@ -983,7 +990,7 @@ function GetVCTUnScannedDetails_v3(VCTNo) {
                         $('#ddlAWBNo').trigger('change');
                     }
 
-                   
+
 
 
 
@@ -1625,7 +1632,7 @@ function SaveCompleteAcceptance() {
     // var txtGroupId = $('#txtGroupId').val();
     var AWBPrefix = $("#ddlAWBNo option:selected").text().slice(0, 3);
     var AWBNo = $("#ddlAWBNo option:selected").text().slice(3, 11);
-    var InputXML = '<Root><AWBPrefix>' + AWBPrefix + '</AWBPrefix><AWBNo>' + AWBNo + '</AWBNo><HouseNo>' + $('#txtHAWB').val() + '</HouseNo><SBNo>' + $('#txtSBNo').val() + '</SBNo><AirportCity>' + AirportCity + '</AirportCity><UserId>' + UserId + '</UserId><CompanyId>' + companyCode + '</CompanyId><AutoTSP>' + AutoTSP + '</AutoTSP></Root>';
+    var InputXML = '<Root><AWBPrefix>' + AWBPrefix + '</AWBPrefix><AWBNo>' + AWBNo + '</AWBNo><HouseNo>' + $('#txtHAWB').val() + '</HouseNo><SBNo>' + $('#txtSBNo').val() + '</SBNo><AirportCity>' + AirportCity + '</AirportCity><UserId>' + UserId + '</UserId><CompanyId>' + companyCode + '</CompanyId><AutoTSP>' + AutoTSP + '</AutoTSP><ConsignmentRowid>' + ConsignmentRowIDForSave + '</ConsignmentRowid></Root>';
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
@@ -1659,8 +1666,12 @@ function SaveCompleteAcceptance() {
                         // clearALL();
                         return true;
                     } else {
-                        $("#spnMsg").text(SM).css({ 'color': 'green' });
+                        // $("#spnMsg").text(SM).css({ 'color': 'green' });
                         // $("#spnMsg").text('');
+                        $.alert(SM).css({ 'color': 'green' });
+                        _xmlDocTable = '';
+                        clearALL();
+                        GetVCTUnScannedDetails_v3(VCTNo);
                     }
                 });
 

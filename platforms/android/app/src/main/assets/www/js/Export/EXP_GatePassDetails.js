@@ -244,7 +244,7 @@ function ExportAirside_Search_V3_Onblur() {
                 if (response != null && response != "") {
 
                     html = '';
-                    html += "  <table border='1' style='width:100%;table-layout:fixed;word-break:break-word;border-color: white;margin-top: 2%;'>";
+                    html += "<table border='1' style='width:100%;table-layout:fixed;word-break:break-word;border-color: white;margin-top: 2%;'>";
                     html += '<thead>';
                     html += "'<tr>";
                     html += "<th style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px'>No of Containers</th>";
@@ -562,7 +562,7 @@ function ExportAirside_SignUpload_V3_1() {
     signitureData = canvas.toDataURL("image/jpeg");
     str = signitureData;
     signitureDataURL = str.substring(23);
-
+  
     var InputXML = '<Root><BinaryImage>' + signitureDataURL + '</BinaryImage><DesigType>C</DesigType><GpNo>' + PermitNo + '</GpNo><FlightSeqNo>' + flSq + '</FlightSeqNo><ULDSeqNo>' + uldSq + '</ULDSeqNo><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode><UserId>' + UserID + '</UserId></Root>';
 
     if (errmsg == "" && connectionStatus == "online") {
@@ -593,12 +593,13 @@ function ExportAirside_SignUpload_V3_1() {
 
                     if (Status == 'E') {
                         //  $.alert(StrMessage).css('color', 'red');
-                        $("#showMsg1").text(StrMessage).css({ 'color': 'red' });
+                        $("#spnErrormsg").text(StrMessage).css({ 'color': 'red' });
                         // clearALL();
                         return true;
                     } else {
-                        $("#showMsg1").text(StrMessage).css({ 'color': 'green' });
-                       // $("#txtCustomerName").val('');
+                        $("#spnErrormsg").text(StrMessage).css({ 'color': 'green' });
+                        // $("#txtCustomerName").val('');
+                       
                         signaturePad.clear();
                     }
                 });
@@ -625,58 +626,6 @@ function ExportAirside_SignUpload_V3_1() {
     }
 }
 
-//1
-var canvas = document.getElementById('signature-pad');
-
-var signaturePad = new SignaturePad(canvas, {
-    backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
-});
-
-var canvas_1 = document.getElementById('sig_1');
-
-var signaturePad_1 = new SignaturePad(canvas_1, {
-    backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
-});
-
-var canvas_2 = document.getElementById('sig_2');
-
-var signaturePad_2 = new SignaturePad(canvas_2, {
-    backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
-});
-
-
-function resizeCanvas() {
-    var cachedWidth;
-    var cachedImage;
-
-    if (canvas.offsetWidth !== cachedWidth) { //add
-        if (typeof signaturePad != 'undefined') { // add
-            cachedImage = signaturePad.toDataURL("image/png");
-        }
-        cachedWidth = canvas.offsetWidth;   //add
-        // When zoomed out to less than 100%, for some very strange reason,
-        // some browsers report devicePixelRatio as less than 1
-        // and only part of the canvas is cleared then.
-        var ratio = Math.max(window.devicePixelRatio || 1, 1);
-        canvas.width = canvas.offsetWidth * ratio;
-        canvas.height = canvas.offsetHeight * ratio;
-        canvas.getContext("2d").scale(ratio, ratio);
-        if (typeof signaturePad != 'undefined') {
-            // signaturePad.clear(); // remove
-            signaturePad.fromDataURL(cachedImage); // add
-        }
-    }
-}
-
-window.addEventListener("resize", resizeCanvas);
-resizeCanvas();
-
-var signaturePad = new SignaturePad(canvas, {
-    backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
-});
-
-
-
 
 
 
@@ -694,6 +643,108 @@ function ExportAirside_SignUpload_V3_2() {
     //}
 
     //if ($("#txtSecuirty").val() == "") {
+    //    $("#showMsg2").text('Please enter Security name and signature.').css({ 'color': 'red' });
+    //    return
+    //} else {
+    //    $("#showMsg2").text('');
+    //}
+
+    //if (signaturePad_1.isEmpty()) {
+    //    $("#showMsg2").text('Signature is mandatory.').css({ 'color': 'red' });
+    //    return;
+    //    //  signitureDataURL = '';
+    //} else {
+    //    $("#showMsg2").text('');
+    //}
+
+    canvas = document.getElementById('sig_2');
+    asd = canvas.toDataURL("image/jpeg");
+    str = asd;
+    signitureDataURL = str.substring(23);
+
+    var InputXML = '<Root><DesigType>A</DesigType><BinaryImage>' + signitureDataURL + '</BinaryImage><DesigType>A</DesigType><GpNo>' + PermitNo + '</GpNo><FlightSeqNo>' + flSq + '</FlightSeqNo><ULDSeqNo>' + uldSq + '</ULDSeqNo><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode><UserId>' + UserID + '</UserId></Root>';
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "ExportAirside_SignUpload_V3",
+            data: JSON.stringify({ 'InputXML': InputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                str = response;
+                console.log(xmlDoc);
+
+                var flag = '0';
+                $(xmlDoc).find('Table').each(function () {
+
+                    var Status = $(this).find('Status').text();
+                    var StrMessage = $(this).find('StrMessage').text();
+
+                    if (Status == 'E') {
+                        //  $.alert(StrMessage).css('color', 'red');
+                        $("#spnErrormsg").text(StrMessage).css({ 'color': 'red' });
+                        // clearALL();
+                        return true;
+                    } else {
+                        $("#spnErrormsg").text(StrMessage).css({ 'color': 'green' });
+                        // $("#txtSecuirty").val('');
+                        signaturePad_2.clear();
+                        
+                    }
+                });
+
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}
+
+
+
+
+
+
+
+function ExportAirside_SignUpload_V3_3() {
+
+    var arr = flSeqID.split('~')
+    var flSq = arr[0];
+    var uldSq = arr[1];
+    _ulddSQ = flSq;
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    //if ($("#txtAirline").val() == "") {
+    //    return
+    //}
+
+    //if ($("#txtAirline").val() == "") {
     //    $("#showMsg2").text('Please enter Security name and signature.').css({ 'color': 'red' });
     //    return
     //} else {
@@ -743,140 +794,13 @@ function ExportAirside_SignUpload_V3_2() {
 
                     if (Status == 'E') {
                         //  $.alert(StrMessage).css('color', 'red');
-                        $("#showMsg2").text(StrMessage).css({ 'color': 'red' });
+                        $("#spnErrormsg").text(StrMessage).css({ 'color': 'red' });
                         // clearALL();
                         return true;
                     } else {
-                        $("#showMsg2").text(StrMessage).css({ 'color': 'green' });
-                       // $("#txtSecuirty").val('');
-                        signaturePad_1.clear();
-                    }
-                });
-
-            },
-            error: function (msg) {
-                //debugger;
-                $("body").mLoading('hide');
-                var r = jQuery.parseJSON(msg.responseText);
-                $.alert(r.Message);
-            }
-        });
-    }
-    else if (connectionStatus == "offline") {
-        $("body").mLoading('hide');
-        $.alert('No Internet Connection!');
-    }
-    else if (errmsg != "") {
-        $("body").mLoading('hide');
-        $.alert(errmsg);
-    }
-    else {
-        $("body").mLoading('hide');
-    }
-}
-
-function resizeCanvas_1() {
-    var cachedWidth;
-    var cachedImage;
-
-    if (canvas.offsetWidth !== cachedWidth) { //add
-        if (typeof signaturePad_1 != 'undefined') { // add
-            cachedImage = signaturePad_1.toDataURL("image/png");
-        }
-        cachedWidth = canvas.offsetWidth;   //add
-        // When zoomed out to less than 100%, for some very strange reason,
-        // some browsers report devicePixelRatio as less than 1
-        // and only part of the canvas is cleared then.
-        var ratio = Math.max(window.devicePixelRatio || 1, 1);
-        canvas.width = canvas.offsetWidth * ratio;
-        canvas.height = canvas.offsetHeight * ratio;
-        canvas.getContext("2d").scale(ratio, ratio);
-        if (typeof signaturePad_1 != 'undefined') {
-            // signaturePad.clear(); // remove
-            signaturePad_1.fromDataURL(cachedImage); // add
-        }
-    }
-}
-
-window.addEventListener("resize", resizeCanvas_1);
-resizeCanvas_1();
-
-var signaturePad_1 = new SignaturePad(canvas, {
-    backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
-});
-
-
-
-function ExportAirside_SignUpload_V3_3() {
-
-    var arr = flSeqID.split('~')
-    var flSq = arr[0];
-    var uldSq = arr[1];
-    _ulddSQ = flSq;
-    var connectionStatus = navigator.onLine ? 'online' : 'offline'
-    var errmsg = "";
-
-    //if ($("#txtAirline").val() == "") {
-    //    return
-    //}
-
-    //if ($("#txtAirline").val() == "") {
-    //    $("#showMsg2").text('Please enter Security name and signature.').css({ 'color': 'red' });
-    //    return
-    //} else {
-    //    $("#showMsg2").text('');
-    //}
-
-    //if (signaturePad_1.isEmpty()) {
-    //    $("#showMsg2").text('Signature is mandatory.').css({ 'color': 'red' });
-    //    return;
-    //    //  signitureDataURL = '';
-    //} else {
-    //    $("#showMsg2").text('');
-    //}
-
-    canvas = document.getElementById('sig_3');
-    signitureData = canvas.toDataURL("image/jpeg");
-    str = signitureData;
-    signitureDataURL = str.substring(23);
-
-    var InputXML = '<Root><BinaryImage>' + signitureDataURL + '</BinaryImage><DesigType>S</DesigType><GpNo>' + PermitNo + '</GpNo><FlightSeqNo>' + flSq + '</FlightSeqNo><ULDSeqNo>' + uldSq + '</ULDSeqNo><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode><UserId>' + UserID + '</UserId></Root>';
-
-    if (errmsg == "" && connectionStatus == "online") {
-        $.ajax({
-            type: 'POST',
-            url: GHAExportFlightserviceURL + "ExportAirside_SignUpload_V3",
-            data: JSON.stringify({ 'InputXML': InputXML }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            beforeSend: function doStuff() {
-                $('body').mLoading({
-                    text: "Loading..",
-                });
-            },
-            success: function (response) {
-                //debugger;
-                $("body").mLoading('hide');
-                response = response.d;
-                var xmlDoc = $.parseXML(response);
-                str = response;
-                console.log(xmlDoc);
-
-                var flag = '0';
-                $(xmlDoc).find('Table').each(function () {
-
-                    var Status = $(this).find('Status').text();
-                    var StrMessage = $(this).find('StrMessage').text();
-
-                    if (Status == 'E') {
-                        //  $.alert(StrMessage).css('color', 'red');
-                        $("#showMsg2").text(StrMessage).css({ 'color': 'red' });
-                        // clearALL();
-                        return true;
-                    } else {
-                        $("#showMsg2").text(StrMessage).css({ 'color': 'green' });
+                        $("#spnErrormsg").text(StrMessage).css({ 'color': 'green' });
                       //  $("#txtAirline").val('');
-                        // signaturePad.clear();
+                        signaturePad_1.clear();
                     }
                 });
 
@@ -1009,6 +933,81 @@ function ReleaseULDBulk() {
     }
 
 }
+
+
+
+//1
+var canvas = document.getElementById('signature-pad');
+
+var signaturePad = new SignaturePad(canvas, {
+    backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
+});
+
+var canvas_1 = document.getElementById('sig_1');
+
+var signaturePad_1 = new SignaturePad(canvas_1, {
+    backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
+});
+
+var canvas_2 = document.getElementById('sig_2');
+
+var signaturePad_2 = new SignaturePad(canvas_2, {
+    backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
+});
+
+
+function resizeCanvas() {
+    var cachedWidth;
+    var cachedImage;
+
+    if (canvas.offsetWidth !== cachedWidth) { //add
+        if (typeof signaturePad != 'undefined') { // add
+            cachedImage = signaturePad.toDataURL("image/png");
+        }
+        cachedWidth = canvas.offsetWidth;   //add
+        // When zoomed out to less than 100%, for some very strange reason,
+        // some browsers report devicePixelRatio as less than 1
+        // and only part of the canvas is cleared then.
+        var ratio = Math.max(window.devicePixelRatio || 1, 1);
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        canvas.getContext("2d").scale(ratio, ratio);
+        if (typeof signaturePad != 'undefined') {
+            // signaturePad.clear(); // remove
+            signaturePad.fromDataURL(cachedImage); // add
+        }
+    }
+}
+
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+
+function resizeCanvas_1() {
+    var cachedWidth;
+    var cachedImage;
+
+    if (canvas.offsetWidth !== cachedWidth) { //add
+        if (typeof signaturePad_1 != 'undefined') { // add
+            cachedImage = signaturePad_1.toDataURL("image/png");
+        }
+        cachedWidth = canvas.offsetWidth;   //add
+        // When zoomed out to less than 100%, for some very strange reason,
+        // some browsers report devicePixelRatio as less than 1
+        // and only part of the canvas is cleared then.
+        var ratio = Math.max(window.devicePixelRatio || 1, 1);
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        canvas.getContext("2d").scale(ratio, ratio);
+        if (typeof signaturePad_1 != 'undefined') {
+            // signaturePad.clear(); // remove
+            signaturePad_1.fromDataURL(cachedImage); // add
+        }
+    }
+}
+
+window.addEventListener("resize", resizeCanvas_1);
+resizeCanvas_1();
 
 
 

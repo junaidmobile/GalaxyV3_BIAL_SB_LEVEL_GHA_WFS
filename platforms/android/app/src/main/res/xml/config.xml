@@ -17,6 +17,12 @@
         <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="DatecsPrinter">
+        <param name="android-package" value="com.giorgiofellipe.datecsprinter.DatecsPrinter" />
+    </feature>
+    <feature name="ZebraBluetoothPrinter">
+        <param name="android-package" value="com.github.diegorquera.zbtprinter.ZebraBluetoothPrinter" />
+    </feature>
     <name>
     GALAXYAPP V3
   </name>

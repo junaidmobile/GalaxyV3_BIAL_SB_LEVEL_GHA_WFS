@@ -287,8 +287,8 @@
                                         <td>
                                             <em style="font-size: 11px;"> Name and Sign of Customer Staff</em>
                                             <!--<input id="txtCustomerName" style="width:50%;"
-                                                   class="form-control" type="text"
-                                                   onkeyup="ChkMaxLength(this, '20');" maxlength="20">-->
+                                            class="form-control" type="text"
+                                            onkeyup="ChkMaxLength(this, '20');" maxlength="20">-->
                                         </td>
 
                                     </tr>
@@ -308,10 +308,7 @@
                                             <button type="button" style="margin-top: 1em; margin-left: 55px;" onclick="ExportAirside_SignUpload_V3_1();"> <span class="	glyphicon glyphicon-floppy-disk"></span></button>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td id="showMsg1">
-                                        </td>
-                                    </tr>
+
 
                                     <tr>
                                         <td>
@@ -362,7 +359,7 @@
                                     <tr>
 
                                         <td>
-                                            <div class="wrapper col-xs-6 col-sm-6 col-md-6 rapro" style="">
+                                            <div id="Divsignature-pad" class="wrapper col-xs-6 col-sm-6 col-md-6 rapro" style="">
                                                 <canvas id="sig_2" class="signature-pad col-xs-12"></canvas>
                                             </div>
                                         </td>
@@ -376,19 +373,14 @@
 
                                         </td>
                                     </tr>
-                                    <tr>
 
-                                        <td id="showMsg2">
-                                        </td>
-                                    </tr>
                                 </table>
 
                             </div>
 
-                            <div class="row form-group">
-                                <span id="spnErrormsg"></span>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-6">
+                                <span style="font-size: 1.5em;" id="spnErrormsg"></span>
                             </div>
-
 
                             <div class="form-group col-xs-6 col-sm-6 col-md-6" style="margin-top:15px">
                                 <input type="button" id="btnExcLanded" class="form-control ButtonColor" value="Exit" onclick="window.location.href = 'EXP_AirsideRelease_Search.html'">
@@ -398,6 +390,8 @@
                             </div>
 
                         </div>
+
+
                     </div>
                 </div>
             </div>

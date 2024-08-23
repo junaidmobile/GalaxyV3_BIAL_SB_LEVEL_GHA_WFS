@@ -27,6 +27,14 @@
             {
               "xml": "<feature name=\"Whitelist\"><param name=\"android-package\" value=\"org.apache.cordova.whitelist.WhitelistPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
               "count": 1
+            },
+            {
+              "xml": "<feature name=\"DatecsPrinter\"><param name=\"android-package\" value=\"com.giorgiofellipe.datecsprinter.DatecsPrinter\" /></feature>",
+              "count": 1
+            },
+            {
+              "xml": "<feature name=\"ZebraBluetoothPrinter\"><param name=\"android-package\" value=\"com.github.diegorquera.zbtprinter.ZebraBluetoothPrinter\" /></feature>",
+              "count": 1
             }
           ]
         }
@@ -40,6 +48,18 @@
             },
             {
               "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
+              "count": 1
+            },
+            {
+              "xml": "<uses-permission android:name=\"android.permission.BLUETOOTH\" />",
+              "count": 2
+            },
+            {
+              "xml": "<uses-permission android:name=\"android.permission.BLUETOOTH_ADMIN\" />",
+              "count": 2
+            },
+            {
+              "xml": "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\" />",
               "count": 1
             }
           ],
@@ -55,7 +75,7 @@
         "parents": {
           "/manifest/application": [
             {
-              "xml": "<application android:usesCleartextTraffic=\"true\" />",
+              "xml": "<application android:networkSecurityConfig=\"@xml/network_security_config\" />",
               "count": 2,
               "mode": "merge",
               "id": "config.xml",
@@ -69,7 +89,7 @@
               }
             },
             {
-              "xml": "<application android:networkSecurityConfig=\"@xml/network_security_config\" />",
+              "xml": "<application android:usesCleartextTraffic=\"true\" />",
               "count": 1,
               "mode": "merge",
               "id": "config.xml",
@@ -81,6 +101,120 @@
                 "android:supportsRtl": "true",
                 "android:usesCleartextTraffic": "true"
               }
+            }
+          ]
+        }
+      },
+      "res/values/strings.xml": {
+        "parents": {
+          "/resources": [
+            {
+              "xml": "<string name=\"connecting\">Connecting...</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"err_disconnect_printer\">Error disconnecting printer</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"err_fetch_st\">Error fetching status</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"err_fetch_tmp\">Error fetching temperature</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"err_lines_number\">The number of lines must be between 0 and 255</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"err_no_bt_adapter\">Bluetooth adapter not available</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"err_no_bt_device\">No Bluetooth device found</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"err_feed_paper\">Error feeding paper to the printer</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"err_print\">Error printing</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"err_print_barcode\">Error printing barcode</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"err_print_img\">Error printing image</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"err_print_rect\">Error printing rectangle</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"err_print_test\">Error printing test page</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"err_set_barcode\">Error setting barcode settings</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"err_bt_socket\">Could not create Bluetooth socket</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"failed_to_connect\">Failed to connect: </string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"failed_to_comm\">Failed to create communication</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"failed_to_initialize\">Failed to initialize: </string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"low_battery\">Low battery</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"no_paper\">No paper</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"overheating\">Overheating</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"paper_ok\">Paper ok</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"printer\">Printer</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"printer_connected\">Printer connected</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"printer_disconnected\">Printer disconnected</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"err_write\">Could not write these bytes to this printer</string>",
+              "count": 1
+            },
+            {
+              "xml": "<string name=\"err_print_qrcode\">Error printing QRcode</string>",
+              "count": 1
             }
           ]
         }
@@ -103,6 +237,12 @@
     },
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.GMRHYD.Galaxy"
+    },
+    "cordova-plugin-datecs-printer": {
+      "PACKAGE_NAME": "com.BIAL.GalaxyV3"
+    },
+    "cordova-plugin-zebra-printer": {
+      "PACKAGE_NAME": "com.BIAL.GalaxyV3"
     }
   },
   "dependent_plugins": {},
@@ -179,6 +319,22 @@
       "clobbers": [
         "navigator.splashscreen"
       ]
+    },
+    {
+      "id": "cordova-plugin-datecs-printer.DatecsPrinter",
+      "file": "plugins/cordova-plugin-datecs-printer/www/printer.js",
+      "pluginId": "cordova-plugin-datecs-printer",
+      "clobbers": [
+        "DatecsPrinter"
+      ]
+    },
+    {
+      "id": "cordova-plugin-zebra-printer.ZebraBluetoothPrinter",
+      "file": "plugins/cordova-plugin-zebra-printer/www/zbtprinter.js",
+      "pluginId": "cordova-plugin-zebra-printer",
+      "clobbers": [
+        "cordova.plugins.zbtprinter"
+      ]
     }
   ],
   "plugin_metadata": {
@@ -186,6 +342,8 @@
     "cordova-plugin-dialogs": "1.3.0",
     "cordova-plugin-network-information": "1.3.0",
     "cordova-plugin-splashscreen": "4.0.0",
-    "cordova-plugin-whitelist": "1.3.4"
+    "cordova-plugin-whitelist": "1.3.4",
+    "cordova-plugin-datecs-printer": "0.10.0",
+    "cordova-plugin-zebra-printer": "2.0.1"
   }
 }

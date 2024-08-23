@@ -37,7 +37,7 @@ $(function () {
     if (window.localStorage.getItem("RoleIMPBinning") == '0') {
         window.location.href = 'IMP_Dashboard.html';
     }
-   
+    
     
     // ImportDataList();
 
@@ -128,7 +128,7 @@ function CalculateTSP() {
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: 'POST',
-            url: GHAExportFlightserviceURL + "CalculateTSP",
+            url: GHAImportFlightserviceURL + "CalculateImportTSPDetails",
             data: JSON.stringify({ 'InputXML': InputXML }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -225,14 +225,16 @@ function CalculateTSP() {
                     DueDate = $(this).find('DueDate').text();
                     ShipperId = $(this).find('ShipperId').text();
                     PaymentMode = $(this).find('PaymentMode').text();
-
+                    TaxId = $(this).find('TaxId').text();
+                    
                     $("#tdPieces").text(Pieces);
                     $("#tdGrWt").text(GrossWeight);
                     $("#tdChWt").text(ChargebleWeight);
                     $("#txtAgentName").val(Agent);
                     $("#txtCommodity").val(Commodity);
                     $("#ddlPaymentMode").val(PaymentMode);
-
+                    $("#txtGSTIN").val(TaxId);
+                    
                     SHCSpanHtml(SHC);
                 });
             },
@@ -282,7 +284,7 @@ function PayTSP() {
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: "POST",
-            url: GHAExportFlightserviceURL + "PayTSP",
+            url: GHAImportFlightserviceURL + "PayImportTSP",
             data: JSON.stringify({ 'InputXML': InputXML }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",

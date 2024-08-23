@@ -24,6 +24,12 @@
     },
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "GMR HYD INT"
+    },
+    "cordova-plugin-datecs-printer": {
+      "PACKAGE_NAME": "MABB"
+    },
+    "cordova-plugin-zebra-printer": {
+      "PACKAGE_NAME": "MABB"
     }
   },
   "dependent_plugins": {}
