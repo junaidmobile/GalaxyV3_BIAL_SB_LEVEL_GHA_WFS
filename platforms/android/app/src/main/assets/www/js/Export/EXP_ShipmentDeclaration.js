@@ -46,6 +46,9 @@ var _xmlDocTable;
 var shipperCode = [];
 var consigneeCode = [];
 var agentCode = [];
+var commodiyCode = [];
+var ppcs = '';
+var passCommoId = '';
 $(function () {
 
     if (window.localStorage.getItem("RoleIMPBinning") == '0') {
@@ -70,8 +73,8 @@ $(function () {
     getAgentList();
     getShiperList();
     getConsigneeList();
-
-
+    GetCommodityDataV3();
+    
     //$("input").keyup(function () {
     //    var string = $(this).val();
     //    // var string = $('#txtOrigin').val();
@@ -88,7 +91,7 @@ $(function () {
     $("input").keyup(function () {
         var string = $(this).val();
         // var string = $('#txtOrigin').val();
-        if (string.match(/[`!₹£•√Π÷×§∆€¥¢©®™✓π@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
+        if (string.match(/[`!₹£•√Π÷×§∆€¥¢©®™✓π@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?~]/)) {
             /*$('#txtOrigin').val('');*/
             $(this).val('');
             return true;    // Contains at least one special character or space
@@ -97,7 +100,7 @@ $(function () {
         }
 
     });
-
+    // $("#txtCommodity").select2();
 
 });
 
@@ -269,7 +272,7 @@ function GetAWBDetailSearch_V3() {
                 $('#AllMsg').text('');
 
                 flightAirNoLists = [];
-                console.log(xmlDoc);
+                // console.log(xmlDoc);
                 var Status;
                 var flagforcheck2 = '0';
                 var StrMessage;
@@ -315,11 +318,15 @@ function GetAWBDetailSearch_V3() {
                     var ShipperShortCode = $(this).find('ShipperShortCode').text();
                     var ConsigneeShortCode = $(this).find('ConsigneeShortCode').text();
                     var AgentShortCode = $(this).find('AgentShortCode').text();
+                    var Commodity = $(this).find('CommSearchCode').text();
+                    var CommodityDesc = $(this).find('Description').text();
+                    ppcs = Pieces;
                     if (Pieces != '') {
                         $('#txtPieces').val(Pieces).css('text-align', 'right').attr('disabled', 'disabled');
                         $('#txtGrWt').val(Weight).css('text-align', 'right').attr('disabled', 'disabled');
                         $('#txtCharWt').val(ChargeableWt).css('text-align', 'right').attr('disabled', 'disabled');
                         $('#txtVolume').val(Volume).css('text-align', 'right').attr('disabled', 'disabled');
+                        $('#txtCommodity').val(CommodityDesc).css('text-align', 'left').attr('disabled', 'disabled');
 
 
                         //$('#txtPieces').val(Pieces).css('text-align', 'right');
@@ -362,6 +369,8 @@ function GetAWBDetailSearch_V3() {
                         $('#txtGrWt').removeAttr('disabled', 'disabled');
                         $('#txtCharWt').removeAttr('disabled', 'disabled');
                         $('#txtVolume').removeAttr('disabled', 'disabled');
+                        $('#txtCommodity').val('').removeAttr('disabled');
+
                     }
 
                 });
@@ -459,6 +468,10 @@ function GetAWBDetailSearch_V3() {
     }
 }
 
+function onChangeComm(commID) {
+    passCommoId = commID;
+}
+
 
 function GetAWBDetailSearch_V3_onChangeFlight(FlightAirlineNo) {
 
@@ -500,7 +513,8 @@ function GetAWBDetailSearch_V3_onChangeFlight(FlightAirlineNo) {
 
                 var xmlDoc = $.parseXML(response);
 
-                console.log(xmlDoc);
+
+                // console.log(xmlDoc);
                 var Status;
                 $(xmlDoc).find('Table').each(function () {
                     Status = $(this).find('Status').text();
@@ -526,8 +540,8 @@ function GetAWBDetailSearch_V3_onChangeFlight(FlightAirlineNo) {
                     $('#txtDestination').val(Destination);
                 });
 
-                if (checkingStatus == 'E') {
-                    $('#txtPieces').focus();
+                if (ppcs == '') {
+                    $('#txtCommodity').focus();
                 } else {
                     $('#txtShipperPrifix').focus();
                 }
@@ -609,7 +623,7 @@ function Shipper_GetShipperConsigneeWithShortCode_V3() {
                 $("body").mLoading('hide');
                 response = response.d;
                 var xmlDoc = $.parseXML(response);
-                console.log(xmlDoc);
+                // console.log(xmlDoc);
                 $('#ddlShipper').empty();
                 shipperLists = [];
                 $(xmlDoc).find('Table').each(function () {
@@ -742,7 +756,7 @@ function Consignee_GetShipperConsigneeWithShortCode_V3() {
                 $("body").mLoading('hide');
                 response = response.d;
                 var xmlDoc = $.parseXML(response);
-                console.log(xmlDoc);
+                // console.log(xmlDoc);
                 $('#ddlConsignee').empty();
                 ConsigneeLists = [];
                 $(xmlDoc).find('Table').each(function () {
@@ -858,7 +872,7 @@ function AgentName_GetShipperConsigneeWithShortCode_V3() {
                 $("body").mLoading('hide');
                 response = response.d;
                 var xmlDoc = $.parseXML(response);
-                console.log(xmlDoc);
+                //  console.log(xmlDoc);
                 $('#ddlAgentName').empty();
                 AgentNameLists = [];
                 $(xmlDoc).find('Table').each(function () {
@@ -971,7 +985,7 @@ function getAgentList() {
                 $("body").mLoading('hide');
                 response = response.d;
                 var xmlDoc = $.parseXML(response);
-                console.log(xmlDoc);
+                //  console.log(xmlDoc);
                 _xmlDocTableAgentName = xmlDoc;
                 $('#ddlAgentName').empty();
                 A_List = [];
@@ -1002,7 +1016,7 @@ function getAgentList() {
                     newOption.appendTo('#ddlAgentName');
                     A_List.push({ 'value': Id, 'label': Name });
                     agentCode.push({ 'value': Id, 'label': ShortCode });
-                    console.log('AgentNameLists ==> ' + Name)
+                    // console.log('AgentNameLists ==> ' + Name)
 
                 });
 
@@ -1127,7 +1141,7 @@ function getShiperList() {
                 $("body").mLoading('hide');
                 response = response.d;
                 var xmlDoc = $.parseXML(response);
-                console.log(xmlDoc);
+                // console.log(xmlDoc);
                 _xmlDocTable = xmlDoc;
                 $('#ddlShipper').empty();
                 S_List = [];
@@ -1163,7 +1177,7 @@ function getShiperList() {
                     S_List.push({ 'value': Id, 'label': Name });
                     shipperCode.push({ 'value': Id, 'label': ShortCode });
 
-                    console.log('Shipper ==> ' + Name);
+                    //console.log('Shipper ==> ' + Name);
 
                     if (selectedShpper != '') {
                         //TODO :Change selectedRowHAWBNo to  $("#hawbLists").val()
@@ -1298,7 +1312,7 @@ function getConsigneeList() {
                 $("body").mLoading('hide');
                 response = response.d;
                 var xmlDoc = $.parseXML(response);
-                console.log(xmlDoc);
+                // console.log(xmlDoc);
                 _xmlDocTableConsignee = xmlDoc;
                 $('#ddlConsignee').empty();
                 ConsigneeLists = [];
@@ -1330,7 +1344,7 @@ function getConsigneeList() {
                     C_List.push({ 'value': Id, 'label': Name });
                     consigneeCode.push({ 'value': Id, 'label': ShortCode });
 
-                    console.log('consigneeCode ==> ' + ShortCode)
+                    // console.log('consigneeCode ==> ' + ShortCode)
                 });
 
 
@@ -1453,6 +1467,13 @@ function GetAWBDetailSave_V3() {
         $("#AllMsg").text('');
     }
 
+    if ($('#txtCommodity').val() == "") {
+        $("#AllMsg").text('Please enter all mandatory fields marked with an asterisk (*)').css({ 'color': 'red' });
+        return;
+    } else {
+        $("#AllMsg").text('');
+    }
+
     if ($('#txtPieces').val() == "") {
         $("#AllMsg").text('Please enter all mandatory fields marked with an asterisk (*)').css({ 'color': 'red' });
         return;
@@ -1516,7 +1537,7 @@ function GetAWBDetailSave_V3() {
 
     var shipConAgtXML = '<SCustID>' + Shipper_SCustID + '</SCustID><SName>' + $("#txtShipper").val().toUpperCase() + '</SName><CCustID>' + Consignee_CCustID + '</CCustID><CName>' + $("#txtConsignee").val().toUpperCase() + '</CName><IACustID>' + AgentName_IACustID + '</IACustID><IAName></IAName><AgentID>' + AgentName_IACustID + '</AgentID>';
 
-    var InputXML = '<Root><EAID>0</EAID><AWBPrefix>' + AWBPrefix + '</AWBPrefix><AWBNo>' + AWBNo + '</AWBNo><Origin>' + $("#txtOrigin").val().toUpperCase() + '</Origin><Dest>' + $("#txtDestination").val().toUpperCase() + '</Dest><FlightNo1>' + $("#txtFlightNo").val().toUpperCase() + '</FlightNo1><FlightDate1>' + $("#txtFlightDate").val() + '</FlightDate1><Pieces>' + $("#txtPieces").val() + '</Pieces><GrWt>' + $("#txtGrWt").val() + '</GrWt><ChWt>' + $("#txtCharWt").val() + '</ChWt><Volume>' + $("#txtVolume").val() + '</Volume><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode><UserID>' + UserID + '</UserID>' + shipConAgtXML + '</Root>';
+    var InputXML = '<Root><EAID>0</EAID><AWBPrefix>' + AWBPrefix + '</AWBPrefix><AWBNo>' + AWBNo + '</AWBNo><Origin>' + $("#txtOrigin").val().toUpperCase() + '</Origin><Dest>' + $("#txtDestination").val().toUpperCase() + '</Dest><ComSearchCode>' + passCommoId + '</ComSearchCode><FlightNo1>' + $("#txtFlightNo").val().toUpperCase() + '</FlightNo1><FlightDate1>' + $("#txtFlightDate").val() + '</FlightDate1><Pieces>' + $("#txtPieces").val() + '</Pieces><GrWt>' + $("#txtGrWt").val() + '</GrWt><ChWt>' + $("#txtCharWt").val() + '</ChWt><Volume>' + $("#txtVolume").val() + '</Volume><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode><UserID>' + UserID + '</UserID>' + shipConAgtXML + '</Root>';
 
 
     if (errmsg == "" && connectionStatus == "online") {
@@ -1536,7 +1557,7 @@ function GetAWBDetailSave_V3() {
                 $("body").mLoading('hide');
                 response = response.d;
                 var xmlDoc = $.parseXML(response);
-                console.log(xmlDoc);
+                //console.log(xmlDoc);
                 $("#AllMsg").text('');
                 $(xmlDoc).find('Table').each(function () {
                     //var outMsg = $(this).find('OutMsg').text(); //added on 17/06
@@ -1629,6 +1650,16 @@ function clearALLafterSave() {
     C_List = [];
 
     $('#ddlFlightNo').empty();
+    // $('#ddlCommodity').empty();
+    $('#txtCommodity').val('');
+    passCommoId = '';
+    commodiyCode = [];
+    $('#txtPieces').removeAttr('disabled', 'disabled');
+    $('#txtGrWt').removeAttr('disabled', 'disabled');
+    $('#txtCharWt').removeAttr('disabled', 'disabled');
+    $('#txtVolume').removeAttr('disabled', 'disabled');
+    $('#txtCommodity').removeAttr('disabled');
+    GetCommodityDataV3();
 }
 
 
@@ -1682,6 +1713,21 @@ function clearALL() {
         disabled: true
     });
     $('#txtFlightNo').data().term = null;
+    $('#ddlCommodity').data().term = null;
+    $('#txtCommodity').val('');
+    passCommoId = '';
+    commodiyCode = [];
+    //$("#txtCommodity").autocomplete({
+    //    disabled: true
+    //});
+
+   
+    $('#txtPieces').removeAttr('disabled', 'disabled');
+    $('#txtGrWt').removeAttr('disabled', 'disabled');
+    $('#txtCharWt').removeAttr('disabled', 'disabled');
+    $('#txtVolume').removeAttr('disabled', 'disabled');
+    $('#txtCommodity').removeAttr('disabled');
+    GetCommodityDataV3();
 }
 
 
@@ -1730,6 +1776,12 @@ function clearALLNew() {
     C_List = [];
 
     $('#ddlFlightNo').removeClass('ui-autocomplete-input');
+    $('#txtCommodity').val('').removeAttr('disabled');
+    $('#txtPieces').removeAttr('disabled', 'disabled');
+    $('#txtGrWt').removeAttr('disabled', 'disabled');
+    $('#txtCharWt').removeAttr('disabled', 'disabled');
+    $('#txtVolume').removeAttr('disabled', 'disabled');
+    $('#txtCommodity').removeAttr('disabled');
 }
 
 function ClearIGM() {
@@ -1773,3 +1825,132 @@ $(function () {
 });
 
 
+function GetCommodityDataV3() {
+
+    commodiyCode = [];
+
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var InputXML = '<Root><validfor>A</validfor><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode></Root>';
+
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "GetCommodityListV3",
+            data: JSON.stringify({ 'InputXML': InputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;                
+
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                // console.log(xmlDoc);
+                commodiyCode = [];
+                $(xmlDoc).find('Table').each(function () {
+                    //var outMsg = $(this).find('OutMsg').text(); //added on 17/06
+
+                    var Status = $(this).find('Status').text();
+                    var OutMsg = $(this).find('OutMsg').text();
+
+                    if (status == 'E') {
+                        $.alert($(this).find('OutMsg').text()).css('color', 'red');
+                        //$(".alert_btn_ok").click(function () {
+                        //    $('#txtGroupId').focus();
+                        //});
+                        return true;
+                    }
+                });
+                var _data;
+                $(xmlDoc).find('Table1').each(function () {
+                    //var outMsg = $(this).find('OutMsg').text(); //added on 17/06
+
+                    var SrNO = $(this).find('SrNO').text();
+                    var Description = $(this).find('Description').text();
+                    /* $('#txtConsignee').val(Name);*/
+                    var newOption = $('<option></option>');
+                    newOption.val(SrNO).text(Description);
+                    newOption.appendTo('#ddlCommodity');
+                    commodiyCode.push({ 'value': SrNO, 'label': Description });
+                    _data = JSON.stringify(commodiyCode);
+
+
+                    // $('#attribute').select2();
+                    //$("#ddlCommodity").select2({
+                    //    data: [
+                    //        { id: SrNO, text: SrNO }]
+                    //});
+                });
+                //console.log(_data)
+                //$("#ddlCommodity").select2({
+                //    data: _data
+                //});
+
+                if (selectedRowHAWBNo != '') {
+                    //TODO :Change selectedRowHAWBNo to  $("#hawbLists").val()
+                    $("#ddlCommodity option").each(function () {
+                        if ($(this).text() == selectedRowHAWBNo) {
+                            $(this).attr('selected', 'selected');
+                            var selectedCommodity = $(this).val();
+
+                            onChangeComm(selectedCommodity);
+                        }
+                    });
+                }
+
+                if (commodiyCode.length > 0) {
+                    $("#txtCommodity").autocomplete({
+                        minLength: 0,
+                        source: commodiyCode,
+                        focus: function (event, ui) {
+                            // if (this.value == "") {
+                            //     $(this).autocomplete("search");
+                            // }
+                            // $("#txtCommodity").focus();
+                            $("#txtCommodity").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtCommodity").val(ui.item.label);
+                            $('#ddlCommodity').val(ui.item.value)
+                            onChangeComm($('#ddlCommodity').val());
+                            // $("#project-id").val(ui.item.label);
+                            return false;
+                        }
+                    })
+                    $("#txtCommodity").focus(function () {
+                        $(this).autocomplete("search", $(this).val());
+                    });
+                    // $("#txtConsignee").focus();
+                }
+
+                $("body").mLoading('hide');
+
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}

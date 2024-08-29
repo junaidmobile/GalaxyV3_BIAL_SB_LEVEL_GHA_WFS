@@ -185,7 +185,7 @@
                                     <div class="col-xs-8 NoPadding">
                                         <input id="txtAWBNo" class="form-control" type="text" onkeypress="return blockSpecialChar(event)"
                                                oninput="checkSpecialCharforAWBNo();" maxlength="15" onkeyup="ChkMaxLength(this, '15');" onblur="GetAWBDetailSearch_V3();"
-                                               autofocus onchange="CheckEmpty();">
+                                               autofocus onchange="CheckEmpty();" tabindex="1">
                                     </div>
                                 </div>
 
@@ -196,10 +196,10 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-4 NoPadding">
-                                        <input id="txtOrigin" oninput="checkSpecialCharforOrigin();" onblur="compareOriginDest();" class="form-control" type="text" maxlength="3">
+                                        <input id="txtOrigin" tabindex="2" oninput="checkSpecialCharforOrigin();" onblur="compareOriginDest();" class="form-control" type="text" maxlength="3">
                                     </div>
                                     <div class="col-xs-4 NoPadding">
-                                        <input id="txtDestination" oninput="checkSpecialCharforDestination();" onblur="compareOriginDest();" class="form-control" type="text" maxlength="3">
+                                        <input id="txtDestination" tabindex="3" oninput="checkSpecialCharforDestination();" onblur="compareOriginDest();" class="form-control" type="text" maxlength="3">
                                     </div>
 
                                 </div>
@@ -215,7 +215,7 @@
                                                 style="display: none;">
                                             <option value="0">Select</option>
                                         </select>
-                                        <input id="txtFlightNo" autocomplete="off" onkeypress="return blockSpecialChar(event)" oninput="checkSpecialCharforFlightNo();" class="form-control" type="text" maxlength="6">
+                                        <input id="txtFlightNo" tabindex="4" autocomplete="off" onkeypress="return blockSpecialChar(event)" oninput="checkSpecialCharforFlightNo();" class="form-control" type="text" maxlength="6">
                                         <!--<select class="form-control" id="ddlFlightNo"
                                         onchange="GetAWBDetailSearch_V3_onChangeFlight($('#ddlFlightNo').val())"></select>-->
 
@@ -225,7 +225,7 @@
 
                                         <input type="text" style="text-transform: none;"
                                                id="txtFlightDate" class="form-control"
-                                               title="Date">
+                                               title="Date" tabindex="5">
 
                                     </div>
                                 </div>
@@ -243,14 +243,27 @@
 
                                     </div>
                                 </div>-->
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblCommodity" for="">Commodity </label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-8 NoPadding">
+                                        <select class="form-control" onchange="onChangeComm($('#ddlCommodity').val())" id="ddlCommodity"
+                                                style="display:none ;">
+                                            <!--<option value="0">Select</option>-->
+                                        </select>
+                                        <input id="txtCommodity" tabindex="6" onkeyup="ChkMaxLength(this, '30');" onkeypress="return blockSpecialChar(event)" class="form-control" type="text" style="text-align:left;">
+                                    </div>
 
+                                </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-4 col-form-label">
                                         <label id="lblPieces" for="">Pieces</label>
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-8 NoPadding">
-                                        <input id="txtPieces" onkeyup="ChkMaxLength(this, '4');" onkeypress="return blockSpecialChar(event)" class="form-control" type="number" style="text-align:right;">
+                                        <input id="txtPieces" tabindex="7" onkeyup="ChkMaxLength(this, '4');" onkeypress="return blockSpecialChar(event)" class="form-control" type="number" style="text-align:right;">
                                     </div>
 
                                 </div>
@@ -261,7 +274,7 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-8 NoPadding">
-                                        <input id="txtGrWt" onkeyup="ChkMaxLength(this, '4');" class="form-control" type="number" style="text-align:right;">
+                                        <input id="txtGrWt" tabindex="8" onkeyup="ChkMaxLength(this, '6');" class="form-control" type="number" style="text-align:right;">
                                     </div>
 
                                 </div>
@@ -272,7 +285,7 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-8 NoPadding">
-                                        <input id="txtCharWt" onkeyup="ChkMaxLength(this, '4');" class="form-control" type="number" style="text-align:right;">
+                                        <input id="txtCharWt" tabindex="9" onkeyup="ChkMaxLength(this, '6');" class="form-control" type="number" style="text-align:right;">
                                     </div>
 
                                 </div>
@@ -282,7 +295,7 @@
                                         <!--<font color="red">*</font>-->
                                     </div>
                                     <div class="col-xs-8 NoPadding">
-                                        <input id="txtVolume" onkeyup="ChkMaxLength(this, '4');" class="form-control" type="number" style="text-align:right;">
+                                        <input id="txtVolume" tabindex="10" onkeyup="ChkMaxLength(this, '4');" class="form-control" type="number" style="text-align:right;">
                                     </div>
 
                                 </div>
@@ -293,14 +306,14 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-2 NoPadding">
-                                        <input id="txtShipperPrifix" maxlength="3" class="form-control" onkeypress="return blockSpecialChar(event)" type="text" onblur="Shipper_GetShipperConsigneeWithShortCode_V3();">
+                                        <input id="txtShipperPrifix" tabindex="11" maxlength="3" class="form-control" onkeypress="return blockSpecialChar(event)" type="text" onblur="Shipper_GetShipperConsigneeWithShortCode_V3();">
                                     </div>
                                     <div class="col-xs-6 NoPadding">
                                         <select class="form-control" id="ddlShipper"
                                                 style="display: none;">
                                             <!--<option value="0">Select</option>-->
                                         </select>
-                                        <input id="txtShipper" maxlength="30" onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
+                                        <input id="txtShipper" tabindex="12" maxlength="30" onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
                                     </div>
 
                                 </div>
@@ -311,10 +324,10 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-2 NoPadding">
-                                        <input id="txtConsigneePrifix" maxlength="3" class="form-control" onkeypress="return blockSpecialChar(event)" type="text" onblur="Consignee_GetShipperConsigneeWithShortCode_V3();">
+                                        <input id="txtConsigneePrifix" tabindex="13" maxlength="3" class="form-control" onkeypress="return blockSpecialChar(event)" type="text" onblur="Consignee_GetShipperConsigneeWithShortCode_V3();">
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <input id="txtConsignee" maxlength="30" onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
+                                        <input id="txtConsignee" tabindex="14" maxlength="30" onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
                                         <select class="form-control" id="ddlConsignee"
                                                 style="display: none;"></select>
                                     </div>
@@ -326,10 +339,10 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-2 NoPadding">
-                                        <input id="txtAgentNamePrifix" maxlength="3" class="form-control" onkeypress="return blockSpecialChar(event)" type="text" onblur="AgentName_GetShipperConsigneeWithShortCode_V3();">
+                                        <input id="txtAgentNamePrifix" tabindex="15" maxlength="3" class="form-control" onkeypress="return blockSpecialChar(event)" type="text" onblur="AgentName_GetShipperConsigneeWithShortCode_V3();">
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <input id="txtAgentName" onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
+                                        <input id="txtAgentName" tabindex="16" onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
                                         <select class="form-control" id="ddlAgentName"
                                                 style="display: none;"></select>
                                     </div>
@@ -350,7 +363,7 @@
                                     <input type="button" id="btnClear" class="form-control ButtonColor" value="Clear" onclick="clearALL();">
                                 </div>
                                 <div class="form-group col-xs-4 col-sm-4 col-md-4   ">
-                                    <input type="button" id="btnSubmit" class="form-control ButtonColor" value="Submit" onclick="GetAWBDetailSave_V3();">
+                                    <input type="button" id="btnSubmit" tabindex="17" class="form-control ButtonColor" value="Submit" onclick="GetAWBDetailSave_V3();">
                                 </div>
 
 

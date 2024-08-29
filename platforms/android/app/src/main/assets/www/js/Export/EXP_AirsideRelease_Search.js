@@ -88,7 +88,7 @@ function goToGPDetailsPage(flSQ, uldSQ, uldtyp, GatepassNo) {
     localStorage.setItem('flSeqID', flSQ + '~' + uldSQ);
     localStorage.setItem('_uldtyp', uldtyp);
     localStorage.setItem('gatePassComing', GatepassNo);
-    
+
     window.location.href = 'EXP_GatePassDetails.html';
 }
 
@@ -202,7 +202,7 @@ function ExportAirside_Search_V3() {
                         USeqNo = $(this).find('USeqNo').text();
                         GatepassNo = $(this).find('GatepassNo').text();
                         ULDType = $(this).find('ULDType').text();
-                        
+
                         gatePassNoDetails(GatepassNo, Status, IsReleased, FltSeqNo, USeqNo, ULDType);
                     });
                     html += "</tbody ></table>";
@@ -282,25 +282,27 @@ function clearALLBeforeSearch() {
 
 
 function clearALL() {
-    $('#txtAWBNo').val('');
-    $('#txtAWBNo').focus();
-    $('#tdPieces').text('');
-    $('#tdGrWt').text('');
-    $('#tdChWt').text('');
-    $('#txtCommodity').val('');
-    $('#txtGSTIN').val('');
-    $('#txtAgentName').val('');
-    $('#tdPieces').text('');
-    $('#TextBoxDiv').empty();
-    $('#ddlPaymentMode').empty();
-    $('#tdAmount').text('');
-    $('#tdTexAmount').text('');
-    $('#tdTotalInvoicAmount').text('');
-    $('#tdRoundOffAmount').text('');
-    $('#tdFinalInvoiceAmount').text('');
-    $('#spnErrormsg').text('');
-    $('#btnPayTSP').attr('disabled', 'disabled');
-    $('#txtRemark').val('');
+    $('#txtSacnULD').val('');
+    $('#txtSacnULD').focus();
+    $('#errorMsg').text('');
+    //$('#txtAWBNo').focus();
+    //$('#tdPieces').text('');
+    //$('#tdGrWt').text('');
+    //$('#tdChWt').text('');
+    //$('#txtCommodity').val('');
+    //$('#txtGSTIN').val('');
+    //$('#txtAgentName').val('');
+    //$('#tdPieces').text('');
+    //$('#TextBoxDiv').empty();
+    //$('#ddlPaymentMode').empty();
+    //$('#tdAmount').text('');
+    //$('#tdTexAmount').text('');
+    //$('#tdTotalInvoicAmount').text('');
+    //$('#tdRoundOffAmount').text('');
+    //$('#tdFinalInvoiceAmount').text('');
+    //$('#errorMsg').text('');
+    //$('#btnPayTSP').attr('disabled', 'disabled');
+    //$('#txtRemark').val('');
 
 }
 
@@ -370,12 +372,29 @@ function ExportAirside_Search_V3_Onblur() {
                         //  $.alert(StrMessage).css('color', 'red');
                         $("#errorMsg").text(StrMessage).css({ 'color': 'red' });
                         // clearALL();
-                        return true;
-                    } else {
-
-                        localStorage.setItem('flSeqID', $('#txtSacnULD').val());
-                        window.location.href = 'EXP_GatePassDetails.html';
+                        return;
                     }
+                });
+
+                $(xmlDoc).find('Table1').each(function (index) {
+                    if (index == 0) {
+
+                        _FltSeqNo = $(this).find('FltSqNo').text();
+                        _USeqNo = $(this).find('ULDSqNo').text();
+                        _GatepassNo = $(this).find('PermitNo').text();
+                        _ULDType = $(this).find('Utype').text();
+
+                        localStorage.setItem('flSeqID', _FltSeqNo + '~' + _USeqNo);
+                        localStorage.setItem('_uldtyp', _ULDType);
+
+                        localStorage.setItem('gatePassComing', _GatepassNo);
+                        if (_FltSeqNo != '') {
+                            window.location.href = 'EXP_GatePassDetails.html';
+
+                        }
+                    }
+
+
                 });
 
             },

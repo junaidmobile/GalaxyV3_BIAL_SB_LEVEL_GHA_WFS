@@ -96,7 +96,7 @@ $(function () {
     //    signitureDataURL = str.substring(23);
 
     //});
-    
+
 });
 
 
@@ -139,7 +139,7 @@ function ExportAirside_Search_V3_Onblur() {
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
 
-   // var MAWBNo = $('#txtAWBNo').val();
+    // var MAWBNo = $('#txtAWBNo').val();
 
     var InputXML = '<Root><BarCode>' + gatePassComing + '</BarCode><AirportCity>' + AirportCity + '</AirportCity><UserId>' + UserID + '</UserId></Root>';
 
@@ -210,13 +210,20 @@ function ExportAirside_Search_V3_Onblur() {
                         Commodity = $(this).find('Commodity').text();
                         ScreeningMethod = $(this).find('ScreeningMethod').text();
                         CurrentDate = $(this).find('CurrentDate').text();
-
+                        IsReleased = $(this).find('IsReleased').text();
+                        
                         //JsBarcode("#barcode", PermitNo, {
 
                         //    width: 2,
                         //    height: 40,
                         //    displayValue: false
                         //});
+
+                        if (IsReleased == 'R') {
+                            $('#btnReleased').attr('disabled', 'disabled');
+                        } else {
+                            $('#btnReleased').removeAttr('disabled');
+                        }
 
 
                         $('#spnRunDate').text(CurrentDate);
@@ -562,7 +569,7 @@ function ExportAirside_SignUpload_V3_1() {
     signitureData = canvas.toDataURL("image/jpeg");
     str = signitureData;
     signitureDataURL = str.substring(23);
-  
+
     var InputXML = '<Root><BinaryImage>' + signitureDataURL + '</BinaryImage><DesigType>C</DesigType><GpNo>' + PermitNo + '</GpNo><FlightSeqNo>' + flSq + '</FlightSeqNo><ULDSeqNo>' + uldSq + '</ULDSeqNo><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode><UserId>' + UserID + '</UserId></Root>';
 
     if (errmsg == "" && connectionStatus == "online") {
@@ -599,7 +606,7 @@ function ExportAirside_SignUpload_V3_1() {
                     } else {
                         $("#spnErrormsg").text(StrMessage).css({ 'color': 'green' });
                         // $("#txtCustomerName").val('');
-                       
+
                         signaturePad.clear();
                     }
                 });
@@ -699,7 +706,7 @@ function ExportAirside_SignUpload_V3_2() {
                         $("#spnErrormsg").text(StrMessage).css({ 'color': 'green' });
                         // $("#txtSecuirty").val('');
                         signaturePad_2.clear();
-                        
+
                     }
                 });
 
@@ -759,12 +766,12 @@ function ExportAirside_SignUpload_V3_3() {
     //    $("#showMsg2").text('');
     //}
 
-    canvas = document.getElementById('sig_2');
-    signitureData = canvas.toDataURL("image/jpeg");
-    str = signitureData;
-    signitureDataURL = str.substring(23);
+    _canvas = document.getElementById('sig_1');
+    signitureData = _canvas.toDataURL("image/jpeg");
+    _str = signitureData;
+    _signitureDataURL = _str.substring(23);
 
-    var InputXML = '<Root><BinaryImage>' + signitureDataURL + '</BinaryImage><DesigType>S</DesigType><GpNo>' + PermitNo + '</GpNo><FlightSeqNo>' + flSq + '</FlightSeqNo><ULDSeqNo>' + uldSq + '</ULDSeqNo><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode><UserId>' + UserID + '</UserId></Root>';
+    var InputXML = '<Root><BinaryImage>' + _signitureDataURL + '</BinaryImage><DesigType>S</DesigType><GpNo>' + PermitNo + '</GpNo><FlightSeqNo>' + flSq + '</FlightSeqNo><ULDSeqNo>' + uldSq + '</ULDSeqNo><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode><UserId>' + UserID + '</UserId></Root>';
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
@@ -799,7 +806,7 @@ function ExportAirside_SignUpload_V3_3() {
                         return true;
                     } else {
                         $("#spnErrormsg").text(StrMessage).css({ 'color': 'green' });
-                      //  $("#txtAirline").val('');
+                        //  $("#txtAirline").val('');
                         signaturePad_1.clear();
                     }
                 });
@@ -824,6 +831,13 @@ function ExportAirside_SignUpload_V3_3() {
     else {
         $("body").mLoading('hide');
     }
+}
+
+function onExit() {
+    localStorage.removeItem('flSeqID');
+    localStorage.removeItem('_uldtyp');
+    localStorage.removeItem('gatePassComing');
+    window.location.href = 'EXP_AirsideRelease_Search.html'
 }
 
 

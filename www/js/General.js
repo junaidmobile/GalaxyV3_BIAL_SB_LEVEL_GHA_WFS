@@ -233,7 +233,7 @@ function LoadNavBar() {
         $('#navhdrName').html("WDO Retrieval");
     }
     else if (window.location.pathname.split("/").pop() == "EXP_GenerateBarcode.html") {
-        $('#navhdrName').html("Barcode");
+        $('#navhdrName').html("Label Print");
     }
 
 

@@ -439,8 +439,9 @@ function clearBeforePopulate() {
     // $('#btnGoodsDelever').attr('disabled', 'disabled');
 
     $('#txtFlightPrefix').val('');
+    $('#txtFlightPrefix').focus();
     $('#txtFlightNo').val('');
-
+    
     let date = new Date();
     const day = date.toLocaleString('default', { day: '2-digit' });
     const month = date.toLocaleString('default', { month: 'short' });
