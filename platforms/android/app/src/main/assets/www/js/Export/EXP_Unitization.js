@@ -1121,10 +1121,6 @@ function GetShipmentInfoForAWB() {
 
     var getULDNo;
 
-
-
-
-
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
     var isAuto;

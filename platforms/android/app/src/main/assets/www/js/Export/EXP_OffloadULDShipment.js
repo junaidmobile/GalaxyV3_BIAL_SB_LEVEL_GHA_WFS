@@ -1,6 +1,11 @@
-﻿var GHAserviceURL = window.localStorage.getItem("GHAserviceURL");
-var AirportCity = window.localStorage.getItem("MU_CITY_C");
-var UserId = window.localStorage.getItem("UserID");
+﻿var CMSserviceURL = window.localStorage.getItem("CMSserviceURL");
+var GHAImportFlightserviceURL = window.localStorage.getItem("GHAImportFlightserviceURL");
+var GHAExportFlightserviceURL = window.localStorage.getItem("GHAExportFlightserviceURL");
+var AirportCity = window.localStorage.getItem("SHED_AIRPORT_CITY");
+var UserID = window.localStorage.getItem("UserID");
+var companyCode = window.localStorage.getItem("companyCode");
+var UserName = window.localStorage.getItem("UserName");
+var PreferredLanguage = window.localStorage.getItem("PreferredLanguage");
 
 var FlightSeqNo;
 var SegId;
@@ -15,6 +20,7 @@ var prorataWtParam;
 var prorataVolParam;
 var html;
 var _FlightSeqNo;
+var globOffPoint; var globULD;
 document.addEventListener("pause", onPause, false);
 document.addEventListener("resume", onResume, false);
 document.addEventListener("menubutton", onMenuKeyDown, false);
@@ -53,15 +59,15 @@ $(function () {
     newDate = y.toString() + '-' + m.toString() + '-' + d.toString();
     $('#txtFlightDate').val(newDate);
 
-   // var h = date.getHours();
-   // var m = date.getMinutes();
-   // var s = date.getSeconds();
-   // return date + h + ":" + m;
+    // var h = date.getHours();
+    // var m = date.getMinutes();
+    // var s = date.getSeconds();
+    // return date + h + ":" + m;
     // $('#txtGPNo1').val(date);
 
-    var stringos = 'ECC~N,PER~N,GEN~N,DGR~Y,HEA~N,AVI~N,BUP~Y,EAW~N,EAP~Y';
+    // var stringos = 'ECC~N,PER~N,GEN~N,DGR~Y,HEA~N,AVI~N,BUP~Y,EAW~N,EAP~Y';
 
-    SHCSpanHtml(stringos);
+    // SHCSpanHtml(stringos);
 
 });
 
@@ -96,33 +102,6 @@ function SHCSpanHtml(newSHC) {
 
 }
 
-//function countChar(val, count) {
-
-//    var currentBoxNumber = 0;
-//    textboxes = $('input[name="textbox[]"]');
-//    currentBoxNumber = textboxes.index(val);
-
-//    var len = val.value.length;
-//    var index = val.index;
-
-//    if (len == count)
-//        ToNextTextbox(currentBoxNumber)
-//};
-
-//function ToNextTextbox(currentBoxNumber) {
-
-//    textboxes = $('input[name="textbox[]"]');
-
-//    if (textboxes[currentBoxNumber + 1] != null) {
-//        nextBox = textboxes[currentBoxNumber + 1];
-//        nextBox.focus();
-//        nextBox.select();
-//        event.preventDefault();
-//        return false;
-
-//    }
-
-//}
 
 function addZero(i) {
     if (i < 10) {
@@ -167,17 +146,17 @@ function CheckULDBulk() {
 
 
 function saveAll() {
+    OffloadShipmentSaveData();
+    //if (document.getElementById('rdoULD').checked) {
 
-    if (document.getElementById('rdoULD').checked) {
+    //    SaveExportOffLoadULDV();
 
-        SaveExportOffLoadULDV();
+    //}
+    //if (document.getElementById('rdoBulk').checked) {
 
-    }
-    if (document.getElementById('rdoBulk').checked) {
+    //    SaveExportOffLoadShipV();
 
-        SaveExportOffLoadShipV();
-
-    }
+    //}
 }
 
 function CheckUldNoValidation(uldno) {
@@ -259,9 +238,238 @@ function CheckSpecialCharacter(uldno) {
     }
 }
 
+function AutoChkCheck() {
+    chkAuto = document.getElementById("chkAuto").checked;
+    clearAWBDetails();
+    if (chkAuto == true) {
+        $('#btnOffload').attr('disabled', 'disabled');
+        $('#txtAWBNo').attr('disabled', 'disabled');
+        $('#txtScannedID').removeAttr('disabled');
+        $('#txtScannedID').focus();
+        $('#txtScannedID').val('');
+        $('#txtAWBNo').val('');
+
+    }
+
+    if (chkAuto == false) {
+        $('#txtAWBNo').removeAttr('disabled');
+        $('#txtScannedID').attr('disabled', 'disabled');
+        $('#txtAWBNo').focus();
+        $('#txtAWBNo').val('');
+        $('#txtScannedID').val('');
+        $('#btnOffload').removeAttr('disabled');
+
+
+    }
+}
+
 function GetOffPointForFlight() {
 
     $('#ddlOffPoint').empty();
+
+    $('#ddlULD').empty();
+    //var newOption = $('<option></option>');
+    //newOption.val(0).text('Select');
+    //newOption.appendTo('#ddlULD');
+
+
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var FlightPrefix = $('#txtFlightPrefix').val();
+    var FlightNo = $('#txtFlightNo').val();
+    var FlightDate = $('#txtFlightDate').val();
+
+    if (FlightPrefix == "" || FlightNo == "") {
+        errmsg = "Please enter valid Flight No.";
+        $.alert(errmsg);
+        return;
+    }
+
+    if (FlightDate == "") {
+        errmsg = "Please enter Flight Date";
+        $.alert(errmsg);
+        return;
+    }
+
+
+
+
+
+    // var inputXML = '<Root><FlightAirline>' + FlightPrefix + '</FlightAirline><FlightNo>' + FlightNo + '</FlightNo><FlightDate>' + FlightDate + '</FlightDate><Offpoint></Offpoint><AirportCity>' + AirportCity + '</AirportCity></Root>';
+
+    //var inputXML = '<Root><FlightAirline>' + FlightPrefix + '</FlightAirline><FlightNo>' + FlightNo + '</FlightNo><FlightDate>' + FlightDate + '</FlightDate><Offpoint></Offpoint><AirportCity>' + AirportCity + '</AirportCity><UserID>' + UserId + '</UserId></Root>';
+
+    var inputXML = '<Root><AirportCity>' + AirportCity + '</AirportCity><FlightAirline>' + FlightPrefix + '</FlightAirline><FlightNo>' + FlightNo + '</FlightNo><FlightDate>' + FlightDate + '</FlightDate><Offpoint></Offpoint><AWBNo></AWBNo><FlightSeqNo></FlightSeqNo><ULDSeqNo></ULDSeqNo></Root>';
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "OffloadShipmentGetData",
+            data: JSON.stringify({
+                'InputXML': inputXML
+
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                console.log('unit get')
+                console.log(xmlDoc)
+                $(xmlDoc).find('Table').each(function () {
+
+                    var status = $(this).find('Status').text();
+
+                    if (status == 'E') {
+                        $.alert($(this).find('StrMessage').text());
+                    }
+                });
+
+                // $(xmlDoc).find('Table1').each(function () {
+
+                //     FlightSeqNo = $(this).find('FltSeqNo').text();
+                // });
+
+                $(xmlDoc).find('Table1').each(function (index) {
+                    var FlightNo;
+                    var FlightSeqNo;
+                    FlightNo = $(this).find('FlightNo').text();
+                    FlightSeqNo = $(this).find('FlightSeqNo').text();
+                    _FlightSeqNo = FlightSeqNo;
+                    //if (index == 0) {
+                    //    var newOption = $('<option></option>');
+                    //    newOption.val(0).text('Select');
+                    //    newOption.appendTo('#ddlOffPoint');
+                    //}
+
+
+
+                    // if (index == 0) {
+                    //     GetULDs(OffPointCity);
+                    // }
+                });
+
+                $(xmlDoc).find('Table2').each(function (index) {
+
+                    Offpoint = $(this).find('Offpoint').text();
+                    RouteId = $(this).find('RouteId').text();
+
+                    var newOption = $('<option></option>');
+                    newOption.val(RouteId).text(Offpoint);
+                    newOption.appendTo('#ddlOffPoint');
+
+                    if ($(xmlDoc).find('Table2').length == 1) {
+
+                        // GetOffPointForFlightOnChangeOffPoint($('#ddlOffPoint').val());
+                        $('#ddlOffPoint').trigger('change');
+                    }
+
+
+                });
+
+                $(xmlDoc).find('Table3').each(function (index) {
+
+                    var ULDSeqNo;
+                    var ULDNo;
+
+                    ULDSeqNo = $(this).find('ULDSeqNo').text();
+                    ULDBulkNo = $(this).find('ULDBulkNo').text();
+
+                    if (index == 0) {
+                        var newOption = $('<option></option>');
+                        newOption.val(0).text('Select');
+                        newOption.appendTo('#ddlULD');
+                    }
+
+                    var newOption = $('<option></option>');
+                    newOption.val(ULDSeqNo).text(ULDBulkNo);
+                    newOption.appendTo('#ddlULD');
+
+                    // _FlightSeqNo = $(this).find('FltSeqNo').text();
+
+                });
+
+                var totalPkgs;
+                if (response != null && response != "") {
+
+                    $('#divAddTestLocation').empty();
+                    html = '';
+
+                    html = "<table id='tblNews' border='1' style='width:100%;table-layout:fixed;word-break:break-word;border-color: white;margin-top: 2%;'>";
+                    html += "<thead><tr>";
+                    html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>AWB</th>";
+                    html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>Remove/Offload Pieces</th>";
+                    html += "</tr></thead>";
+                    html += "<tbody>";
+
+                    // var xmlDoc = $.parseXML(str);
+
+                    $(xmlDoc).find('Table4').each(function (index) {
+
+                        //var outMsg = $(this).find('Status').text();
+
+                        //if (outMsg == 'E') {
+                        //    $.alert($(this).find('StrMessage').text());
+                        //    return;
+                        //}
+
+                        var Awb;
+                        var Pkgs;
+
+                        Awb = $(this).find('AWBNo').text().toUpperCase();
+                        Pkgs = $(this).find('RemvOffloadedPkgs').text();
+                        totalPkgs = Pkgs;
+                        AddTableLocation(Awb, Pkgs);
+
+                    });
+
+
+
+                    html += "</tbody></table>";
+
+                    if (totalPkgs > Number(0))
+                        $('#divAddTestLocation').append(html);
+                    else {
+                        $('#divAddTestLocation').empty();
+                        html = '';
+                    }
+                }
+                else {
+                    errmsg = 'Shipment does not exists';
+                    $.alert(errmsg);
+                }
+
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    } else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    } else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    } else {
+        $("body").mLoading('hide');
+    }
+}
+
+
+function GetOffPointForFlightOnChangeOffPoint(offPointID) {
+    globOffPoint = offPointID;
+    // $('#ddlOffPoint').empty();
 
     $('#ddlULD').empty();
     //var newOption = $('<option></option>');
@@ -292,16 +500,360 @@ function GetOffPointForFlight() {
 
     //var inputXML = '<Root><FlightAirline>' + FlightPrefix + '</FlightAirline><FlightNo>' + FlightNo + '</FlightNo><FlightDate>' + FlightDate + '</FlightDate><Offpoint></Offpoint><AirportCity>' + AirportCity + '</AirportCity><UserID>' + UserId + '</UserId></Root>';
 
-    var inputXML = '<Root><FlightAirline>' + FlightPrefix + '</FlightAirline><FlightNo>' + FlightNo + '</FlightNo><FlightDate>' + FlightDate + '</FlightDate><AirportCity>' + AirportCity + '</AirportCity><UserId>' + UserId + '</UserId><AWBNo></AWBNo><ULDSeqNo></ULDSeqNo></Root>';
+    var inputXML = '<Root><AirportCity>' + AirportCity + '</AirportCity><FlightAirline>' + FlightPrefix + '</FlightAirline><FlightNo>' + FlightNo + '</FlightNo><FlightDate>' + FlightDate + '</FlightDate><Offpoint>' + offPointID + '</Offpoint><AWBNo></AWBNo><FlightSeqNo>' + _FlightSeqNo + '</FlightSeqNo><ULDSeqNo></ULDSeqNo></Root>';
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: 'POST',
-            url: GHAserviceURL + "GetExportOffloadDetailsV",
+            url: GHAExportFlightserviceURL + "OffloadShipmentGetData",
             data: JSON.stringify({
-                'InputXML': inputXML,
-                'strUserId': UserId,
-                'strVal': deviceUUID
+                'InputXML': inputXML
+
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                console.log('unit get')
+                console.log(xmlDoc)
+                $(xmlDoc).find('Table').each(function () {
+
+                    var status = $(this).find('Status').text();
+
+                    if (status == 'E') {
+                        $.alert($(this).find('StrMessage').text());
+                    }
+                });
+
+                // $(xmlDoc).find('Table1').each(function () {
+
+                //     FlightSeqNo = $(this).find('FltSeqNo').text();
+                // });
+
+
+
+
+                $('#ddlULD').empty();
+                $(xmlDoc).find('Table3').each(function (index) {
+
+                    var ULDSeqNo;
+                    var ULDNo;
+
+                    ULDSeqNo = $(this).find('ULDSeqNo').text();
+                    ULDBulkNo = $(this).find('ULDBulkNo').text();
+
+                    //if (index == 0) {
+                    //    var newOption = $('<option></option>');
+                    //    newOption.val(0).text('Select');
+                    //    newOption.appendTo('#ddlULD');
+                    //}
+
+                    var newOption = $('<option></option>');
+                    newOption.val(ULDSeqNo).text(ULDBulkNo);
+                    newOption.appendTo('#ddlULD');
+
+                    // _FlightSeqNo = $(this).find('FltSeqNo').text();
+                    $('#ddlULD').trigger('change');
+                });
+                $('#txtScannedID').focus();
+                var totalPkgs;
+                if (response != null && response != "") {
+
+                    $('#divAddTestLocation').empty();
+                    html = '';
+
+                    html = "<table id='tblNews' border='1' style='width:100%;table-layout:fixed;word-break:break-word;border-color: white;margin-top: 2%;'>";
+                    html += "<thead><tr>";
+                    html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>AWB</th>";
+                    html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>Packages</th>";
+                    html += "</tr></thead>";
+                    html += "<tbody>";
+
+                    // var xmlDoc = $.parseXML(str);
+
+                    $(xmlDoc).find('Table4').each(function (index) {
+
+                        //var outMsg = $(this).find('Status').text();
+
+                        //if (outMsg == 'E') {
+                        //    $.alert($(this).find('StrMessage').text());
+                        //    return;
+                        //}
+
+                        var Awb;
+                        var Pkgs;
+
+                        Awb = $(this).find('AWBNo').text().toUpperCase();
+                        Pkgs = $(this).find('RemvOffloadedPkgs').text();
+                        totalPkgs = Pkgs;
+                        AddTableLocation(Awb, Pkgs);
+
+                    });
+
+
+
+                    html += "</tbody></table>";
+
+                    if (totalPkgs > Number(0))
+                        $('#divAddTestLocation').append(html);
+                    else {
+                        $('#divAddTestLocation').empty();
+                        html = '';
+                    }
+                }
+                else {
+                    errmsg = 'Shipment does not exists';
+                    $.alert(errmsg);
+                }
+
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    } else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    } else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    } else {
+        $("body").mLoading('hide');
+    }
+}
+
+
+function GetOffPointForFlightOnChangeULD(uldID) {
+    globULD = uldID;
+
+    $('#txtScannedID').val('');
+    $('#txtAWBNo').val('');
+    $('#txtNOG').val('');
+    $('#TextBoxDiv').empty();
+    $('#txtPKG').val('');
+    $('#txtUniPKG').val('');
+    // $('#ddlOffPoint').empty();
+
+    // $('#ddlULD').empty();
+    //var newOption = $('<option></option>');
+    //newOption.val(0).text('Select');
+    //newOption.appendTo('#ddlULD');
+
+
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var FlightPrefix = $('#txtFlightPrefix').val();
+    var FlightNo = $('#txtFlightNo').val();
+    var FlightDate = $('#txtFlightDate').val();
+
+    if (FlightPrefix == "" || FlightNo == "") {
+        errmsg = "Please enter valid Flight No.";
+        $.alert(errmsg);
+        return;
+    }
+
+    if (FlightDate == "") {
+        errmsg = "Please enter Flight Date";
+        $.alert(errmsg);
+        return;
+    }
+
+    // var inputXML = '<Root><FlightAirline>' + FlightPrefix + '</FlightAirline><FlightNo>' + FlightNo + '</FlightNo><FlightDate>' + FlightDate + '</FlightDate><Offpoint></Offpoint><AirportCity>' + AirportCity + '</AirportCity></Root>';
+
+    //var inputXML = '<Root><FlightAirline>' + FlightPrefix + '</FlightAirline><FlightNo>' + FlightNo + '</FlightNo><FlightDate>' + FlightDate + '</FlightDate><Offpoint></Offpoint><AirportCity>' + AirportCity + '</AirportCity><UserID>' + UserId + '</UserId></Root>';
+
+    var inputXML = '<Root><AirportCity>' + AirportCity + '</AirportCity><FlightAirline>' + FlightPrefix + '</FlightAirline><FlightNo>' + FlightNo + '</FlightNo><FlightDate>' + FlightDate + '</FlightDate><Offpoint>' + globOffPoint + '</Offpoint><AWBNo></AWBNo><FlightSeqNo>' + _FlightSeqNo + '</FlightSeqNo><ULDSeqNo>' + uldID + '</ULDSeqNo></Root>';
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "OffloadShipmentGetData",
+            data: JSON.stringify({
+                'InputXML': inputXML
+
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                console.log('unit get')
+                console.log(xmlDoc)
+                $(xmlDoc).find('Table').each(function () {
+
+                    var status = $(this).find('Status').text();
+
+                    if (status == 'E') {
+                        $.alert($(this).find('StrMessage').text());
+                    }
+                });
+
+                // $(xmlDoc).find('Table1').each(function () {
+
+                //     FlightSeqNo = $(this).find('FltSeqNo').text();
+                // });
+
+                $(xmlDoc).find('Table1').each(function (index) {
+                    var FlightNo;
+                    var FlightSeqNo;
+                    FlightNo = $(this).find('FlightNo').text();
+                    FlightSeqNo = $(this).find('FlightSeqNo').text();
+
+                    //if (index == 0) {
+                    //    var newOption = $('<option></option>');
+                    //    newOption.val(0).text('Select');
+                    //    newOption.appendTo('#ddlOffPoint');
+                    //}
+
+
+
+                    // if (index == 0) {
+                    //     GetULDs(OffPointCity);
+                    // }
+                });
+
+
+                var totalPkgs;
+                if (response != null && response != "") {
+
+                    $('#divAddTestLocation').empty();
+                    html = '';
+
+                    html = "<table id='tblNews' border='1' style='width:100%;table-layout:fixed;word-break:break-word;border-color: white;margin-top: 2%;'>";
+                    html += "<thead><tr>";
+                    html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>AWB</th>";
+                    html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>Remove/Offload Pieces</th>";
+                    html += "</tr></thead>";
+                    html += "<tbody>";
+
+                    // var xmlDoc = $.parseXML(str);
+
+                    $(xmlDoc).find('Table4').each(function (index) {
+
+                        //var outMsg = $(this).find('Status').text();
+
+                        //if (outMsg == 'E') {
+                        //    $.alert($(this).find('StrMessage').text());
+                        //    return;
+                        //}
+
+                        var Awb;
+                        var Pkgs;
+
+                        Awb = $(this).find('AWBNo').text().toUpperCase();
+                        Pkgs = $(this).find('RemvOffloadedPkgs').text();
+                        totalPkgs = Pkgs;
+                        AddTableLocation(Awb, Pkgs);
+
+                    });
+
+
+
+                    html += "</tbody></table>";
+
+                    if (totalPkgs > Number(0))
+                        $('#divAddTestLocation').append(html);
+                    else {
+                        $('#divAddTestLocation').empty();
+                        html = '';
+                    }
+                }
+                else {
+                    errmsg = 'Shipment does not exists';
+                    $.alert(errmsg);
+                }
+
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    } else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    } else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    } else {
+        $("body").mLoading('hide');
+    }
+}
+
+function onChangeLenthCheck() {
+    if ($('#txtAWBNo').val().length == 11) {
+        SearchAWBNo();
+    }
+}
+
+function SearchAWBNo() {
+
+    if ($('#txtAWBNo').val() == '') {
+        return;
+    }
+
+    // $('#ddlOffPoint').empty();
+
+    // $('#ddlULD').empty();
+    //var newOption = $('<option></option>');
+    //newOption.val(0).text('Select');
+    //newOption.appendTo('#ddlULD');
+
+
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var FlightPrefix = $('#txtFlightPrefix').val();
+    var FlightNo = $('#txtFlightNo').val();
+    var FlightDate = $('#txtFlightDate').val();
+    var awbNo = $('#txtAWBNo').val();
+
+    if (FlightPrefix == "" || FlightNo == "") {
+        errmsg = "Please enter valid Flight No.";
+        $.alert(errmsg);
+        return;
+    }
+
+    if (FlightDate == "") {
+        errmsg = "Please enter Flight Date";
+        $.alert(errmsg);
+        return;
+    }
+
+    // var inputXML = '<Root><FlightAirline>' + FlightPrefix + '</FlightAirline><FlightNo>' + FlightNo + '</FlightNo><FlightDate>' + FlightDate + '</FlightDate><Offpoint></Offpoint><AirportCity>' + AirportCity + '</AirportCity></Root>';
+
+    //var inputXML = '<Root><FlightAirline>' + FlightPrefix + '</FlightAirline><FlightNo>' + FlightNo + '</FlightNo><FlightDate>' + FlightDate + '</FlightDate><Offpoint></Offpoint><AirportCity>' + AirportCity + '</AirportCity><UserID>' + UserId + '</UserId></Root>';
+
+    var inputXML = '<Root><AirportCity>' + AirportCity + '</AirportCity><FlightAirline>' + FlightPrefix + '</FlightAirline><FlightNo>' + FlightNo + '</FlightNo><FlightDate>' + FlightDate + '</FlightDate><Offpoint>' + globOffPoint + '</Offpoint><AWBNo>' + awbNo + '</AWBNo><FlightSeqNo>' + _FlightSeqNo + '</FlightSeqNo><ULDSeqNo>' + globULD + '</ULDSeqNo></Root>';
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "OffloadShipmentGetData",
+            data: JSON.stringify({
+                'InputXML': inputXML
+
             }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -333,11 +885,18 @@ function GetOffPointForFlight() {
 
                 $(xmlDoc).find('Table1').each(function (index) {
 
-                    var RouteId;
-                    var OffPointCity;
 
-                    RouteId = $(this).find('RouteID').text();
-                    OffPointCity = $(this).find('AirportCity').text();
+                    AWBNo = $(this).find('AWBNo').text();
+                    NOG = $(this).find('NOG').text();
+                    UnitizedPkgs = $(this).find('UnitizedPkgs').text();
+                    SHC = $(this).find('SHC').text();
+                    var newSHC = $(this).find('SHC').text();
+                    $("#TextBoxDiv").empty();
+                    SHCSpanHtml(newSHC);
+                    $('#txtNOG').val(NOG);
+                    $('#txtUniPKG').val(UnitizedPkgs).attr('disabled', 'disabled');
+
+                    $('#txtPKG').focus();
 
                     //if (index == 0) {
                     //    var newOption = $('<option></option>');
@@ -346,31 +905,13 @@ function GetOffPointForFlight() {
                     //}
 
 
-                    var newOption = $('<option></option>');
-                    newOption.val(RouteId).text(OffPointCity);
-                    newOption.appendTo('#ddlOffPoint');
+
                     // if (index == 0) {
                     //     GetULDs(OffPointCity);
                     // }
                 });
 
-                $(xmlDoc).find('Table2').each(function (index) {
-                    var ULDSeqNo;
-                    var ULDNo;
 
-                    ULDSeqNo = $(this).find('ULDSeqNo').text();
-                    ULDNo = $(this).find('ULDNo').text();
-
-                    var newOption = $('<option></option>');
-                    newOption.val(ULDSeqNo).text(ULDNo);
-                    newOption.appendTo('#ddlULD');
-                });
-
-                $(xmlDoc).find('Table3').each(function (index) {
-
-                    _FlightSeqNo = $(this).find('FltSeqNo').text();
-
-                });
 
             },
             error: function (msg) {
@@ -511,7 +1052,7 @@ function GetAWBNO() {
 
                 $(xmlDoc).find('Table3').each(function (index) {
 
-                    _FlightSeqNo = $(this).find('FltSeqNo').text();
+                    // _FlightSeqNo = $(this).find('FltSeqNo').text();
 
                 });
 
@@ -1342,20 +1883,28 @@ function SaveAWBforULDDetails() {
 
 }
 
-function SaveExportOffLoadULDV() {
+function OffloadShipmentSaveData() {
+
+
 
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
 
-    if (document.getElementById('rdoULD').checked) {
+    //if (document.getElementById('rdoULD').checked) {
 
-        if ($('#txtFlightPrefix').val() == "" || $('#txtFlightNo').val() == "") {
-            errmsg = "Please enter valid Flight No.";
-            $.alert(errmsg);
-            return;
-        }
+    //    if ($('#txtFlightPrefix').val() == "" || $('#txtFlightNo').val() == "") {
+    //        errmsg = "Please enter valid Flight No.";
+    //        $.alert(errmsg);
+    //        return;
+    //    }
+    //}
+
+
+    if ($('#txtFlightPrefix').val() == "" || $('#txtFlightNo').val() == "") {
+        errmsg = "Please enter valid Flight No.";
+        $.alert(errmsg);
+        return;
     }
-
 
     if ($('#txtFlightDate').val() == "") {
         errmsg = "Please enter Flight Date.";
@@ -1382,21 +1931,34 @@ function SaveExportOffLoadULDV() {
     }
 
 
+
+    if ($('#txtAWBNo').val() == "") {
+        errmsg = "Please enter AWB No.";
+        $.alert(errmsg);
+        return;
+    }
+
+
+    if ($('#txtPKG').val() == "") {
+        errmsg = "Please enter Offloaded Pieces.";
+        $.alert(errmsg);
+        return;
+    }
+
     //SelectedHawbId = $("#ddlHAWB option:selected").val();      
 
     //var inputXML = '<Root><AWBNo>' + AWBNo + '</AWBNo><HouseNo>' + HAWBNo + '</HouseNo><IGMNo>' + IgmVal + '</IGMNo><UserId>' + window.localStorage.getItem("UserID") + '</UserId><AirportCity>' + AirportCity + '</AirportCity></Root>';
 
-    var inputXML = '<Root><FltSeqNo>' + _FlightSeqNo + '</FltSeqNo><ULDSeqNo>' + $('#ddlULD').find('option:selected').val() + '</ULDSeqNo><OffPoint>' + $('#ddlOffPoint').find('option:selected').text() + '</OffPoint><UserId>' + UserId + '</UserId><AirportCity>' + AirportCity + '</AirportCity></Root>';
+    var inputXML = '<Root><AirportCity>' + AirportCity + '</AirportCity><FlightSeqNo>' + _FlightSeqNo + '</FlightSeqNo><ULDSeqNo>' + globULD + '</ULDSeqNo><IsAuto>N</IsAuto><ScanId></ScanId><AWBNo>' + $("#txtAWBNo").val() + '</AWBNo><OffloadPkgs>' + $('#txtPKG').val() + '</OffloadPkgs><UserId>' + UserID + '</UserId></Root>';
 
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: 'POST',
-            url: GHAserviceURL + "SaveExportOffLoadULDV",
+            url: GHAExportFlightserviceURL + "OffloadShipmentSaveData",
             data: JSON.stringify({
                 'InputXML': inputXML,
-                'strUserId': UserId,
-                'strVal': deviceUUID
+
             }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -1420,20 +1982,17 @@ function SaveExportOffLoadULDV() {
                         if (Status == "E") {
                             $("body").mLoading("hide");
                             $.alert(StrMessage);
+
                         } else if (Status == "S") {
                             $("body").mLoading("hide");
                             $.alert(StrMessage);
+                            $('#txtAWBNo').val('');
+                            GetOffPointForFlight();
                         } else {
                             $("body").mLoading("hide");
                             $.alert(StrMessage);
                         }
                     });
-                    $("#txtAWBNo").val('');
-                    $("#txtNOP").val('');
-                    $("#txtOffloadReason").val('');
-                    $("#txtOffloadRemark").val('');
-
-                    GetOffPointForFlight();
                 }
 
             },
@@ -1454,6 +2013,124 @@ function SaveExportOffLoadULDV() {
     }
 }
 
+
+function OffloadShipmentSaveDataOnScanID() {
+
+    if ($('#txtScannedID').val() == '') {
+        return;
+    }
+
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    //if (document.getElementById('rdoULD').checked) {
+
+    //    if ($('#txtFlightPrefix').val() == "" || $('#txtFlightNo').val() == "") {
+    //        errmsg = "Please enter valid Flight No.";
+    //        $.alert(errmsg);
+    //        return;
+    //    }
+    //}
+    if ($('#txtFlightPrefix').val() == "" || $('#txtFlightNo').val() == "") {
+        errmsg = "Please enter valid Flight No.";
+        $.alert(errmsg);
+        return;
+    }
+
+    if ($('#txtFlightDate').val() == "") {
+        errmsg = "Please enter Flight Date.";
+        $.alert(errmsg);
+        return;
+    }
+
+    //if ($('#txtOwner').val() == "") {
+    //    errmsg = "Please enter ULD Owner";
+    //    $.alert(errmsg);
+    //    return;
+    //}
+
+    if ($('#ddlOffPoint').find('option:selected').text() == "Select" || $('#ddlOffPoint').find('option:selected').text() == "") {
+        errmsg = "No offpoint selected.";
+        $.alert(errmsg);
+        return;
+    }
+
+    if ($('#ddlULD').find('option:selected').text() == "Select" || $('#ddlULD').find('option:selected').text() == "") {
+        errmsg = "Please select ULD.";
+        $.alert(errmsg);
+        return;
+    }
+
+
+
+
+    //SelectedHawbId = $("#ddlHAWB option:selected").val();      
+
+    //var inputXML = '<Root><AWBNo>' + AWBNo + '</AWBNo><HouseNo>' + HAWBNo + '</HouseNo><IGMNo>' + IgmVal + '</IGMNo><UserId>' + window.localStorage.getItem("UserID") + '</UserId><AirportCity>' + AirportCity + '</AirportCity></Root>';
+
+    var inputXML = '<Root><AirportCity>' + AirportCity + '</AirportCity><FlightSeqNo>' + _FlightSeqNo + '</FlightSeqNo><ULDSeqNo>' + globULD + '</ULDSeqNo><IsAuto>Y</IsAuto><ScanId>' + $("#txtScannedID").val() + '</ScanId><AWBNo></AWBNo><OffloadPkgs>1</OffloadPkgs><UserId>' + UserID + '</UserId></Root>';
+
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "OffloadShipmentSaveData",
+            data: JSON.stringify({
+                'InputXML': inputXML,
+
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                //$('.dialog-background').css('display', 'block');
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;
+                $("body").mLoading('hide');
+                var str = response.d;
+                // console.log(response.d);
+                if (str != null && str != "" && str != "<NewDataSet />") {
+                    var xmlDoc = $.parseXML(str);
+
+                    $(xmlDoc).find("Table").each(function (index) {
+                        Status = $(this).find("Status").text();
+                        StrMessage = $(this).find("StrMessage").text();
+                        if (Status == "E") {
+                            $("body").mLoading("hide");
+                            $.alert(StrMessage);
+
+                        } else if (Status == "S") {
+                            $("body").mLoading("hide");
+                            $.alert(StrMessage);
+                            $('#txtScannedID').val('');
+                            GetOffPointForFlight();
+                        } else {
+                            $("body").mLoading("hide");
+                            $.alert(StrMessage);
+                        }
+                    });
+                }
+
+            },
+            error: function (msg) {
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    } else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    } else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    } else {
+        $("body").mLoading('hide');
+    }
+}
 
 function SaveExportOffLoadShipV() {
 
@@ -1605,6 +2282,7 @@ function clearAllULDDetails() {
     $('#txtFlightNo').val('');
     $('#txtFlightDate').val('');
     $('#ddlOffPoint').empty();
+    $('#divAddTestLocation').empty();
     $('#txtULDType').val('');
     $('#txtULDNumber').val('');
     $('#txtOwner').val('');
@@ -1620,6 +2298,10 @@ function clearAllULDDetails() {
     $('#txtBulkNumber').val('');
     $('#txtGrossWt').val('');
     $('#txtFlightPrefix').focus();
+
+    $('#txtNOG').val('');
+    $('#txtPKG').val('');
+    $('#txtUniPKG').val('');
 
     $('#txtAWBNo').val('');
     $('#txtNOP').val('');

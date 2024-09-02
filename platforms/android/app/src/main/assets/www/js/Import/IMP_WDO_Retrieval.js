@@ -299,7 +299,7 @@ function gatePassNoDetails(WDONo, AWBNo, IsLocked, IsCompleted, WDOStatus) {
 
 function goToGPDetailsPage(wdono, docno) {
 
-    localStorage.setItem('_WDONo', wdono );
+    localStorage.setItem('_WDONo', wdono);
     localStorage.setItem('_DocNo', docno);
 
     window.location.href = 'IMP_OutOfWarehouse.html';
@@ -358,6 +358,10 @@ function clearALLafterSave() {
 
 
 function ImportAirside_Search_V3_OnBlure() {
+
+    if ($('#txtSacnULD').val() == '') {
+        return;
+    }
     //  clearALLBeforeSearch();
     $("#spnMsg").text('');
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
@@ -440,7 +444,7 @@ function ImportAirside_Search_V3_OnBlure() {
                         localStorage.setItem('_DocNo', AWBNo);
 
                         window.location.href = 'IMP_OutOfWarehouse.html';
-                       // gatePassNoDetails(WDONo, AWBNo, IsLocked, IsCompleted, WDOStatus);
+                        // gatePassNoDetails(WDONo, AWBNo, IsLocked, IsCompleted, WDOStatus);
                     });
                     html += "</tbody ></table>";
                     $('#divVCTDetail').show();

@@ -14,6 +14,7 @@ var locPieces;
 var html;
 var FromLoc;
 var Hawbid;
+var sendID;
 
 $(function () {
 
@@ -27,7 +28,7 @@ function GetHAWBDetailsForMAWB() {
 
     var igmList = [];
 
-    $('#divAddTesGetHAWBDetailsForMAWBtLocation').empty();
+    $('#divAddTestLocation').empty();
 
     $('#ddlHAWB').empty();
     var newOption = $('<option></option>');
@@ -93,7 +94,7 @@ function GetHAWBDetailsForMAWB() {
 
                     var HouseNo = $(this).find('HouseNo').text();
                     var IMPAWBROWID = $(this).find('IMPAWBROWID').text();
-
+                    sendID = IMPAWBROWID;
                     var newOption = $('<option></option>');
                     newOption.val(IMPAWBROWID).text(HouseNo);
                     newOption.appendTo('#ddlHAWB');
@@ -167,11 +168,11 @@ function GetHAWBDetailsForMAWB() {
         $("body").mLoading('hide');
     }
 }
-function onkeyupAWBNo() {
-    if ($('#txtAWBNo').val().length == 11) {
-        GetHAWBDetailsForMAWB();
-    }
-}
+//function onkeyupAWBNo() {
+//    if ($('#txtAWBNo').val().length == 11) {
+//        GetHAWBDetailsForMAWB();
+//    }
+//}
 function GetShipmentDetails() {
 
 
@@ -185,17 +186,17 @@ function GetShipmentDetails() {
     var IgmNo = $("#ddlIGM option:selected").text();
 
     SelectedHawbId = $("#ddlHAWB option:selected").val();
-    if ($('#ddlHAWB > option').length > 1) {
-        if ($("#ddlHAWB option:selected").val() == '0') {
-            $("#spnErrorMSG").text("Please select HAWB No.").css('color', 'red');
-            return;
-        } else {
-            $("#spnErrorMSG").text('');
-        }
+    //if ($('#ddlHAWB > option').length > 1) {
+    //    if ($("#ddlHAWB option:selected").val() == '0') {
+    //        $("#spnErrorMSG").text("Please select HAWB No.").css('color', 'red');
+    //        return;
+    //    } else {
+    //        $("#spnErrorMSG").text('');
+    //    }
 
-    } else {
-        $("#spnErrorMSG").text('');
-    }
+    //} else {
+    //    $("#spnErrorMSG").text('');
+    //}
     if (SelectedHawbId == '0') {
 
         SelectedHawbId = Hawbid;
@@ -215,23 +216,32 @@ function GetShipmentDetails() {
         HAWBNo = '';
     }
 
-    if ($('#ddlIGM').val() == '0' && $('#ddlIGM option').length > 1) {
-        //errmsg = "Please select IGM</br>";
-        //$.alert(errmsg);
-        $("#spnErrorMSG").text("Please select IGM No.").css('color', 'red');
-        return;
+    //if ($('#ddlIGM').val() == '0' && $('#ddlIGM option').length > 1) {
+    //    //errmsg = "Please select IGM</br>";
+    //    //$.alert(errmsg);
+    //    $("#spnErrorMSG").text("Please select IGM No.").css('color', 'red');
+    //    return;
+    //} else {
+    //    $("#spnErrorMSG").text('');
+    //}
+
+    if ($('#ddlIGM > option').length > 1) {
+        if ($("#ddlIGM option:selected").val() == '0') {
+            $("#spnErrorMSG").text("Please select IGM No.").css('color', 'red');
+            return;
+        } else {
+            $("#spnErrorMSG").text('');
+        }
+
     } else {
         $("#spnErrorMSG").text('');
     }
-
-    if ($("#ddlIGM option:selected").text() == 'Select') {
-        $("#spnErrorMSG").text("Please select IGM No.").css('color', 'red');
-        return;
+    
+    if ($('#ddlIGM > option').length > 1) {
+        var InputXML = '<Root><AWBNumber>' + $('#txtAWBNo').val() + '</AWBNumber><HouseNo>' + HAWBNo + '</HouseNo><ShipmentId>' + $('#ddlIGM').val() + '</ShipmentId><IGMNo>' + $("#ddlIGM option:selected").text() + '</IGMNo><CompanyCode>' + companyCode + '</CompanyCode><UserId>' + UserID + '</UserId><AirportCity>' + AirportCity + '</AirportCity></Root>';
     } else {
-        $("#spnErrorMSG").text('');
+        var InputXML = '<Root><AWBNumber>' + $('#txtAWBNo').val() + '</AWBNumber><HouseNo>' + HAWBNo + '</HouseNo><ShipmentId>' + sendID + '</ShipmentId><IGMNo></IGMNo><CompanyCode>' + companyCode + '</CompanyCode><UserId>' + UserID + '</UserId><AirportCity>' + AirportCity + '</AirportCity></Root>';
     }
-
-    var InputXML = '<Root><AWBNumber>' + $('#txtAWBNo').val() + '</AWBNumber><HouseNo>' + HAWBNo + '</HouseNo><ShipmentId>' + $('#ddlIGM').val() + '</ShipmentId><IGMNo>' + $("#ddlIGM option:selected").text()+'</IGMNo><CompanyCode>' + companyCode + '</CompanyCode><UserId>' + UserID + '</UserId><AirportCity>' + AirportCity + '</AirportCity></Root>';
 
 
     if (errmsg == "" && connectionStatus == "online") {

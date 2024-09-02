@@ -253,7 +253,7 @@
                                                 style="display:none ;">
                                             <!--<option value="0">Select</option>-->
                                         </select>
-                                        <input id="txtCommodity" tabindex="6" onkeyup="ChkMaxLength(this, '30');" onkeypress="return blockSpecialChar(event)" class="form-control" type="text" style="text-align:left;">
+                                        <input id="txtCommodity" tabindex="6" onkeyup="ChkMaxLength(this, '50');" onkeypress="return blockSpecialChar(event)" class="form-control" type="text" style="text-align:left;">
                                     </div>
 
                                 </div>
@@ -309,7 +309,7 @@
                                         <input id="txtShipperPrifix" tabindex="11" maxlength="3" class="form-control" onkeypress="return blockSpecialChar(event)" type="text" onblur="Shipper_GetShipperConsigneeWithShortCode_V3();">
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <select class="form-control" id="ddlShipper"
+                                        <select class="form-control" id="ddlShipper" onchange="onChangeShipperText($('#ddlShipper').val())"
                                                 style="display: none;">
                                             <!--<option value="0">Select</option>-->
                                         </select>
@@ -327,8 +327,8 @@
                                         <input id="txtConsigneePrifix" tabindex="13" maxlength="3" class="form-control" onkeypress="return blockSpecialChar(event)" type="text" onblur="Consignee_GetShipperConsigneeWithShortCode_V3();">
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <input id="txtConsignee" tabindex="14" maxlength="30" onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
-                                        <select class="form-control" id="ddlConsignee"
+                                        <input id="txtConsignee" tabindex="14" maxlength="30"  onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
+                                        <select class="form-control" id="ddlConsignee" onchange="onChangeConsineeName($('#ddlConsignee').val());"
                                                 style="display: none;"></select>
                                     </div>
 
@@ -343,7 +343,7 @@
                                     </div>
                                     <div class="col-xs-6 NoPadding">
                                         <input id="txtAgentName" tabindex="16" onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
-                                        <select class="form-control" id="ddlAgentName"
+                                        <select class="form-control" id="ddlAgentName" onchange="onChangeAgentName($('#ddlAgentName').val())"
                                                 style="display: none;"></select>
                                     </div>
                                 </div>
@@ -415,7 +415,7 @@
         const year = date.toLocaleString('default', { year: 'numeric' });
         var today = day + '-' + month + '-' + year;
         $('#txtFlightDate').val(today);
-
+       
         $("#txtFlightDate").datepicker({
             shortYearCutoff: 1,
             changeMonth: true,

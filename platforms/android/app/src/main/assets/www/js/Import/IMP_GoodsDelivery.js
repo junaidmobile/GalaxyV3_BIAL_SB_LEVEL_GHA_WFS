@@ -16,7 +16,8 @@ var HAWBId;
 var inputRowsforLocation = "";
 var _ULDFltSeqNo;
 var imgDataForSave = '';
-
+var gatePassList = [];
+var selectedRowHAWBNo = '1';
 //document.addEventListener("pause", onPause, false);
 //document.addEventListener("resume", onResume, false);
 //document.addEventListener("menubutton", onMenuKeyDown, false);
@@ -37,10 +38,11 @@ var imgDataForSave = '';
 
 
 $(function () {
-
+    // $('#ddlGatePassScanNo').select2();
     if (window.localStorage.getItem("RoleIMPFinalDelivery") == '0') {
         window.location.href = 'IMP_Dashboard.html';
     }
+    selectedRowHAWBNo = amplify.store("selectedRowHAWBNo");
 
 
     //document.getElementById("cameraTakePicture").addEventListener
@@ -105,7 +107,11 @@ function cameraTakePicture() {
 
 
 }
-
+function ChkMaxLength(txt, len) {
+    if ($('#' + txt.id).val().length > parseInt(len)) {
+        $('#' + txt.id).val($('#' + txt.id).val().substring(0, len));
+    }
+}
 function onSuccess(imageData) {
     var image = document.getElementById('myImage');
     var data = "data:image/jpeg;base64," + imageData;
@@ -517,11 +523,13 @@ function clearAWBDetails() {
     $('#divVCTDetail').empty();
     $('#myImage').hide();
     $('#spnMsg').text('');
-    $('#txtGatePassScanNo').focus();
+    // $('#txtGatePassScanNo').focus();
     $('#btnGoodsDelever').attr('disabled', 'disabled');
     signaturePad.clear();
-
-
+    $('#txtAWBNo').val('');
+    $('#txtAWBNo').focus();
+    gatePassList = [];
+    $('#ddlGatePassScanNo').empty();
 
 }
 
@@ -532,3 +540,163 @@ function ClearError(ID) {
     $("#" + ID).css("background-color", "#e7ffb5");
 }
 
+function GetHHTImportWDOAWBSearchV3() {
+   
+    clearBeforAWBSearch();
+    if ($('#txtAWBNo').val() == '') {
+        return;
+        //  signitureDataURL = '';
+    }
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var MAWBNo = $('#txtAWBNo').val();
+    let AWBPrefix = MAWBNo.slice(0, 3);
+    let AWBNo = MAWBNo.slice(3, 11);
+
+
+    var InputXML = '<Root><AWBPrefix>' + AWBPrefix + '</AWBPrefix><AWBNo>' + AWBNo + '</AWBNo><AirportCity>' + AirportCity + '</AirportCity><Culture>' + PreferredLanguage + '</Culture><UserId>' + UserId + '</UserId><CompanyCode>' + companyCode + '</CompanyCode></Root>';
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAImportFlightserviceURL + "GetHHTImportWDOAWBSearchV3",
+            data: JSON.stringify({
+                'InputXML': InputXML,
+
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                //var str = response.d;
+                // $.alert(response);
+                $(xmlDoc).find('Table').each(function (index) {
+                    var Status = $(this).find('Status').text();
+
+                    if (Status == 'E') {
+                        $("#spnMsg").text($(this).find('StrMessage').text()).css('color', 'red');
+                        $('#txtGatePassScanNo').val('');
+                        $('#divAddLocation').empty();
+                        return;
+                    }
+                    //else {
+                    //    $("#spnMsg").text($(this).find('OutMsg').text()).css('color', 'green');
+                    //    if ($(this).find('OutMsg').text() == 'Shipment released Successfully.') {
+                    //        $('#btnGoodsDelever').attr('disabled', 'disabled');
+                    //    }
+                    //}
+
+                });
+                gatePassList = [];
+                var wddo;
+                $(xmlDoc).find('Table1').each(function (index) {
+                    var WDONo = $(this).find('WDONo').text();
+                    var WDOSEQNO = $(this).find('WDOSEQNO').text();
+                    var AWBNO = $(this).find('AWBNO').text();
+                    var isActive = $(this).find('isActive').text();
+                    wddo = WDONo;
+
+                    var newOption = $('<option></option>');
+                    newOption.val(WDOSEQNO).text(WDONo);
+                    newOption.appendTo('#ddlGatePassScanNo');
+
+
+
+                    gatePassList.push({ 'value': WDOSEQNO, 'label': WDONo });
+                    _data = JSON.stringify(gatePassList);
+                    console.log(_data)
+
+                });
+
+                if (selectedRowHAWBNo != '') {
+                    //TODO :Change selectedRowHAWBNo to  $("#hawbLists").val()
+                    $("#ddlGatePassScanNo option").each(function () {
+                        if ($(this).text() == selectedRowHAWBNo) {
+                            $(this).attr('selected', 'selected');
+                            var selectedGatePass = $(this).val();
+
+                            gatePassChange(selectedGatePass);
+                        }
+                    });
+                }
+
+                if (gatePassList.length > 0) {
+                    $("#txtGatePassScanNo").autocomplete({
+                        minLength: 0,
+                        source: gatePassList,
+                        focus: function (event, ui) {
+                            // if (this.value == "") {
+                            //     $(this).autocomplete("search");
+                            // }
+                            // $("#txtCommodity").focus();
+                            $("#txtGatePassScanNo").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtGatePassScanNo").val(ui.item.label);
+                            $('#ddlGatePassScanNo').val(ui.item.value)
+                            gatePassChange($('#ddlGatePassScanNo').val());
+                            // $("#project-id").val(ui.item.label);
+                            return false;
+                        }
+                    });
+
+                    if ($(xmlDoc).find('Table1').length == 1) {
+                        $('#ddlGatePassScanNo').trigger('change');
+                        $("#txtGatePassScanNo").val(wddo);
+                        $("#txtGatePassScanNo").focus();
+                        $("#txtGatePassScanNo").blur();
+                    } else {
+                        $("#txtGatePassScanNo").focus();
+                        $(this).autocomplete("search", $(this).val());
+                        $("#txtGatePassScanNo").focus(function () {
+                            $(this).autocomplete("search", $(this).val());
+                        });
+                    }
+                }
+
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    } else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    } else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    } else {
+        $("body").mLoading('hide');
+    }
+}
+
+function gatePassChange(gpID) {
+
+}
+
+function clearBeforAWBSearch() {
+    $('#txtGatePassScanNo').val('');
+    $('#tblNewsForGatePass').hide();
+    $('#divVCTDetail').empty();
+    $('#myImage').hide();
+    $('#spnMsg').text('');
+    // $('#txtGatePassScanNo').focus();
+    $('#btnGoodsDelever').attr('disabled', 'disabled');
+    signaturePad.clear();
+   
+    gatePassList = [];
+    $('#ddlGatePassScanNo').empty();
+}
