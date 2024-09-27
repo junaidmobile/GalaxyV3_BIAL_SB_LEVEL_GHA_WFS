@@ -375,10 +375,39 @@
                                     </tr>
 
                                 </table>
+                                <table>
 
+                                    <tr>
+                                        <td>
+                                            <!--<input id="txtSecuirty" style="width: 50%;"
+                                            class="form-control" type="text"
+                                            onkeyup="ChkMaxLength(this, '20');" maxlength="14">-->
+                                            <em style="font-size: 11px;"> Name and Sign of CISF</em>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+
+                                        <td>
+                                            <div id="Divsignature-pad" class="wrapper col-xs-6 col-sm-6 col-md-6 rapro" style="">
+                                                <canvas id="sigCISF" class="signature-pad col-xs-12"></canvas>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+
+                                        <td>
+                                            <!--<input style="margin-top: 1em; width: 50%;" type="button" id="btnClear" class="form-control ButtonColor" value="Save" onclick="ExportAirside_SignUpload_V3_2()">-->
+                                            <button type="button" style="margin-top: 1em; margin-left: 55px;" onclick="ExportAirside_SignUpload_V3_4();"> <span class="glyphicon glyphicon-floppy-disk"></span></button>
+
+                                        </td>
+                                    </tr>
+
+                                </table>
                             </div>
 
-                            <div class="form-group col-xs-12 col-sm-6 col-md-6">
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12">
                                 <span style="font-size: 1.5em;" id="spnErrormsg"></span>
                             </div>
 

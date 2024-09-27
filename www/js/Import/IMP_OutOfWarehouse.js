@@ -155,6 +155,7 @@ function ImportAirside_Search_V3() {
                     html += '<tr>';
                     html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center">Group Id</th>';
                     html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center">Pieces</th>';
+                    html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center">WH Location</th>';
                     html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center">Revoke</th>';
                     html += '</tr>';
                     html += '</thead>';
@@ -178,8 +179,9 @@ function ImportAirside_Search_V3() {
                         IsLocked = $(this).find('IsLocked').text();
                         IsCompleted = $(this).find('IsCompleted').text();
                         WDOStatus = $(this).find('WDOStatus').text();
-
-                        VCTNoDetails(GroupId, PkgRecd, WDOStatus);
+                        WareHouseLocation = $(this).find('WareHouseLocation').text();
+                        
+                        VCTNoDetails(GroupId, PkgRecd, WDOStatus, WareHouseLocation);
                     });
                     html += "</tbody></table>";
                     if (flag == '1') {
@@ -214,11 +216,12 @@ function ImportAirside_Search_V3() {
 
 
 
-function VCTNoDetails(GroupId, PkgRecd, WDOStatus) {
+function VCTNoDetails(GroupId, PkgRecd, WDOStatus, WareHouseLocation) {
 
     html += '<tr>';
     html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:left;padding-right: 4px;">' + GroupId + '</td>';
     html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:right;padding-right: 4px;">' + PkgRecd + '</td>';
+    html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:left;padding-right: 4px;">' + WareHouseLocation + '</td>';
     if (WDOStatus != 'C') {
         //html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:center;color:gray;"><span class="glyphicon glyphicon-remove"></span></td>';
         html += '<td style="font-size:14px;padding: 5px;background: rgb(224, 243, 215);" class="text-center align-middle"><button  class="btn" disabled align="center">Revoke</button></td>';
@@ -232,6 +235,10 @@ function VCTNoDetails(GroupId, PkgRecd, WDOStatus) {
 
 
 function SaveOutforWarehouse() {
+
+    if ($('#txtGroupId').val() == "") {
+        return;
+    }
 
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";

@@ -38,8 +38,7 @@ document.addEventListener("backbutton", exitFromApp, false);
 var allData;
 
 $(function () {
-    $('#txtUserName').val('');
-    $('#txtPassword').val('');
+    
     //$(":text").addClear();
     //$(":password").addClear();
     //$('input[type=text]').addClear();
@@ -71,6 +70,9 @@ $(function () {
     //    return false;
     //}
 
+    localStorage.removeItem('UserName');
+    $('#txtUserName').val('');
+    $('#txtPassword').val('');
 
 });
 

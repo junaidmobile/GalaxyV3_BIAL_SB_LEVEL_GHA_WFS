@@ -46,35 +46,35 @@ $(function () {
     }
 
 
-    let date = new Date();
-    const day = date.toLocaleString('default', { day: '2-digit' });
-    const month = date.toLocaleString('default', { month: 'short' });
-    const year = date.toLocaleString('default', { year: 'numeric' });
-    var today = day + '-' + month + '-' + year;
-    $('#txtFlightDate').val(today);
+    //let date = new Date();
+    //const day = date.toLocaleString('default', { day: '2-digit' });
+    //const month = date.toLocaleString('default', { month: 'short' });
+    //const year = date.toLocaleString('default', { year: 'numeric' });
+    //var today = day + '-' + month + '-' + year;
+    //$('#txtFlightDate').val(today);
 
-    $("#txtFlightDate").datepicker({
-        shortYearCutoff: 1,
-        changeMonth: true,
-        changeYear: true,
-        dateFormat: 'dd-M-yy'
-    });
+    //$("#txtFlightDate").datepicker({
+    //    shortYearCutoff: 1,
+    //    changeMonth: true,
+    //    changeYear: true,
+    //    dateFormat: 'dd-M-yy'
+    //});
 
 
-    //var formattedDate = new Date();
-    //var d = formattedDate.getDate();
-    //if (d.toString().length < Number(2))
-    //    d = '0' + d;
-    //var m = formattedDate.getMonth();
-    //m += 1;  // JavaScript months are 0-11
-    //if (m.toString().length < Number(2))
-    //    m = '0' + m;
-    //var y = formattedDate.getFullYear();
-    //var t = formattedDate.getTime();
-    //var date = m.toString() + '/' + d.toString() + '/' + y.toString();
+    var formattedDate = new Date();
+    var d = formattedDate.getDate();
+    if (d.toString().length < Number(2))
+        d = '0' + d;
+    var m = formattedDate.getMonth();
+    m += 1;  // JavaScript months are 0-11
+    if (m.toString().length < Number(2))
+        m = '0' + m;
+    var y = formattedDate.getFullYear();
+    var t = formattedDate.getTime();
+    var date = m.toString() + '/' + d.toString() + '/' + y.toString();
 
-    //newDate = y.toString() + '-' + m.toString() + '-' + d.toString();
-    //$('#txtFlightDate').val(newDate);
+    newDate = y.toString() + '-' + m.toString() + '-' + d.toString();
+    $('#txtFlightDate').val(newDate);
 
     //var h = date.getHours();
     //var m = date.getMinutes();
@@ -110,6 +110,8 @@ $(function () {
 
     //  GetBarcodeSettings_HHT();
     // EnableMPSNo();
+
+   
 });
 
 function EnableMPSNo() {
@@ -224,8 +226,8 @@ function GetTrolleyDetails() {
                 //var str = response.d;
                 var xmlDoc = $.parseXML(response);
 
-                $('#divVCTDetail').html('');
-                $('#divVCTDetail').empty();
+                $('#divULDs').html('');
+                $('#divULDs').empty();
                 console.log(xmlDoc);
                 var StrMessage;
 
@@ -236,7 +238,7 @@ function GetTrolleyDetails() {
                     html += '<table id="tblPAckageIDs" class="table table-bordered table-striped">';
                     html += '<thead>';
                     html += '<tr>';
-                    html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" >Trolley Number</th>';
+                    html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" >Trolley/ULD No.</th>';
                     /*html += '<th height="30" style="background-color:rgb(208, 225, 244);" >Package Count</th>';*/
                     html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" >Action</th>';
                     //html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center" font-weight:bold">Remarks</th>';
@@ -254,15 +256,16 @@ function GetTrolleyDetails() {
                         StickerValue = $(this).find('StickerValue').text();
                         TrolleyStatus = $(this).find('TrolleyStatus').text();
                         StickerPrintData = $(this).find('StickerPrintData').text();
+                        ULDType = $(this).find('ULDType').text();
 
 
-                        fnPackageIDList(TrollyRowId, FlightSeqNo, TrolleyNumber, StickerValue, TrolleyStatus, StickerPrintData);
+                        fnPackageIDList(TrollyRowId, FlightSeqNo, TrolleyNumber, StickerValue, TrolleyStatus, StickerPrintData, ULDType);
 
 
                     });
                     html += "</tbody></table>";
 
-                    $('#divVCTDetail').append(html);
+                    $('#divULDs').append(html);
 
 
 
@@ -309,20 +312,20 @@ function GetTrolleyDetails() {
 
 
 
-function fnPackageIDList(TrollyRowId, FlightSeqNo, TrolleyNumber, StickerValue, TrolleyStatus, StickerPrintData) {
+function fnPackageIDList(TrollyRowId, FlightSeqNo, TrolleyNumber, StickerValue, TrolleyStatus, StickerPrintData, ULDType) {
     //if (PackageId != '') {
     html += '<tr>';
     html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px">' + TrolleyNumber + '</td>';
     /* html += '<td style="background: rgb(224, 243, 215);">' + TrolleyStatus + '</td>';*/
     // html += '<td style="background: rgb(224, 243, 215);">  <a style="text-align: center;argin-left: 5px;background-color: #065da1;color: #fff;" type="button" onclick="getFormatedPRNText(\'' + HAWBNo + '\',\'' + Destination + '\',\'' + IGMNo + '\',\'' + MAWBNo + '\',\'' + PkgOfPkgCount + '\',\'' + FlightArrivalDate + '\',\'' + FlightArrivalTime + '\',\'' + CleintName + '\',\'' + MPSNo + '\',\'' + PackageId + '\');"class=" form-control glyphicon glyphicon-print"></a></td>';
-    html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px">  <a style="text-align: center;margin-left: 5px;color: #000;background-color: rgb(224, 243, 215);"  onclick="GetTrolleyDetailsonClickPrint(\'' + TrollyRowId + '\');"class=" form-control glyphicon glyphicon-print"></a></td>';
+    html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px">  <a style="text-align: center;margin-left: 5px;color: #000;background-color: rgb(224, 243, 215);"  onclick="GetTrolleyDetailsonClickPrint(\'' + TrollyRowId + '\',\'' + ULDType + '\');"class=" form-control glyphicon glyphicon-print"></a></td>';
     //html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:right;padding-right: 4px;">' + Remarks + '</td>';
     html += '</tr>';
     //  }
 }
 
 
-function GetTrolleyDetailsonClickPrint(TrollyRowId) {
+function GetTrolleyDetailsonClickPrint(TrollyRowId, ULDType) {
 
 
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
@@ -356,7 +359,7 @@ function GetTrolleyDetailsonClickPrint(TrollyRowId) {
     } else {
         $('#spnValMsg').text("");
     }
-    inputxml = '<Root><FlightNo>' + $('#txtFlightPrefix').val() + '' + $('#txtFlightNo').val() + '</FlightNo><FlightDate>' + $('#txtFlightDate').val() + '</FlightDate><AirportCity>' + AirportCity + '</AirportCity><Culture>' + PreferredLanguage + '</Culture><UserId>' + UserId + '</UserId><TrollyRowId>' + TrollyRowId+'</TrollyRowId></Root>';
+    inputxml = '<Root><FlightNo>' + $('#txtFlightPrefix').val() + '' + $('#txtFlightNo').val() + '</FlightNo><FlightDate>' + $('#txtFlightDate').val() + '</FlightDate><AirportCity>' + AirportCity + '</AirportCity><Culture>' + PreferredLanguage + '</Culture><UserId>' + UserId + '</UserId><TrollyRowId>' + TrollyRowId + '</TrollyRowId><ULDType>' + ULDType + '</ULDType></Root>';
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
@@ -431,7 +434,7 @@ function GetTrolleyDetailsonClickPrint(TrollyRowId) {
 function clearBeforePopulate() {
     $('#ddlMAWBNo').empty();
     $('#txtHAWBNo').val('');
-    $('#divVCTDetail').empty();
+    $('#divULDs').empty();
     $('#spnValMsg').text('');
     var newOption = $('<option></option>');
     newOption.val(0).text('Select');
@@ -441,7 +444,7 @@ function clearBeforePopulate() {
     $('#txtFlightPrefix').val('');
     $('#txtFlightPrefix').focus();
     $('#txtFlightNo').val('');
-    
+
     let date = new Date();
     const day = date.toLocaleString('default', { day: '2-digit' });
     const month = date.toLocaleString('default', { month: 'short' });

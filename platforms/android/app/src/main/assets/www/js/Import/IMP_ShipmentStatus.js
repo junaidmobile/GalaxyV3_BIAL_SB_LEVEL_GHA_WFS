@@ -56,7 +56,7 @@ function GetHAWBDetailsForMAWB() {
     //    return;
     //}
     var InputXML = '<Root><AWBNumber>' + $('#txtAWBNo').val() + '</AWBNumber><HouseNo></HouseNo><ShipmentId></ShipmentId><IGMNo></IGMNo><CompanyCode>' + companyCode + '</CompanyCode><UserId>' + UserID + '</UserId><AirportCity>' + AirportCity + '</AirportCity></Root>';
-   // $("#txtAWBNo").blur();
+    // $("#txtAWBNo").blur();
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: 'POST',
@@ -83,7 +83,7 @@ function GetHAWBDetailsForMAWB() {
                     if (Status == 'E') {
                         $("#spnErrorMSG").text(StrMessage).css('color', 'red');
                         $("#txtAWBNo").val('');
-                      //  $("#txtAWBNo").focus();
+                        //  $("#txtAWBNo").focus();
                         return;
                     } else {
                         $("#spnErrorMSG").text('');
@@ -236,7 +236,11 @@ function GetShipmentDetails() {
     } else {
         $("#spnErrorMSG").text('');
     }
-    
+
+    if (sendID == undefined) {
+        sendID = '';
+    }
+
     if ($('#ddlIGM > option').length > 1) {
         var InputXML = '<Root><AWBNumber>' + $('#txtAWBNo').val() + '</AWBNumber><HouseNo>' + HAWBNo + '</HouseNo><ShipmentId>' + $('#ddlIGM').val() + '</ShipmentId><IGMNo>' + $("#ddlIGM option:selected").text() + '</IGMNo><CompanyCode>' + companyCode + '</CompanyCode><UserId>' + UserID + '</UserId><AirportCity>' + AirportCity + '</AirportCity></Root>';
     } else {

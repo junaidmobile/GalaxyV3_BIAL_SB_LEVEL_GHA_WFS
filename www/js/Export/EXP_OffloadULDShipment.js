@@ -65,9 +65,9 @@ $(function () {
     // return date + h + ":" + m;
     // $('#txtGPNo1').val(date);
 
-    // var stringos = 'ECC~N,PER~N,GEN~N,DGR~Y,HEA~N,AVI~N,BUP~Y,EAW~N,EAP~Y';
+     //var stringos = 'ECC~N,PER~N,GEN~N,DGR~Y,HEA~N,AVI~N,BUP~Y,EAW~N,EAP~Y';
 
-    // SHCSpanHtml(stringos);
+     //SHCSpanHtml(stringos);
 
 });
 
@@ -260,6 +260,12 @@ function AutoChkCheck() {
         $('#btnOffload').removeAttr('disabled');
 
 
+    }
+}
+
+function onChangeLenthCheckForScanID() {
+    if ($('#txtScannedID').val().length == 16) {
+        OffloadShipmentSaveDataOnScanID();
     }
 }
 

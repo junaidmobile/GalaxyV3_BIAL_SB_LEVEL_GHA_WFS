@@ -79,7 +79,15 @@ $(function () {
     //    height: 40,
     //    displayValue: false
     //});
+    $('#txtSacnULD').keyup(function () {
 
+        var rex = new RegExp($(this).val(), 'i');
+        $('.searchable tr').hide();
+        $('.searchable tr').filter(function () {
+            return rex.test($(this).text());
+        }).show();
+
+    })
 
 });
 
@@ -176,16 +184,27 @@ function ExportAirside_Search_V3() {
                 if (str != null && str != "") {
 
                     $('#divVCTDetail').empty();
+                    //html = '';
+                    //html += '<table id="tblNewsForGatePass" class="table table-striped table-bordered">';
+                    //html += '<thead>';
+                    //html += '<tr>';
+                    //html += '<th style="background-color:rgb(208, 225, 244);">Gate Pass No.</th>';
+                    //html += '<th style="background-color:rgb(208, 225, 244);">Sticker Number</th>';
+                    //html += '<th style="background-color:rgb(208, 225, 244);">Status</th>';
+                    //html += '<th style="background-color:rgb(208, 225, 244);">Action</th>';
+                    //html += '</tr >';
+                    //html += '</thead >';
+                    //html += '<tbody>';
+
                     html = '';
-                    html += '<table id="tblNewsForGatePass" class="table table-striped table-bordered">';
-                    html += '<thead>';
-                    html += '<tr>';
-                    html += '<th style="background-color:rgb(208, 225, 244);">Gate Pass No.</th>';
-                    html += '<th style="background-color:rgb(208, 225, 244);">Status</th>';
-                    html += '<th style="background-color:rgb(208, 225, 244);">Action</th>';
-                    html += '</tr >';
-                    html += '</thead >';
-                    html += '<tbody>';
+                    html = "<table id='tblNews' border='1' style='width:100%;table-layout:fixed;word-break:break-word;border-color: #eee;margin-top: 2%;'>";
+                    html += "<thead><tr>";
+                    html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>Gate Pass No.</th>";
+                    html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>Sticker Number</th>";
+                    html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>Status</th>";
+                    html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>Action</th>";
+                    html += "</tr></thead>";
+                    html += "<tbody class='searchable'>";
 
                     // var xmlDoc = $.parseXML(str);
 
@@ -202,8 +221,9 @@ function ExportAirside_Search_V3() {
                         USeqNo = $(this).find('USeqNo').text();
                         GatepassNo = $(this).find('GatepassNo').text();
                         ULDType = $(this).find('ULDType').text();
+                        StickerNumber = $(this).find('StickerNumber').text();
 
-                        gatePassNoDetails(GatepassNo, Status, IsReleased, FltSeqNo, USeqNo, ULDType);
+                        gatePassNoDetails(GatepassNo, Status, IsReleased, FltSeqNo, USeqNo, ULDType, StickerNumber);
                     });
                     html += "</tbody ></table>";
                     $('#divVCTDetail').show();
@@ -248,14 +268,17 @@ function ExportAirside_Search_V3() {
 }
 
 
-function gatePassNoDetails(GatepassNo, Status, IsReleased, FltSeqNo, USeqNo, ULDType) {
+function gatePassNoDetails(GatepassNo, Status, IsReleased, FltSeqNo, USeqNo, ULDType, StickerNumber) {
 
-
-    html += '<tr>';
-    html += '<td>' + GatepassNo + '</td>';
-    html += '<td>' + Status + '</td>';
-
-    html += '<td style="text-align: center;"><a style="color: #065da1;" class=" glyphicon glyphicon-eye-open" onclick="goToGPDetailsPage(\'' + FltSeqNo + '\',\'' + USeqNo + '\',\'' + ULDType + '\',\'' + GatepassNo + '\');"></a></td>';
+    html += '<td height="30" style="padding-left: 4px;font-size:14px"align="left">' + GatepassNo + '</td>';
+    html += '<td height="30" style="padding-left: 4px;font-size:14px"align="left">' + StickerNumber + '</td>';
+    html += '<td height="30" style="padding-left: 4px;font-size:14px"align="left">' + Status + '</td>';
+    html += '<td height="30" style="text-align: center;;padding-left: 4px;font-size:14px"align="left"><a style="color: #065da1;" class=" glyphicon glyphicon-eye-open" onclick="goToGPDetailsPage(\'' + FltSeqNo + '\',\'' + USeqNo + '\',\'' + ULDType + '\',\'' + GatepassNo + '\');"></a></td>';
+    //html += '<tr>';
+    //html += '<td>' + GatepassNo + '</td>';
+    //html += '<td>' + StickerNumber + '</td>';
+    //html += '<td>' + Status + '</td>';
+    //html += '<td style="text-align: center;"><a style="color: #065da1;" class=" glyphicon glyphicon-eye-open" onclick="goToGPDetailsPage(\'' + FltSeqNo + '\',\'' + USeqNo + '\',\'' + ULDType + '\',\'' + GatepassNo + '\');"></a></td>';
     html += '</tr>';
 }
 

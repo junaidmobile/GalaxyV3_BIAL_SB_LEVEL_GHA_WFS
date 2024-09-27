@@ -48,7 +48,7 @@ $(function () {
     var date = y.toString() + '-' + m.toString() + '-' + d.toString();
 
 
-    // $('#txtFlightDate').val(date);
+    $('#txtFlightDate').val(date);
 
 
 

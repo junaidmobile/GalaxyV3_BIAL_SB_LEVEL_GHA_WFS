@@ -1757,6 +1757,7 @@ function clearALLafterSave() {
    
     $('#txtFlightDate').val(today);
 
+
     $("#txtFlightDate").datepicker({
         shortYearCutoff: 1,
         changeMonth: true,
@@ -1813,6 +1814,7 @@ function clearALL() {
     const year = date.toLocaleString('default', { year: 'numeric' });
     var today = day + '-' + month + '-' + year;
     $('#txtFlightDate').val(today);
+   
    
     $("#txtFlightDate").datepicker({
         shortYearCutoff: 1,
@@ -1881,6 +1883,7 @@ function clearALLNew() {
     const year = date.toLocaleString('default', { year: 'numeric' });
     var today = day + '-' + month + '-' + year;
     $('#txtFlightDate').val(today);
+   
 
     $("#txtFlightDate").datepicker({
         shortYearCutoff: 1,

@@ -124,9 +124,38 @@
             }
         }
 
-        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
-            vertical-align: inherit;
+        table, td, th {
+            /* border: 1px solid black;*/
+            background: rgb(224, 243, 215);
+            text-align: center;
+            vertical-align: middle;
         }
+
+        table, tbody, tr, th {
+            background-color: rgb(208, 225, 244);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-color: white;
+        }
+
+        .textpackges {
+            width: 100% !important;
+        }
+
+        .txtDimRow {
+            width: 10% !important;
+        }
+
+        .table {
+            margin-bottom: 0px !important;
+        }
+
+            .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+                vertical-align: inherit;
+            }
     </style>
 </head>
 <body>
@@ -190,44 +219,57 @@
                                 </div>
 
 
+
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblFlightNo" for="">Flt. No./Dt.</label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-2 NoPadding">
+                                        <!--<select class="form-control" id="ddlFlightNo"
+                                                onchange="GetAWBDetailSearch_V3_onChangeFlight($('#ddlFlightNo').val())"
+                                                style="display: none;">
+                                            <option value="0">Select</option>
+                                        </select>-->
+                                        <input id="txtAirline" tabindex="2" autocomplete="off" onkeypress="return blockSpecialChar(event)" oninput="checkSpecialCharforFlightNo();" class="form-control" type="text" maxlength="6">
+                                        <!--<select class="form-control" id="ddlFlightNo"
+                                        onchange="GetAWBDetailSearch_V3_onChangeFlight($('#ddlFlightNo').val())"></select>-->
+
+
+                                    </div>
+                                    <div class="col-xs-2 NoPadding">
+
+                                        <input id="txtFlightNo" tabindex="3" autocomplete="off" onkeypress="return blockSpecialChar(event)" oninput="checkSpecialCharforFlightNo();" class="form-control" type="text" maxlength="6">
+                                        <!--<select class="form-control" id="ddlFlightNo"
+                                        onchange="GetAWBDetailSearch_V3_onChangeFlight($('#ddlFlightNo').val())"></select>-->
+                                        <select class="form-control" id="ddlFlightNo"
+                                                onchange="GetAWBDetailSearch_V3_onChangeFlight($('#ddlFlightNo').val())"
+                                                style="display: none;">
+                                        </select>
+
+                                    </div>
+                                    <div class="col-xs-4 NoPadding ClearFields">
+
+                                        <input type="date" style="text-transform: none;"
+                                               id="txtFlightDate" class="form-control"
+                                               title="Date" tabindex="4">
+
+                                    </div>
+                                </div>
+
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-4 col-form-label">
                                         <label id="lblDestination" for="">Origin/Dest.</label>
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-4 NoPadding">
-                                        <input id="txtOrigin" tabindex="2" oninput="checkSpecialCharforOrigin();" onblur="compareOriginDest();" class="form-control" type="text" maxlength="3">
+                                        <input id="txtOrigin" tabindex="5" oninput="checkSpecialCharforOrigin();" onblur="compareOriginDest();" class="form-control" type="text" maxlength="3">
                                     </div>
                                     <div class="col-xs-4 NoPadding">
-                                        <input id="txtDestination" tabindex="3" oninput="checkSpecialCharforDestination();" onblur="compareOriginDest();" class="form-control" type="text" maxlength="3">
+                                        <input id="txtDestination" tabindex="6" oninput="checkSpecialCharforDestination();" onblur="compareOriginDest();" class="form-control" type="text" maxlength="3">
                                     </div>
 
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                    <div class="col-xs-4 col-form-label">
-                                        <label id="lblFlightNo" for="">Flight No./Date</label>
-                                        <font color="red">*</font>
-                                    </div>
-                                    <div class="col-xs-4 NoPadding">
-                                        <select class="form-control" id="ddlFlightNo"
-                                                onchange="GetAWBDetailSearch_V3_onChangeFlight($('#ddlFlightNo').val())"
-                                                style="display: none;">
-                                            <option value="0">Select</option>
-                                        </select>
-                                        <input id="txtFlightNo" tabindex="4" autocomplete="off" onkeypress="return blockSpecialChar(event)" oninput="checkSpecialCharforFlightNo();" class="form-control" type="text" maxlength="6">
-                                        <!--<select class="form-control" id="ddlFlightNo"
-                                        onchange="GetAWBDetailSearch_V3_onChangeFlight($('#ddlFlightNo').val())"></select>-->
-
-
-                                    </div>
-                                    <div class="col-xs-4 NoPadding ClearFields">
-
-                                        <input type="text" style="text-transform: none;"
-                                               id="txtFlightDate" class="form-control"
-                                               title="Date" tabindex="5">
-
-                                    </div>
                                 </div>
                                 <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-4 col-form-label">
@@ -243,6 +285,21 @@
 
                                     </div>
                                 </div>-->
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblOffpoint" for="">Offpoint </label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-8 NoPadding">
+                                        <select class="form-control" onchange="fnOffpoint($('#ddlOffpoint').val())" id="ddlCommodity"
+                                                style="display:none ;">
+                                            <!--<option value="0">Select</option>-->
+                                        </select>
+                                        <input id="txtOffpoint" tabindex="7" onkeyup="ChkMaxLength(this, '50');" onkeypress="return blockSpecialChar(event)" class="form-control" type="text" style="text-align:left;">
+                                    </div>
+
+                                </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-4 col-form-label">
                                         <label id="lblCommodity" for="">Commodity </label>
@@ -253,7 +310,7 @@
                                                 style="display:none ;">
                                             <!--<option value="0">Select</option>-->
                                         </select>
-                                        <input id="txtCommodity" tabindex="6" onkeyup="ChkMaxLength(this, '50');" onkeypress="return blockSpecialChar(event)" class="form-control" type="text" style="text-align:left;">
+                                        <input id="txtCommodity" tabindex="8" onkeyup="ChkMaxLength(this, '50');" onkeypress="return blockSpecialChar(event)" class="form-control" type="text" style="text-align:left;">
                                     </div>
 
                                 </div>
@@ -263,7 +320,7 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-8 NoPadding">
-                                        <input id="txtPieces" tabindex="7" onkeyup="ChkMaxLength(this, '4');" onkeypress="return blockSpecialChar(event)" class="form-control" type="number" style="text-align:right;">
+                                        <input id="txtPieces" tabindex="9" onkeyup="ChkMaxLength(this, '4');" onkeypress="return blockSpecialChar(event)" class="form-control" type="number" style="text-align:right;">
                                     </div>
 
                                 </div>
@@ -274,7 +331,7 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-8 NoPadding">
-                                        <input id="txtGrWt" tabindex="8" onkeyup="ChkMaxLength(this, '6');" class="form-control" type="number" style="text-align:right;">
+                                        <input id="txtGrWt" tabindex="10" onkeyup="ChkMaxLength(this, '6');" class="form-control" type="number" style="text-align:right;">
                                     </div>
 
                                 </div>
@@ -285,7 +342,7 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-8 NoPadding">
-                                        <input id="txtCharWt" tabindex="9" onkeyup="ChkMaxLength(this, '6');" class="form-control" type="number" style="text-align:right;">
+                                        <input id="txtCharWt" tabindex="11" onkeyup="ChkMaxLength(this, '6');" class="form-control" type="number" style="text-align:right;">
                                     </div>
 
                                 </div>
@@ -295,7 +352,7 @@
                                         <!--<font color="red">*</font>-->
                                     </div>
                                     <div class="col-xs-8 NoPadding">
-                                        <input id="txtVolume" tabindex="10" onkeyup="ChkMaxLength(this, '4');" class="form-control" type="number" style="text-align:right;">
+                                        <input id="txtVolume" tabindex="12" onkeyup="ChkMaxLength(this, '4');" class="form-control" type="number" style="text-align:right;">
                                     </div>
 
                                 </div>
@@ -306,14 +363,14 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-2 NoPadding">
-                                        <input id="txtShipperPrifix" tabindex="11" maxlength="3" class="form-control" onkeypress="return blockSpecialChar(event)" type="text" onblur="Shipper_GetShipperConsigneeWithShortCode_V3();">
+                                        <input id="txtShipperPrifix" tabindex="13" maxlength="3" class="form-control" onkeypress="return blockSpecialChar(event)" type="text" onblur="Shipper_GetShipperConsigneeWithShortCode_V3();">
                                     </div>
                                     <div class="col-xs-6 NoPadding">
                                         <select class="form-control" id="ddlShipper" onchange="onChangeShipperText($('#ddlShipper').val())"
                                                 style="display: none;">
                                             <!--<option value="0">Select</option>-->
                                         </select>
-                                        <input id="txtShipper" tabindex="12" maxlength="30" onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
+                                        <input id="txtShipper" tabindex="14" maxlength="30" onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
                                     </div>
 
                                 </div>
@@ -324,10 +381,10 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-2 NoPadding">
-                                        <input id="txtConsigneePrifix" tabindex="13" maxlength="3" class="form-control" onkeypress="return blockSpecialChar(event)" type="text" onblur="Consignee_GetShipperConsigneeWithShortCode_V3();">
+                                        <input id="txtConsigneePrifix" tabindex="15" maxlength="3" class="form-control" onkeypress="return blockSpecialChar(event)" type="text" onblur="Consignee_GetShipperConsigneeWithShortCode_V3();">
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <input id="txtConsignee" tabindex="14" maxlength="30"  onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
+                                        <input id="txtConsignee" tabindex="16" maxlength="30" onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
                                         <select class="form-control" id="ddlConsignee" onchange="onChangeConsineeName($('#ddlConsignee').val());"
                                                 style="display: none;"></select>
                                     </div>
@@ -339,13 +396,93 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-2 NoPadding">
-                                        <input id="txtAgentNamePrifix" tabindex="15" maxlength="3" class="form-control" onkeypress="return blockSpecialChar(event)" type="text" onblur="AgentName_GetShipperConsigneeWithShortCode_V3();">
+                                        <input id="txtAgentNamePrifix" tabindex="17" maxlength="3" class="form-control" onkeypress="return blockSpecialChar(event)" type="text" onblur="AgentName_GetShipperConsigneeWithShortCode_V3();">
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <input id="txtAgentName" tabindex="16" onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
+                                        <input id="txtAgentName" tabindex="18" onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
                                         <select class="form-control" id="ddlAgentName" onchange="onChangeAgentName($('#ddlAgentName').val())"
                                                 style="display: none;"></select>
                                     </div>
+                                </div>
+
+                                <!--<div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblEqpt" for="ddEqpt"
+                                               class="control-label labelFont">Eqpt./Trolley</label>
+
+                                    </div>
+                                    <div class="col-xs-8 NoPadding">
+                                        <select class="form-control" id="ddlEquTrolley" onchange="onchangeddlEquTrolley($('#ddlEquTrolley').val())"></select>
+                                    </div>
+                                </div>-->
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding">
+                                    <table class="table  table-bordered">
+                                        <thead class="theadClass">
+                                            <tr>
+                                                <th colspan="1"><span id="lblDimp">Trolley</span></th>
+                                                <th colspan="1"><span id="lblDimp">Pieces</span></th>
+                                                <th colspan="1"><span id="lblDimv">Volume (LWH)</span></th>
+                                                <th colspan="1">
+                                                    <span id="lblDimUn">UOM</span>
+                                                    <select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select>
+                                                    <button type="button" style="float: right;display:none;" id='addButton' class=""><i class="glyphicon glyphicon-plus"></i></button>
+                                                </th>
+                                            </tr>
+                                        </thead>
+
+                                    </table>
+
+                                    <table id="TextBoxesGroup" class="table  table-bordered">
+                                        <tbody class="theadClass">
+                                            <tr id="TextBoxDiv1m">
+                                                <td style="width: 30%;"><select name="part_no[]" class="form-control clsEquTrolley" id="ddlEquTrolley1"></select></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces1"  type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length1"  type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width1"  type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height1" type="number" /></td>
+                                                <!--<td><select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select></td>-->
+                                                <!--<td><button type="button" onclick="removeRow();" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>-->
+                                            </tr>
+                                            <tr id="TextBoxDiv1m">
+                                                <td style="width: 30%;"><select name="part_no[]" class="form-control clsEquTrolley" id="ddlEquTrolley2"></select></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces2"  type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length2"  type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width2"  type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height2" type="number" /></td>
+                                                <!--<td><select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select></td>-->
+                                                <!--<td><button type="button" onclick="removeRow();" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>-->
+                                            </tr>
+                                            <tr id="TextBoxDiv1m">
+                                                <td style="width: 30%;"><select name="part_no[]" class="form-control clsEquTrolley" id="ddlEquTrolley3"></select></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces3"  type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length3"  type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width3"  type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height3" type="number" /></td>
+                                                <!--<td><select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select></td>-->
+                                                <!--<td><button type="button" onclick="removeRow();" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>-->
+                                            </tr>
+                                            <tr id="TextBoxDiv1m">
+                                                <td style="width: 30%;"><select name="part_no[]" class="form-control clsEquTrolley" id="ddlEquTrolley4"></select></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces4"  type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length4"  type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width4"  type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height4" type="number" /></td>
+                                                <!--<td><select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select></td>-->
+                                                <!--<td><button type="button" onclick="removeRow();" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>-->
+                                            </tr>
+                                            <tr id="TextBoxDiv1m">
+                                                <td style="width: 30%;"><select name="part_no[]" class="form-control clsEquTrolley" id="ddlEquTrolley5"></select></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces5"  type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length5"  type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width5"  type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height5" type="number" /></td>
+                                                <!--<td><select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select></td>-->
+                                                <!--<td><button type="button" onclick="removeRow();" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>-->
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
                                 </div>
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
@@ -363,7 +500,7 @@
                                     <input type="button" id="btnClear" class="form-control ButtonColor" value="Clear" onclick="clearALL();">
                                 </div>
                                 <div class="form-group col-xs-4 col-sm-4 col-md-4   ">
-                                    <input type="button" id="btnSubmit" tabindex="17" class="form-control ButtonColor" value="Submit" onclick="GetAWBDetailSave_V3();">
+                                    <input type="button" id="btnSubmit" tabindex="19" class="form-control ButtonColor" value="Submit" onclick="GetAWBDetailSave_V3();">
                                 </div>
 
 
@@ -388,118 +525,11 @@
             </div>
         </footer>
     </div>
-</body>
-<script language="javascript" type="text/javascript">
-    $('#RightsReserved').text(' \xA9 Kale Logistics Solutions Private Limited. ' + (new Date).getFullYear().toString());
-    $(document).ready(function () {
-        //var now = new Date();
 
-        //var day = ("0" + now.getDate()).slice(-2);
-        //var month = ("0" + (now.getMonth() + 1)).slice(-2);
-
-        //var today = (day) + "-" + (month) + "-" + now.getFullYear();
-
-        //$('#txtFlightDate').val(today);
-
-        //$("#txtFlightDate").datepicker({
-        //    shortYearCutoff: 1,
-        //    changeMonth: true,
-        //    changeYear: true,
-        //    dateFormat: 'dd-mm-yy',
-
-        //});
-
-        let date = new Date();
-        const day = date.toLocaleString('default', { day: '2-digit' });
-        const month = date.toLocaleString('default', { month: 'short' });
-        const year = date.toLocaleString('default', { year: 'numeric' });
-        var today = day + '-' + month + '-' + year;
-        $('#txtFlightDate').val(today);
+    <script language="javascript" type="text/javascript">
+        $('#RightsReserved').text(' \xA9 Kale Logistics Solutions Private Limited. ' + (new Date).getFullYear().toString());
        
-        $("#txtFlightDate").datepicker({
-            shortYearCutoff: 1,
-            changeMonth: true,
-            changeYear: true,
-            dateFormat: 'dd-M-yy',
+    </script>
+</body>
 
-        });
-
-
-
-        var date1 = new Date();
-
-        var day1 = date1.getDate(),
-            month1 = date1.getMonth() + 1,
-            year1 = date1.getFullYear(),
-            hour1 = date1.getHours(),
-            min1 = date1.getMinutes();
-
-        month1 = (month1 < 10 ? "0" : "") + month1;
-        day1 = (day1 < 10 ? "0" : "") + day1;
-        hour1 = (hour1 < 10 ? "0" : "") + hour1;
-        min1 = (min1 < 10 ? "0" : "") + min1;
-
-        var today1 = year1 + "-" + month1 + "-" + day1,
-            displayTime = hour1 + ":" + min1;
-
-        $('#txtFlightTime').val(displayTime);
-        $('#txtFlightATA').val(today1);
-
-        //        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        //"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-        //        ];
-        //        let qntYears = 4;
-        //        let selectYear = $("#year");
-        //        let selectMonth = $("#month");
-        //        let selectDay = $("#day");
-        //        let currentYear = new Date().getFullYear();
-
-        //        for (var y = 0; y < qntYears; y++) {
-        //            let date = new Date(currentYear);
-        //            let yearElem = document.createElement("option");
-        //            yearElem.value = currentYear
-        //            yearElem.textContent = currentYear;
-        //            selectYear.append(yearElem);
-        //            currentYear--;
-        //        }
-
-        //        for (var m = 0; m < monthNames.length; m++) {
-        //            let month = monthNames[m];
-        //            let monthElem = document.createElement("option");
-        //            monthElem.value = m + 1;
-        //            monthElem.textContent = month;
-        //            selectMonth.append(monthElem);
-        //        }
-
-        //        var d = new Date();
-        //        var month = d.getMonth();
-        //        var year = d.getFullYear();
-        //        var day = d.getDate();
-
-        //        selectYear.val(year);
-        //        selectYear.on("change", AdjustDays);
-        //        selectMonth.val(month + 1);
-        //        selectMonth.on("change", AdjustDays);
-
-        //        AdjustDays();
-        //        selectDay.val(day)
-
-        //        function AdjustDays() {
-        //            var year = selectYear.val();
-        //            var month = parseInt(selectMonth.val()) + 1;
-        //            selectDay.empty();
-
-        //            //get the last day, so the number of days in that month
-        //            var days = new Date(year, month, 0).getDate();
-
-        //            //lets create the days of that month
-        //            for (var d = 1; d <= days; d++) {
-        //                var dayElem = document.createElement("option");
-        //                dayElem.value = d;
-        //                dayElem.textContent = d;
-        //                selectDay.append(dayElem);
-        //            }
-        //        }
-    });
-</script>
 </html>

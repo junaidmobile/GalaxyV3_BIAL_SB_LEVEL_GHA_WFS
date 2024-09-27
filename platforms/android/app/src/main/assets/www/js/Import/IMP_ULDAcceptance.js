@@ -36,20 +36,20 @@ $(function () {
     }
 
   //  ImportDataList();
-    //var formattedDate = new Date();
-    //var d = formattedDate.getDate();
-    //if (d.toString().length < Number(2))
-    //    d = '0' + d;
-    //var m = formattedDate.getMonth();
-    //m += 1;  // JavaScript months are 0-11
-    //if (m.toString().length < Number(2))
-    //    m = '0' + m;
-    //var y = formattedDate.getFullYear();
-    //var t = formattedDate.getTime();
-    //var date = m.toString() + '/' + d.toString() + '/' + y.toString();
+    var formattedDate = new Date();
+    var d = formattedDate.getDate();
+    if (d.toString().length < Number(2))
+        d = '0' + d;
+    var m = formattedDate.getMonth();
+    m += 1;  // JavaScript months are 0-11
+    if (m.toString().length < Number(2))
+        m = '0' + m;
+    var y = formattedDate.getFullYear();
+    var t = formattedDate.getTime();
+    var date = m.toString() + '/' + d.toString() + '/' + y.toString();
 
-    //newDate = y.toString() + '-' + m.toString() + '-' + d.toString();
-    //  $('#txtFlightDate').val(newDate);
+    newDate = y.toString() + '-' + m.toString() + '-' + d.toString();
+      $('#txtFlightDate').val(newDate);
 
     //var h = date.getHours();
     //var m = date.getMinutes();

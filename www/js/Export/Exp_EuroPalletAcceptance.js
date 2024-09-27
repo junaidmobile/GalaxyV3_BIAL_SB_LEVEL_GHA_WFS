@@ -304,26 +304,7 @@ function GetVCTDetailsForTDGAcceptance(clearMsg, overwriteMsg) {
                         }
                     });
                     $('#ddDoor').empty();
-                    $(xmlDoc).find('Table').each(function () {
-                        Status = $(this).find('Status').text();
-                        StrMessage = $(this).find('StrMessage ').text();
-                        if (Status == 'E') {
-                            //  $.alert($(this).find('OutMsg').text());
-                            if (overwriteMsg == 'true') {
-                                $('#spnErrormsg').text(StrMessage).css('color', 'red');
-
-                            }
-                            $('#btnNext').attr('disabled', 'disabled');
-                            $('#btnDockOut').attr('disabled', 'disabled');
-                            $('#btnDockIn').attr('disabled', 'disabled');
-                        }
-                        else {
-                            if (clearMsg == 'true') {
-                                $('#spnErrormsg').text('');
-                            }
-
-                        }
-                    });
+                    
 
                     $(xmlDoc).find('Table2').each(function () {
                         Code = $(this).find('Code').text();
@@ -336,6 +317,35 @@ function GetVCTDetailsForTDGAcceptance(clearMsg, overwriteMsg) {
                             $('#ddDoor').val(DOORforbind)
                         }
                     });
+                    var Status;
+                    $(xmlDoc).find('Table').each(function () {
+                        Status = $(this).find('Status').text();
+                        StrMessage = $(this).find('StrMessage ').text();
+                        if (Status == 'E') {
+                            //  $.alert($(this).find('OutMsg').text());
+                            if (overwriteMsg == 'true') {
+                                $('#spnErrormsg').text(StrMessage).css('color', 'red');
+
+                            }
+                            $('#btnNext').attr('disabled', 'disabled');
+                            $('#btnDockOut').attr('disabled', 'disabled');
+                            $('#btnDockIn').attr('disabled', 'disabled');
+                           
+                        }
+                        else {
+                            if (clearMsg == 'true') {
+                                $('#spnErrormsg').text('');
+                               
+                            }
+
+                        }
+                    });
+                   
+                    if (Status == 'S') {
+                        window.localStorage.setItem("VCTNo", VCTNo);
+                        window.localStorage.setItem("Door", $('#txtDoor').val());
+                        window.location = "EXP_TDGAcceptance2.html";
+                    }
                 }
                 else {
                     errmsg = 'VT No. does not exists';

@@ -634,8 +634,6 @@ function ExportAirside_SignUpload_V3_1() {
 }
 
 
-
-
 function ExportAirside_SignUpload_V3_2() {
 
     var arr = flSeqID.split('~')
@@ -733,11 +731,6 @@ function ExportAirside_SignUpload_V3_2() {
 }
 
 
-
-
-
-
-
 function ExportAirside_SignUpload_V3_3() {
 
     var arr = flSeqID.split('~')
@@ -808,6 +801,102 @@ function ExportAirside_SignUpload_V3_3() {
                         $("#spnErrormsg").text(StrMessage).css({ 'color': 'green' });
                         //  $("#txtAirline").val('');
                         signaturePad_1.clear();
+                    }
+                });
+
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}
+
+
+function ExportAirside_SignUpload_V3_4() {
+
+    var arr = flSeqID.split('~')
+    var flSq = arr[0];
+    var uldSq = arr[1];
+    _ulddSQ = flSq;
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    //if ($("#txtAirline").val() == "") {
+    //    return
+    //}
+
+    //if ($("#txtAirline").val() == "") {
+    //    $("#showMsg2").text('Please enter Security name and signature.').css({ 'color': 'red' });
+    //    return
+    //} else {
+    //    $("#showMsg2").text('');
+    //}
+
+    //if (signaturePad_1.isEmpty()) {
+    //    $("#showMsg2").text('Signature is mandatory.').css({ 'color': 'red' });
+    //    return;
+    //    //  signitureDataURL = '';
+    //} else {
+    //    $("#showMsg2").text('');
+    //}
+
+    _canvas = document.getElementById('sigCISF');
+    signitureData = _canvas.toDataURL("image/jpeg");
+    _str = signitureData;
+    _signitureDataURL = _str.substring(23);
+
+    var InputXML = '<Root><BinaryImage>' + _signitureDataURL + '</BinaryImage><DesigType>I</DesigType><GpNo>' + PermitNo + '</GpNo><FlightSeqNo>' + flSq + '</FlightSeqNo><ULDSeqNo>' + uldSq + '</ULDSeqNo><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode><UserId>' + UserID + '</UserId></Root>';
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "ExportAirside_SignUpload_V3",
+            data: JSON.stringify({ 'InputXML': InputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                str = response;
+                console.log(xmlDoc);
+
+                var flag = '0';
+                $(xmlDoc).find('Table').each(function () {
+
+                    var Status = $(this).find('Status').text();
+                    var StrMessage = $(this).find('StrMessage').text();
+
+                    if (Status == 'E') {
+                        //  $.alert(StrMessage).css('color', 'red');
+                        $("#spnErrormsg").text(StrMessage).css({ 'color': 'red' });
+                        // clearALL();
+                        return true;
+                    } else {
+                        $("#spnErrormsg").text(StrMessage).css({ 'color': 'green' });
+                        //  $("#txtAirline").val('');
+                        signaturePad_3.clear();
                     }
                 });
 
@@ -968,6 +1057,13 @@ var canvas_2 = document.getElementById('sig_2');
 var signaturePad_2 = new SignaturePad(canvas_2, {
     backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
 });
+
+var canvas_3 = document.getElementById('sigCISF');
+
+var signaturePad_3 = new SignaturePad(canvas_3, {
+    backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
+});
+
 
 
 function resizeCanvas() {

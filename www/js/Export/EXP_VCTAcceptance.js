@@ -9,6 +9,53 @@ var VCTNo = window.localStorage.getItem("VCTNo");
 var VCTId = window.localStorage.getItem("VCTId");
 var Door = window.localStorage.getItem("Door");
 var companyCode = window.localStorage.getItem("companyCode");
+var SelectedHawbId;
+var SelectedHawbIdCMS;
+var SelectedHawbNo;
+var IGMno;
+var strXmlStore;
+var locPieces;
+var html;
+var FromLoc;
+var GHAMawbid;
+var Hawbid;
+var GHAhawbid;
+var IsFlightFinalized;
+var GHAflightSeqNo;
+var _FlightSeqNo;
+var _MAWBNo;
+var _HAWBNo;
+var _LocId;
+var _HAWBId;
+var _LocCode;
+var _LocPieces;
+var _IGMNo;
+var _GroupId;
+var _Remarks;
+var CMSGHAFlag;
+var _SBId;
+var autoLocationArray;
+var shipperLists = [];
+var flightAirNoLists = [];
+var selectedRowHAWBNo;
+var selectedShpper;
+var ConsigneeLists = [];
+var AgentNameLists = [];
+var checkingStatus;
+var A_List = [];
+var S_List = [];
+var C_List = [];
+var _xmlDocTable;
+var shipperCode = [];
+var consigneeCode = [];
+var agentCode = [];
+var commodiyCode = [];
+var ppcs = '';
+var passCommoId = '';
+var Shipper_SCustID;
+var Consignee_CCustID;
+var AgentName_IACustID;
+var xmlDocForTrolley;
 var AutoTSP;
 var ConsignmentRowIDForSave;
 var flightSeqNo;
@@ -38,7 +85,7 @@ var _vlaueofTrolleytext;
 var MawbNo;
 var HawbNo;
 var volumatricChWt;
-
+var flightAirNoListsNoCarrierCode = [];
 var AL_ROWID_I;
 var SDA_ROWID_I;
 var SDA_SBNo_C;
@@ -52,7 +99,7 @@ var SDA_IsManaual_B;
 var SDA_SBDate;
 var selectedAWBNo = '';
 var aaSDA_SBNo_C;
-
+var ExpAwbRowId;
 var TrolleyNo;
 var TrolleyGrossWt;
 var TrolleyTareWt;
@@ -62,6 +109,7 @@ var allSHCCodeSave = '';
 var CommSrNo;
 var IsSecured;
 var WtUOM;
+var filteredArrforno = [];
 $(function () {
 
 
@@ -460,7 +508,1353 @@ $(function () {
 
     });
 
+    getAgentList();
+    getShiperList();
+    getConsigneeList();
+    GetCommodityDataV3();
+
 });
+
+function getAgentList() {
+
+    shipperCode = [];
+    consigneeCode = [];
+    agentCode = [];
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    //var InputXML = '<Root><Type>A</Type><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode></Root>';
+    var InputXML = '<Root><SCode></SCode><Type>A</Type><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode></Root>';
+
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "GetShipperConsigneeWithShortCode_V3",
+            data: JSON.stringify({ 'InputXML': InputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;                
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                //  console.log(xmlDoc);
+                _xmlDocTableAgentName = xmlDoc;
+                $('#ddlAgentName').empty();
+                A_List = [];
+                $(xmlDoc).find('Table').each(function () {
+                    //var outMsg = $(this).find('OutMsg').text(); //added on 17/06
+
+                    var Status = $(this).find('Status').text();
+                    var OutMsg = $(this).find('OutMsg').text();
+
+                    if (status == 'E') {
+                        $.alert($(this).find('OutMsg').text()).css('color', 'red');
+                        //$(".alert_btn_ok").click(function () {
+                        //    $('#txtGroupId').focus();
+                        //});
+                        return true;
+                    }
+                });
+
+                $(xmlDoc).find('Table1').each(function (index) {
+                    //var outMsg = $(this).find('OutMsg').text(); //added on 17/06
+
+                    var Id = $(this).find('Id').text();
+                    var ShortCode = $(this).find('ShortCode').text();
+                    var Name = $(this).find('Name').text();
+                    // $('#txtAgentName').val(Name);
+
+                    if (index == 0) {
+                        var newOption = $('<option></option>');
+                        newOption.val(0).text('Select');
+                        newOption.appendTo('#ddlAgentName');
+                    }
+
+                    var newOption = $('<option></option>');
+                    newOption.val(Id).text(Name);
+                    newOption.appendTo('#ddlAgentName');
+                    A_List.push({ 'value': Id, 'label': Name });
+                    agentCode.push({ 'value': Id, 'label': ShortCode });
+                    // console.log('AgentNameLists ==> ' + Name)
+
+                    if (selectedShpper != '') {
+                        // alert('oi')
+                        //TODO :Change selectedRowHAWBNo to  $("#hawbLists").val()
+                        $("#ddlAgentName option").each(function () {
+                            if ($(this).text() == selectedShpper) {
+                                $(this).attr('selected', 'selected');
+                                var selectedagent = $(this).val();
+                                onChangeAgentName(selectedagent);
+                                // onChangeShipper(selectedship);
+                            }
+                        });
+                    }
+
+                });
+
+
+                if (A_List.length > 0) {
+                    $("#txtAgentName").autocomplete({
+                        minChars: 0,
+                        minLength: 2,
+                        source: A_List,
+                        focus: function (event, ui) {
+                            // if (this.value == "") {
+                            //     $(this).autocomplete("search");
+                            // }
+                            $("#txtAgentName").focus();
+                            $("#txtAgentName").val(ui.item.label);
+
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtAgentName").val(ui.item.label);
+                            $('#ddlAgentName').val(ui.item.value)
+                            onChangeAgentName($('#ddlAgentName').val());
+                            // $("#project-id").val(ui.item.label);
+                            return false;
+                        }
+                    })
+                    $("#txtAgentName").focus(function () {
+                        //  $(this).autocomplete("search", $(this).val());
+                    });
+
+                }
+
+
+                if (agentCode.length > 0) {
+                    $("#txtAgentNamePrifix").autocomplete({
+                        minChars: 0,
+                        minLength: 1,
+                        source: agentCode,
+                        focus: function (event, ui) {
+                            // if (this.value == "") {
+                            //     $(this).autocomplete("search");
+                            // }
+                            // $("#txtConsigneePrifix").focus();
+                            $("#txtAgentNamePrifix").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtAgentNamePrifix").val(ui.item.label);
+                            //$('#ddlConsignee').val(ui.item.value)
+
+                            // $("#project-id").val(ui.item.label);
+                            return false;
+                        }
+                    })
+                    $("#txtAgentNamePrifix").focus(function () {
+                        //  $(this).autocomplete("search", $(this).val());
+                    });
+                    // $("#txtConsignee").focus();
+                }
+
+                $('#txtAgentName').blur(function () {
+
+                    ConsigneeID = $('#ddlAgentName').val();// $(this).find("option:selected").val();
+                    if (ConsigneeID == '0') {
+                        return
+                    }
+                    $(_xmlDocTableAgentName).find('Table1').each(function (index) {
+                        if (ConsigneeID == $(this).find('Id').text()) {
+                            ShortCode = $(this).find('ShortCode').text();
+                            if ($('#txtAgentName').val() != '') {
+                                $('#txtAgentNamePrifix').val(ShortCode);
+
+                            }
+
+                        }
+                    });
+                });
+
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}
+
+
+function getShiperList() {
+    shipperCode = [];
+    consigneeCode = [];
+    agentCode = [];
+
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    //  var InputXML = '<Root><SCode>' + $("#txtShipperPrifix").val() + '</SCode><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode></Root>';
+    var InputXML = '<Root><SCode></SCode><Type>C</Type><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode></Root>';
+
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "GetShipperConsigneeWithShortCode_V3",
+            data: JSON.stringify({ 'InputXML': InputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;                
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                //console.log(xmlDoc);
+                _xmlDocTable = xmlDoc;
+                $('#ddlShipper').empty();
+                S_List = [];
+                $(xmlDoc).find('Table').each(function () {
+                    //var outMsg = $(this).find('OutMsg').text(); //added on 17/06
+
+                    var Status = $(this).find('Status').text();
+                    var OutMsg = $(this).find('OutMsg').text();
+
+                    if (status == 'E') {
+                        $.alert($(this).find('OutMsg').text()).css('color', 'red');
+                        //$(".alert_btn_ok").click(function () {
+                        //    $('#txtGroupId').focus();
+                        //});
+                        return true;
+                    }
+                });
+
+                $(xmlDoc).find('Table1').each(function (index) {
+                    //var outMsg = $(this).find('OutMsg').text(); //added on 17/06
+
+                    var Id = $(this).find('Id').text();
+                    var ShortCode = $(this).find('ShortCode').text();
+                    var Name = $(this).find('Name').text();
+
+                    //  $('#txtShipper').val(Name);
+                    if (index == 0) {
+                        var newOption = $('<option></option>');
+                        newOption.val(0).text('Select');
+                        newOption.appendTo('#ddlShipper');
+                    }
+                    var newOption = $('<option></option>');
+                    newOption.val(Id).text(Name);
+                    newOption.appendTo('#ddlShipper');
+
+
+                    S_List.push({ 'value': Id, 'label': Name });
+                    shipperCode.push({ 'value': Id, 'label': ShortCode });
+
+                    //console.log('Shipper ==> ' + Name);
+
+                    if (selectedShpper != '') {
+                        //TODO :Change selectedRowHAWBNo to  $("#hawbLists").val()
+                        $("#ddlShipper option").each(function () {
+                            if ($(this).text() == selectedShpper) {
+                                $(this).attr('selected', 'selected');
+                                var selectedship = $(this).val();
+
+                                onChangeShipperText(selectedship);
+                            }
+                        });
+                    }
+                });
+
+
+                if (S_List.length > 0) {
+                    $("#txtShipper").autocomplete({
+                        minChars: 0,
+                        minLength: 1,
+                        source: S_List,
+                        focus: function (event, ui) {
+                            // if (this.value == "") {
+                            //     $(this).autocomplete("search");
+                            // }
+                            $("#txtShipper").focus();
+                            $("#txtShipper").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtShipper").val(ui.item.label);
+                            $('#ddlShipper').val(ui.item.value)
+                            onChangeShipperText($('#ddlShipper').val());
+                            // $("#project-id").val(ui.item.label);
+                            return false;
+                        }
+                    })
+                    $("#txtShipper").focus(function () {
+                        // $(this).autocomplete("search", $(this).val());
+                    });
+                    //$("#txtShipper").focus();
+                }
+
+                if (shipperCode.length > 0) {
+                    $("#txtShipperPrifix").autocomplete({
+                        minChars: 0,
+                        minLength: 1,
+                        source: shipperCode,
+                        focus: function (event, ui) {
+                            // if (this.value == "") {
+                            //     $(this).autocomplete("search");
+                            // }
+                            //  $("#txtShipperPrifix").focus();
+                            $("#txtShipperPrifix").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtShipperPrifix").val(ui.item.label);
+                            // $('#ddlShipper').val(ui.item.value)
+
+                            // $("#project-id").val(ui.item.label);
+                            return false;
+                        }
+                    })
+                    $("#txtShipperPrifix").focus(function () {
+                        // $(this).autocomplete("search", $(this).val());
+                    });
+                    //$("#txtShipper").focus();
+                }
+
+
+                $('#txtShipper').blur(function () {
+
+                    shipperID = $('#ddlShipper').val();
+
+                    if (shipperID == '0') {
+                        return;
+                    }
+
+                    // $(this).find("option:selected").val();
+                    $(_xmlDocTable).find('Table1').each(function (index) {
+                        if (shipperID == $(this).find('Id').text()) {
+                            ShortCode = $(this).find('ShortCode').text();
+                            if ($('#txtShipper').val() != '') {
+                                $('#txtShipperPrifix').val(ShortCode);
+
+                            }
+
+                        }
+                    });
+                });
+
+
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}
+
+
+function getConsigneeList() {
+
+    shipperCode = [];
+    consigneeCode = [];
+    agentCode = [];
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var InputXML = '<Root><SCode></SCode><Type>C</Type><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode></Root>';
+
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "GetShipperConsigneeWithShortCode_V3",
+            data: JSON.stringify({ 'InputXML': InputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;                
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                // console.log(xmlDoc);
+                _xmlDocTableConsignee = xmlDoc;
+                $('#ddlConsignee').empty();
+                ConsigneeLists = [];
+                $(xmlDoc).find('Table').each(function () {
+                    //var outMsg = $(this).find('OutMsg').text(); //added on 17/06
+
+                    var Status = $(this).find('Status').text();
+                    var OutMsg = $(this).find('OutMsg').text();
+
+                    if (status == 'E') {
+                        $.alert($(this).find('OutMsg').text()).css('color', 'red');
+                        //$(".alert_btn_ok").click(function () {
+                        //    $('#txtGroupId').focus();
+                        //});
+                        return true;
+                    }
+                });
+
+                $(xmlDoc).find('Table1').each(function (index) {
+                    //var outMsg = $(this).find('OutMsg').text(); //added on 17/06
+
+                    var Id = $(this).find('Id').text();
+                    var ShortCode = $(this).find('ShortCode').text();
+                    var Name = $(this).find('Name').text();
+                    /* $('#txtConsignee').val(Name);*/
+
+                    if (index == 0) {
+                        var newOption = $('<option></option>');
+                        newOption.val(0).text('Select');
+                        newOption.appendTo('#ddlConsignee');
+                    }
+
+
+                    var newOption = $('<option></option>');
+                    newOption.val(Id).text(Name);
+                    newOption.appendTo('#ddlConsignee');
+                    C_List.push({ 'value': Id, 'label': Name });
+                    consigneeCode.push({ 'value': Id, 'label': ShortCode });
+
+                    // console.log('consigneeCode ==> ' + ShortCode)
+                    if (selectedShpper != '') {
+                        //TODO :Change selectedRowHAWBNo to  $("#hawbLists").val()
+                        $("#ddlConsignee option").each(function () {
+                            if ($(this).text() == selectedShpper) {
+                                $(this).attr('selected', 'selected');
+                                var selectedCons = $(this).val();
+
+                                onChangeConsineeName(selectedCons);
+                            }
+                        });
+                    }
+                });
+
+
+                if (C_List.length > 0) {
+                    $("#txtConsignee").autocomplete({
+                        minChars: 0,
+                        minLength: 1,
+                        source: C_List,
+                        focus: function (event, ui) {
+                            // if (this.value == "") {
+                            //     $(this).autocomplete("search");
+                            // }
+                            $("#txtConsignee").focus();
+                            $("#txtConsignee").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtConsignee").val(ui.item.label);
+                            $('#ddlConsignee').val(ui.item.value)
+                            onChangeConsineeName($('#ddlConsignee').val());
+                            // $("#project-id").val(ui.item.label);
+                            return false;
+                        }
+                    })
+                    $("#txtConsignee").focus(function () {
+                        // $(this).autocomplete("search", $(this).val());
+                    });
+                    // $("#txtConsignee").focus();
+                }
+
+                if (consigneeCode.length > 0) {
+                    $("#txtConsigneePrifix").autocomplete({
+                        minChars: 0,
+                        minLength: 1,
+                        source: consigneeCode,
+                        focus: function (event, ui) {
+                            // if (this.value == "") {
+                            //     $(this).autocomplete("search");
+                            // }
+                            // $("#txtConsigneePrifix").focus();
+                            $("#txtConsigneePrifix").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtConsigneePrifix").val(ui.item.label);
+                            //$('#ddlConsignee').val(ui.item.value)
+
+                            // $("#project-id").val(ui.item.label);
+                            return false;
+                        }
+                    })
+                    $("#txtConsigneePrifix").focus(function () {
+                        // $(this).autocomplete("search", $(this).val());
+                    });
+                    // $("#txtConsignee").focus();
+                }
+
+                $('#txtConsignee').blur(function () {
+
+                    ConsigneeID = $('#ddlConsignee').val();// $(this).find("option:selected").val();
+                    if (ConsigneeID == '0') {
+                        return
+                    }
+                    $(_xmlDocTableConsignee).find('Table1').each(function (index) {
+                        if (ConsigneeID == $(this).find('Id').text()) {
+                            ShortCode = $(this).find('ShortCode').text();
+                            if ($('#txtConsignee').val() != '') {
+                                $('#txtConsigneePrifix').val(ShortCode);
+
+                            }
+
+                        }
+                    });
+                });
+
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}
+
+function GetCommodityDataV3() {
+
+    commodiyCode = [];
+
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var InputXML = '<Root><validfor>A</validfor><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode></Root>';
+
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "GetCommodityListV3",
+            data: JSON.stringify({ 'InputXML': InputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;                
+
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                // console.log(xmlDoc);
+                commodiyCode = [];
+                $(xmlDoc).find('Table').each(function () {
+                    //var outMsg = $(this).find('OutMsg').text(); //added on 17/06
+
+                    var Status = $(this).find('Status').text();
+                    var OutMsg = $(this).find('OutMsg').text();
+
+                    if (status == 'E') {
+                        $.alert($(this).find('OutMsg').text()).css('color', 'red');
+                        //$(".alert_btn_ok").click(function () {
+                        //    $('#txtGroupId').focus();
+                        //});
+                        return true;
+                    }
+                });
+                var _data;
+                $(xmlDoc).find('Table1').each(function () {
+                    //var outMsg = $(this).find('OutMsg').text(); //added on 17/06
+
+                    var SrNO = $(this).find('SrNO').text();
+                    var Description = $(this).find('Description').text();
+                    /* $('#txtConsignee').val(Name);*/
+                    var newOption = $('<option></option>');
+                    newOption.val(SrNO).text(Description);
+                    newOption.appendTo('#ddlCommodity');
+                    commodiyCode.push({ 'value': SrNO, 'label': Description });
+                    _data = JSON.stringify(commodiyCode);
+
+
+                    // $('#attribute').select2();
+                    //$("#ddlCommodity").select2({
+                    //    data: [
+                    //        { id: SrNO, text: SrNO }]
+                    //});
+                });
+                //console.log(_data)
+                //$("#ddlCommodity").select2({
+                //    data: _data
+                //});
+
+                if (selectedRowHAWBNo != '') {
+                    //TODO :Change selectedRowHAWBNo to  $("#hawbLists").val()
+                    $("#ddlCommodity option").each(function () {
+                        if ($(this).text() == selectedRowHAWBNo) {
+                            $(this).attr('selected', 'selected');
+                            var selectedCommodity = $(this).val();
+
+                            onChangeComm(selectedCommodity);
+                        }
+                    });
+                }
+
+                if (commodiyCode.length > 0) {
+                    $("#txtCommodity").autocomplete({
+                        minChars: 0,
+                        minLength: 1,
+                        source: commodiyCode,
+                        focus: function (event, ui) {
+                            // if (this.value == "") {
+                            //     $(this).autocomplete("search");
+                            // }
+                            // $("#txtCommodity").focus();
+                            $("#txtCommodity").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtCommodity").val(ui.item.label);
+                            $('#ddlCommodity').val(ui.item.value)
+                            onChangeComm($('#ddlCommodity').val());
+                            // $("#project-id").val(ui.item.label);
+                            return false;
+                        }
+                    })
+                    $("#txtCommodity").focus(function () {
+                        // $(this).autocomplete("search", $(this).val());
+                    });
+
+                    $.ui.autocomplete.filter = function (array, term) {
+                        var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(term), "i");
+                        return $.grep(array, function (value) {
+                            return matcher.test(value.label || value.value || value);
+                        });
+                    };
+                    // $("#txtConsignee").focus();
+                }
+
+                $("body").mLoading('hide');
+
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}
+
+
+function Consignee_GetShipperConsigneeWithShortCode_V3() {
+    if ($("#txtConsigneePrifix").val().length != '3') {
+        return;
+    }
+
+
+    if ($("#txtConsigneePrifix").val() == '') {
+        $("#txtConsignee").val('');
+        // $("#txtShipper").focus();
+        getConsigneeList();
+        return;
+    }
+
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var InputXML = '<Root><SCode>' + $("#txtConsigneePrifix").val() + '</SCode><Type>C</Type><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode></Root>';
+
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "GetShipperConsigneeWithShortCode_V3",
+            data: JSON.stringify({ 'InputXML': InputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;                
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                // console.log(xmlDoc);
+                $('#ddlConsignee').empty();
+                ConsigneeLists = [];
+                $(xmlDoc).find('Table').each(function () {
+                    //var outMsg = $(this).find('OutMsg').text(); //added on 17/06
+
+                    var Status = $(this).find('Status').text();
+                    var OutMsg = $(this).find('OutMsg').text();
+
+                    if (status == 'E') {
+                        $.alert($(this).find('OutMsg').text()).css('color', 'red');
+                        //$(".alert_btn_ok").click(function () {
+                        //    $('#txtGroupId').focus();
+                        //});
+                        return true;
+                    }
+                });
+
+                $(xmlDoc).find('Table1').each(function (index) {
+                    //var outMsg = $(this).find('OutMsg').text(); //added on 17/06
+
+                    var Id = $(this).find('Id').text();
+                    var ShortCode = $(this).find('ShortCode').text();
+                    var Name = $(this).find('Name').text();
+                    $('#txtConsignee').val(Name);
+
+                    //if (index == 0) {
+                    //    var newOption = $('<option></option>');
+                    //    newOption.val(0).text('Select');
+                    //    newOption.appendTo('#ddlConsignee');
+                    //}
+
+                    var newOption = $('<option></option>');
+                    newOption.val(Id).text(Name);
+                    newOption.appendTo('#ddlConsignee');
+                    ConsigneeLists.push({ 'value': Id, 'label': Name })
+                });
+
+
+                if (ConsigneeLists.length > 0) {
+                    $("#txtConsignee").autocomplete({
+                        minChars: 0,
+                        minLength: 2,
+                        source: ConsigneeLists,
+                        focus: function (event, ui) {
+                            // if (this.value == "") {
+                            //     $(this).autocomplete("search");
+                            // }
+                            $("#txtConsignee").focus();
+                            $("#txtConsignee").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtConsignee").val(ui.item.label);
+                            $('#ddlConsignee').val(ui.item.value)
+
+                            // $("#project-id").val(ui.item.label);
+                            return false;
+                        }
+                    })
+                    $("#txtConsignee").focus(function () {
+                        // $(this).autocomplete("search", $(this).val());
+                    });
+                    // $("#txtConsignee").focus();
+                }
+
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}
+
+
+function AgentName_GetShipperConsigneeWithShortCode_V3() {
+    if ($("#txtAgentNamePrifix").val().length != '3') {
+        return;
+    }
+    if ($("#txtAgentNamePrifix").val() == '') {
+        $("#txtAgentName").val('');
+        // $("#txtShipper").focus();
+        getAgentList();
+        return;
+    }
+
+
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var InputXML = '<Root><SCode>' + $("#txtAgentNamePrifix").val() + '</SCode><Type>A</Type><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode></Root>';
+
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "GetShipperConsigneeWithShortCode_V3",
+            data: JSON.stringify({ 'InputXML': InputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;                
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                //  console.log(xmlDoc);
+                $('#ddlAgentName').empty();
+                AgentNameLists = [];
+                $(xmlDoc).find('Table').each(function () {
+                    //var outMsg = $(this).find('OutMsg').text(); //added on 17/06
+
+                    var Status = $(this).find('Status').text();
+                    var OutMsg = $(this).find('OutMsg').text();
+
+                    if (status == 'E') {
+                        $.alert($(this).find('OutMsg').text()).css('color', 'red');
+                        //$(".alert_btn_ok").click(function () {
+                        //    $('#txtGroupId').focus();
+                        //});
+                        return true;
+                    }
+                });
+
+                $(xmlDoc).find('Table1').each(function (index) {
+                    //var outMsg = $(this).find('OutMsg').text(); //added on 17/06
+
+                    var Id = $(this).find('Id').text();
+                    var ShortCode = $(this).find('ShortCode').text();
+                    var Name = $(this).find('Name').text();
+                    $('#txtAgentName').val(Name);
+                    //if (index == 0) {
+                    //    var newOption = $('<option></option>');
+                    //    newOption.val(0).text('Select');
+                    //    newOption.appendTo('#ddlAgentName');
+                    //}
+
+                    var newOption = $('<option></option>');
+                    newOption.val(Id).text(Name);
+                    newOption.appendTo('#ddlAgentName');
+
+                    AgentNameLists.push({ 'value': Id, 'label': Name });
+                    $('#ddlAgentName').trigger('change');
+                });
+
+
+                if (AgentNameLists.length > 0) {
+                    $("#txtAgentName").autocomplete({
+                        minChars: 0,
+                        minLength: 1,
+                        source: AgentNameLists,
+                        focus: function (event, ui) {
+                            // if (this.value == "") {
+                            //     $(this).autocomplete("search");
+                            // }
+                            $("#txtAgentName").focus();
+                            $("#txtAgentName").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtAgentName").val(ui.item.label);
+                            $('#ddlAgentName').val(ui.item.value)
+
+                            // $("#project-id").val(ui.item.label);
+                            return false;
+                        }
+                    })
+                    $("#txtAgentName").focus(function () {
+                        // $(this).autocomplete("search", $(this).val());
+                    });
+                    $("#txtAgentName").focus();
+                }
+
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}
+
+function onChangeAgentName(aName) {
+
+    AgentName_IACustID = aName;
+    //if (AgentName_IACustID == null) {
+    //    AgentName_IACustID = $('#ddlAgentName').val();
+    //}
+
+}
+function onChangeConsineeName(sssid) {
+    Consignee_CCustID = sssid;
+}
+
+function Shipper_GetShipperConsigneeWithShortCode_V3() {
+    if ($("#txtShipperPrifix").val().length != '3') {
+        return;
+    }
+    if ($("#txtShipperPrifix").val() == '') {
+        $("#txtShipper").val('');
+        // $("#txtShipper").focus();
+        getShiperList();
+        return;
+    }
+
+
+
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var InputXML = '<Root><SCode>' + $("#txtShipperPrifix").val() + '</SCode><Type>C</Type><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode></Root>';
+
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "GetShipperConsigneeWithShortCode_V3",
+            data: JSON.stringify({ 'InputXML': InputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;             
+
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                // console.log(xmlDoc);
+                $('#ddlShipper').empty();
+                shipperLists = [];
+                $(xmlDoc).find('Table').each(function () {
+                    //var outMsg = $(this).find('OutMsg').text(); //added on 17/06
+
+                    var Status = $(this).find('Status').text();
+                    var OutMsg = $(this).find('OutMsg').text();
+
+                    if (status == 'E') {
+                        $.alert($(this).find('OutMsg').text()).css('color', 'red');
+                        //$(".alert_btn_ok").click(function () {
+                        //    $('#txtGroupId').focus();
+                        //});
+                        return true;
+                    }
+                });
+
+                $(xmlDoc).find('Table1').each(function (index) {
+                    //var outMsg = $(this).find('OutMsg').text(); //added on 17/06
+
+                    var Id = $(this).find('Id').text();
+                    var ShortCode = $(this).find('ShortCode').text();
+                    var Name = $(this).find('Name').text();
+
+                    $('#txtShipper').val(Name);
+
+                    //if (index == 0) {
+                    //    var newOption = $('<option></option>');
+                    //    newOption.val(0).text('Select');
+                    //    newOption.appendTo('#ddlShipper');
+                    //}
+
+                    var newOption = $('<option></option>');
+                    newOption.val(Id).text(Name);
+                    newOption.appendTo('#ddlShipper');
+
+
+                    shipperLists.push({ 'value': Id, 'label': Name });
+
+                    if (selectedShpper != '') {
+                        //TODO :Change selectedRowHAWBNo to  $("#hawbLists").val()
+                        $("#ddlShipper option").each(function () {
+                            if ($(this).text() == selectedShpper) {
+                                $(this).attr('selected', 'selected');
+                                var selectedship = $(this).val();
+                                onChangeShipperText(selectedship);
+                                // onChangeShipper(selectedship);
+                            }
+                        });
+                    }
+                });
+
+
+                if (shipperLists.length > 0) {
+                    $("#txtShipper").autocomplete({
+                        minChars: 0,
+                        minLength: 2,
+                        source: shipperLists,
+                        focus: function (event, ui) {
+                            // if (this.value == "") {
+                            //     $(this).autocomplete("search");
+                            // }
+                            $("#txtShipper").focus();
+                            $("#txtShipper").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtShipper").val(ui.item.label);
+                            $('#ddlShipper').val(ui.item.value);
+
+                            onChangeShipperText($('#ddlShipper').val());
+                            // $("#project-id").val(ui.item.label);
+                            return false;
+                        }
+                    })
+                    $("#txtShipper").focus(function () {
+                        // $(this).autocomplete("search", $(this).val());
+                    });
+                    //$("#txtShipper").focus();
+                }
+
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}
+
+function onChangeShipperText(shippID) {
+
+    Shipper_SCustID = shippID;
+}
+
+
+function Consignee_GetShipperConsigneeWithShortCode_V3() {
+    if ($("#txtConsigneePrifix").val().length != '3') {
+        return;
+    }
+
+
+    if ($("#txtConsigneePrifix").val() == '') {
+        $("#txtConsignee").val('');
+        // $("#txtShipper").focus();
+        getConsigneeList();
+        return;
+    }
+
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var InputXML = '<Root><SCode>' + $("#txtConsigneePrifix").val() + '</SCode><Type>C</Type><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode></Root>';
+
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "GetShipperConsigneeWithShortCode_V3",
+            data: JSON.stringify({ 'InputXML': InputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;                
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                // console.log(xmlDoc);
+                $('#ddlConsignee').empty();
+                ConsigneeLists = [];
+                $(xmlDoc).find('Table').each(function () {
+                    //var outMsg = $(this).find('OutMsg').text(); //added on 17/06
+
+                    var Status = $(this).find('Status').text();
+                    var OutMsg = $(this).find('OutMsg').text();
+
+                    if (status == 'E') {
+                        $.alert($(this).find('OutMsg').text()).css('color', 'red');
+                        //$(".alert_btn_ok").click(function () {
+                        //    $('#txtGroupId').focus();
+                        //});
+                        return true;
+                    }
+                });
+
+                $(xmlDoc).find('Table1').each(function (index) {
+                    //var outMsg = $(this).find('OutMsg').text(); //added on 17/06
+
+                    var Id = $(this).find('Id').text();
+                    var ShortCode = $(this).find('ShortCode').text();
+                    var Name = $(this).find('Name').text();
+                    $('#txtConsignee').val(Name);
+
+                    //if (index == 0) {
+                    //    var newOption = $('<option></option>');
+                    //    newOption.val(0).text('Select');
+                    //    newOption.appendTo('#ddlConsignee');
+                    //}
+
+                    var newOption = $('<option></option>');
+                    newOption.val(Id).text(Name);
+                    newOption.appendTo('#ddlConsignee');
+                    ConsigneeLists.push({ 'value': Id, 'label': Name })
+                });
+
+
+                if (ConsigneeLists.length > 0) {
+                    $("#txtConsignee").autocomplete({
+                        minChars: 0,
+                        minLength: 2,
+                        source: ConsigneeLists,
+                        focus: function (event, ui) {
+                            // if (this.value == "") {
+                            //     $(this).autocomplete("search");
+                            // }
+                            $("#txtConsignee").focus();
+                            $("#txtConsignee").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtConsignee").val(ui.item.label);
+                            $('#ddlConsignee').val(ui.item.value)
+
+                            // $("#project-id").val(ui.item.label);
+                            return false;
+                        }
+                    })
+                    $("#txtConsignee").focus(function () {
+                        // $(this).autocomplete("search", $(this).val());
+                    });
+                    // $("#txtConsignee").focus();
+                }
+
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}
+
+
+function AgentName_GetShipperConsigneeWithShortCode_V3() {
+    if ($("#txtAgentNamePrifix").val().length != '3') {
+        return;
+    }
+    if ($("#txtAgentNamePrifix").val() == '') {
+        $("#txtAgentName").val('');
+        // $("#txtShipper").focus();
+        getAgentList();
+        return;
+    }
+
+
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var InputXML = '<Root><SCode>' + $("#txtAgentNamePrifix").val() + '</SCode><Type>A</Type><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode></Root>';
+
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "GetShipperConsigneeWithShortCode_V3",
+            data: JSON.stringify({ 'InputXML': InputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;                
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                //  console.log(xmlDoc);
+                $('#ddlAgentName').empty();
+                AgentNameLists = [];
+                $(xmlDoc).find('Table').each(function () {
+                    //var outMsg = $(this).find('OutMsg').text(); //added on 17/06
+
+                    var Status = $(this).find('Status').text();
+                    var OutMsg = $(this).find('OutMsg').text();
+
+                    if (status == 'E') {
+                        $.alert($(this).find('OutMsg').text()).css('color', 'red');
+                        //$(".alert_btn_ok").click(function () {
+                        //    $('#txtGroupId').focus();
+                        //});
+                        return true;
+                    }
+                });
+
+                $(xmlDoc).find('Table1').each(function (index) {
+                    //var outMsg = $(this).find('OutMsg').text(); //added on 17/06
+
+                    var Id = $(this).find('Id').text();
+                    var ShortCode = $(this).find('ShortCode').text();
+                    var Name = $(this).find('Name').text();
+                    $('#txtAgentName').val(Name);
+                    //if (index == 0) {
+                    //    var newOption = $('<option></option>');
+                    //    newOption.val(0).text('Select');
+                    //    newOption.appendTo('#ddlAgentName');
+                    //}
+
+                    var newOption = $('<option></option>');
+                    newOption.val(Id).text(Name);
+                    newOption.appendTo('#ddlAgentName');
+
+                    AgentNameLists.push({ 'value': Id, 'label': Name });
+                    $('#ddlAgentName').trigger('change');
+                });
+
+
+                if (AgentNameLists.length > 0) {
+                    $("#txtAgentName").autocomplete({
+                        minChars: 0,
+                        minLength: 1,
+                        source: AgentNameLists,
+                        focus: function (event, ui) {
+                            // if (this.value == "") {
+                            //     $(this).autocomplete("search");
+                            // }
+                            $("#txtAgentName").focus();
+                            $("#txtAgentName").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtAgentName").val(ui.item.label);
+                            $('#ddlAgentName').val(ui.item.value)
+
+                            // $("#project-id").val(ui.item.label);
+                            return false;
+                        }
+                    })
+                    $("#txtAgentName").focus(function () {
+                        // $(this).autocomplete("search", $(this).val());
+                    });
+                    $("#txtAgentName").focus();
+                }
+
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}
+
 
 
 function SHCSpanHtml(newSHC) {
@@ -582,93 +1976,10 @@ function SHCSpanHtml(newSHC) {
 //}
 
 
-function dynamicTrCreate() {
-
-    // if (counter > 5) {
-    //     //alert("Only 10 textboxes allow");
-    //     return false;
-    // }
-    //let i = 0;
-    //while (i < 10) {
-    //    if (i < 5) {
-    // console.log('The Number is ' + i + '<br>');
-    var newTextBoxDiv = $(document.createElement('tr'))
-        .attr("id", 'TextBoxDiv' + counter);
-
-    newTextBoxDiv.after().html('<td><input tabindex="1" autocomplete="off" onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right"  name="textpackges' + parseInt(counter + 1) + '" id="Pieces' + parseInt(counter + 1) + '" onkeypress="MoveToLen(this);" type="number" /></td>' +
-        '<td><input autocomplete="off" tabindex="2" onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Length' + parseInt(counter + 1) + '" onkeypress="MoveToWid(this);"  type="number" /></td>' +
-        '<td><input autocomplete="off" tabindex="3" onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Width' + parseInt(counter + 1) + '" onkeypress="MoveToHei(this);"  type="number" /></td>' +
-        '<td><input autocomplete="off" tabindex="4" onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Height' + parseInt(counter + 1) + '"  type="number" /></td>');
-    //'<td></td>' +
-    // '<td><button disabled onclick="removeRow(' + counter + ');" type="button" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>');
 
 
-    var one = parseInt($("#Pieces1").val());
-    var two = parseInt($("#Pieces2").val());
-    var sumOfTwoTextBox = one + two;
-
-    // if (parseInt($("#Pieces1").val()) == RemainingPkg) {
-    //     errmsg = "Sum of packages are equal to entered packages; Action canceled.</br>";
-    //     $.alert(errmsg);
-
-    // } else if (sumOfTwoTextBox == RemainingPkg) {
-    //     $("#textpackges1").val(nextValue);
-    //     errmsg = "Sum of packages are equal to entered packages; Action canceled.</br>";
-    //     $.alert(errmsg);
-
-    // } else {
-    newTextBoxDiv.appendTo("#TextBoxesGroup");
-    $("#textpackges1").val(nextValue);
-    counter++;
-
-    // }
-    GetRemainingPackgs();
-    $("#Pieces" + counter).focus();
-    //    }
-    //    i++;
-    //}
-
-}
-
-function dynamicTrCreateaddRow(piecesValue) {
-
-    // if (counter > 5) {
-    //     //alert("Only 10 textboxes allow");
-    //     return false;
-    // }
-    var newTextBoxDiv = $(document.createElement('tr'))
-        .attr("id", 'TextBoxDiv' + counter);
-
-    newTextBoxDiv.after().html('<td><input onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right"  name="textpackges' + parseInt(counter + 1) + '" id="Pieces' + parseInt(counter + 1) + '" onkeypress="MoveToLen(this);" type="number" /></td>' +
-        '<td><input onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Length' + parseInt(counter + 1) + '" onkeypress="MoveToWid(this);"  type="number" /></td>' +
-        '<td><input onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Width' + parseInt(counter + 1) + '" onkeypress="MoveToHei(this);"  type="number" /></td>' +
-        '<td><input onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Height' + parseInt(counter + 1) + '"  type="number" /></td>' +
-        //'<td><select id="ddlUnit' + parseInt(counter + 1) + '"><option value="cm">cm</option><option value="inch">inch</option></select></td>' +
-        '<td><button onclick="removeRow(' + counter + ');" type="button" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>');
 
 
-    var one = parseInt($("#Pieces1").val());
-    var two = parseInt($("#Pieces2").val());
-    var sumOfTwoTextBox = one + two;
-
-    // if (parseInt($("#Pieces1").val()) == RemainingPkg) {
-    //     errmsg = "Sum of packages are equal to entered packages; Action canceled.</br>";
-    //     $.alert(errmsg);
-
-    // } else if (sumOfTwoTextBox == RemainingPkg) {
-    //     $("#textpackges1").val(nextValue);
-    //     errmsg = "Sum of packages are equal to entered packages; Action canceled.</br>";
-    //     $.alert(errmsg);
-
-    // } else {
-    newTextBoxDiv.appendTo("#TextBoxesGroup");
-    $("#textpackges1").val(nextValue);
-    counter++;
-
-    // }
-    GetRemainingPackgs();
-    $("#Pieces" + counter).focus();
-}
 
 
 function GetRemainingPackgs() {
@@ -1087,7 +2398,7 @@ function onchangeddlEquTrolley(valOfTrolley) {
         });
         //30,75~1~10~70~0~c
         $('#ddlUnit1').val(isUnit);
-        $('#addButton').attr('disabled', 'disabled');
+        //$('#addButton').attr('disabled', 'disabled');
 
     } else {
         $('#TextBoxesGroup tr').each(function () {
@@ -1107,7 +2418,7 @@ function onchangeddlEquTrolley(valOfTrolley) {
 
             });
         });
-        $('#addButton').removeAttr('disabled');
+       // $('#addButton').removeAttr('disabled');
     }
 }
 
@@ -1702,3 +3013,207 @@ function SaveCompleteAcceptance() {
 }
 
 
+
+
+
+function dynamicTrCreate() {
+
+    // if (counter > 5) {
+    //     //alert("Only 10 textboxes allow");
+    //     return false;
+    // }
+    //let i = 0;
+    //while (i < 10) {
+    //    if (i < 5) {
+    // console.log('The Number is ' + i + '<br>');
+    var newTextBoxDiv = $(document.createElement('tr'))
+        .attr("id", 'TextBoxDiv' + counter);
+
+    newTextBoxDiv.after().html('<td style="width: 30%;"><select class="clsEquTrolley form-control textpackges" id="ddlEquTrolley"></select></td><td><input  autocomplete="off" onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right"  name="textpackges' + parseInt(counter + 1) + '" id="Pieces' + parseInt(counter + 1) + '" onkeypress="MoveToLen(this);" type="number" /></td>' +
+        '<td><input autocomplete="off"  onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Length' + parseInt(counter + 1) + '" onkeypress="MoveToWid(this);"  type="number" /></td>' +
+        '<td><input autocomplete="off"  onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Width' + parseInt(counter + 1) + '" onkeypress="MoveToHei(this);"  type="number" /></td>' +
+        '<td><input autocomplete="off"  onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Height' + parseInt(counter + 1) + '"  type="number" /></td>');
+    //'<td></td>' +
+    // '<td><button disabled onclick="removeRow(' + counter + ');" type="button" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>');
+
+
+    var one = parseInt($("#Pieces1").val());
+    var two = parseInt($("#Pieces2").val());
+    var sumOfTwoTextBox = one + two;
+
+    // if (parseInt($("#Pieces1").val()) == RemainingPkg) {
+    //     errmsg = "Sum of packages are equal to entered packages; Action canceled.</br>";
+    //     $.alert(errmsg);
+
+    // } else if (sumOfTwoTextBox == RemainingPkg) {
+    //     $("#textpackges1").val(nextValue);
+    //     errmsg = "Sum of packages are equal to entered packages; Action canceled.</br>";
+    //     $.alert(errmsg);
+
+    // } else {
+    newTextBoxDiv.appendTo("#TextBoxesGroup");
+    $("#textpackges1").val(nextValue);
+    counter++;
+
+    // }
+    GetRemainingPackgs();
+    //$("#Pieces" + counter).focus();
+    //    }
+    //    i++;
+    //}
+
+
+}
+
+function dynamicTrCreateaddRow(piecesValue) {
+
+    // if (counter > 5) {
+    //     //alert("Only 10 textboxes allow");
+    //     return false;
+    // }
+    var newTextBoxDiv = $(document.createElement('tr'))
+        .attr("id", 'TextBoxDiv' + counter);
+
+    newTextBoxDiv.after().html('<td style="width: 30%;"><select class="clsEquTrolley form-control textpackges" id="ddlEquTrolley"></select></td><td><input onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right"  name="textpackges' + parseInt(counter + 1) + '" id="Pieces' + parseInt(counter + 1) + '" onkeypress="MoveToLen(this);" type="number" /></td>' +
+        '<td><input onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Length' + parseInt(counter + 1) + '" onkeypress="MoveToWid(this);"  type="number" /></td>' +
+        '<td><input onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Width' + parseInt(counter + 1) + '" onkeypress="MoveToHei(this);"  type="number" /></td>' +
+        '<td><input onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Height' + parseInt(counter + 1) + '"  type="number" /></td>' +
+        //'<td><select id="ddlUnit' + parseInt(counter + 1) + '"><option value="cm">cm</option><option value="inch">inch</option></select></td>' +
+        '<td><button onclick="removeRow(' + counter + ');" type="button" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>');
+
+
+    var one = parseInt($("#Pieces1").val());
+    var two = parseInt($("#Pieces2").val());
+    var sumOfTwoTextBox = one + two;
+
+    // if (parseInt($("#Pieces1").val()) == RemainingPkg) {
+    //     errmsg = "Sum of packages are equal to entered packages; Action canceled.</br>";
+    //     $.alert(errmsg);
+
+    // } else if (sumOfTwoTextBox == RemainingPkg) {
+    //     $("#textpackges1").val(nextValue);
+    //     errmsg = "Sum of packages are equal to entered packages; Action canceled.</br>";
+    //     $.alert(errmsg);
+
+    // } else {
+    newTextBoxDiv.appendTo("#TextBoxesGroup");
+    $("#textpackges1").val(nextValue);
+    counter++;
+
+    // }
+    GetRemainingPackgs();
+    // $("#Pieces" + counter).focus();
+
+    $(xmlDocForTrolley).find('Table4').each(function (index) {
+
+        flagforcheck2 = '1';
+
+        var REFERENCE_DESCRIPTION = $(this).find('REFERENCE_DESCRIPTION').text();
+        var TrolleyCode = $(this).find('TrolleyCode').text();
+        var REFERENCE_NUMBER_1 = $(this).find('REFERENCE_NUMBER_1').text();
+        var REFERENCE_DATA_IDENTIFIER = $(this).find('REFERENCE_DATA_IDENTIFIER').text();
+        var TrolleyFixed = $(this).find('TrolleyFixed').text();
+
+        //if (index == 0) {
+        //    var newOption = $('<option></option>');
+        //    newOption.val(0).text('Select');
+        //    newOption.appendTo('.clsEquTrolley');
+        //}
+        var newOption = $('<option></option>');
+        newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
+        newOption.appendTo('.clsEquTrolley');
+
+    });
+}
+
+
+
+
+
+//function dynamicTrCreate() {
+
+//    // if (counter > 5) {
+//    //     //alert("Only 10 textboxes allow");
+//    //     return false;
+//    // }
+//    //let i = 0;
+//    //while (i < 10) {
+//    //    if (i < 5) {
+//    // console.log('The Number is ' + i + '<br>');
+//    var newTextBoxDiv = $(document.createElement('tr'))
+//        .attr("id", 'TextBoxDiv' + counter);
+
+//    newTextBoxDiv.after().html('<td><input tabindex="1" autocomplete="off" onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right"  name="textpackges' + parseInt(counter + 1) + '" id="Pieces' + parseInt(counter + 1) + '" onkeypress="MoveToLen(this);" type="number" /></td>' +
+//        '<td><input autocomplete="off" tabindex="2" onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Length' + parseInt(counter + 1) + '" onkeypress="MoveToWid(this);"  type="number" /></td>' +
+//        '<td><input autocomplete="off" tabindex="3" onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Width' + parseInt(counter + 1) + '" onkeypress="MoveToHei(this);"  type="number" /></td>' +
+//        '<td><input autocomplete="off" tabindex="4" onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Height' + parseInt(counter + 1) + '"  type="number" /></td>');
+//    //'<td></td>' +
+//    // '<td><button disabled onclick="removeRow(' + counter + ');" type="button" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>');
+
+
+//    var one = parseInt($("#Pieces1").val());
+//    var two = parseInt($("#Pieces2").val());
+//    var sumOfTwoTextBox = one + two;
+
+//    // if (parseInt($("#Pieces1").val()) == RemainingPkg) {
+//    //     errmsg = "Sum of packages are equal to entered packages; Action canceled.</br>";
+//    //     $.alert(errmsg);
+
+//    // } else if (sumOfTwoTextBox == RemainingPkg) {
+//    //     $("#textpackges1").val(nextValue);
+//    //     errmsg = "Sum of packages are equal to entered packages; Action canceled.</br>";
+//    //     $.alert(errmsg);
+
+//    // } else {
+//    newTextBoxDiv.appendTo("#TextBoxesGroup");
+//    $("#textpackges1").val(nextValue);
+//    counter++;
+
+//    // }
+//    GetRemainingPackgs();
+//    $("#Pieces" + counter).focus();
+//    //    }
+//    //    i++;
+//    //}
+
+//}
+
+//function dynamicTrCreateaddRow(piecesValue) {
+
+//    // if (counter > 5) {
+//    //     //alert("Only 10 textboxes allow");
+//    //     return false;
+//    // }
+//    var newTextBoxDiv = $(document.createElement('tr'))
+//        .attr("id", 'TextBoxDiv' + counter);
+
+//    newTextBoxDiv.after().html('<td><input onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right"  name="textpackges' + parseInt(counter + 1) + '" id="Pieces' + parseInt(counter + 1) + '" onkeypress="MoveToLen(this);" type="number" /></td>' +
+//        '<td><input onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Length' + parseInt(counter + 1) + '" onkeypress="MoveToWid(this);"  type="number" /></td>' +
+//        '<td><input onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Width' + parseInt(counter + 1) + '" onkeypress="MoveToHei(this);"  type="number" /></td>' +
+//        '<td><input onkeyup="NumberOnly(event);ChkMaxLength(this, "4");" class="textpackges text-right" name="textpackges' + parseInt(counter + 1) + '" id="Height' + parseInt(counter + 1) + '"  type="number" /></td>' +
+//        //'<td><select id="ddlUnit' + parseInt(counter + 1) + '"><option value="cm">cm</option><option value="inch">inch</option></select></td>' +
+//        '<td><button onclick="removeRow(' + counter + ');" type="button" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>');
+
+
+//    var one = parseInt($("#Pieces1").val());
+//    var two = parseInt($("#Pieces2").val());
+//    var sumOfTwoTextBox = one + two;
+
+//    // if (parseInt($("#Pieces1").val()) == RemainingPkg) {
+//    //     errmsg = "Sum of packages are equal to entered packages; Action canceled.</br>";
+//    //     $.alert(errmsg);
+
+//    // } else if (sumOfTwoTextBox == RemainingPkg) {
+//    //     $("#textpackges1").val(nextValue);
+//    //     errmsg = "Sum of packages are equal to entered packages; Action canceled.</br>";
+//    //     $.alert(errmsg);
+
+//    // } else {
+//    newTextBoxDiv.appendTo("#TextBoxesGroup");
+//    $("#textpackges1").val(nextValue);
+//    counter++;
+
+//    // }
+//    GetRemainingPackgs();
+//    $("#Pieces" + counter).focus();
+//}

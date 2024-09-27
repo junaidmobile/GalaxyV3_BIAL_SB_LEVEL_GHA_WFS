@@ -1,0 +1,505 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=0">
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script src="bootstrap-3.3.7-dist/js/jquery-1.12.0.min.js"></script>
+    <link href="bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="scripts/jquery-ui.js"></script>
+
+    <!--<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>-->
+
+    <script src="js/select2.min.js"></script>
+    <link href="css/select2.min.css" rel="stylesheet" />
+
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/jquery-ui.css">
+
+    <link href="css/style.css" rel="stylesheet" />
+    <link href="css/sticky-footer.css" rel="stylesheet" />
+    <script src="scripts/LoadingModel.js"></script>
+    <script src="scripts/LoaderShow-Hide.js"></script>
+
+    <script src="scripts/dialog.js"></script>
+    <script src="js/General.js"></script>
+    <link href="css/General.css" rel="stylesheet" />
+    <script src="scripts/alert.mob.js"></script>
+    <link href="css/Loader.css" rel="stylesheet" />
+    <link href="css/dialog.css" rel="stylesheet" />
+    <link href="css/alert.mob.css" rel="stylesheet" />
+    <script src="js/amplify.min.js"></script>
+    <link href="css/select2.min.css" rel="stylesheet" />
+    <script src="js/select2.min.js"></script>
+
+    <script src="js/Export/EXP_ShipmentDeclaration.js"></script>
+    <style>
+
+        #TextBoxDiv td.foo:nth-child(7n+1) {
+            background-color: rgb(177,112,136);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDiv td.foo:nth-child(7n+2) {
+            background-color: rgb(27,81,141);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDiv td.foo:nth-child(7n+3) {
+            background-color: rgb(13,150,68);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDiv td.foo:nth-child(7n+4) {
+            background-color: rgb(35,29,31);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDiv td.foo:nth-child(7n+5) {
+            background-color: rgb(157,124,43);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDiv td.foo:nth-child(7n+6) {
+            background-color: rgb(14,76,166);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDiv td.foo:nth-child(7n+7) {
+            background-color: rgb(206,84,209);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDiv td.foo:nth-child(7n+8) {
+            background-color: rgb(143,74,219);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDiv td.foo:nth-child(7n+9) {
+            background-color: rgb(198,139,74);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDiv > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            font-size: 12px;
+        }
+
+        #TextBoxDiv {
+            margin-bottom: 0px !important;
+            margin-top: 5px;
+        }
+
+        .blink_me {
+            animation: blinker 1s linear infinite;
+            background-color: yellow;
+            padding: 15px;
+            text-align: center;
+            line-height: 50px;
+            font-weight: bolder;
+        }
+
+        @keyframes blinker {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            vertical-align: inherit;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="navbar">
+        <div class="container-fluid">
+            <div class="navbar-header" style="background-color:#065da1;">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" id="btnnavbar" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#" id="navhdrName" style="text-align:right;padding-left: 50px;"></a>
+                <img class="navbarImage" src="images/Logo.png" onclick="ShowHomePage();">
+                <a href="#" id="navhdr" class="loggedinUser"></a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid" style="margin-top:63px;">
+        <div class="panel-body">
+            <div class="panel panel-widget forms-panel form-grids widget-shadow">
+                <div class="forms">
+                    <div class="form-body">
+                        <form>
+                            <div class="row form-group">
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" style="display:none">
+                                    <input type="radio" name="radSize" id="rdoIntlMovement" value="IntlMovement" checked="checked" />
+                                    <label for="sizeLarge"></label>
+                                    <input type="radio" name="radSize" id="rdoForwarding" value="Forwarding" />
+                                    <label for="sizeSmall"></label>
+                                </div>
+                            </div>
+
+                            <div class="row form-group" id="divInternalMvmt">
+                                <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-6 col-form-label">
+                                        <label id="lblAgentName" for="">Agent Name</label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-6 NoPadding">
+                                        <input id="txtAgentName" class="form-control" type="text" onkeypress="return blockSpecialChar(event)"
+                                               oninput="checkSpecialChar();" maxlength="14" onkeyup="ChkMaxLength(this, '30');" onblur="GetHAWBDetailsForMAWB()"
+                                               autofocus onchange="CheckEmpty();">
+                                    </div>
+                                </div>-->
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblAWBNo" for="">AWB No.</label>
+                                        <!--<font color="red">*</font>-->
+                                    </div>
+                                    <!--<div class="col-xs-2 NoPadding">
+                                        <input id="txtAWBPrifix" onchange="CheckEmpty();" class="form-control" type="text" maxlength="15">
+                                    </div>-->
+                                    <div class="col-xs-8 NoPadding">
+                                        <input id="txtAWBNo" class="form-control" type="text" onkeypress="return blockSpecialChar(event)"
+                                               oninput="checkSpecialCharforAWBNo();" maxlength="15" onkeyup="ChkMaxLength(this, '15');" onblur="GetAWBDetailSearch_V3();"
+                                               autofocus onchange="CheckEmpty();" tabindex="1">
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblDestination" for="">Origin/Dest.</label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-4 NoPadding">
+                                        <input id="txtOrigin" tabindex="2" oninput="checkSpecialCharforOrigin();" onblur="compareOriginDest();" class="form-control" type="text" maxlength="3">
+                                    </div>
+                                    <div class="col-xs-4 NoPadding">
+                                        <input id="txtDestination" tabindex="3" oninput="checkSpecialCharforDestination();" onblur="compareOriginDest();" class="form-control" type="text" maxlength="3">
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblFlightNo" for="">Flight No./Date</label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-4 NoPadding">
+                                        <select class="form-control" id="ddlFlightNo"
+                                                onchange="GetAWBDetailSearch_V3_onChangeFlight($('#ddlFlightNo').val())"
+                                                style="display: none;">
+                                            <option value="0">Select</option>
+                                        </select>
+                                        <input id="txtFlightNo" tabindex="4" autocomplete="off" onkeypress="return blockSpecialChar(event)" oninput="checkSpecialCharforFlightNo();" class="form-control" type="text" maxlength="6">
+                                        <!--<select class="form-control" id="ddlFlightNo"
+                                        onchange="GetAWBDetailSearch_V3_onChangeFlight($('#ddlFlightNo').val())"></select>-->
+
+
+                                    </div>
+                                    <div class="col-xs-4 NoPadding ClearFields">
+
+                                        <input type="text" style="text-transform: none;"
+                                               id="txtFlightDate" class="form-control"
+                                               title="Date" tabindex="5">
+
+                                    </div>
+                                </div>
+                                <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblFlightNo" for="txtFlightDate" class="control-label">Flight Date</label>
+
+                                    </div>
+
+                                    <div class="col-xs-8 NoPadding ClearFields">
+
+                                        <input type="text" style="text-transform: none;"
+                                               id="txtFlightDate" class="form-control"
+                                               title="Date">
+
+                                    </div>
+                                </div>-->
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblCommodity" for="">Commodity </label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-8 NoPadding">
+                                        <select class="form-control" onchange="onChangeComm($('#ddlCommodity').val())" id="ddlCommodity"
+                                                style="display:none ;">
+                                            <!--<option value="0">Select</option>-->
+                                        </select>
+                                        <input id="txtCommodity" tabindex="6" onkeyup="ChkMaxLength(this, '50');" onkeypress="return blockSpecialChar(event)" class="form-control" type="text" style="text-align:left;">
+                                    </div>
+
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblPieces" for="">Pieces</label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-8 NoPadding">
+                                        <input id="txtPieces" tabindex="7" onkeyup="ChkMaxLength(this, '4');" onkeypress="return blockSpecialChar(event)" class="form-control" type="number" style="text-align:right;">
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblGrWt" for="">Gr. Wt.</label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-8 NoPadding">
+                                        <input id="txtGrWt" tabindex="8" onkeyup="ChkMaxLength(this, '6');" class="form-control" type="number" style="text-align:right;">
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblCharWt" for="">Ch. Wt.</label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-8 NoPadding">
+                                        <input id="txtCharWt" tabindex="9" onkeyup="ChkMaxLength(this, '6');" class="form-control" type="number" style="text-align:right;">
+                                    </div>
+
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblVolume" for="">Volume</label>
+                                        <!--<font color="red">*</font>-->
+                                    </div>
+                                    <div class="col-xs-8 NoPadding">
+                                        <input id="txtVolume" tabindex="10" onkeyup="ChkMaxLength(this, '4');" class="form-control" type="number" style="text-align:right;">
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblShipper" for="">Shipper </label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-2 NoPadding">
+                                        <input id="txtShipperPrifix" tabindex="11" maxlength="3" class="form-control" onkeypress="return blockSpecialChar(event)" type="text" onblur="Shipper_GetShipperConsigneeWithShortCode_V3();">
+                                    </div>
+                                    <div class="col-xs-6 NoPadding">
+                                        <select class="form-control" id="ddlShipper" onchange="onChangeShipperText($('#ddlShipper').val())"
+                                                style="display: none;">
+                                            <!--<option value="0">Select</option>-->
+                                        </select>
+                                        <input id="txtShipper" tabindex="12" maxlength="30" onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblConsignee" for="">Consignee </label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-2 NoPadding">
+                                        <input id="txtConsigneePrifix" tabindex="13" maxlength="3" class="form-control" onkeypress="return blockSpecialChar(event)" type="text" onblur="Consignee_GetShipperConsigneeWithShortCode_V3();">
+                                    </div>
+                                    <div class="col-xs-6 NoPadding">
+                                        <input id="txtConsignee" tabindex="14" maxlength="30"  onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
+                                        <select class="form-control" id="ddlConsignee" onchange="onChangeConsineeName($('#ddlConsignee').val());"
+                                                style="display: none;"></select>
+                                    </div>
+
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblAgentName" for="">Agent Name</label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-2 NoPadding">
+                                        <input id="txtAgentNamePrifix" tabindex="15" maxlength="3" class="form-control" onkeypress="return blockSpecialChar(event)" type="text" onblur="AgentName_GetShipperConsigneeWithShortCode_V3();">
+                                    </div>
+                                    <div class="col-xs-6 NoPadding">
+                                        <input id="txtAgentName" tabindex="16" onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
+                                        <select class="form-control" id="ddlAgentName" onchange="onChangeAgentName($('#ddlAgentName').val())"
+                                                style="display: none;"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <label id="AllMsg" for=""></label>
+                                </div>
+                            </div>
+
+                            <div class="row form-group" style="margin-top:10px;">
+
+                                <div class="form-group col-xs-4 col-sm-4 col-md-4 ">
+                                    <input type="button" id="btnExit" class="form-control ButtonColor" value="Exit" onclick="window.location.href = 'EXP_Dashboard.html'">
+                                </div>
+
+                                <div class="form-group col-xs-4 col-sm-4 col-md-4 ">
+                                    <input type="button" id="btnClear" class="form-control ButtonColor" value="Clear" onclick="clearALL();">
+                                </div>
+                                <div class="form-group col-xs-4 col-sm-4 col-md-4   ">
+                                    <input type="button" id="btnSubmit" tabindex="17" class="form-control ButtonColor" value="Submit" onclick="GetAWBDetailSave_V3();">
+                                </div>
+
+
+                            </div>
+
+                            <div class="row form-group">
+                                <span id="spnErrormsg"></span>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div>
+        <footer class="footer" style="color: white; font-size :12px; background-color:#0967b0;">
+            <div class="container">
+                <center><p class="text-muted" id="RightsReserved"></p></center>
+            </div>
+        </footer>
+    </div>
+</body>
+<script language="javascript" type="text/javascript">
+    $('#RightsReserved').text(' \xA9 Kale Logistics Solutions Private Limited. ' + (new Date).getFullYear().toString());
+    $(document).ready(function () {
+        //var now = new Date();
+
+        //var day = ("0" + now.getDate()).slice(-2);
+        //var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+        //var today = (day) + "-" + (month) + "-" + now.getFullYear();
+
+        //$('#txtFlightDate').val(today);
+
+        //$("#txtFlightDate").datepicker({
+        //    shortYearCutoff: 1,
+        //    changeMonth: true,
+        //    changeYear: true,
+        //    dateFormat: 'dd-mm-yy',
+
+        //});
+
+        let date = new Date();
+        const day = date.toLocaleString('default', { day: '2-digit' });
+        const month = date.toLocaleString('default', { month: 'short' });
+        const year = date.toLocaleString('default', { year: 'numeric' });
+        var today = day + '-' + month + '-' + year;
+        $('#txtFlightDate').val(today);
+       
+        $("#txtFlightDate").datepicker({
+            shortYearCutoff: 1,
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd-M-yy',
+
+        });
+
+
+
+        var date1 = new Date();
+
+        var day1 = date1.getDate(),
+            month1 = date1.getMonth() + 1,
+            year1 = date1.getFullYear(),
+            hour1 = date1.getHours(),
+            min1 = date1.getMinutes();
+
+        month1 = (month1 < 10 ? "0" : "") + month1;
+        day1 = (day1 < 10 ? "0" : "") + day1;
+        hour1 = (hour1 < 10 ? "0" : "") + hour1;
+        min1 = (min1 < 10 ? "0" : "") + min1;
+
+        var today1 = year1 + "-" + month1 + "-" + day1,
+            displayTime = hour1 + ":" + min1;
+
+        $('#txtFlightTime').val(displayTime);
+        $('#txtFlightATA').val(today1);
+
+        //        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        //"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        //        ];
+        //        let qntYears = 4;
+        //        let selectYear = $("#year");
+        //        let selectMonth = $("#month");
+        //        let selectDay = $("#day");
+        //        let currentYear = new Date().getFullYear();
+
+        //        for (var y = 0; y < qntYears; y++) {
+        //            let date = new Date(currentYear);
+        //            let yearElem = document.createElement("option");
+        //            yearElem.value = currentYear
+        //            yearElem.textContent = currentYear;
+        //            selectYear.append(yearElem);
+        //            currentYear--;
+        //        }
+
+        //        for (var m = 0; m < monthNames.length; m++) {
+        //            let month = monthNames[m];
+        //            let monthElem = document.createElement("option");
+        //            monthElem.value = m + 1;
+        //            monthElem.textContent = month;
+        //            selectMonth.append(monthElem);
+        //        }
+
+        //        var d = new Date();
+        //        var month = d.getMonth();
+        //        var year = d.getFullYear();
+        //        var day = d.getDate();
+
+        //        selectYear.val(year);
+        //        selectYear.on("change", AdjustDays);
+        //        selectMonth.val(month + 1);
+        //        selectMonth.on("change", AdjustDays);
+
+        //        AdjustDays();
+        //        selectDay.val(day)
+
+        //        function AdjustDays() {
+        //            var year = selectYear.val();
+        //            var month = parseInt(selectMonth.val()) + 1;
+        //            selectDay.empty();
+
+        //            //get the last day, so the number of days in that month
+        //            var days = new Date(year, month, 0).getDate();
+
+        //            //lets create the days of that month
+        //            for (var d = 1; d <= days; d++) {
+        //                var dayElem = document.createElement("option");
+        //                dayElem.value = d;
+        //                dayElem.textContent = d;
+        //                selectDay.append(dayElem);
+        //            }
+        //        }
+    });
+</script>
+</html>

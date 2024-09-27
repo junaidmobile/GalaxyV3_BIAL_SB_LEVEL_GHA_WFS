@@ -52,44 +52,98 @@ var passCommoId = '';
 var Shipper_SCustID;
 var Consignee_CCustID;
 var AgentName_IACustID;
+var xmlDocForTrolley;
+var AutoTSP;
+var ConsignmentRowIDForSave;
+var flightSeqNo;
+var ULDSeqNo;
+var TotalvolumatricChWt;
+var counter = 1;
+var HAWBNo;
+var RemainingPkg;
+var IsBaggage;
+var RemainingWt;
+var WtUOM;
+var IsSecured;
+var REFERENCE_DESCRIPTION;
+var REFERENCE_DATA_IDENTIFIER;
+var REFERENCE_NUMBER_1;
+var _xmlDocTable;
+var isSecuredFlag;
+var REFERENCE = '0';
+var IDENTIFIER = '-1';;
+var nextValue;
+var inputRows = '';
+var ConsignmentRowID;
+var DocumentNo;
+var IsSecuredTF;
+var selectTestHaWB = 'select';
+var _vlaueofTrolleytext;
+var MawbNo;
+var HawbNo;
+var volumatricChWt;
+var flightAirNoListsNoCarrierCode = [];
+var AL_ROWID_I;
+var SDA_ROWID_I;
+var SDA_SBNo_C;
+var SDA_AWBNumber_C;
+var SDA_HAWBNo_C;
+var SDA_PackageCount;
+var SDA_GrossWt_I;
+var SDA_TimeStamp_Dt;
+var SDA_LockStatus_I;
+var SDA_IsManaual_B;
+var SDA_SBDate;
+var selectedAWBNo = '';
+var aaSDA_SBNo_C;
+var ExpAwbRowId;
+var TrolleyNo;
+var TrolleyGrossWt;
+var TrolleyTareWt;
+var _TLRowId = '0';
+var remPCS;
+var allSHCCodeSave = '';
+var CommSrNo;
+var IsSecured;
+var WtUOM;
+var filteredArrforno = [];
 $(function () {
 
+    var formattedDate = new Date();
+    var d = formattedDate.getDate();
+    if (d.toString().length < Number(2))
+        d = '0' + d;
+    var m = formattedDate.getMonth();
+    m += 1;  // JavaScript months are 0-11
+    if (m.toString().length < Number(2))
+        m = '0' + m;
+    var y = formattedDate.getFullYear();
+    var t = formattedDate.getTime();
+    var date = m.toString() + '/' + d.toString() + '/' + y.toString();
+
+    newDate = y.toString() + '-' + m.toString() + '-' + d.toString();
+    $('#txtFlightDate').val(newDate);
+
+
+    $('#txtAWBNo').focus();
     if (window.localStorage.getItem("RoleIMPBinning") == '0') {
         window.location.href = 'IMP_Dashboard.html';
     }
 
-    // document.addEventListener('deviceready', AddLocation, false);
-    //document.addEventListener('deviceready', AddingTestLocation, false);
     selectedRowHAWBNo = amplify.store("selectedRowHAWBNo");
     selectedShpper = amplify.store("selectedShpper");
     ConsigneeLists = amplify.store("ConsigneeLists");
     AgentNameLists = amplify.store("AgentNameLists");
-    // ImportDataList();
 
     //var stringos = 'ECC~N,PER~N,GEN~N,DGR~Y,HEA~N,AVI~N,BUP~Y,EAW~N,EAP~Y';
 
     //SHCSpanHtml(stringos);
 
-    //$("#txtShipper").select2();
-    //$("#txtConsignee").select2();
-    //$("#txtAgentName").select2();
     getAgentList();
     getShiperList();
     getConsigneeList();
     GetCommodityDataV3();
-
-    //$("input").keyup(function () {
-    //    var string = $(this).val();
-    //    // var string = $('#txtOrigin').val();
-    //    if (string.match(/[`!₹@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
-    //        /*$('#txtOrigin').val('');*/
-    //        $(this).val('');
-    //        return true;    // Contains at least one special character or space
-    //    } else {
-    //        return false;
-    //    }
-
-    //});
+    GetAWBDetailSearch_V3_onLoad();
 
     $("input").keyup(function () {
         var string = $(this).val();
@@ -103,9 +157,522 @@ $(function () {
         }
 
     });
-    // $("#txtCommodity").select2();
+
+    $("#ddlEquTrolley1").change(function () {
+        // alert($(this).val());
+
+        if ($(this).val() == '-1') {
+            $("#Length1").val('').removeAttr('disabled');
+            $("#Width1").val('').removeAttr('disabled');
+            $("#Height1").val('').removeAttr('disabled');
+            return;
+        }
+        var arr = $(this).val().split('~')
+        var is1 = arr[0];
+        var isFixed = arr[1];
+        var isLength = arr[2];
+        var isWidth = arr[3];
+        var isHeight = arr[4];
+        var isUnit = arr[5];
+        var L;
+        var W;
+        var H;
+
+        if (ExpAwbRowId != '-1') {
+            $("#Pieces1").val(isFixed).attr('disabled', 'disabled');
+        }
+
+        $("#Length1").val(isLength).attr('disabled', 'disabled');
+        $("#Width1").val(isWidth).attr('disabled', 'disabled');
+
+        if (isHeight > 0) {
+            $("#Height1").val(isHeight).attr('disabled', 'disabled');
+        } else {
+            $("#Height1").val('').removeAttr('disabled');
+        }
+
+    });
+
+    $("#ddlEquTrolley2").change(function () {
+        // alert($(this).val());
+        if ($(this).val() == '-1') {
+            $("#Length2").val('').removeAttr('disabled');
+            $("#Width2").val('').removeAttr('disabled');
+            $("#Height2").val('').removeAttr('disabled');
+            return;
+        }
+        var arr = $(this).val().split('~')
+        var is1 = arr[0];
+        var isFixed = arr[1];
+        var isLength = arr[2];
+        var isWidth = arr[3];
+        var isHeight = arr[4];
+        var isUnit = arr[5];
+        var L;
+        var W;
+        var H;
+
+        if (ExpAwbRowId != '-1') {
+            $("#Pieces2").val(isFixed).attr('disabled', 'disabled');
+        }
+
+        $("#Length2").val(isLength).attr('disabled', 'disabled');
+        $("#Width2").val(isWidth).attr('disabled', 'disabled');
+
+        if (isHeight > 0) {
+            $("#Height2").val(isHeight).attr('disabled', 'disabled');
+        } else {
+            $("#Height2").val('').removeAttr('disabled');
+        }
+
+    });
+
+    $("#ddlEquTrolley3").change(function () {
+        // alert($(this).val());
+        if ($(this).val() == '-1') {
+            $("#Length3").val('').removeAttr('disabled');
+            $("#Width3").val('').removeAttr('disabled');
+            $("#Height3").val('').removeAttr('disabled');
+            return;
+        }
+        var arr = $(this).val().split('~')
+        var is1 = arr[0];
+        var isFixed = arr[1];
+        var isLength = arr[2];
+        var isWidth = arr[3];
+        var isHeight = arr[4];
+        var isUnit = arr[5];
+        var L;
+        var W;
+        var H;
+
+        if (ExpAwbRowId != '-1') {
+            $("#Pieces3").val(isFixed).attr('disabled', 'disabled');
+        }
+
+        $("#Length3").val(isLength).attr('disabled', 'disabled');
+        $("#Width3").val(isWidth).attr('disabled', 'disabled');
+
+        if (isHeight > 0) {
+            $("#Height3").val(isHeight).attr('disabled', 'disabled');
+        } else {
+            $("#Height3").val('').removeAttr('disabled');
+        }
+
+    });
+
+    $("#ddlEquTrolley4").change(function () {
+        // alert($(this).val());
+        if ($(this).val() == '-1') {
+            $("#Length4").val('').removeAttr('disabled');
+            $("#Width4").val('').removeAttr('disabled');
+            $("#Height4").val('').removeAttr('disabled');
+            return;
+        }
+        var arr = $(this).val().split('~')
+        var is1 = arr[0];
+        var isFixed = arr[1];
+        var isLength = arr[2];
+        var isWidth = arr[3];
+        var isHeight = arr[4];
+        var isUnit = arr[5];
+        var L;
+        var W;
+        var H;
+
+        if (ExpAwbRowId != '-1') {
+            $("#Pieces4").val(isFixed).attr('disabled', 'disabled');
+        }
+
+        $("#Length4").val(isLength).attr('disabled', 'disabled');
+        $("#Width4").val(isWidth).attr('disabled', 'disabled');
+
+        if (isHeight > 0) {
+            $("#Height4").val(isHeight).attr('disabled', 'disabled');
+        } else {
+            $("#Height4").val('').removeAttr('disabled');
+        }
+
+    });
+
+    $("#ddlEquTrolley5").change(function () {
+        // alert($(this).val());
+        if ($(this).val() == '-1') {
+            $("#Length5").val('').removeAttr('disabled');
+            $("#Width5").val('').removeAttr('disabled');
+            $("#Height5").val('').removeAttr('disabled');
+            return;
+        }
+        var arr = $(this).val().split('~')
+        var is1 = arr[0];
+        var isFixed = arr[1];
+        var isLength = arr[2];
+        var isWidth = arr[3];
+        var isHeight = arr[4];
+        var isUnit = arr[5];
+        var L;
+        var W;
+        var H;
+
+        if (ExpAwbRowId != '-1') {
+            $("#Pieces5").val(isFixed).attr('disabled', 'disabled');
+        }
+
+        $("#Length5").val(isLength).attr('disabled', 'disabled');
+        $("#Width5").val(isWidth).attr('disabled', 'disabled');
+
+        if (isHeight > 0) {
+            $("#Height5").val(isHeight).attr('disabled', 'disabled');
+        } else {
+            $("#Height5").val('').removeAttr('disabled');
+        }
+
+    });
+
+
+
 
 });
+
+
+
+getAllValues = function () {
+
+    if ($('#ddlEquTrolley1').val() != '-1') {
+
+        if ($("#Pieces1").val() == '') {
+            $("#Pieces1").css('background-color', '#FFCCCB');
+            return;
+        } else {
+            $("#Pieces1").css('background-color', 'white');
+
+        }
+        if ($("#Length1").val() == '') {
+            $("#Length1").css('background-color', '#FFCCCB');
+            return;
+        } else {
+            $("#Length1").css('background-color', 'white');
+
+        }
+        if ($("#Width1").val() == '') {
+            $("#Width1").css('background-color', '#FFCCCB');
+            return;
+        } else {
+            $("#Width1").css('background-color', 'white');
+
+        }
+
+        if ($("#Height1").val() == '') {
+            $("#Height1").css('background-color', '#FFCCCB');
+            return;
+        } else {
+            $("#Height1").css('background-color', 'white');
+
+        }
+
+
+    } else {
+        $("#Pieces1").css('background-color', 'white');
+        $("#Length1").css('background-color', 'white');
+        $("#Width1").css('background-color', 'white');
+        $("#Height1").css('background-color', 'white');
+    }
+
+    if ($('#ddlEquTrolley2').val() != '-1') {
+
+        if ($("#Pieces2").val() == '') {
+            $("#Pieces2").css('background-color', '#FFCCCB');
+            return;
+        } else {
+            $("#Pieces2").css('background-color', 'white');
+
+        }
+        if ($("#Length2").val() == '') {
+            $("#Length2").css('background-color', '#FFCCCB');
+            return;
+        } else {
+            $("#Length2").css('background-color', 'white');
+
+        }
+        if ($("#Width2").val() == '') {
+            $("#Width2").css('background-color', '#FFCCCB');
+            return;
+        } else {
+            $("#Width2").css('background-color', 'white');
+
+        }
+
+
+        if ($("#Height2").val() == '') {
+            $("#Height2").css('background-color', '#FFCCCB');
+            return;
+        } else {
+            $("#Height2").css('background-color', 'white');
+
+        }
+
+
+    } else {
+        $("#Pieces2").css('background-color', 'white');
+        $("#Length2").css('background-color', 'white');
+        $("#Width2").css('background-color', 'white');
+        $("#Height2").css('background-color', 'white');
+    }
+
+    if ($('#ddlEquTrolley3').val() != '-1') {
+
+        if ($("#Pieces3").val() == '') {
+            $("#Pieces3").css('background-color', '#FFCCCB');
+            return;
+        } else {
+            $("#Pieces3").css('background-color', 'white');
+
+        }
+        if ($("#Length3").val() == '') {
+            $("#Length2").css('background-color', '#FFCCCB');
+            return;
+        } else {
+            $("#Length2").css('background-color', 'white');
+
+        }
+        if ($("#Width3").val() == '') {
+            $("#Width3").css('background-color', '#FFCCCB');
+            return;
+        } else {
+            $("#Width3").css('background-color', 'white');
+
+        }
+
+
+        if ($("#Height3").val() == '') {
+            $("#Height3").css('background-color', '#FFCCCB');
+            return;
+        } else {
+            $("#Height3").css('background-color', 'white');
+
+        }
+
+
+    } else {
+        $("#Pieces3").css('background-color', 'white');
+        $("#Length3").css('background-color', 'white');
+        $("#Width3").css('background-color', 'white');
+        $("#Height3").css('background-color', 'white');
+    }
+
+    if ($('#ddlEquTrolley4').val() != '-1') {
+
+        if ($("#Pieces4").val() == '') {
+            $("#Pieces4").css('background-color', '#FFCCCB');
+            return;
+        } else {
+            $("#Pieces4").css('background-color', 'white');
+
+        }
+        if ($("#Length4").val() == '') {
+            $("#Length4").css('background-color', '#FFCCCB');
+            return;
+        } else {
+            $("#Length4").css('background-color', 'white');
+
+        }
+        if ($("#Width4").val() == '') {
+            $("#Width4").css('background-color', '#FFCCCB');
+            return;
+        } else {
+            $("#Width4").css('background-color', 'white');
+
+        }
+
+
+        if ($("#Height2").val() == '') {
+            $("#Height2").css('background-color', '#FFCCCB');
+            return;
+        } else {
+            $("#Height4").css('background-color', 'white');
+
+        }
+
+
+    } else {
+        $("#Pieces4").css('background-color', 'white');
+        $("#Length4").css('background-color', 'white');
+        $("#Width4").css('background-color', 'white');
+        $("#Height4").css('background-color', 'white');
+    }
+
+    if ($('#ddlEquTrolley5').val() != '-1') {
+
+        if ($("#Pieces5").val() == '') {
+            $("#Pieces5").css('background-color', '#FFCCCB');
+            return;
+        } else {
+            $("#Pieces5").css('background-color', 'white');
+
+        }
+        if ($("#Length5").val() == '') {
+            $("#Length5").css('background-color', '#FFCCCB');
+            return;
+        } else {
+            $("#Length5").css('background-color', 'white');
+
+        }
+        if ($("#Width5").val() == '') {
+            $("#Width5").css('background-color', '#FFCCCB');
+            return;
+        } else {
+            $("#Width5").css('background-color', 'white');
+
+        }
+
+
+        if ($("#Height5").val() == '') {
+            $("#Height5").css('background-color', '#FFCCCB');
+            return;
+        } else {
+            $("#Height5").css('background-color', 'white');
+
+        }
+
+
+    } else {
+        $("#Pieces5").css('background-color', 'white');
+        $("#Length5").css('background-color', 'white');
+        $("#Width5").css('background-color', 'white');
+        $("#Height5").css('background-color', 'white');
+    }
+    var one = "";
+    var two = "";
+    var three = "";
+    var foure = "";
+    var five = "";
+    if ($('#ddlEquTrolley1').val() != '-1') {
+
+        selectedVal = $('#ddlEquTrolley1').val();
+        var arr = selectedVal.split('~')
+        var isREFERENCE_DATA_IDENTIFIER = arr[0];
+        var isFixed = arr[1];
+        var isLength = arr[2];
+        var isWidth = arr[3];
+        var isHeight = arr[4];
+        var isUnit = arr[5];
+        var isWeight = arr[6];
+        var L;
+        var W;
+        var H;
+
+        one += "<REFERENCE_DATA_IDENTIFIER>" + isREFERENCE_DATA_IDENTIFIER + "</REFERENCE_DATA_IDENTIFIER>";
+        one += "<TrolleyFixed>" + isFixed + "</TrolleyFixed>";
+        one += "<TrolleyWt>" + isWeight + "</TrolleyWt>";
+        one += "<Pieces>" + $("#Pieces1").val() + "</Pieces>";
+        one += "<Length>" + $("#Length1").val() + "</Length>";
+        one += "<Width>" + $("#Width1").val() + "</Width>";
+        one += "<Height>" + $("#Height1").val() + "</Height>";
+        // $("#ddlUnit1").val()
+    }
+
+    if ($('#ddlEquTrolley2').val() != '-1') {
+
+        selectedVal = $('#ddlEquTrolley2').val();
+        var arr = selectedVal.split('~')
+        var isREFERENCE_DATA_IDENTIFIER = arr[0];
+        var isFixed = arr[1];
+        var isLength = arr[2];
+        var isWidth = arr[3];
+        var isHeight = arr[4];
+        var isUnit = arr[5];
+        var isWeight = arr[6];
+        var L;
+        var W;
+        var H;
+
+        two += "<REFERENCE_DATA_IDENTIFIER>" + isREFERENCE_DATA_IDENTIFIER + "</REFERENCE_DATA_IDENTIFIER>";
+        two += "<TrolleyFixed>" + isFixed + "</TrolleyFixed>";
+        two += "<TrolleyWt>" + isWeight + "</TrolleyWt>";
+        two += "<Pieces>" + $("#Pieces2").val() + "</Pieces>";
+        two += "<Length>" + $("#Length2").val() + "</Length>";
+        two += "<Width>" + $("#Width2").val() + "</Width>";
+        two += "<Height>" + $("#Height2").val() + "</Height>";
+        // $("#ddlUnit1").val()
+    }
+
+    if ($('#ddlEquTrolley3').val() != '-1') {
+
+        selectedVal = $('#ddlEquTrolley3').val();
+        var arr = selectedVal.split('~')
+        var isREFERENCE_DATA_IDENTIFIER = arr[0];
+        var isFixed = arr[1];
+        var isLength = arr[2];
+        var isWidth = arr[3];
+        var isHeight = arr[4];
+        var isUnit = arr[5];
+        var isWeight = arr[6];
+        var L;
+        var W;
+        var H;
+
+        three += "<REFERENCE_DATA_IDENTIFIER>" + isREFERENCE_DATA_IDENTIFIER + "</REFERENCE_DATA_IDENTIFIER>";
+        three += "<TrolleyFixed>" + isFixed + "</TrolleyFixed>";
+        three += "<TrolleyWt>" + isWeight + "</TrolleyWt>";
+        three += "<Pieces>" + $("#Pieces3").val() + "</Pieces>";
+        three += "<Length>" + $("#Length3").val() + "</Length>";
+        three += "<Width>" + $("#Width3").val() + "</Width>";
+        three += "<Height>" + $("#Height3").val() + "</Height>";
+        // $("#ddlUnit1").val()
+    }
+
+    if ($('#ddlEquTrolley4').val() != '-1') {
+
+        selectedVal = $('#ddlEquTrolley4').val();
+        var arr = selectedVal.split('~')
+        var isREFERENCE_DATA_IDENTIFIER = arr[0];
+        var isFixed = arr[1];
+        var isLength = arr[2];
+        var isWidth = arr[3];
+        var isHeight = arr[4];
+        var isUnit = arr[5];
+        var isWeight = arr[6];
+        var L;
+        var W;
+        var H;
+
+        foure += "<REFERENCE_DATA_IDENTIFIER>" + isREFERENCE_DATA_IDENTIFIER + "</REFERENCE_DATA_IDENTIFIER>";
+        foure += "<TrolleyFixed>" + isFixed + "</TrolleyFixed>";
+        foure += "<TrolleyWt>" + isWeight + "</TrolleyWt>";
+        foure += "<Pieces>" + $("#Pieces4").val() + "</Pieces>";
+        foure += "<Length>" + $("#Length4").val() + "</Length>";
+        foure += "<Width>" + $("#Width4").val() + "</Width>";
+        foure += "<Height>" + $("#Height4").val() + "</Height>";
+        // $("#ddlUnit1").val()
+    }
+
+    if ($('#ddlEquTrolley5').val() != '-1') {
+
+        selectedVal = $('#ddlEquTrolley5').val();
+        var arr = selectedVal.split('~')
+        var isREFERENCE_DATA_IDENTIFIER = arr[0];
+        var isFixed = arr[1];
+        var isLength = arr[2];
+        var isWidth = arr[3];
+        var isHeight = arr[4];
+        var isUnit = arr[5];
+        var isWeight = arr[6];
+        var L;
+        var W;
+        var H;
+
+        five += "<REFERENCE_DATA_IDENTIFIER>" + isREFERENCE_DATA_IDENTIFIER + "</REFERENCE_DATA_IDENTIFIER>";
+        five += "<TrolleyFixed>" + isFixed + "</TrolleyFixed>";
+        five += "<TrolleyWt>" + isWeight + "</TrolleyWt>";
+        five += "<Pieces>" + $("#Pieces5").val() + "</Pieces>";
+        five += "<Length>" + $("#Length5").val() + "</Length>";
+        five += "<Width>" + $("#Width5").val() + "</Width>";
+        five += "<Height>" + $("#Height5").val() + "</Height>";
+        // $("#ddlUnit1").val()
+    }
+    inputRows = '<Rows>' + one + '</Rows>' + '<Rows>' + two + '</Rows>' + '<Rows>' + three + '</Rows>' + '<Rows>' + foure + '</Rows>' + '<Rows>' + five + '</Rows>';
+    console.log(inputRows)
+}
 
 function CheckEmpty() {
 
@@ -233,6 +800,12 @@ function checkSpecialCharship() {
 
 function GetAWBDetailSearch_V3() {
 
+
+    if ($('#txtAWBNo').val() == '') {
+        return;
+    }
+
+
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
 
@@ -247,11 +820,11 @@ function GetAWBDetailSearch_V3() {
         A_List = [];
         S_List = [];
         C_List = [];
-        return;
+        // return;
     }
 
     var InputXML = '<Root><AWBPrefix>' + AWBPrefix + '</AWBPrefix><AWBNo>' + AWBNo + '</AWBNo><HouseNo></HouseNo><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode><AWBRowID>-1</AWBRowID><FlightAirline></FlightAirline><FlightNumber></FlightNumber></Root>';
-
+    //var InputXML ='<Root><AWBPrefix>125</AWBPrefix><AWBNo>66778522</AWBNo><HouseNo></HouseNo><AirportCity>BLR</AirportCity><CompanyCode>3</CompanyCode><AWBRowID>-1</AWBRowID><FlightAirline>BA</FlightAirline><FlightNumber>2023</FlightNumber></Root>'
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
@@ -273,12 +846,17 @@ function GetAWBDetailSearch_V3() {
                 var xmlDoc = $.parseXML(response);
                 $('#ddlFlightNo').empty();
                 $('#AllMsg').text('');
-
+                filteredArrforno = [];
                 flightAirNoLists = [];
                 console.log(xmlDoc);
                 var Status;
                 var flagforcheck2 = '0';
                 var StrMessage;
+                $('#ddlEquTrolley1').empty();
+                $('#ddlEquTrolley2').empty();
+                $('#ddlEquTrolley3').empty();
+                $('#ddlEquTrolley4').empty();
+                $('#ddlEquTrolley5').empty();
                 $(xmlDoc).find('Table').each(function () {
                     Status = $(this).find('Status').text();
                     StrMessage = $(this).find('StrMessage').text();
@@ -300,7 +878,7 @@ function GetAWBDetailSearch_V3() {
 
 
                 $(xmlDoc).find('Table1').each(function () {
-                    var ExpAwbRowId = $(this).find('ExpAwbRowId').text();
+                    ExpAwbRowId = $(this).find('ExpAwbRowId').text();
                     var AwbPrefix = $(this).find('AwbPrefix').text();
                     var AwbNo = $(this).find('AwbNo').text();
                     var ShipperId = $(this).find('ShipperId').text();
@@ -323,6 +901,10 @@ function GetAWBDetailSearch_V3() {
                     var AgentShortCode = $(this).find('AgentShortCode').text();
                     var Commodity = $(this).find('CommSearchCode').text();
                     var CommodityDesc = $(this).find('Description').text();
+                    var OffPoint = $(this).find('OffPoint').text();
+                    var FlightAirline = $(this).find('FlightAirline').text();
+                    var FlightNumber = $(this).find('FlightNumber').text();
+
 
                     ppcs = Pieces;
                     if (Pieces != '') {
@@ -331,13 +913,16 @@ function GetAWBDetailSearch_V3() {
                         $('#txtCharWt').val(ChargeableWt).css('text-align', 'right').attr('disabled', 'disabled');
                         $('#txtVolume').val(Volume).css('text-align', 'right').attr('disabled', 'disabled');
                         $('#txtCommodity').val(CommodityDesc).css('text-align', 'left').attr('disabled', 'disabled');
+                        $('#txtOffpoint').val(OffPoint).css('text-align', 'left').attr('disabled', 'disabled');
 
                         $('#ddlShipper').val(ShipperId);
                         $('#ddlConsignee').val(ConsigneeId);
                         $('#txtAgentName').val(AgentId);
                         $('#ddlCommodity').val(Commodity);
+                        $('#txtAirline').val(FlightAirline);
+                        $('#txtFlightNo').val(FlightNumber);
 
-                        
+
                         $('#ddlShipper').trigger("change");
                         $('#ddlConsignee').trigger("change");
                         $('#ddlAgentName').trigger("change");
@@ -356,7 +941,8 @@ function GetAWBDetailSearch_V3() {
                         $('#txtAgentName').val(AgentName);
                         $('#txtAgentNamePrifix').val(AgentShortCode);
 
-                        $('#txtFlightNo').val(FlightNo);
+                        //  $('#txtFlightNo').val(FlightNo);
+                        //$('#txtOffpoint').val(OffPoint);
 
                         var date = FlightDate;
 
@@ -374,9 +960,9 @@ function GetAWBDetailSearch_V3() {
                         MM = FlightDate.split("-")[1];
                         YY = FlightDate.split("-")[0];
 
-                        
+
                         var ulddate = DD + '-' + _Mont + '-' + YY;
-                        $('#txtFlightDate').val(ulddate);
+                        $('#txtFlightDate').val(FlightDate);
 
                     } else {
                         $('#txtPieces').removeAttr('disabled', 'disabled');
@@ -389,7 +975,7 @@ function GetAWBDetailSearch_V3() {
 
                 });
 
-
+                var filteredArr;
 
                 $(xmlDoc).find('Table2').each(function (index) {
 
@@ -404,12 +990,25 @@ function GetAWBDetailSearch_V3() {
                         newOption.val(0).text('Select');
                         newOption.appendTo('#ddlFlightNo');
                     }
+
                     var newOption = $('<option></option>');
-                    newOption.val(FlightAirline + '~' + FlightNumber).text(FlightAirline + '' + FlightNumber);
+                    newOption.val(FlightAirline + '~' + FlightNumber).text(FlightAirline);
                     newOption.appendTo('#ddlFlightNo');
 
-                    flightAirNoLists.push({ 'value': FlightAirline + '~' + FlightNumber, 'label': FlightAirline + '' + FlightNumber })
+                    //$("#ddlFlightNo option").each(function () {
+                    //    $(this).siblings('[value="' + this.value + '"]').remove();
+                    //});
 
+                    filteredArrforno.push({ 'value': FlightAirline + '~' + FlightNumber, 'label': FlightNumber });
+                    console.log(filteredArrforno)
+                    flightAirNoLists.push(FlightAirline);
+
+                    //flightAirNoLists.filter(function (value, index) { return flightAirNoLists.indexOf(value) == index });
+                    filteredArr = flightAirNoLists.filter(function (item, index) {
+                        if (flightAirNoLists.indexOf(item) == index)
+                            return item;
+                    });
+                    //console.log(filteredArr)
                     if (selectedRowHAWBNo != '') {
                         //TODO :Change selectedRowHAWBNo to  $("#hawbLists").val()
                         $("#ddlFlightNo option").each(function () {
@@ -423,18 +1022,12 @@ function GetAWBDetailSearch_V3() {
                     }
                 });
 
-                if (flagforcheck2 == '0' && Status == 'E') {
-                    $("#AllMsg").text(StrMessage).css({ 'color': 'red' });
-                    $("#txtAWBNo").val('');
-                    $("#txtAWBNo").focus();
-                    return;
-                }
 
-                if (flightAirNoLists.length > 0) {
+                if (filteredArrforno.length > 0) {
                     $("#txtFlightNo").autocomplete({
                         minChars: 0,
-                        minLength: 2,
-                        source: flightAirNoLists,
+                        minLength: 1,
+                        source: filteredArrforno,
                         focus: function (event, ui) {
                             // if (this.value == "") {
                             //     $(this).autocomplete("search");
@@ -446,9 +1039,8 @@ function GetAWBDetailSearch_V3() {
                         select: function (event, ui) {
                             $("#txtFlightNo").val(ui.item.label);
                             //  $('#ddlHAWBNo').val(ui.item.value)
-
                             $('#ddlFlightNo').val(ui.item.value);
-
+                            console.log(ui.item.value)
                             GetAWBDetailSearch_V3_onChangeFlight($('#ddlFlightNo').val());
 
                             // $("#project-id").val(ui.item.label);
@@ -458,8 +1050,149 @@ function GetAWBDetailSearch_V3() {
                     $("#txtFlightNo").focus(function () {
                         // $(this).autocomplete("search", $(this).val());
                     });
+                    if ($("#txtAWBNo").val() != '') {
+                        $("#txtFlightNo").focus();
+                    }
 
-                    $("#txtFlightNo").focus();
+
+                }
+
+
+                xmlDocForTrolley = xmlDoc;
+
+
+
+                if (ExpAwbRowId != '-1') {
+                    $(xmlDoc).find('Table5').each(function (index) {
+
+
+                        var REFERENCE_DESCRIPTION = $(this).find('REFERENCE_DESCRIPTION').text();
+                        var TrolleyCode = $(this).find('TrolleyCode').text();
+                        var REFERENCE_NUMBER_1 = $(this).find('REFERENCE_NUMBER_1').text();
+                        var REFERENCE_DATA_IDENTIFIER = $(this).find('REFERENCE_DATA_IDENTIFIER').text();
+                        var TrolleyFixed = $(this).find('TrolleyFixed').text();
+
+                        if (index == 0) {
+                            var newOption = $('<option></option>');
+                            newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
+                            newOption.appendTo('#ddlEquTrolley1');
+                            $('#ddlEquTrolley1').trigger('change');
+                        }
+
+                        if (index == 1) {
+                            var newOption = $('<option></option>');
+                            newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
+                            newOption.appendTo('#ddlEquTrolley2');
+                            $('#ddlEquTrolley2').trigger('change');
+                        }
+
+                        if (index == 2) {
+                            var newOption = $('<option></option>');
+                            newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
+                            newOption.appendTo('#ddlEquTrolley3');
+                            $('#ddlEquTrolley3').trigger('change');
+                        }
+
+
+                        if (index == 3) {
+                            var newOption = $('<option></option>');
+                            newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
+                            newOption.appendTo('#ddlEquTrolley4');
+                            $('#ddlEquTrolley4').trigger('change');
+                        }
+
+                        if (index == 4) {
+                            var newOption = $('<option></option>');
+                            newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
+                            newOption.appendTo('#ddlEquTrolley5');
+                            $('#ddlEquTrolley5').trigger('change');
+                        }
+
+                    });
+
+                    $("#btnSubmit").attr('disabled', 'disabled');
+                } else {
+
+                    $(xmlDoc).find('Table4').each(function (index) {
+
+                        flagforcheck2 = '1';
+
+                        var REFERENCE_DESCRIPTION = $(this).find('REFERENCE_DESCRIPTION').text();
+                        var TrolleyCode = $(this).find('TrolleyCode').text();
+                        var REFERENCE_NUMBER_1 = $(this).find('REFERENCE_NUMBER_1').text();
+                        var REFERENCE_DATA_IDENTIFIER = $(this).find('REFERENCE_DATA_IDENTIFIER').text();
+                        var TrolleyFixed = $(this).find('TrolleyFixed').text();
+
+
+                        var newOption = $('<option></option>');
+                        newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
+                        newOption.appendTo('#ddlEquTrolley1');
+
+                        var newOption = $('<option></option>');
+                        newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
+                        newOption.appendTo('#ddlEquTrolley2');
+
+
+                        var newOption = $('<option></option>');
+                        newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
+                        newOption.appendTo('#ddlEquTrolley3');
+
+                        var newOption = $('<option></option>');
+                        newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
+                        newOption.appendTo('#ddlEquTrolley4');
+
+                        var newOption = $('<option></option>');
+                        newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
+                        newOption.appendTo('#ddlEquTrolley5');
+
+                    });
+
+                    $("#btnSubmit").removeAttr('disabled');
+
+                }
+
+                if (flagforcheck2 == '0' && Status == 'E') {
+                    $("#AllMsg").text(StrMessage).css({ 'color': 'red' });
+                    $("#txtAWBNo").val('');
+                    $("#txtAWBNo").focus();
+                    return;
+                }
+
+
+
+                if (filteredArr.length > 0) {
+                    $("#txtAirline").autocomplete({
+                        minChars: 0,
+                        minLength: 1,
+                        source: filteredArr,
+                        focus: function (event, ui) {
+                            // if (this.value == "") {
+                            //     $(this).autocomplete("search");
+                            // }
+
+
+                            $("#txtAirline").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtAirline").val(ui.item.label);
+                            //  $('#ddlHAWBNo').val(ui.item.value)
+
+                            //$('#ddlFlightNo').val(ui.item.value);
+
+                            //GetAWBDetailSearch_V3_onChangeFlight($('#ddlFlightNo').val());
+
+                            // $("#project-id").val(ui.item.label);
+                            return false;
+                        }
+                    })
+                    $("#txtAirline").focus(function () {
+                        // $(this).autocomplete("search", $(this).val());
+                    });
+
+                    if ($("#txtAWBNo").val() != '') {
+                        $("#txtAirline").focus();
+                    }
 
                 }
             },
@@ -484,12 +1217,427 @@ function GetAWBDetailSearch_V3() {
     }
 }
 
+function GetAWBDetailSearch_V3_onLoad() {
+
+
+    //if ($('#txtAWBNo').val() == '') {
+    //    return;
+    //}
+
+
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var MAWBNo = $('#txtAWBNo').val();
+    let AWBPrefix = MAWBNo.slice(0, 3);
+    let AWBNo = MAWBNo.slice(3, 11);
+    if (MAWBNo == '') {
+        shipperLists = [];
+        flightAirNoLists = [];
+        ConsigneeLists = [];
+        AgentNameLists = [];
+        A_List = [];
+        S_List = [];
+        C_List = [];
+        // return;
+    }
+
+    var InputXML = '<Root><AWBPrefix>' + AWBPrefix + '</AWBPrefix><AWBNo>' + AWBNo + '</AWBNo><HouseNo></HouseNo><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode><AWBRowID>-1</AWBRowID><FlightAirline></FlightAirline><FlightNumber></FlightNumber></Root>';
+    //var InputXML ='<Root><AWBPrefix>125</AWBPrefix><AWBNo>66778522</AWBNo><HouseNo></HouseNo><AirportCity>BLR</AirportCity><CompanyCode>3</CompanyCode><AWBRowID>-1</AWBRowID><FlightAirline>BA</FlightAirline><FlightNumber>2023</FlightNumber></Root>'
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "GetAWBDetailSearch_V3",
+            data: JSON.stringify({ 'InputXML': InputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;
+                $("body").mLoading('hide');
+                response = response.d;
+                //clearALLNew();
+                var xmlDoc = $.parseXML(response);
+                $('#ddlFlightNo').empty();
+                // $('#AllMsg').text('');
+                filteredArrforno = [];
+                flightAirNoLists = [];
+                console.log(xmlDoc);
+                var Status;
+                var flagforcheck2 = '0';
+                var StrMessage;
+                $('#ddlEquTrolley1').empty();
+                $('#ddlEquTrolley2').empty();
+                $('#ddlEquTrolley3').empty();
+                $('#ddlEquTrolley4').empty();
+                $('#ddlEquTrolley5').empty();
+                $(xmlDoc).find('Table').each(function () {
+                    Status = $(this).find('Status').text();
+                    StrMessage = $(this).find('StrMessage').text();
+                    checkingStatus = Status;
+                    if (Status == 'E') {
+                        // $.alert(StrMessage).css('color', 'red');
+                        //$(".alert_btn_ok").click(function () {
+                        //    $('#txtAWBNo').focus();
+                        //});
+                        //return true;
+                        $('#txtPieces').removeAttr('disabled', 'disabled');
+                        $('#txtGrWt').removeAttr('disabled', 'disabled');
+                        $('#txtCharWt').removeAttr('disabled', 'disabled');
+                        $('#txtVolume').removeAttr('disabled', 'disabled');
+                        //$('#txtOrigin').removeAttr('disabled', 'disabled');
+                        //$('#txtDestination').removeAttr('disabled', 'disabled');
+                    }
+                });
+
+
+                $(xmlDoc).find('Table1').each(function () {
+                    ExpAwbRowId = $(this).find('ExpAwbRowId').text();
+                    var AwbPrefix = $(this).find('AwbPrefix').text();
+                    var AwbNo = $(this).find('AwbNo').text();
+                    var ShipperId = $(this).find('ShipperId').text();
+                    var ConsigneeId = $(this).find('ConsigneeId').text();
+                    var AgentId = $(this).find('AgentId').text();
+                    var AgentShortCode = $(this).find('AgentShortCode').text();
+                    var AgentName = $(this).find('AgentName').text();
+                    var Pieces = $(this).find('Pieces').text();
+                    var Weight = $(this).find('Weight').text();
+                    var Volume = $(this).find('Volume').text();
+                    var ChargeableWt = $(this).find('ChargeableWt').text();
+                    var FlightNo = $(this).find('FlightNo').text();
+                    var FlightDate = $(this).find('FlightDate').text();
+                    var Origin = $(this).find('Origin').text();
+                    var Destination = $(this).find('Destination').text();
+                    var ShipperName = $(this).find('ShipperName').text();
+                    var ConsigneeName = $(this).find('ConsigneeName').text();
+                    var ShipperShortCode = $(this).find('ShipperShortCode').text();
+                    var ConsigneeShortCode = $(this).find('ConsigneeShortCode').text();
+                    var AgentShortCode = $(this).find('AgentShortCode').text();
+                    var Commodity = $(this).find('CommSearchCode').text();
+                    var CommodityDesc = $(this).find('Description').text();
+                    var OffPoint = $(this).find('OffPoint').text();
+                    var FlightAirline = $(this).find('FlightAirline').text();
+                    var FlightNumber = $(this).find('FlightNumber').text();
+
+
+                    ppcs = Pieces;
+                    if (Pieces != '') {
+                        $('#txtPieces').val(Pieces).css('text-align', 'right').attr('disabled', 'disabled');
+                        $('#txtGrWt').val(Weight).css('text-align', 'right').attr('disabled', 'disabled');
+                        $('#txtCharWt').val(ChargeableWt).css('text-align', 'right').attr('disabled', 'disabled');
+                        $('#txtVolume').val(Volume).css('text-align', 'right').attr('disabled', 'disabled');
+                        $('#txtCommodity').val(CommodityDesc).css('text-align', 'left').attr('disabled', 'disabled');
+                        $('#txtOffpoint').val(OffPoint).css('text-align', 'left').attr('disabled', 'disabled');
+
+                        $('#ddlShipper').val(ShipperId);
+                        $('#ddlConsignee').val(ConsigneeId);
+                        $('#txtAgentName').val(AgentId);
+                        $('#ddlCommodity').val(Commodity);
+                        $('#txtAirline').val(FlightAirline);
+                        $('#txtFlightNo').val(FlightNumber);
+
+
+                        $('#ddlShipper').trigger("change");
+                        $('#ddlConsignee').trigger("change");
+                        $('#ddlAgentName').trigger("change");
+                        $('#ddlCommodity').trigger("change");
+
+                        //$('#txtPieces').val(Pieces).css('text-align', 'right');
+                        //$('#txtGrWt').val(Weight).css('text-align', 'right');
+                        //$('#txtCharWt').val(ChargeableWt).css('text-align', 'right');
+                        //$('#txtVolume').val(Volume).css('text-align', 'right');
+                        $('#txtOrigin').val(Origin);
+                        $('#txtDestination').val(Destination);
+                        $('#txtShipperPrifix').val(ShipperShortCode);
+                        $('#txtShipper').val(ShipperName);
+                        $('#txtConsignee').val(ConsigneeName);
+                        $('#txtConsigneePrifix').val(ConsigneeShortCode);
+                        $('#txtAgentName').val(AgentName);
+                        $('#txtAgentNamePrifix').val(AgentShortCode);
+
+                        //  $('#txtFlightNo').val(FlightNo);
+                        //$('#txtOffpoint').val(OffPoint);
+
+                        var date = FlightDate;
+
+                        var newdate = date.split("-").reverse().join("-");
+
+                        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                        ];
+
+                        var d = new Date(date);
+
+                        _Mont = monthNames[d.getMonth()]
+
+                        DD = FlightDate.split("-")[2];
+                        MM = FlightDate.split("-")[1];
+                        YY = FlightDate.split("-")[0];
+
+
+                        var ulddate = DD + '-' + _Mont + '-' + YY;
+                        $('#txtFlightDate').val(FlightDate);
+
+                    } else {
+                        $('#txtPieces').removeAttr('disabled', 'disabled');
+                        $('#txtGrWt').removeAttr('disabled', 'disabled');
+                        $('#txtCharWt').removeAttr('disabled', 'disabled');
+                        $('#txtVolume').removeAttr('disabled', 'disabled');
+                        $('#txtCommodity').val('').removeAttr('disabled');
+
+                    }
+
+                });
+
+                var filteredArr;
+
+                $(xmlDoc).find('Table2').each(function (index) {
+
+                    flagforcheck2 = '1';
+
+                    var FlightDate = $(this).find('FlightDate').text();
+                    var FlightAirline = $(this).find('FlightAirline').text();
+                    var FlightNumber = $(this).find('FlightNumber').text();
+
+                    if (index == 0) {
+                        var newOption = $('<option></option>');
+                        newOption.val(0).text('Select');
+                        newOption.appendTo('#ddlFlightNo');
+                    }
+
+                    var newOption = $('<option></option>');
+                    newOption.val(FlightAirline + '~' + FlightNumber).text(FlightAirline);
+                    newOption.appendTo('#ddlFlightNo');
+
+                    //$("#ddlFlightNo option").each(function () {
+                    //    $(this).siblings('[value="' + this.value + '"]').remove();
+                    //});
+
+                    filteredArrforno.push({ 'value': FlightAirline + '~' + FlightNumber, 'label': FlightNumber });
+                    console.log(filteredArrforno)
+                    flightAirNoLists.push(FlightAirline);
+
+                    //flightAirNoLists.filter(function (value, index) { return flightAirNoLists.indexOf(value) == index });
+                    filteredArr = flightAirNoLists.filter(function (item, index) {
+                        if (flightAirNoLists.indexOf(item) == index)
+                            return item;
+                    });
+                    //console.log(filteredArr)
+                    if (selectedRowHAWBNo != '') {
+                        //TODO :Change selectedRowHAWBNo to  $("#hawbLists").val()
+                        $("#ddlFlightNo option").each(function () {
+                            if ($(this).text() == selectedRowHAWBNo) {
+                                $(this).attr('selected', 'selected');
+                                var selectedFlightNo = $(this).val();
+
+                                GetAWBDetailSearch_V3_onChangeFlight(selectedFlightNo);
+                            }
+                        });
+                    }
+                });
+
+
+                if (filteredArrforno.length > 0) {
+                    $("#txtFlightNo").autocomplete({
+                        minChars: 0,
+                        minLength: 1,
+                        source: filteredArrforno,
+                        focus: function (event, ui) {
+                            // if (this.value == "") {
+                            //     $(this).autocomplete("search");
+                            // }
+                            $("#txtFlightNo").focus();
+                            $("#txtFlightNo").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtFlightNo").val(ui.item.label);
+                            //  $('#ddlHAWBNo').val(ui.item.value)
+                            $('#ddlFlightNo').val(ui.item.value);
+                            console.log(ui.item.value)
+                            GetAWBDetailSearch_V3_onChangeFlight($('#ddlFlightNo').val());
+
+                            // $("#project-id").val(ui.item.label);
+                            return false;
+                        }
+                    })
+                    $("#txtFlightNo").focus(function () {
+                        // $(this).autocomplete("search", $(this).val());
+                    });
+                    if ($("#txtAWBNo").val() != '') {
+                        $("#txtFlightNo").focus();
+                    }
+
+
+                }
+
+
+                xmlDocForTrolley = xmlDoc;
+                $(xmlDoc).find('Table4').each(function (index) {
+
+                    flagforcheck2 = '1';
+
+                    var REFERENCE_DESCRIPTION = $(this).find('REFERENCE_DESCRIPTION').text();
+                    var TrolleyCode = $(this).find('TrolleyCode').text();
+                    var REFERENCE_NUMBER_1 = $(this).find('REFERENCE_NUMBER_1').text();
+                    var REFERENCE_DATA_IDENTIFIER = $(this).find('REFERENCE_DATA_IDENTIFIER').text();
+                    var TrolleyFixed = $(this).find('TrolleyFixed').text();
+
+
+                    var newOption = $('<option></option>');
+                    newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
+                    newOption.appendTo('#ddlEquTrolley1');
+
+                    var newOption = $('<option></option>');
+                    newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
+                    newOption.appendTo('#ddlEquTrolley2');
+
+
+                    var newOption = $('<option></option>');
+                    newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
+                    newOption.appendTo('#ddlEquTrolley3');
+
+                    var newOption = $('<option></option>');
+                    newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
+                    newOption.appendTo('#ddlEquTrolley4');
+
+                    var newOption = $('<option></option>');
+                    newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
+                    newOption.appendTo('#ddlEquTrolley5');
+
+                });
+
+                if (flagforcheck2 == '0' && Status == 'E') {
+                    $("#AllMsg").text(StrMessage).css({ 'color': 'red' });
+                    $("#txtAWBNo").val('');
+                    $("#txtAWBNo").focus();
+                    return;
+                }
+
+
+
+                if (filteredArr.length > 0) {
+                    $("#txtAirline").autocomplete({
+                        minChars: 0,
+                        minLength: 1,
+                        source: filteredArr,
+                        focus: function (event, ui) {
+                            // if (this.value == "") {
+                            //     $(this).autocomplete("search");
+                            // }
+
+
+                            $("#txtAirline").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtAirline").val(ui.item.label);
+                            //  $('#ddlHAWBNo').val(ui.item.value)
+
+                            //$('#ddlFlightNo').val(ui.item.value);
+
+                            //GetAWBDetailSearch_V3_onChangeFlight($('#ddlFlightNo').val());
+
+                            // $("#project-id").val(ui.item.label);
+                            return false;
+                        }
+                    })
+                    $("#txtAirline").focus(function () {
+                        // $(this).autocomplete("search", $(this).val());
+                    });
+
+                    if ($("#txtAWBNo").val() != '') {
+                        $("#txtAirline").focus();
+                    }
+
+                }
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}
+
+function fnOffpoint() {
+
+}
 function onChangeComm(commID) {
     passCommoId = commID;
 }
 
 
+
 function GetAWBDetailSearch_V3_onChangeFlight(FlightAirlineNo) {
+
+
+
+    //$(xmlDocForTrolley).find('Table2').each(function (index) {
+
+    //    flagforcheck2 = '1';
+
+    //    var FlightDate = $(this).find('FlightDate').text();
+    //    var FlightAirline = $(this).find('FlightAirline').text();
+    //    var FlightNumber = $(this).find('FlightNumber').text();
+
+    //    if (index == 0) {
+    //        var newOption = $('<option></option>');
+    //        newOption.val(0).text('Select');
+    //        newOption.appendTo('#ddlFlightNoPrefix');
+    //    }
+
+    //    var newOption = $('<option></option>');
+    //    newOption.val(FlightNumber).text(FlightNumber);
+    //    newOption.appendTo('#ddlFlightNoPrefix');
+
+    //    $("#ddlFlightNoPrefix option").each(function () {
+    //        $(this).siblings('[value="' + this.value + '"]').remove();
+    //    });
+
+    //    flightAirNoListsNoCarrierCode.push(FlightNumber);
+    //    //flightAirNoLists.filter(function (value, index) { return flightAirNoLists.indexOf(value) == index });
+    //    filteredArrforno = flightAirNoListsNoCarrierCode.filter(function (item, index) {
+    //        if (flightAirNoListsNoCarrierCode.indexOf(item) == index)
+    //            return item;
+    //    });
+    //    console.log(filteredArrforno)
+    //    if (selectedRowHAWBNo != '') {
+    //        //TODO :Change selectedRowHAWBNo to  $("#hawbLists").val()
+    //        $("#ddlFlightNoPrefix option").each(function () {
+    //            if ($(this).text() == selectedRowHAWBNo) {
+    //                $(this).attr('selected', 'selected');
+    //                var selectedFlightNo = $(this).val();
+
+    //                GetAWBDetailSearch_V3_onChangeFlightFlightNoPrefix(selectedFlightNo);
+    //            }
+    //        });
+    //    }
+
+    //});
+
+
+
+
+
 
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
@@ -677,7 +1825,7 @@ function Shipper_GetShipperConsigneeWithShortCode_V3() {
                     newOption.val(Id).text(Name);
                     newOption.appendTo('#ddlShipper');
 
-                    
+
                     shipperLists.push({ 'value': Id, 'label': Name });
 
                     if (selectedShpper != '') {
@@ -953,7 +2101,7 @@ function AgentName_GetShipperConsigneeWithShortCode_V3() {
                 if (AgentNameLists.length > 0) {
                     $("#txtAgentName").autocomplete({
                         minChars: 0,
-                        minLength: 2,
+                        minLength: 1,
                         source: AgentNameLists,
                         focus: function (event, ui) {
                             // if (this.value == "") {
@@ -1072,7 +2220,7 @@ function getAgentList() {
                     // console.log('AgentNameLists ==> ' + Name)
 
                     if (selectedShpper != '') {
-                       // alert('oi')
+                        // alert('oi')
                         //TODO :Change selectedRowHAWBNo to  $("#hawbLists").val()
                         $("#ddlAgentName option").each(function () {
                             if ($(this).text() == selectedShpper) {
@@ -1119,7 +2267,7 @@ function getAgentList() {
                 if (agentCode.length > 0) {
                     $("#txtAgentNamePrifix").autocomplete({
                         minChars: 0,
-                        minLength: 2,
+                        minLength: 1,
                         source: agentCode,
                         focus: function (event, ui) {
                             // if (this.value == "") {
@@ -1144,7 +2292,7 @@ function getAgentList() {
                 }
 
                 $('#txtAgentName').blur(function () {
-                   
+
                     ConsigneeID = $('#ddlAgentName').val();// $(this).find("option:selected").val();
                     if (ConsigneeID == '0') {
                         return
@@ -1184,13 +2332,13 @@ function getAgentList() {
 }
 
 function onChangeAgentName(aName) {
-   
+
     AgentName_IACustID = aName;
     //if (AgentName_IACustID == null) {
     //    AgentName_IACustID = $('#ddlAgentName').val();
     //}
-    
-    
+
+
 }
 
 function getShiperList() {
@@ -1281,7 +2429,7 @@ function getShiperList() {
                 if (S_List.length > 0) {
                     $("#txtShipper").autocomplete({
                         minChars: 0,
-                        minLength: 2,
+                        minLength: 1,
                         source: S_List,
                         focus: function (event, ui) {
                             // if (this.value == "") {
@@ -1308,7 +2456,7 @@ function getShiperList() {
                 if (shipperCode.length > 0) {
                     $("#txtShipperPrifix").autocomplete({
                         minChars: 0,
-                        minLength: 2,
+                        minLength: 1,
                         source: shipperCode,
                         focus: function (event, ui) {
                             // if (this.value == "") {
@@ -1334,13 +2482,13 @@ function getShiperList() {
 
 
                 $('#txtShipper').blur(function () {
-                   
+
                     shipperID = $('#ddlShipper').val();
-                   
+
                     if (shipperID == '0') {
                         return;
                     }
-                    
+
                     // $(this).find("option:selected").val();
                     $(_xmlDocTable).find('Table1').each(function (index) {
                         if (shipperID == $(this).find('Id').text()) {
@@ -1464,7 +2612,7 @@ function getConsigneeList() {
                 if (C_List.length > 0) {
                     $("#txtConsignee").autocomplete({
                         minChars: 0,
-                        minLength: 2,
+                        minLength: 1,
                         source: C_List,
                         focus: function (event, ui) {
                             // if (this.value == "") {
@@ -1491,7 +2639,7 @@ function getConsigneeList() {
                 if (consigneeCode.length > 0) {
                     $("#txtConsigneePrifix").autocomplete({
                         minChars: 0,
-                        minLength: 2,
+                        minLength: 1,
                         source: consigneeCode,
                         focus: function (event, ui) {
                             // if (this.value == "") {
@@ -1558,6 +2706,7 @@ function getConsigneeList() {
 function onChangeConsineeName(sssid) {
     Consignee_CCustID = sssid;
 }
+
 
 function GetAWBDetailSave_V3() {
 
@@ -1638,6 +2787,8 @@ function GetAWBDetailSave_V3() {
     }
 
 
+    getAllValues();
+
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
 
@@ -1660,7 +2811,7 @@ function GetAWBDetailSave_V3() {
 
     var shipConAgtXML = '<SCustID>' + Shipper_SCustID + '</SCustID><SName>' + $("#txtShipper").val().toUpperCase() + '</SName><CCustID>' + Consignee_CCustID + '</CCustID><CName>' + $("#txtConsignee").val().toUpperCase() + '</CName><IACustID>' + AgentName_IACustID + '</IACustID><IAName>' + $("#txtAgentName").val().toUpperCase() + '</IAName><AgentID>' + AgentName_IACustID + '</AgentID>';
 
-    var InputXML = '<Root><EAID>0</EAID><AWBPrefix>' + AWBPrefix + '</AWBPrefix><AWBNo>' + AWBNo + '</AWBNo><Origin>' + $("#txtOrigin").val().toUpperCase() + '</Origin><Dest>' + $("#txtDestination").val().toUpperCase() + '</Dest><ComSearchCode>' + passCommoId + '</ComSearchCode><FlightNo1>' + $("#txtFlightNo").val().toUpperCase() + '</FlightNo1><FlightDate1>' + $("#txtFlightDate").val() + '</FlightDate1><Pieces>' + $("#txtPieces").val() + '</Pieces><GrWt>' + $("#txtGrWt").val() + '</GrWt><ChWt>' + $("#txtCharWt").val() + '</ChWt><Volume>' + $("#txtVolume").val() + '</Volume><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode><UserID>' + UserID + '</UserID>' + shipConAgtXML + '</Root>';
+    var InputXML = '<Root><EAID>0</EAID><AWBPrefix>' + AWBPrefix + '</AWBPrefix><AWBNo>' + AWBNo + '</AWBNo><Origin>' + $("#txtOrigin").val().toUpperCase() + '</Origin><Dest>' + $("#txtDestination").val().toUpperCase() + '</Dest><OffPoint>' + $("#txtOffpoint").val().toUpperCase() + '</OffPoint><ComSearchCode>' + passCommoId + '</ComSearchCode><FlightAirline>' + $("#txtAirline").val().toUpperCase() + '</FlightAirline><FlightNumber>' + $("#txtFlightNo").val().toUpperCase() + '</FlightNumber><FlightDate1>' + $("#txtFlightDate").val() + '</FlightDate1><Pieces>' + $("#txtPieces").val() + '</Pieces><GrWt>' + $("#txtGrWt").val() + '</GrWt><ChWt>' + $("#txtCharWt").val() + '</ChWt><Volume>' + $("#txtVolume").val() + '</Volume><DimUom>' + $("#ddlUnit1").val() + '</DimUom><DimDetails>' + inputRows + '</DimDetails><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode><UserID>' + UserID + '</UserID>' + shipConAgtXML + '</Root > ';
 
 
     if (errmsg == "" && connectionStatus == "online") {
@@ -1749,22 +2900,21 @@ function clearALLafterSave() {
     ConsigneeLists = [];
     AgentNameLists = [];
     $('#txtAWBNo').focus();
-    let date = new Date();
-    const day = date.toLocaleString('default', { day: '2-digit' });
-    const month = date.toLocaleString('default', { month: 'short' });
-    const year = date.toLocaleString('default', { year: 'numeric' });
-    var today = day + '-' + month + '-' + year;
-   
-    $('#txtFlightDate').val(today);
+    //let date = new Date();
+    //const day = date.toLocaleString('default', { day: '2-digit' });
+    //const month = date.toLocaleString('default', { month: 'short' });
+    //const year = date.toLocaleString('default', { year: 'numeric' });
+    //var today = day + '-' + month + '-' + year;
 
+    //$('#txtFlightDate').val(today);
 
-    $("#txtFlightDate").datepicker({
-        shortYearCutoff: 1,
-        changeMonth: true,
-        changeYear: true,
-        dateFormat: 'dd-M-yy',
+    //$("#txtFlightDate").datepicker({
+    //    shortYearCutoff: 1,
+    //    changeMonth: true,
+    //    changeYear: true,
+    //    dateFormat: 'dd-M-yy',
 
-    });
+    //});
 
     shipperCode = [];
     consigneeCode = [];
@@ -1784,7 +2934,17 @@ function clearALLafterSave() {
     $('#txtCharWt').removeAttr('disabled', 'disabled');
     $('#txtVolume').removeAttr('disabled', 'disabled');
     $('#txtCommodity').removeAttr('disabled');
+    $('#txtOffpoint').removeAttr('disabled');
     GetCommodityDataV3();
+
+    $('#txtAirline').val('');
+    $('#txtFlightNo').val('');
+    $('#txtOffpoint').val('');
+
+    GetAWBDetailSearch_V3_onLoad();
+    clearGrid();
+    $('#btnSubmit').removeAttr('disabled');
+
 }
 
 
@@ -1805,24 +2965,24 @@ function clearALL() {
     $('#txtAgentName').val('');
     shipperLists = [];
     flightAirNoLists = [];
+    flightAirNoListsNoCarrierCode = [];
     ConsigneeLists = [];
     AgentNameLists = [];
     $('#txtAWBNo').focus();
-    let date = new Date();
-    const day = date.toLocaleString('default', { day: '2-digit' });
-    const month = date.toLocaleString('default', { month: 'short' });
-    const year = date.toLocaleString('default', { year: 'numeric' });
-    var today = day + '-' + month + '-' + year;
-    $('#txtFlightDate').val(today);
-   
-   
-    $("#txtFlightDate").datepicker({
-        shortYearCutoff: 1,
-        changeMonth: true,
-        changeYear: true,
-        dateFormat: 'dd-M-yy',
+    //let date = new Date();
+    //const day = date.toLocaleString('default', { day: '2-digit' });
+    //const month = date.toLocaleString('default', { month: 'short' });
+    //const year = date.toLocaleString('default', { year: 'numeric' });
+    //var today = day + '-' + month + '-' + year;
+    //$('#txtFlightDate').val(today);
 
-    });
+    //$("#txtFlightDate").datepicker({
+    //    shortYearCutoff: 1,
+    //    changeMonth: true,
+    //    changeYear: true,
+    //    dateFormat: 'dd-M-yy',
+
+    //});
     $('#AllMsg').text('');
 
     shipperCode = [];
@@ -1847,15 +3007,57 @@ function clearALL() {
     //    disabled: true
     //});
 
+    $('#txtAirline').val('');
+    $('#txtFlightNo').val('');
+    $('#txtOffpoint').val('');
+
+
+
+    $('#ddlEquTrolley1').val('-1');
+    $('#ddlEquTrolley2').val('-1');
+    $('#ddlEquTrolley3').val('-1');
+    $('#ddlEquTrolley4').val('-1');
+    $('#ddlEquTrolley5').val('-1');
+
 
     $('#txtPieces').removeAttr('disabled', 'disabled');
     $('#txtGrWt').removeAttr('disabled', 'disabled');
     $('#txtCharWt').removeAttr('disabled', 'disabled');
     $('#txtVolume').removeAttr('disabled', 'disabled');
     $('#txtCommodity').removeAttr('disabled');
+    $('#txtOffpoint').removeAttr('disabled');
     GetCommodityDataV3();
+    GetAWBDetailSearch_V3_onLoad();
+    clearGrid();
+    $('#btnSubmit').removeAttr('disabled');
 }
 
+function clearGrid() {
+    $("#Pieces1").val('').removeAttr('disabled');
+    $("#Length1").val('').removeAttr('disabled');
+    $("#Width1").val('').removeAttr('disabled');
+    $("#Height1").val('').removeAttr('disabled');
+
+    $("#Pieces2").val('').removeAttr('disabled');
+    $("#Length2").val('').removeAttr('disabled');
+    $("#Width2").val('').removeAttr('disabled');
+    $("#Height2").val('').removeAttr('disabled');
+
+    $("#Pieces3").val('').removeAttr('disabled');
+    $("#Length3").val('').removeAttr('disabled');
+    $("#Width3").val('').removeAttr('disabled');
+    $("#Height3").val('').removeAttr('disabled');
+
+    $("#Pieces4").val('').removeAttr('disabled');
+    $("#Length4").val('').removeAttr('disabled');
+    $("#Width4").val('').removeAttr('disabled');
+    $("#Height4").val('').removeAttr('disabled');
+
+    $("#Pieces5").val('').removeAttr('disabled');
+    $("#Length5").val('').removeAttr('disabled');
+    $("#Width5").val('').removeAttr('disabled');
+    $("#Height5").val('').removeAttr('disabled');
+}
 
 function clearALLNew() {
 
@@ -1877,21 +3079,20 @@ function clearALLNew() {
     ConsigneeLists = [];
     AgentNameLists = [];
 
-    let date = new Date();
-    const day = date.toLocaleString('default', { day: '2-digit' });
-    const month = date.toLocaleString('default', { month: 'short' });
-    const year = date.toLocaleString('default', { year: 'numeric' });
-    var today = day + '-' + month + '-' + year;
-    $('#txtFlightDate').val(today);
-   
+    //let date = new Date();
+    //const day = date.toLocaleString('default', { day: '2-digit' });
+    //const month = date.toLocaleString('default', { month: 'short' });
+    //const year = date.toLocaleString('default', { year: 'numeric' });
+    //var today = day + '-' + month + '-' + year;
+    //$('#txtFlightDate').val(today);
 
-    $("#txtFlightDate").datepicker({
-        shortYearCutoff: 1,
-        changeMonth: true,
-        changeYear: true,
-        dateFormat: 'dd-M-yy',
+    //$("#txtFlightDate").datepicker({
+    //    shortYearCutoff: 1,
+    //    changeMonth: true,
+    //    changeYear: true,
+    //    dateFormat: 'dd-M-yy',
 
-    });
+    //});
     $('#AllMsg').text('');
 
     shipperCode = [];
@@ -1909,6 +3110,8 @@ function clearALLNew() {
     $('#txtCharWt').removeAttr('disabled', 'disabled');
     $('#txtVolume').removeAttr('disabled', 'disabled');
     $('#txtCommodity').removeAttr('disabled');
+    $('#btnSubmit').removeAttr('disabled');
+    $('#txtOffpoint').removeAttr('disabled');
 }
 
 function ClearIGM() {
@@ -2035,7 +3238,7 @@ function GetCommodityDataV3() {
                 if (commodiyCode.length > 0) {
                     $("#txtCommodity").autocomplete({
                         minChars: 0,
-                        minLength: 2,
+                        minLength: 1,
                         source: commodiyCode,
                         focus: function (event, ui) {
                             // if (this.value == "") {
@@ -2056,6 +3259,13 @@ function GetCommodityDataV3() {
                     $("#txtCommodity").focus(function () {
                         // $(this).autocomplete("search", $(this).val());
                     });
+
+                    $.ui.autocomplete.filter = function (array, term) {
+                        var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(term), "i");
+                        return $.grep(array, function (value) {
+                            return matcher.test(value.label || value.value || value);
+                        });
+                    };
                     // $("#txtConsignee").focus();
                 }
 

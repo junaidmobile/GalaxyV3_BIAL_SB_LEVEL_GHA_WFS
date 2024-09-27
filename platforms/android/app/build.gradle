@@ -23,7 +23,9 @@ buildscript {
     repositories {
         mavenCentral()
         google()
+         maven { url "https://repo.grails.org/grails/core/" }
         jcenter()
+        
     }
 
     dependencies {
@@ -35,7 +37,9 @@ buildscript {
 allprojects {
     repositories {
         mavenCentral()
+         maven { url "https://repo.grails.org/grails/core/" }
         jcenter()
+        
     }
 }
 

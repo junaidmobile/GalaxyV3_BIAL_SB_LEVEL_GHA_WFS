@@ -17,7 +17,7 @@ var prorataWtParam;
 var prorataVolParam;
 var html;
 var Manpower;
-
+var EXPSHIPROWID;
 document.addEventListener("pause", onPause, false);
 document.addEventListener("resume", onResume, false);
 document.addEventListener("menubutton", onMenuKeyDown, false);
@@ -40,34 +40,34 @@ $(function () {
         window.location.href = 'EXP_Dashboard.html';
     }
 
-    //var formattedDate = new Date();
-    //var d = formattedDate.getDate();
-    //if (d.toString().length < Number(2))
-    //    d = '0' + d;
-    //var m = formattedDate.getMonth();
-    //m += 1;  // JavaScript months are 0-11
-    //if (m.toString().length < Number(2))
-    //    m = '0' + m;
-    //var y = formattedDate.getFullYear();
-    //var t = formattedDate.getTime();
-    //var date = m.toString() + '/' + d.toString() + '/' + y.toString();
+    var formattedDate = new Date();
+    var d = formattedDate.getDate();
+    if (d.toString().length < Number(2))
+        d = '0' + d;
+    var m = formattedDate.getMonth();
+    m += 1;  // JavaScript months are 0-11
+    if (m.toString().length < Number(2))
+        m = '0' + m;
+    var y = formattedDate.getFullYear();
+    var t = formattedDate.getTime();
+    var date = m.toString() + '/' + d.toString() + '/' + y.toString();
 
-    //newDate = y.toString() + '-' + m.toString() + '-' + d.toString();
-    //$('#txtFlightDate').val(newDate);
+    newDate = y.toString() + '-' + m.toString() + '-' + d.toString();
+    $('#txtFlightDate').val(newDate);
 
-    let date = new Date();
-    const day = date.toLocaleString('default', { day: '2-digit' });
-    const month = date.toLocaleString('default', { month: 'short' });
-    const year = date.toLocaleString('default', { year: 'numeric' });
-    var today = day + '-' + month + '-' + year;
-    $('#txtFlightDate').val(today);
+    //let date = new Date();
+    //const day = date.toLocaleString('default', { day: '2-digit' });
+    //const month = date.toLocaleString('default', { month: 'short' });
+    //const year = date.toLocaleString('default', { year: 'numeric' });
+    //var today = day + '-' + month + '-' + year;
+    //$('#txtFlightDate').val(today);
 
-    $("#txtFlightDate").datepicker({
-        shortYearCutoff: 1,
-        changeMonth: true,
-        changeYear: true,
-        dateFormat: 'dd-M-yy'
-    });
+    //$("#txtFlightDate").datepicker({
+    //    shortYearCutoff: 1,
+    //    changeMonth: true,
+    //    changeYear: true,
+    //    dateFormat: 'dd-M-yy'
+    //});
 
     //var h = date.getHours();
     //var m = date.getMinutes();
@@ -1088,6 +1088,7 @@ function ShowULDGrid() {
     html = '';
 
     $("#TextBoxDiv").empty();
+    $("#spnValMsg").text('');
 }
 
 function onChangeLenthCheck() {
@@ -1096,14 +1097,17 @@ function onChangeLenthCheck() {
     }
 }
 
+
+function onChangeLenthCheckForScanID() {
+    if ($('#txtScannedID').val().length == 16) {
+        GetShipmentInfoForAWB();
+    }
+}
+
 function GetShipmentInfoForAWB() {
 
     var MAWBPrefix = $('#txtAWBNo').val().substr(0, 3);
     var MAWBNo = $('#txtAWBNo').val().substr(3, 11);
-
-
-
-
 
     $('#txtPackages').val('');
     $('#txtWeight').val('');
@@ -1190,12 +1194,12 @@ function GetShipmentInfoForAWB() {
                 var totalPkgs;
                 var totalWeight;
                 $(xmlDoc).find('Table1').each(function (index) {
-
+                    EXPSHIPROWID = $(this).find('EXPSHIPROWID').text();
                     var newOption = $('<option></option>');
                     newOption.val($(this).find('EXPSHIPROWID').text()).text($(this).find('RNo').text());
                     newOption.appendTo('#ddlShipmentNo');
                     $('#txtPackages').focus();
-
+                    $('#ddlShipmentNo').trigger('change');
                     if (index == 0) {
                         //$('#txtPackages').val($(this).find('NOP').text());
                         //$('#txtWeight').val($(this).find('WEIGHT_KG').text());
@@ -1215,12 +1219,14 @@ function GetShipmentInfoForAWB() {
                         var newSHC = $(this).find('SHCAll').text();
                         $("#TextBoxDiv").empty();
                         SHCSpanHtml(newSHC);
+
+                        chkAuto = document.getElementById("chkAuto").checked;
+                        if (chkAuto == true && totalPkgs != undefined && totalWeight != undefined) {
+                            SaveAWBforULDDetailsOnScanID();
+                        }
                     }
                 });
-                chkAuto = document.getElementById("chkAuto").checked;
-                if (chkAuto == true && totalPkgs != undefined && totalWeight != undefined) {
-                    SaveAWBforULDDetails();
-                }
+
 
             },
             error: function (msg) {
@@ -1279,6 +1285,11 @@ function SaveAWBforULDDetails() {
     var errmsg = "";
     var chkAuto = document.getElementById("chkAuto").checked;
     var AWBNo = $('#txtAWBNo').val();
+    var scanID = $('#txtScannedID').val();
+    if (AWBNo == '') {
+        let text = scanID;
+        AWBNo = text.slice(0, 11);
+    }
 
     var ShipmentNo = $('#ddlShipmentNo').find('option:selected').text();
     var Packages = $('#txtPackages').val();
@@ -1331,7 +1342,7 @@ function SaveAWBforULDDetails() {
     }
 
     //var AWBPrefix = $('#txtAWBPrefix').val();
-   
+
     if (document.getElementById('rdoULD').checked) {
         Type = 'U';
         ULDNo = $('#ddlULD').find('option:selected').val();
@@ -1349,7 +1360,7 @@ function SaveAWBforULDDetails() {
 
     //}
 
-    
+
 
     //if (ShipmentNo == "Select" || ShipmentNo == "") {
 
@@ -1375,15 +1386,200 @@ function SaveAWBforULDDetails() {
 
 
     if (chkAuto == true) {
-        var inputXML = '<Root><FlightSeqNo>' + FlightSeqNo + '</FlightSeqNo><ULDSeqNo>' + ULDNo + '</ULDSeqNo><Type>' + Type + '</Type><Offpoint>' + $('#ddlOffPoint').find('option:selected').text() + '</Offpoint><AirportCity>' + AirportCity + '</AirportCity><UserID>' + window.localStorage.getItem("UserID") + '</UserID><ULDType></ULDType><ULDNumber></ULDNumber><ULDOwner></ULDOwner><AWBId>-1</AWBId><ShipmentId>' + $('#ddlShipmentNo').find('option:selected').val() + '</ShipmentId><AWBNo>' + AWBNo + '</AWBNo><NOP>1</NOP><Weight>-1</Weight><Volume>-1</Volume></Root>';
+        var inputXML = '<Root><FlightSeqNo>' + FlightSeqNo + '</FlightSeqNo><ULDSeqNo>' + ULDNo + '</ULDSeqNo><Type>' + Type + '</Type><Offpoint>' + $('#ddlOffPoint').find('option:selected').text() + '</Offpoint><AirportCity>' + AirportCity + '</AirportCity><UserID>' + window.localStorage.getItem("UserID") + '</UserID><ULDType></ULDType><ULDNumber></ULDNumber><ULDOwner></ULDOwner><AWBId>-1</AWBId><ShipmentId>' + EXPSHIPROWID + '</ShipmentId><AWBNo>' + AWBNo + '</AWBNo><NOP>1</NOP><Weight>-1</Weight><Volume>-1</Volume><IsAuto>Y</IsAuto><ScanId>' + scanID + '</ScanId></Root>';
 
     } else {
-        var inputXML = '<Root><FlightSeqNo>' + FlightSeqNo + '</FlightSeqNo><ULDSeqNo>' + ULDNo + '</ULDSeqNo><Type>' + Type + '</Type><Offpoint>' + $('#ddlOffPoint').find('option:selected').text() + '</Offpoint><AirportCity>' + AirportCity + '</AirportCity><UserID>' + window.localStorage.getItem("UserID") + '</UserID><ULDType></ULDType><ULDNumber></ULDNumber><ULDOwner></ULDOwner><AWBId>-1</AWBId><ShipmentId>' + $('#ddlShipmentNo').find('option:selected').val() + '</ShipmentId><AWBNo>' + AWBNo + '</AWBNo><NOP>' + Packages + '</NOP><Weight>-1</Weight><Volume>-1</Volume></Root>';
+        var inputXML = '<Root><FlightSeqNo>' + FlightSeqNo + '</FlightSeqNo><ULDSeqNo>' + ULDNo + '</ULDSeqNo><Type>' + Type + '</Type><Offpoint>' + $('#ddlOffPoint').find('option:selected').text() + '</Offpoint><AirportCity>' + AirportCity + '</AirportCity><UserID>' + window.localStorage.getItem("UserID") + '</UserID><ULDType></ULDType><ULDNumber></ULDNumber><ULDOwner></ULDOwner><AWBId>-1</AWBId><ShipmentId>' + EXPSHIPROWID + '</ShipmentId><AWBNo>' + AWBNo + '</AWBNo><NOP>' + Packages + '</NOP><Weight>-1</Weight><Volume>-1</Volume><IsAuto>N</IsAuto><ScanId></ScanId></Root>';
 
     }
 
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: "POST",
+            url: GHAExportFlightserviceURL + "UnitizeAWB",
+            //data: JSON.stringify({
+            //    'strFlightNo': $('#txtFlightPrefix').val() + $('#txtFlightNo').val(), 'strFlightDate': flightDate, 'strULDNo': ULDNo,
+            //    'strAWBNo': AWBNo, 'strShipmentNo': ShipmentNo, 'strPkgs': Packages,
+            //    'strGrossWt': GrossWt, 'strWtUnit': GrossWtUnit, 'strVolume': Volume,
+            //    'strAirportCity': AirportCity, 'strUserID': window.localStorage.getItem("UserID"), 'CompanyCode': window.localStorage.getItem("companyCode"), 'OffPoint': $('#ddlOffPoint').find('option:selected').text(), 'Type': Type,
+            //}),
+            data: JSON.stringify({ 'InputXML': inputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                //$('.dialog-background').css('display', 'block');
+                $('body').mLoading({
+                    text: "Please Wait..",
+                });
+            },
+            success: function (response) {
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+
+                $(xmlDoc).find('Table').each(function () {
+
+                    var status = $(this).find('Status').text();
+
+                    if (status != 'E') {
+                        $('#spnValMsg').text($(this).find('StrMessage').text()).css('color', 'green');
+                        $('#txtAWBPrefix').val('');
+                        $('#txtAWBNo').val('');
+                        $('#txtUnitizedPkgs').val('');
+                        $('#txtTotalPkgs').val('');
+                        $('#txtPackages').val('');
+                        $('#txtNOG').val('');
+                        $('#txtScannedID').val('');
+                        $('#ddlShipmentNo').empty();
+                        GetAWBDetailsForULD();
+                        return;
+                    }
+
+                    //if (confirm($(this).find('StrMessage').text())) {
+                    //    $('#txtAWBNo').focus();
+                    //}
+
+                    //if (!alert($(this).find('StrMessage').text())) {
+                    //    $('#txtAWBNo').focus();
+                    //}
+                    $('#spnValMsg').text($(this).find('StrMessage').text()).css('color', 'red');
+
+                });
+
+                //GetShipmentInfoForAWB($('#txtAWBNo').val());
 
 
+                //$('#txtVolume').val('');
+                //window.location.reload();
+
+                // GetAWBDetailsForULD();
+            },
+            //error: function (msg) {
+            //    $("body").mLoading('hide');
+            //    $.alert('Some error occurred while saving data');
+            //}
+            error: function (request, status, error) {
+                alert(request.responseText);
+            }
+        });
+        return false;
+    }
+
+}
+
+function SaveAWBforULDDetailsOnScanID() {
+
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+    var chkAuto = document.getElementById("chkAuto").checked;
+    var AWBNo = $('#txtAWBNo').val();
+    var scanID = $('#txtScannedID').val();
+    if (AWBNo == '') {
+        let text = scanID;
+        AWBNo = text.slice(0, 11);
+    }
+
+    var ShipmentNo = $('#ddlShipmentNo').find('option:selected').text();
+    var Packages = $('#txtPackages').val();
+    var GrossWt = $('#txtWeight').val();
+    var GrossWtUnit = $('#ddlGrossWtUnit').find('option:selected').text();
+    var Volume = $('#txtVolume').val();
+    var ULDNo;
+    var Type;
+
+    if (chkAuto == true) {
+
+    } else {
+        if (AWBNo == '') {
+            //errmsg = "Please enter AWB No.";
+            //$.alert(errmsg).css('color', 'red');
+            $('#spnValMsg').text("Please enter AWB No.").css('color', 'red');
+            $('#txtAWBNo').focus();
+            return;
+        } else {
+            $('#spnValMsg').text("");
+        }
+
+        if (AWBNo.length != '11') {
+            //errmsg = "Please enter valid AWB No.";
+            //$.alert(errmsg).css('color', 'red');
+            $('#spnValMsg').text("Please enter valid AWB No.").css('color', 'red');
+            return;
+        } else {
+            $('#spnValMsg').text("");
+        }
+
+        if ($('#ddlShipmentNo').val() == null || $('#ddlShipmentNo').val() == undefined) {
+            //errmsg = "Please select EWR No.";
+            //$.alert(errmsg).css('color', 'red');
+            $('#spnValMsg').text("Please select EWR No.").css('color', 'red');
+            return;
+        } else {
+            $('#spnValMsg').text("");
+        }
+
+        if (Packages == '') {
+            //errmsg = "Packages enter Packages</br>";
+            //$.alert(errmsg).css('color', 'red');
+            $('#spnValMsg').text("Packages enter Packages").css('color', 'red');
+            return;
+
+        } else {
+            $('#spnValMsg').text("");
+        }
+    }
+
+    //var AWBPrefix = $('#txtAWBPrefix').val();
+
+    if (document.getElementById('rdoULD').checked) {
+        Type = 'U';
+        ULDNo = $('#ddlULD').find('option:selected').val();
+    }
+    if (document.getElementById('rdoBulk').checked) {
+        Type = 'T';
+        ULDNo = $('#ddlBulk').find('option:selected').val();
+    }
+
+    //if (AWBNo == "" || Packages == "" || GrossWt == "") {
+
+    //    errmsg = "Please enter all the required fields.</br>";
+    //    $.alert(errmsg);
+    //    return;
+
+    //}
+
+
+
+    //if (ShipmentNo == "Select" || ShipmentNo == "") {
+
+    //    errmsg = "Shipment number not found</br>";
+    //    $.alert(errmsg);
+    //    return;
+
+    //}
+
+    if ($('#txtFlightDate').val().length > 0) {
+        var formattedDate = new Date($('#txtFlightDate').val());
+        var d = formattedDate.getDate();
+        if (d.toString().length < Number(2))
+            d = '0' + d;
+        var m = formattedDate.getMonth();
+        m += 1;  // JavaScript months are 0-11
+        if (m.toString().length < Number(2))
+            m = '0' + m;
+        var y = formattedDate.getFullYear();
+
+        var flightDate = m + "/" + d + "/" + y;
+    }
+
+
+    if (chkAuto == true) {
+        var inputXML = '<Root><FlightSeqNo>' + FlightSeqNo + '</FlightSeqNo><ULDSeqNo>' + ULDNo + '</ULDSeqNo><Type>' + Type + '</Type><Offpoint>' + $('#ddlOffPoint').find('option:selected').text() + '</Offpoint><AirportCity>' + AirportCity + '</AirportCity><UserID>' + window.localStorage.getItem("UserID") + '</UserID><ULDType></ULDType><ULDNumber></ULDNumber><ULDOwner></ULDOwner><AWBId>-1</AWBId><ShipmentId>' + EXPSHIPROWID + '</ShipmentId><AWBNo>' + AWBNo + '</AWBNo><NOP>1</NOP><Weight>-1</Weight><Volume>-1</Volume><IsAuto>Y</IsAuto><ScanId>' + scanID + '</ScanId></Root>';
+
+    } else {
+        var inputXML = '<Root><FlightSeqNo>' + FlightSeqNo + '</FlightSeqNo><ULDSeqNo>' + ULDNo + '</ULDSeqNo><Type>' + Type + '</Type><Offpoint>' + $('#ddlOffPoint').find('option:selected').text() + '</Offpoint><AirportCity>' + AirportCity + '</AirportCity><UserID>' + window.localStorage.getItem("UserID") + '</UserID><ULDType></ULDType><ULDNumber></ULDNumber><ULDOwner></ULDOwner><AWBId>-1</AWBId><ShipmentId>' + EXPSHIPROWID + '</ShipmentId><AWBNo>' + AWBNo + '</AWBNo><NOP>' + Packages + '</NOP><Weight>-1</Weight><Volume>-1</Volume><IsAuto>N</IsAuto><ScanId></ScanId></Root>';
+
+    }
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
@@ -1465,6 +1661,8 @@ function AutoChkCheck() {
     if (chkAuto == true) {
         $('#txtAWBNo').attr('disabled', 'disabled');
         $('#txtScannedID').removeAttr('disabled');
+
+        $('#txtScannedID').val('');
         $('#txtScannedID').focus();
     }
 
@@ -1472,12 +1670,21 @@ function AutoChkCheck() {
         $('#txtAWBNo').removeAttr('disabled');
         $('#txtScannedID').attr('disabled', 'disabled');
         $('#txtAWBNo').focus();
+        $('#txtScannedID').val('');
+
+        $('#txtAWBNo').val('');
 
     }
 }
 
 function GetAWBDetailsForULD() {
+   
+    $('#chkAuto').prop('checked', true);
+    $('#txtScannedID').removeAttr('disabled');
+    $('#txtAWBNo').attr('disabled', 'disabled');
     $('#txtScannedID').focus();
+    $('#txtScannedID').val('');
+    $('#txtNOG').val('');
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
 
@@ -1584,13 +1791,13 @@ function GetAWBDetailsForULD() {
                     });
 
                     html += "</tbody></table>";
-
-                    if (totalPkgs > Number(0))
-                        $('#divAddTestLocation').append(html);
-                    else {
-                        $('#divAddTestLocation').empty();
-                        html = '';
-                    }
+                    $('#divAddTestLocation').append(html);
+                    //if (totalPkgs > Number(0))
+                    //    $('#divAddTestLocation').append(html);
+                    //else {
+                    //    $('#divAddTestLocation').empty();
+                    //    html = '';
+                    //}
                 }
                 else {
                     errmsg = 'Shipment does not exists';
@@ -1621,9 +1828,7 @@ function GetAWBDetailsForULD() {
 function AddTableLocation(AWB, Pkgs) {
 
     html += "<tr>";
-
     html += "<td height='30' style='background: rgb(224, 243, 215);padding-left: 4px;font-size:14px'align='center'>" + AWB + "</td>";
-
     html += "<td height='30' style='background: rgb(224, 243, 215);padding-left: 4px;font-size:14px'align='center'>" + Pkgs + "</td>";
     html += "</tr>";
 
@@ -1655,7 +1860,7 @@ function clearAllULDDetails() {
 
 function clearAWBDetails() {
     $('#txtNOG').val('');
-    //$('#txtULDNo').val('');
+    $('#txtScannedID').val('');
     $('#txtAWBPrefix').val('');
     $('#txtAWBNo').val('');
     $('#ddlShipmentNo').empty();

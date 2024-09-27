@@ -144,7 +144,7 @@
                                     </div>-->
                                     <div class="col-xs-8 NoPadding ClearFields">
 
-                                        <input type="text" style="text-transform: none;"
+                                        <input type="date" style="text-transform: none;"
                                                id="txtFlightDate" class="form-control"
                                                title="Date">
 
@@ -200,8 +200,8 @@
 
                             </div>
 
-                            <font size="2" id="lblFlightStatus" style="font-weight: bold;color:green;"></font>
-                            <font size="2" id="lblFlightStatusError" style="font-weight: bold;color:red;"></font>
+                            <div size="2" id="lblFlightStatus" style="font-weight: bold;color:green;"></div>
+                            <div size="2" id="lblFlightStatusError" style="font-weight: bold;color:red;"></div>
                         </form>
                     </div>
                 </div>
@@ -337,20 +337,20 @@
 
         //});
 
-        let date = new Date();
-        const day = date.toLocaleString('default', { day: '2-digit' });
-        const month = date.toLocaleString('default', { month: 'short' });
-        const year = date.toLocaleString('default', { year: 'numeric' });
-        var today = day + '-' + month + '-' + year;
-        $('#txtFlightDate').val(today);
+        //let date = new Date();
+        //const day = date.toLocaleString('default', { day: '2-digit' });
+        //const month = date.toLocaleString('default', { month: 'short' });
+        //const year = date.toLocaleString('default', { year: 'numeric' });
+        //var today = day + '-' + month + '-' + year;
+        //$('#txtFlightDate').val(today);
 
-        $("#txtFlightDate").datepicker({
-            shortYearCutoff: 1,
-            changeMonth: true,
-            changeYear: true,
-            dateFormat: 'dd-M-yy',
+        //$("#txtFlightDate").datepicker({
+        //    shortYearCutoff: 1,
+        //    changeMonth: true,
+        //    changeYear: true,
+        //    dateFormat: 'dd-M-yy',
 
-        });
+        //});
 
 
 

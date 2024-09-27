@@ -201,7 +201,7 @@
                                     </div>-->
 
                                     <div class="col-xs-8 NoPadding">
-                                        <input type="text" id="txtFlightDate"
+                                        <input type="date" id="txtFlightDate"
                                                style="text-transform: none;"
                                                class="form-control" title="Date">
                                         <!--<input type="text" onblur="checkdate();" id="date" name="date" placeholder="dd/mm/yyyy" class="form-control" />-->
@@ -383,20 +383,20 @@
         //$("#txtFlightDate").datepicker().datepicker("setDate", new Date());
 
 
-        let date = new Date();
-        const day = date.toLocaleString('default', { day: '2-digit' });
-        const month = date.toLocaleString('default', { month: 'short' });
-        const year = date.toLocaleString('default', { year: 'numeric' });
-        var today = day + '-' + month + '-' + year;
-        $('#txtFlightDate').val(today);
+    //    let date = new Date();
+    //    const day = date.toLocaleString('default', { day: '2-digit' });
+    //    const month = date.toLocaleString('default', { month: 'short' });
+    //    const year = date.toLocaleString('default', { year: 'numeric' });
+    //    var today = day + '-' + month + '-' + year;
+    //    $('#txtFlightDate').val(today);
        
-        $("#txtFlightDate").datepicker({
-            shortYearCutoff: 1,
-            changeMonth: true,
-            changeYear: true,
-            dateFormat: 'dd-M-yy'
-        });
-    });
+    //    $("#txtFlightDate").datepicker({
+    //        shortYearCutoff: 1,
+    //        changeMonth: true,
+    //        changeYear: true,
+    //        dateFormat: 'dd-M-yy'
+    //    });
+    //});
 
 
 

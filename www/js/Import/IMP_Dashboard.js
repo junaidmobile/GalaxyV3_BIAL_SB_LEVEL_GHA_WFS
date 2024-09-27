@@ -9,7 +9,7 @@ var AirportCity = window.localStorage.getItem("SHED_AIRPORT_CITY");
 $(function () {
     document.addEventListener('backbutton', onBackKeyDown, false);
     //document.addEventListener('deviceready', DropDown, false);
-    GetMenuRolesRights();
+   // GetMenuRolesRights();
     //if (window.localStorage.getItem("RoleExpVehicleTracking") == '0')
     //    $("#divVehicleTracking").css("display", "none");
     //if (window.localStorage.getItem("RoleExpVehicleTracking") == '0')
@@ -175,81 +175,33 @@ function GetMenuRolesRights() {
                     MenuId = $(this).find('MenuId').text();
                     ControlId = $(this).find('ControlId').text();
                     MenuParent = $(this).find('MenuParent').text();
+                    Sequence = $(this).find('Sequence').text();
                     ShortKey = $(this).find('ShortKey').text();
                     ParentChildId = $(this).find('ParentChildId').text();
 
                     if (index == 0) {
-                        if (ControlId == 'divBinning') {
-                            $('#divBinning').show();
+                        if (ControlId == 'divImportMenu') {
+                            $('#divImportMenu').show();
                         } else {
-                            $('#divBinning').hide();
+                            $('#divImportMenu').hide();
                         }
                     }
 
                     if (index == 1) {
-                        if (ControlId == 'divFlightCheck') {
-                            $('#divFlightCheck').show();
+                        if (ControlId == 'divExportMenu') {
+                            $('#divExportMenu').show();
                         } else {
-                            $('#divFlightCheck').hide();
+                            $('#divExportMenu').hide();
                         }
                     }
 
                     if (index == 2) {
-                        if (ControlId == 'divImportQuery') {
-                            $('#divImportQuery').show();
+                        if (ControlId == 'divVTMenu') {
+                            $('#divVTMenu').show();
                         } else {
-                            $('#divImportQuery').hide();
+                            $('#divVTMenu').hide();
                         }
                     }
-
-                    if (index == 3) {
-                        if (ControlId == 'divRecordDamage') {
-                            $('#divRecordDamage').show();
-                        } else {
-                            $('#divRecordDamage').hide();
-                        }
-                    }
-                    if (index == 4) {
-                        if (ControlId == 'divSplitGroup') {
-                            $('#divSplitGroup').show();
-                        } else {
-                            $('#divSplitGroup').hide();
-                        }
-                    }
-
-                    if (index == 5) {
-                        if (ControlId == 'divTSP') {
-                            $('#divTSP').show();
-                        } else {
-                            $('#divTSP').hide();
-                        }
-                    }
-
-                    if (index == 6) {
-                        if (ControlId == 'divULDAcceptance') {
-                            $('#divULDAcceptance').show();
-                        } else {
-                            $('#divULDAcceptance').hide();
-                        }
-                    }
-
-                    if (index == 7) {
-                        if (ControlId == 'divWDORelease') {
-                            $('#divWDORelease').show();
-                        } else {
-                            $('#divWDORelease').hide();
-                        }
-                    }
-
-                    if (index == 8) {
-                        if (ControlId == 'divWDORetrieval') {
-                            $('#divWDORetrieval').show();
-                        } else {
-                            $('#divWDORetrieval').hide();
-                        }
-                    }
-
-                    
 
                 });
             },

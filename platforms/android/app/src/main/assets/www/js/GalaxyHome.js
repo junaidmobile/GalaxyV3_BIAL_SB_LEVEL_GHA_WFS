@@ -9,7 +9,7 @@ var xmlDocForClickSet;
 $(function () {
     document.addEventListener('backbutton', onBackKeyDown, false);
     //document.addEventListener('deviceready', DropDown, false);
-    GetMenuRolesRights();
+   // GetMenuRolesRights();
 });
 function onBackKeyDown() {
     //if ($('#divDashBoardImport').is(':visible')) {
@@ -121,6 +121,7 @@ function GetMenuRolesRights() {
                     Status = $(this).find('Status').text();
                     StrMessage = $(this).find('StrMessage').text();
                     if (Status == 'E') {
+
 
                     }
                 });

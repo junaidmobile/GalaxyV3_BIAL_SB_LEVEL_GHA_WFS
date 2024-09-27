@@ -59,6 +59,44 @@
                 left: 0.5em;
                 margin-right: -50%;
             }
+
+        input[type="checkbox"] {
+            appearance: none;
+            border: 1px solid #065da1;
+            width: 17px;
+            height: 17px;
+            content: none;
+            outline: none;
+            margin: 0;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        }
+
+            input[type="checkbox"]:checked {
+                appearance: none;
+                outline: none;
+                padding: 0;
+                content: none;
+                border: none;
+            }
+
+                input[type="checkbox"]:checked::before {
+                    position: absolute;
+                    color: green !important;
+                    content: "\00A0\2713\00A0" !important;
+                    border: 1px solid #d3d3d3;
+                    font-weight: bolder;
+                    font-size: 12px;
+                }
+
+        /*   table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }*/
+
+        ul.ul_submenu {
+            display: none;
+        }
     </style>
 </head>
 
@@ -86,154 +124,258 @@
             <div class="panel panel-widget forms-panel form-grids widget-shadow">
                 <div class="forms">
                     <div class="form-body">
-                        <form>
-                            <div class="row form-group">
+                        <div class="row form-group">
 
+                            <!--<a href="#" class="trigger" data-placement="bottom">Popover link II</a>-->
+                            <!--<div id="test0" class="popover-markup ul_submenu">
+                                <div class="popover-markup">
+                                    <div class="head hide">Sort by column name</div>
+                                    <div class="chkClass content hide">
+                                        <form role="form">
+                                            <table id="chkTbl" style="width:100%;table-layout:fixed;word-break:break-word;margin-top: 2%;">
+                                                <tr>
+                                                    <td><input type="checkbox" name="WDONo" id="WDONo" checked="checked" /><label style="margin-left:15px;" id="WDONo">WDO No.</label></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><input type="checkbox" name="AWBNo" checked="checked" /><label style="margin-left: 15px;" id="AWBNo"> AWB No.</label></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><input type="checkbox" name="WDOPCS" checked="checked" /><label style="margin-left: 15px;" id="WDOPCS">WDO Pcs.</label></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><input type="checkbox" name="Location" checked="checked" /><label style="margin-left: 15px;" id="Location">Location</label></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><input type="checkbox" name="BIN" checked="checked" /><label style="margin-left: 15px;" id="BIN">BIN</label></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><input type="checkbox" name="AgentName" checked="checked" /><label style="margin-left: 15px;" id="AgentName">Agent Name</label></td>
+                                                </tr>
 
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                    <div class="col-xs-4 col-form-label">
-                                        <label id="lblGPNo" for="txtGPNo" class="control-label labelFont">
-                                            WDO No.
-                                        </label>
-                                        <!--<font color="red">*</font>-->
+                                                <tr>
+                                                    <td><input type="checkbox" name="Ageing" checked="checked" /><label style="margin-left: 15px;" id="Ageing">Ageing (In Mins)</label></td>
+                                                </tr>
+                                            </table>
+                                        </form>
                                     </div>
-                                    <div class="col-xs-8 NoPadding">
-                                        <input id="txtSacnULD" class="form-control" type="text"
-                                               maxlength="30" onblur="ImportAirside_Search_V3_OnBlure();">
-                                    </div>
-
                                 </div>
-                                <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                    <h6>OR</h6>
+                            </div>-->
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                <div class="col-xs-4 col-form-label">
+                                    <label id="lblGPNo" for="txtGPNo" class="control-label labelFont">
+                                        WDO No.
+                                    </label>
+                                    <!--<font color="red">*</font>-->
+                                </div>
+                                <div class="col-xs-8 NoPadding">
+                                    <input id="txtSacnULD" class="form-control" type="text"
+                                           maxlength="30" onblur="ImportAirside_Search_V3_OnBlure();">
                                 </div>
 
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                    <div class="col-xs-4 col-form-label">
-                                        <label id="lblGPNo" for="txtScanFlight" class="control-label labelFont">
-                                            Area
-                                        </label>
-                                    </div>
-                                    <div class="col-xs-8 NoPadding">
-                                        <input id="txtScanFlight" class="form-control" type="number"
-                                               onkeyup="ChkMaxLength(this, '9');" onblur="ScanFlightDetail();" style="text-align:right;">
-                                    </div>
-                                </div>-->
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                    <span id="spnMsg"></span>
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" style="">
+                                <div class="col-xs-4 col-form-label">
+                                    <label id="lblFilterByAirline" for="txtFilterByAirline" class="control-label labelFont">
+                                        Airline
+                                    </label>
+                                    <!--<font color="red">*</font>-->
+                                </div>
+                                <div class="col-xs-8 NoPadding">
+                                    <input id="txtFilterByAirline" class="form-control" type="text" placeholder="Sorting"
+                                           maxlength="30" onblur="">
                                 </div>
                             </div>
-                            <div class="row form-group">
-                                <div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding" id="divVCTDetail">
+                            <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" style="">
 
-                                   
+                                <div class="col-xs-4 col-form-label">
+                                    <label id="lblAgentName" for="txtAgentName" class="control-label labelFont">
+                                        Agent
+                                    </label>
+                                    <!--<font color="red">*</font>-->
+                                </div>
+                                <div class="col-xs-8 NoPadding">
+                                    <input id="txtAgentName" class="form-control" type="text" placeholder="Sorting"
+                                           maxlength="30" onblur="">
                                 </div>
                             </div>
 
-                        </form>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                <span id="spnMsg"></span>
+                            </div>
+
+
+                            <!--<div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding">
+                                <table  style="width:100%;table-layout:fixed;word-break:break-word;margin-top: 2%;">
+                                    <tr>
+                                        <td><input type="checkbox" name="WDONo" checked="checked" /><label style="margin-left:15px;" id="WDONo">WDO No.</label></td>
+                                        <td><input type="checkbox" name="AWBNo" checked="checked" /><label style="margin-left: 15px;" id="AWBNo"> AWB No.</label></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" name="WDOPCS" checked="checked" /><label style="margin-left: 15px;" id="WDOPCS">WDO Pcs.</label></td>
+                                        <td><input type="checkbox" name="Location" checked="checked" /><label style="margin-left: 15px;" id="Location">Location</label></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" name="BIN" checked="checked" /><label style="margin-left: 15px;" id="BIN">BIN</label></td>
+                                        <td><input type="checkbox" name="AgentName" checked="checked" /><label style="margin-left: 15px;" id="AgentName">Agent Name</label></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" name="Ageing" checked="checked" /><label style="margin-left: 15px;" id="Ageing">Ageing (In Mins)</label></td>
+
+                                    </tr>
+                                </table>
+
+                            </div>-->
+                            <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                <h6>OR</h6>
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                <div class="col-xs-4 col-form-label">
+                                    <label id="lblGPNo" for="txtScanFlight" class="control-label labelFont">
+                                        Area
+                                    </label>
+                                </div>
+                                <div class="col-xs-8 NoPadding">
+                                    <input id="txtScanFlight" class="form-control" type="number"
+                                           onkeyup="ChkMaxLength(this, '9');" onblur="ScanFlightDetail();" style="text-align:right;">
+                                </div>
+                            </div>-->
+                            <!--<a href="#" class="trigger" data-placement="bottom">Popover link II</a>-->
+                            <div class="form-group col-xs-12 col-sm-6 col-md-6">
+                                <ul>
+                                    <li class="submenu">
+                                        <a href="#" class='glyphicon glyphicon-filter'></a>
+                                        <ul class="ul_submenu">
+                                            <li><input type="checkbox" name="WDONo" id="WDONo" checked="checked" /><label style="margin-left:15px;" id="WDONo">WDO No.</label></li>
+                                            <li><input type="checkbox" name="AWBNo" checked="checked" /><label style="margin-left: 15px;" id="AWBNo"> AWB No.</label></li>
+                                            <li><input type="checkbox" name="WDOPCS" checked="checked" /><label style="margin-left: 15px;" id="WDOPCS">WDO Pcs.</label></li>
+                                            <li><input type="checkbox" name="Location" checked="checked" /><label style="margin-left: 15px;" id="Location">Location</label></li>
+                                            <li><input type="checkbox" name="BIN" checked="checked" /><label style="margin-left: 15px;" id="BIN">BIN</label></li>
+                                            <li><input type="checkbox" name="AgentName" checked="checked" /><label style="margin-left: 15px;" id="AgentName">Agent Name</label></li>
+                                            <li><input type="checkbox" name="Ageing" checked="checked" /><label style="margin-left: 15px;" id="Ageing">Ageing (In Mins)</label></li>
+
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding" id="divVCTDetail">
+
+
+                            </div>
+                        </div>
                     </div>
+                    <!--<div class="row form-group">
+
+                    </div>-->
+
+
+
                 </div>
             </div>
+        </div>
 
 
-            <div class="form-group col-xs-6 col-sm-6 col-md-6" style="margin-top:15px">
-                <input type="button" id="btnExcLanded" class="form-control ButtonColor" value="Exit" onclick="window.location.href = 'IMP_Dashboard.html'">
-            </div>
-            <div class="form-group col-xs-6 col-sm-6 col-md-6" style="margin-top:15px">
-                <input type="button" id="btnClear" class="form-control ButtonColor" value="Clear" onclick="clearALL()">
-            </div>
-            <!--<div class="panel panel-widget forms-panel form-grids widget-shadow" style="margin-top:5%">
-                          <div class="forms">
-                              <div class="form-body">
-                                  <form>
-                                      <div class="row form-group">
-                                          <div class="form-group col-xs-12 col-sm-5 col-md-6 NoPadding">
-                                              <div class="col-xs-6 col-form-label">
-                                                  <label id="lblAWBNo" for="txtDelieveredTo" class="control-label">
-                                                      Delivered
-                                                      To
-                                                  </label>
-                                                  <font color="red">*</font>
-                                              </div>
-                                              <div class="col-xs-6 NoPadding">
-                                                  <input type="text" id="txtDelieveredTo" maxlength="50"
-                                                         class="form-control" onkeyup="ChkMaxLength(this, '11');">
-                                              </div>
+        <div class="form-group col-xs-6 col-sm-6 col-md-6" style="margin-top:15px">
+            <input type="button" id="btnExcLanded" class="form-control ButtonColor" value="Exit" onclick="window.location.href = 'IMP_Dashboard.html'">
+        </div>
+        <div class="form-group col-xs-6 col-sm-6 col-md-6" style="margin-top:15px">
+            <input type="button" id="btnClear" class="form-control ButtonColor" value="Clear" onclick="clearALL()">
+        </div>
+        <!--<div class="panel panel-widget forms-panel form-grids widget-shadow" style="margin-top:5%">
+                      <div class="forms">
+                          <div class="form-body">
+                              <form>
+                                  <div class="row form-group">
+                                      <div class="form-group col-xs-12 col-sm-5 col-md-6 NoPadding">
+                                          <div class="col-xs-6 col-form-label">
+                                              <label id="lblAWBNo" for="txtDelieveredTo" class="control-label">
+                                                  Delivered
+                                                  To
+                                              </label>
+                                              <font color="red">*</font>
                                           </div>
-                                          <div class="form-group col-xs-12 col-sm-5 col-md-6 NoPadding">
-                                              <div class="col-xs-6 col-form-label">
-                                                  <label id="lblHAWBNo" for="txtHAWBNo"
-                                                         class="control-label">Identification</label>
-                                                  <font color="red">*</font>
-                                              </div>
-                                              <div class="col-xs-6 NoPadding">
-                                                  <select id="ddlIdentification" class="form-control">
-                                                      <option value="0">Select</option>
-                                                  </select>
-                                              </div>
-                                          </div>
-                                          <div class="form-group col-xs-12 col-sm-5 col-md-6 NoPadding">
-                                              <div class="col-xs-6 col-form-label">
-                                                  <label id="lblAWBNo" for="txtPieces" class="control-label">ID No.</label>
-                                                  <font color="red">*</font>
-                                              </div>
-                                              <div class="col-xs-6 NoPadding">
-                                                  <input type="password" id="txtIdentificationNo"
-                                                         maxlength="50" class="form-control">
-                                                  <span class=" form-control-feedback glyphicon glyphicon-eye-open" style=" cursor: pointer; text-decoration: none; overflow: hidden;
-            position: absolute; pointer-events: auto; right: 0px;  z-index: 100;line-height: 1.9;" onclick="viewPassword();">
-                                                  </span>
-                                              </div>
-                                          </div>
-                                          <div class="form-group col-xs-12 col-sm-5 col-md-6 NoPadding">
-                                              <div class="col-xs-6 col-form-label">
-                                                  <label id="lblHAWBNo" for="txtWeight" class="control-label">Del. Pieces</label>
-                                              </div>
-                                              <div class="col-xs-6 NoPadding">
-                                                  <input type="number" style="text-align:right;" id="txtDeliveryPieces"
-                                                         class="form-control" max="9999999" disabled>
-                                              </div>
-                                          </div>
-                                          <div class="form-group col-xs-12 col-sm-5 col-md-6 NoPadding">
-                                              <div class="col-xs-6 col-form-label">
-                                                  <label id="lblAWBNo" for="txtDeliveryTo" class="control-label">
-                                                      Del. Gr.
-                                                      Wt.
-                                                  </label>
-                                              </div>
-                                              <div class="col-xs-6 NoPadding">
-                                                  <input type="text" id="txtDeliveryGrWt" class="form-control" maxlength="20"
-                                                         style="text-align:right;" disabled>
-                                              </div>
-                                          </div>
-                                          <div class="form-group col-xs-12 col-sm-5 col-md-6 NoPadding">
-                                              <div class="col-xs-6 col-form-label">
-                                                  <label id="lblHAWBNo" for="txtDeliveryStatus" class="control-label">
-                                                      Del. Ch.
-                                                      Wt.
-                                                  </label>
-                                              </div>
-                                              <div class="col-xs-6 NoPadding">
-                                                  <input type="text" id="txtDeliveryChWt" class="form-control" maxlength="20"
-                                                         style="text-align:right;" disabled>
-                                              </div>
-                                          </div>
-                                          <div class="form-group col-xs-12 col-sm-5 col-md-6 NoPadding">
-                                              <div class="col-xs-6 col-form-label">
-                                                  <label id="lblHAWBNo" for="txtDeliveryStatus"
-                                                         class="control-label">Status</label>
-                                              </div>
-                                              <div class="col-xs-6 NoPadding">
-                                                  <input type="text" id="txtDeliveryStatus" class="form-control" maxlength="20"
-                                                         disabled>
-                                              </div>
+                                          <div class="col-xs-6 NoPadding">
+                                              <input type="text" id="txtDelieveredTo" maxlength="50"
+                                                     class="form-control" onkeyup="ChkMaxLength(this, '11');">
                                           </div>
                                       </div>
+                                      <div class="form-group col-xs-12 col-sm-5 col-md-6 NoPadding">
+                                          <div class="col-xs-6 col-form-label">
+                                              <label id="lblHAWBNo" for="txtHAWBNo"
+                                                     class="control-label">Identification</label>
+                                              <font color="red">*</font>
+                                          </div>
+                                          <div class="col-xs-6 NoPadding">
+                                              <select id="ddlIdentification" class="form-control">
+                                                  <option value="0">Select</option>
+                                              </select>
+                                          </div>
+                                      </div>
+                                      <div class="form-group col-xs-12 col-sm-5 col-md-6 NoPadding">
+                                          <div class="col-xs-6 col-form-label">
+                                              <label id="lblAWBNo" for="txtPieces" class="control-label">ID No.</label>
+                                              <font color="red">*</font>
+                                          </div>
+                                          <div class="col-xs-6 NoPadding">
+                                              <input type="password" id="txtIdentificationNo"
+                                                     maxlength="50" class="form-control">
+                                              <span class=" form-control-feedback glyphicon glyphicon-eye-open" style=" cursor: pointer; text-decoration: none; overflow: hidden;
+        position: absolute; pointer-events: auto; right: 0px;  z-index: 100;line-height: 1.9;" onclick="viewPassword();">
+                                              </span>
+                                          </div>
+                                      </div>
+                                      <div class="form-group col-xs-12 col-sm-5 col-md-6 NoPadding">
+                                          <div class="col-xs-6 col-form-label">
+                                              <label id="lblHAWBNo" for="txtWeight" class="control-label">Del. Pieces</label>
+                                          </div>
+                                          <div class="col-xs-6 NoPadding">
+                                              <input type="number" style="text-align:right;" id="txtDeliveryPieces"
+                                                     class="form-control" max="9999999" disabled>
+                                          </div>
+                                      </div>
+                                      <div class="form-group col-xs-12 col-sm-5 col-md-6 NoPadding">
+                                          <div class="col-xs-6 col-form-label">
+                                              <label id="lblAWBNo" for="txtDeliveryTo" class="control-label">
+                                                  Del. Gr.
+                                                  Wt.
+                                              </label>
+                                          </div>
+                                          <div class="col-xs-6 NoPadding">
+                                              <input type="text" id="txtDeliveryGrWt" class="form-control" maxlength="20"
+                                                     style="text-align:right;" disabled>
+                                          </div>
+                                      </div>
+                                      <div class="form-group col-xs-12 col-sm-5 col-md-6 NoPadding">
+                                          <div class="col-xs-6 col-form-label">
+                                              <label id="lblHAWBNo" for="txtDeliveryStatus" class="control-label">
+                                                  Del. Ch.
+                                                  Wt.
+                                              </label>
+                                          </div>
+                                          <div class="col-xs-6 NoPadding">
+                                              <input type="text" id="txtDeliveryChWt" class="form-control" maxlength="20"
+                                                     style="text-align:right;" disabled>
+                                          </div>
+                                      </div>
+                                      <div class="form-group col-xs-12 col-sm-5 col-md-6 NoPadding">
+                                          <div class="col-xs-6 col-form-label">
+                                              <label id="lblHAWBNo" for="txtDeliveryStatus"
+                                                     class="control-label">Status</label>
+                                          </div>
+                                          <div class="col-xs-6 NoPadding">
+                                              <input type="text" id="txtDeliveryStatus" class="form-control" maxlength="20"
+                                                     disabled>
+                                          </div>
+                                      </div>
+                                  </div>
 
-                                  </form>
-                              </div>
+                              </form>
                           </div>
-                      </div>-->
-        </div>
+                      </div>
+                  </div>-->
+    </div>
     </div>
     <div>
         <footer class="footer" style="color: white; font-size :12px; background-color:#0967b0;">
