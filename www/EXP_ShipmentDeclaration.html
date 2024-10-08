@@ -292,7 +292,7 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-8 NoPadding">
-                                        <select class="form-control" onchange="fnOffpoint($('#ddlOffpoint').val())" id="ddlCommodity"
+                                        <select class="form-control" onchange="fnOffpoint($('#ddlOffpoint').val())" id="ddlOffpoint"
                                                 style="display:none ;">
                                             <!--<option value="0">Select</option>-->
                                         </select>
@@ -320,7 +320,7 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-8 NoPadding">
-                                        <input id="txtPieces" tabindex="9" onkeyup="ChkMaxLength(this, '4');" onkeypress="return blockSpecialChar(event)" class="form-control" type="number" style="text-align:right;">
+                                        <input id="txtPieces" onblur="CalculateVol_1();" tabindex="9" onkeyup="ChkMaxLength(this, '4');" onkeypress="return blockSpecialChar(event)" class="form-control" type="number" style="text-align:right;">
                                     </div>
 
                                 </div>
@@ -331,7 +331,7 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-8 NoPadding">
-                                        <input id="txtGrWt" tabindex="10" onkeyup="ChkMaxLength(this, '6');" class="form-control" type="number" style="text-align:right;">
+                                        <input id="txtGrWt" onblur="CalculateVol_1();" tabindex="10" onkeyup="ChkMaxLength(this, '6');" class="form-control" type="number" style="text-align:right;">
                                     </div>
 
                                 </div>
@@ -342,7 +342,7 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-8 NoPadding">
-                                        <input id="txtCharWt" tabindex="11" onkeyup="ChkMaxLength(this, '6');" class="form-control" type="number" style="text-align:right;">
+                                        <input id="txtCharWt"  tabindex="11" onkeyup="ChkMaxLength(this, '6');" class="form-control" type="number" style="text-align:right;">
                                     </div>
 
                                 </div>
@@ -437,46 +437,46 @@
                                         <tbody class="theadClass">
                                             <tr id="TextBoxDiv1m">
                                                 <td style="width: 30%;"><select name="part_no[]" class="form-control clsEquTrolley" id="ddlEquTrolley1"></select></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces1"  type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length1"  type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width1"  type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height1" type="number" /></td>
+                                                <td><input onblur="CalculateVol_1();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces1" type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length1" type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width1" type="number" /></td>
+                                                <td><input onblur="CalculateVol_1();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height1" type="number" /></td>
                                                 <!--<td><select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select></td>-->
                                                 <!--<td><button type="button" onclick="removeRow();" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>-->
                                             </tr>
                                             <tr id="TextBoxDiv1m">
                                                 <td style="width: 30%;"><select name="part_no[]" class="form-control clsEquTrolley" id="ddlEquTrolley2"></select></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces2"  type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length2"  type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width2"  type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height2" type="number" /></td>
+                                                <td><input onblur="CalculateVol_2();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces2" type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length2" type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width2" type="number" /></td>
+                                                <td><input onblur="CalculateVol_2();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height2" type="number" /></td>
                                                 <!--<td><select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select></td>-->
                                                 <!--<td><button type="button" onclick="removeRow();" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>-->
                                             </tr>
                                             <tr id="TextBoxDiv1m">
                                                 <td style="width: 30%;"><select name="part_no[]" class="form-control clsEquTrolley" id="ddlEquTrolley3"></select></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces3"  type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length3"  type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width3"  type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height3" type="number" /></td>
+                                                <td><input onblur="CalculateVol_3();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces3" type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length3" type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width3" type="number" /></td>
+                                                <td><input onblur="CalculateVol_3();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height3" type="number" /></td>
                                                 <!--<td><select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select></td>-->
                                                 <!--<td><button type="button" onclick="removeRow();" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>-->
                                             </tr>
                                             <tr id="TextBoxDiv1m">
                                                 <td style="width: 30%;"><select name="part_no[]" class="form-control clsEquTrolley" id="ddlEquTrolley4"></select></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces4"  type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length4"  type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width4"  type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height4" type="number" /></td>
+                                                <td><input onblur="CalculateVol_4();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces4" type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length4" type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width4" type="number" /></td>
+                                                <td><input onblur="CalculateVol_4();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height4" type="number" /></td>
                                                 <!--<td><select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select></td>-->
                                                 <!--<td><button type="button" onclick="removeRow();" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>-->
                                             </tr>
                                             <tr id="TextBoxDiv1m">
                                                 <td style="width: 30%;"><select name="part_no[]" class="form-control clsEquTrolley" id="ddlEquTrolley5"></select></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces5"  type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length5"  type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width5"  type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height5" type="number" /></td>
+                                                <td><input onblur="CalculateVol_5();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces5" type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length5" type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width5" type="number" /></td>
+                                                <td><input onblur="CalculateVol_5();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height5" type="number" /></td>
                                                 <!--<td><select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select></td>-->
                                                 <!--<td><button type="button" onclick="removeRow();" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>-->
                                             </tr>
@@ -528,7 +528,7 @@
 
     <script language="javascript" type="text/javascript">
         $('#RightsReserved').text(' \xA9 Kale Logistics Solutions Private Limited. ' + (new Date).getFullYear().toString());
-       
+
     </script>
 </body>
 

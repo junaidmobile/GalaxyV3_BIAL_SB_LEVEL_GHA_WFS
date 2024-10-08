@@ -6,10 +6,12 @@ var PreferredLanguage = window.localStorage.getItem("PreferredLanguage");
 var GHAExportFlightserviceURL = window.localStorage.getItem("GHAExportFlightserviceURL");
 var ParentChildId;
 var xmlDocForClickSet;
+var ClientName = window.localStorage.getItem("ClientName");
 $(function () {
     document.addEventListener('backbutton', onBackKeyDown, false);
     //document.addEventListener('deviceready', DropDown, false);
    // GetMenuRolesRights();
+    $('#spnClientName').text(ClientName);
 });
 function onBackKeyDown() {
     //if ($('#divDashBoardImport').is(':visible')) {

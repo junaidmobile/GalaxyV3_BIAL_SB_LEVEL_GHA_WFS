@@ -1100,7 +1100,154 @@ function onChangeLenthCheck() {
 
 function onChangeLenthCheckForScanID() {
     if ($('#txtScannedID').val().length == 16) {
-        GetShipmentInfoForAWB();
+        GetShipmentInfoForAWBforScanID();
+    }
+}
+
+function GetShipmentInfoForAWBforScanID() {
+
+    var MAWBPrefix = $('#txtAWBNo').val().substr(0, 3);
+    var MAWBNo = $('#txtAWBNo').val().substr(3, 11);
+
+    $('#txtPackages').val('');
+    $('#txtWeight').val('');
+    $('#txtVolume').val('');
+    $('#txtUnitizedPkgs').val('');
+    $('#txtTotalPkgs').val('');
+    $('#ddlShipmentNo').empty();
+
+    totalPkgs = '';
+    totalWeight = '';
+    totalVol = '';
+
+    prorataWtParam = '';
+    prorataVolParam = '';
+
+    var getULDNo;
+
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+    var isAuto;
+
+    chkAuto = document.getElementById("chkAuto").checked;
+
+    if (chkAuto == true) {
+        isAuto = 'Y';
+        if ($('#txtScannedID').val() == '') {
+            return;
+        }
+    }
+    if (chkAuto == false) {
+        isAuto = 'N';
+        if (MAWBNo == '') {
+            return;
+        }
+
+        if (MAWBNo.length != '8') {
+            //errmsg = "Please enter valid AWB No.";
+            //$.alert(errmsg).css('color', 'red');
+            $('#spnValMsg').text("Please enter valid AWB No.").css('color', 'red');
+            return;
+        }
+    }
+    if (isAuto == 'Y') {
+        var inputXML = '<Root><flightSeqNo>' + FlightSeqNo + '</flightSeqNo><Offpoint>' + $('#ddlOffPoint').find('option:selected').text() + '</Offpoint><AirportCity>' + AirportCity + '</AirportCity><AWBPrefix>' + MAWBPrefix + '</AWBPrefix><AWBNo>' + MAWBNo + '</AWBNo><ScanID>' + $('#txtScannedID').val() + '</ScanID><IsAuto>Y</IsAuto></Root>';
+    }
+    if (isAuto == 'N') {
+        var inputXML = '<Root><flightSeqNo>' + FlightSeqNo + '</flightSeqNo><Offpoint>' + $('#ddlOffPoint').find('option:selected').text() + '</Offpoint><AirportCity>' + AirportCity + '</AirportCity><AWBPrefix>' + MAWBPrefix + '</AWBPrefix><AWBNo>' + MAWBNo + '</AWBNo><ScanID></ScanID><IsAuto>N</IsAuto></Root>';
+    }
+
+    //var inputXML = '<Root><flightSeqNo>' + FlightSeqNo + '</flightSeqNo><Offpoint>' + $('#ddlOffPoint').find('option:selected').text() + '</Offpoint><AirportCity>' + AirportCity + '</AirportCity><AWBPrefix>' + MAWBPrefix + '</AWBPrefix><AWBNo>' + MAWBNo + '</AWBNo><ScanID></ScanID><IsAuto>Y</IsAuto></Root>';
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            //url: GHAExportFlightserviceURL + "UnitizationPendingAWBDetails",
+            url: GHAExportFlightserviceURL + "UnitizationPendingAWBDetails",
+            data: JSON.stringify({ 'InputXML': inputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                // debugger;
+                $("body").mLoading('hide');
+                responsee = response.d;
+
+                strShipmentInfo = responsee;
+
+                var xmlDoc = $.parseXML(responsee);
+
+                $(xmlDoc).find('Table').each(function () {
+
+                    if ($(this).find('Status').text() != 'S') {
+                        //$.alert($(this).find('StrMessage').text());
+                        $('#spnValMsg').text($(this).find('StrMessage').text()).css('color', 'red');
+                        return;
+                    } else {
+
+                    }
+                });
+                var totalPkgs;
+                var totalWeight;
+                $(xmlDoc).find('Table1').each(function (index) {
+                    EXPSHIPROWID = $(this).find('EXPSHIPROWID').text();
+                    var newOption = $('<option></option>');
+                    newOption.val($(this).find('EXPSHIPROWID').text()).text($(this).find('RNo').text());
+                    newOption.appendTo('#ddlShipmentNo');
+                    $('#txtPackages').focus();
+                    $('#ddlShipmentNo').trigger('change');
+                    if (index == 0) {
+                        //$('#txtPackages').val($(this).find('NOP').text());
+                        //$('#txtWeight').val($(this).find('WEIGHT_KG').text());
+                        //$('#txtVolume').val($(this).find('VOLUME').text());
+
+                        $('#txtUnitizedPkgs').val($(this).find('ManNOP').text());
+                        $('#txtTotalPkgs').val($(this).find('NOP').text());
+                        $('#txtNOG').val($(this).find('Nog').text());
+
+                        totalPkgs = $(this).find('NOP').text();
+                        totalWeight = $(this).find('ManWt').text();
+                        //totalVol = $(this).find('VOLUME').text();
+
+                        prorataWtParam = Number(totalWeight) / Number(totalPkgs);
+                        //prorataVolParam = Number(totalVol) / Number(totalPkgs);
+
+                        var newSHC = $(this).find('SHCAll').text();
+                        $("#TextBoxDiv").empty();
+                        SHCSpanHtml(newSHC);
+
+
+                    }
+                });
+
+                chkAuto = document.getElementById("chkAuto").checked;
+                if (chkAuto == true && totalPkgs != undefined && totalWeight != undefined && EXPSHIPROWID != '') {
+
+                    SaveAWBforULDDetailsOnScanID();
+                }
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
     }
 }
 
@@ -1220,10 +1367,7 @@ function GetShipmentInfoForAWB() {
                         $("#TextBoxDiv").empty();
                         SHCSpanHtml(newSHC);
 
-                        chkAuto = document.getElementById("chkAuto").checked;
-                        if (chkAuto == true && totalPkgs != undefined && totalWeight != undefined) {
-                            SaveAWBforULDDetailsOnScanID();
-                        }
+
                     }
                 });
 
@@ -1619,7 +1763,7 @@ function SaveAWBforULDDetailsOnScanID() {
                         $('#txtNOG').val('');
                         $('#txtScannedID').val('');
                         $('#ddlShipmentNo').empty();
-                        GetAWBDetailsForULD();
+                        //GetAWBDetailsForULD();
                         return;
                     }
 
@@ -1678,7 +1822,7 @@ function AutoChkCheck() {
 }
 
 function GetAWBDetailsForULD() {
-   
+
     $('#chkAuto').prop('checked', true);
     $('#txtScannedID').removeAttr('disabled');
     $('#txtAWBNo').attr('disabled', 'disabled');
@@ -1771,8 +1915,9 @@ function GetAWBDetailsForULD() {
 
                         Awb = $(this).find('AWBNo').text().toUpperCase();
                         Pkgs = $(this).find('NOP').text();
-
-                        AddTableLocation(Awb, Pkgs);
+                        AWBRowid = $(this).find('AWBROWID').text();
+                        Color = $(this).find('Color').text();
+                        AddTableLocation(Awb, Pkgs, AWBRowid, Color);
 
                     });
 
@@ -1825,10 +1970,16 @@ function GetAWBDetailsForULD() {
     }
 }
 
-function AddTableLocation(AWB, Pkgs) {
+function AddTableLocation(AWB, Pkgs, AWBRowid, Color) {
 
     html += "<tr>";
-    html += "<td height='30' style='background: rgb(224, 243, 215);padding-left: 4px;font-size:14px'align='center'>" + AWB + "</td>";
+    if (Color == 'B') {
+        html += '<td height="30" style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;color:green;" align="center">' + AWB + '</a></td>';
+
+    } else {
+        html += '<td height="30" style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px" align="center"><a href="#" style="color:red;border-bottom: solid 1px blue;" onclick="UnscannedAWB(\'' + AWBRowid + '\');" href="#">' + AWB + '</a></td>';
+
+    }
     html += "<td height='30' style='background: rgb(224, 243, 215);padding-left: 4px;font-size:14px'align='center'>" + Pkgs + "</td>";
     html += "</tr>";
 
@@ -1881,3 +2032,102 @@ function alertDismissed() {
 }
 
 
+function UnscannedAWB(AWBRowid) {
+
+
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+    InputXML = '<Root><AWBRowid>' + AWBRowid + '</AWBRowid></Root>';
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "UnscannedAWB",
+            data: JSON.stringify({ 'InputXML': InputXML, }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                //$('.dialog-background').css('display', 'block');
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                $("body").mLoading('hide');
+                var str = response.d;
+                var xmlDoc = $.parseXML(str);
+
+                console.log(xmlDoc)
+                if (str != null && str != "") {
+
+                    $(xmlDoc).find('Table').each(function () {
+                        Status = $(this).find('Status').text();
+                        StrMessage = $(this).find('StrMessage').text();
+
+                        if (Status == 'E') {
+                            $('#spnErrormsg').text(StrMessage).css('color', 'red');
+                        }
+                    });
+
+                    $('#divUnScanID').empty();
+                    html = '';
+
+                    html = "<table id='tblNews' border='1' style='width:100%;table-layout:fixed;word-break:break-word;border-color: white;margin-top: 2%;'>";
+                    html += "<thead><tr>";
+                    html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>Piece ID</th>";
+                    html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>Pieces</th>";
+                    //html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>HAWB No.</th>";
+                    //html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>Pieces</th>";
+                    html += "</tr></thead>";
+                    html += "<tbody>";
+
+
+
+                    $(xmlDoc).find('Table1').each(function (index) {
+
+                        RowId = $(this).find('RowId').text();
+                        ScreeningId = $(this).find('ScreeningId').text();
+                        AWBRowId = $(this).find('AWBRowId').text();
+                        StickerNo = $(this).find('StickerNo').text();
+                        PieceNo = $(this).find('PieceNo').text();
+                        AWBPieceNo = $(this).find('AWBPieceNo').text();
+                        
+                        
+
+                        $("#myModalUnScan").modal('show');
+                        $('#spnErrormsg').text('');
+                        allUnScanID(AWBPieceNo, PieceNo);
+
+                    });
+
+
+                    html += "</tbody></table>";
+
+                    if (html != '') {
+                        $('#divUnScanID').append(html);
+                    }
+
+                }
+                else {
+                    errmsg = 'Shipment does not exists';
+                    $.alert(errmsg);
+                }
+
+            },
+            error: function (msg) {
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                //  $.alert(r.Message);
+            }
+        });
+    }
+}
+
+function allUnScanID(stckNo, Pcs) {
+    html += "<tr style='color:red'>";
+    html += "<td height='30' style='background: rgb(224, 243, 215);padding-left: 4px;font-size:14px'align='left'>" + stckNo + "</td>";
+    html += "<td height='30' style='background: rgb(224, 243, 215);padding-left: 4px;font-size:14px'align='left'>" + Pcs + "</td>";
+    //html += "<td height='30' style='background: rgb(224, 243, 215);padding-left: 4px;font-size:14px'align='center'>" + SDA_HAWBNo_C + "</td>";
+    //html += "<td height='30' style='background: rgb(224, 243, 215);padding-left: 4px;font-size:14px'align='center'>" + SDA_PackageCount_I + "</td>";
+    html += "</tr>";
+}

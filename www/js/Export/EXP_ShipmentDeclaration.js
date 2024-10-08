@@ -332,6 +332,7 @@ $(function () {
 
 
 
+
 });
 
 
@@ -3205,9 +3206,11 @@ function GetCommodityDataV3() {
                     var SrNO = $(this).find('SrNO').text();
                     var Description = $(this).find('Description').text();
                     /* $('#txtConsignee').val(Name);*/
+
                     var newOption = $('<option></option>');
                     newOption.val(SrNO).text(Description);
                     newOption.appendTo('#ddlCommodity');
+
                     commodiyCode.push({ 'value': SrNO, 'label': Description });
                     _data = JSON.stringify(commodiyCode);
 
@@ -3291,4 +3294,175 @@ function GetCommodityDataV3() {
     else {
         $("body").mLoading('hide');
     }
+}
+
+var allVolumn_1;
+var allCharWt_1;
+
+var allVolumn_2;
+var allCharWt_2;
+
+var allVolumn_3;
+var allCharWt_3;
+
+var allVolumn_4;
+var allCharWt_4;
+
+var allVolumn_5;
+var allCharWt_5;
+
+function CalculateVol_1() {
+    if ($("#Pieces1").val() == '') {
+        return;
+    }
+    if ($("#Height1").val() == '') {
+        return;
+    }
+    if ($("#txtPieces").val() == '') {
+        return;
+    }
+    if ($("#txtGrWt").val() == '') {
+        return;
+    }
+    var Volume;
+    Volume =
+        ($("#Length1").val() *
+            $("#Width1").val() *
+            $("#Height1").val() *
+            // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
+            $("#Pieces1").val()) /
+        6000;
+
+    tofixed = Volume.toFixed(2);
+    var GrWtForShow = $("#Length1").val() * $("#txtGrWt").val() / $("#txtPieces").val();
+    $("#txtCharWt").val(GrWtForShow.toFixed(2));
+    $("#txtVolume").val(tofixed);
+    allVolumn_1 = tofixed;
+    allCharWt_1 = GrWtForShow.toFixed(2);
+}
+
+
+function CalculateVol_2() {
+    if ($("#Pieces2").val() == '') {
+        return;
+    }
+    if ($("#Height2").val() == '') {
+        return;
+    }
+    if ($("#txtPieces").val() == '') {
+        return;
+    }
+    if ($("#txtGrWt").val() == '') {
+        return;
+    }
+    var Volume;
+    Volume =
+        ($("#Length2").val() *
+            $("#Width2").val() *
+            $("#Height2").val() *
+            // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
+            $("#Pieces2").val()) /
+        6000;
+    tofixed = Volume.toFixed(2);
+    var GrWtForShow = $("#Length2").val() * $("#txtGrWt").val() / $("#txtPieces").val();
+    allVolumn_2 = parseFloat(tofixed);
+    allCharWt_2 = parseFloat(GrWtForShow.toFixed(2));
+    var sv_1 = parseFloat(allVolumn_1) + parseFloat(allVolumn_2);
+    var chwt_1 = parseFloat(allCharWt_1) + parseFloat(allCharWt_2);
+    $("#txtCharWt").val(chwt_1.toFixed(2));
+    $("#txtVolume").val(sv_1.toFixed(2));
+}
+
+
+function CalculateVol_3() {
+    if ($("#Pieces3").val() == '') {
+        return;
+    }
+    if ($("#Height3").val() == '') {
+        return;
+    }
+    if ($("#txtPieces").val() == '') {
+        return;
+    }
+    if ($("#txtGrWt").val() == '') {
+        return;
+    }
+    var Volume;
+    Volume =
+        ($("#Length3").val() *
+            $("#Width3").val() *
+            $("#Height3").val() *
+            // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
+            $("#Pieces3").val()) /
+        6000;
+    tofixed = Volume.toFixed(2);
+    var GrWtForShow = $("#Length3").val() * $("#txtGrWt").val() / $("#txtPieces").val();
+    allVolumn_3 = parseFloat(tofixed);
+    allCharWt_3 = parseFloat(GrWtForShow.toFixed(2));
+    var sv_1 = parseFloat(allVolumn_1) + parseFloat(allVolumn_2) + parseFloat(allVolumn_3);
+    var chwt_1 = parseFloat(allCharWt_1) + parseFloat(allCharWt_2) + parseFloat(allCharWt_3);
+    $("#txtCharWt").val(chwt_1.toFixed(2));
+    $("#txtVolume").val(sv_1.toFixed(2));
+}
+
+function CalculateVol_4() {
+    if ($("#Pieces4").val() == '') {
+        return;
+    }
+    if ($("#Height4").val() == '') {
+        return;
+    }
+    if ($("#txtPieces").val() == '') {
+        return;
+    }
+    if ($("#txtGrWt").val() == '') {
+        return;
+    }
+    var Volume;
+    Volume =
+        ($("#Length4").val() *
+            $("#Width4").val() *
+            $("#Height4").val() *
+            // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
+            $("#Pieces4").val()) /
+        6000;
+    tofixed = Volume.toFixed(2);
+    var GrWtForShow = $("#Length4").val() * $("#txtGrWt").val() / $("#txtPieces").val();
+    allVolumn_4 = parseFloat(tofixed);
+    allCharWt_4 = parseFloat(GrWtForShow.toFixed(2));
+    var sv_1 = parseFloat(allVolumn_1) + parseFloat(allVolumn_2) + parseFloat(allVolumn_3) + parseFloat(allVolumn_4);
+    var chwt_1 = parseFloat(allCharWt_1) + parseFloat(allCharWt_2) + parseFloat(allCharWt_3) + parseFloat(allCharWt_4);
+    $("#txtCharWt").val(chwt_1.toFixed(2));
+    $("#txtVolume").val(sv_1.toFixed(2));
+}
+
+function CalculateVol_5() {
+    if ($("#Pieces5").val() == '') {
+        return;
+    }
+    if ($("#Height5").val() == '') {
+        return;
+    }
+    if ($("#txtPieces").val() == '') {
+        return;
+    }
+    if ($("#txtGrWt").val() == '') {
+        return;
+    }
+    var Volume;
+    Volume =
+        ($("#Length5").val() *
+            $("#Width5").val() *
+            $("#Height5").val() *
+            // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
+            $("#Pieces5").val()) /
+        6000;
+    tofixed = Volume.toFixed(2);
+    var GrWtForShow = $("#Length5").val() * $("#txtGrWt").val() / $("#txtPieces").val();
+    allVolumn_5 = parseFloat(tofixed);
+    allCharWt_5 = parseFloat(GrWtForShow.toFixed(2));
+    var sv_1 = parseFloat(allVolumn_1) + parseFloat(allVolumn_2) + parseFloat(allVolumn_3) + parseFloat(allVolumn_5);
+    var chwt_1 = parseFloat(allCharWt_1) + parseFloat(allCharWt_2) + parseFloat(allCharWt_3) + parseFloat(allCharWt_5);
+    $("#txtCharWt").val(chwt_1.toFixed(2));
+    $("#txtVolume").val(sv_1.toFixed(2));
 }

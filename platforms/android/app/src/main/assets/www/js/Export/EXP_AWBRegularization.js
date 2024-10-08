@@ -34,11 +34,14 @@ var _SBId;
 var autoLocationArray;
 $(function () {
 
+
+    fnCurrentDate();
+
     if (window.localStorage.getItem("RoleIMPBinning") == '0') {
         window.location.href = 'IMP_Dashboard.html';
     }
 
-  //  document.addEventListener('deviceready', AddLocation, false);
+    //  document.addEventListener('deviceready', AddLocation, false);
     //document.addEventListener('deviceready', AddingTestLocation, false);
 
     // ImportDataList();
@@ -183,7 +186,15 @@ function ChangeAWBNo_GetData() {
                         ChWt = $(this).find('ChWt').text();
                         Commodity = $(this).find('Commodity').text();
                         Agent = $(this).find('Agent').text();
-
+                        CARRIER_CODE = $(this).find('CARRIER_CODE').text();
+                        FLIGHT_NUMBER = $(this).find('FLIGHT_NUMBER').text();
+                        FLIGHT_DATE = $(this).find('FLIGHT_DATE').text();
+                        $('#txtFlightPrefix').val(CARRIER_CODE);
+                        $('#txtFlightNo').val(FLIGHT_NUMBER);
+                        
+                        var newdate = FLIGHT_DATE.split("-").reverse().join("-");
+                        alert(newdate)
+                        $('#txtFlightDate').val(FLIGHT_DATE);
 
                         OldAWBNoDetails(Pieces, GrWt, ChWt, Commodity, Agent);
                     });
@@ -253,7 +264,7 @@ function grplength() {
 function OldAWBNoDetails(Pieces, GrWt, ChWt, Commodity, Agent) {
 
     html += '<table id="tblOldAWBDetails" class="table table-striped table-bordered" style="font-size: 20px; margin-top: 10px !important; margin-bottom: 0px; ">';
-   // html += '<thead style="background-color:rgb(208, 225, 244);">';
+    // html += '<thead style="background-color:rgb(208, 225, 244);">';
     html += '<tbody>';
     html += '<tr>';
     html += '<td>Pieces</td><td class="txtRight">' + Pieces + '</td>';
@@ -270,8 +281,8 @@ function OldAWBNoDetails(Pieces, GrWt, ChWt, Commodity, Agent) {
     html += '<tr>';
     html += '<td>Agent Name </td><td>' + Agent + '</td>';
     html += '</tr>';
-   // html += '</thead>';
-   
+    // html += '</thead>';
+
 
     //html += '<tr>';
     //html += '<td style="background: rgb(224, 243, 215);">' + Pieces + '</td>';
@@ -304,7 +315,11 @@ function ChangeAWBNo_SaveData() {
     }
 
     // var InputXML = '<Root> <OldAWBNo>' + $('#txtAWBNo').val() + '</OldAWBNo> <AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode></Root>';
-    var InputXML = '<Root> <OldAWBNo>' + $('#txtAWBNo').val() + '</OldAWBNo><NewAWBNo>' + $('#txtNewAWBNo').val() + '</NewAWBNo><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode><CreatedBy>' + UserID + '</CreatedBy></Root>';
+    //var InputXML = '<Root> <OldAWBNo>' + $('#txtAWBNo').val() + '</OldAWBNo><NewAWBNo>' + $('#txtNewAWBNo').val() + '</NewAWBNo><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode><CreatedBy>' + UserID + '</CreatedBy></Root>';
+
+
+    var InputXML = '<Root><OldAWBNo>' + $('#txtAWBNo').val() + '</OldAWBNo><NewAWBNo>' + $('#txtNewAWBNo').val() + '</NewAWBNo><NewfltAirline>' + $('#txtFlightPrefix').val() + '</NewfltAirline><NewFlihtNo>' + $('#txtFlightNo').val() + '</NewFlihtNo><NewFlightDate>' + $('#txtFlightDate').val() + '</NewFlightDate><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode><CreatedBy>' + UserID + '</CreatedBy></Root>';
+
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
@@ -342,15 +357,19 @@ function ChangeAWBNo_SaveData() {
                         $("#spnErrormsg").text('');
                         $("#spnErrormsg").text(StrMessage).css('color', 'green');
                         $('#txtAWBNo').focus();
-
+                        $('#txtFlightPrefix').val('');
+                        $('#txtFlightNo').val('');
+                        fnCurrentDate();
                     }
 
 
                 });
             },
-            error: function (msg) {
+            error: function (xhr, textStatus, errorThrown) {
                 $("body").mLoading('hide');
-                $.alert(msg.d);
+                //alert('Server not responding...');
+                console.log(xhr.responseText);
+                alert(xhr.responseText);
             }
         });
         return false;
@@ -362,11 +381,34 @@ function ChangeAWBNo_SaveData() {
 
 function clearALL() {
     $('#txtAWBNo').val('');
+    $('#txtFlightPrefix').val('');
+    $('#txtFlightNo').val('');
     $('#txtNewAWBNo').val('');
     $('#divVCTDetail').empty();
     $('#spnErrormsg').text('');
     $('#txtAWBNo').focus();
 
+   
+
+
+}
+
+function fnCurrentDate() {
+    var formattedDate = new Date();
+    var d = formattedDate.getDate();
+    if (d.toString().length < Number(2))
+        d = '0' + d;
+    var m = formattedDate.getMonth();
+    m += 1;  // JavaScript months are 0-11
+    if (m.toString().length < Number(2))
+        m = '0' + m;
+    var y = formattedDate.getFullYear();
+    var t = formattedDate.getTime();
+    var date = m.toString() + '/' + d.toString() + '/' + y.toString();
+
+    newDate = y.toString() + '-' + m.toString() + '-' + d.toString();
+    
+    $('#txtFlightDate').val(newDate);
 }
 
 function ClearIGM() {

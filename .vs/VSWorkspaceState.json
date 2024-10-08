@@ -1,6 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\www",
+    "\\www\\js",
+    "\\www\\js\\Export"
   ],
+  "SelectedNode": "\\www\\js\\Export\\EXP_VCTAcceptance.js",
   "PreviewInSolutionExplorer": false
 }

@@ -1,13 +1,8 @@
-﻿(function () {
+﻿
+$(function () {
     document.addEventListener('backbutton', onBackKeyDown, false);
-    //document.addEventListener('deviceready', DropDown, false);
-
-    //if (window.localStorage.getItem("RoleExpVehicleTracking") == '0')
-    //    $("#divVehicleTracking").css("display", "none");
-    //if (window.localStorage.getItem("RoleExpVehicleTracking") == '0')
-    //    $("#divVehicleTracking").css("display", "none");
-}
-)();
+    $('#spnClientName').val(ClientName);
+});
 
 function onBackKeyDown() {
     window.location.href = 'GalaxyHome.html';

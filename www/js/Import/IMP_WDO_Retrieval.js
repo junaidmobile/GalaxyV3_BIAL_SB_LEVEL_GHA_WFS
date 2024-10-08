@@ -408,7 +408,7 @@ function gatePassNoDetails(WDONo, AWBNo, IsLocked, IsCompleted, WDOStatus, WareH
 
             if (IsLockFlag == 'Y') {
                 if (IsLocked == '1') {
-                    html += '<td style="text-align: center;"><a   class="button" disabled="disabled">Start</a></td>';
+                    html += '<td style="text-align: center;"><a style="color:red;"  class="button" disabled="disabled">Locked</a></td>';
 
                 } else {
                     html += '<td style="text-align: center;"><a onclick="goToGPDetailsPage(\'' + WDONo + '\',\'' + AWBNo + '\',\'' + GroupId + '\',\'' + IsLockFlag + '\');"  class="button">Start</a></td>';

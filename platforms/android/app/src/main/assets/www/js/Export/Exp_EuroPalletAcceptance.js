@@ -144,7 +144,7 @@ function GetAWBForSlotNumber() {
 
 function onKeyPressVTNo() {
 
-    if ($('#txtVCTNo').val().length == 15) {
+    if ($('#txtVCTNo').val().length == 11) {
         GetVCTDetailsForTDGAcceptance('true', 'true');
         $('#txtDoor').focus()
     }
@@ -878,6 +878,8 @@ function GetVCTUnScanDetail() {
                 $("body").mLoading('hide');
                 var str = response.d;
                 var xmlDoc = $.parseXML(str);
+
+                console.log(xmlDoc)
                 if (str != null && str != "") {
 
                     $(xmlDoc).find('Table').each(function () {

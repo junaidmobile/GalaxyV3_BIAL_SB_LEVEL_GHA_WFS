@@ -8,12 +8,7 @@ var AirportCity = window.localStorage.getItem("SHED_AIRPORT_CITY");
 
 $(function () {
     document.addEventListener('backbutton', onBackKeyDown, false);
-    //document.addEventListener('deviceready', DropDown, false);
-   // GetMenuRolesRights();
-    //if (window.localStorage.getItem("RoleExpVehicleTracking") == '0')
-    //    $("#divVehicleTracking").css("display", "none");
-    //if (window.localStorage.getItem("RoleExpVehicleTracking") == '0')
-    //    $("#divVehicleTracking").css("display", "none");
+    $('#spnClientName').val(ClientName);
 });
 
 function onBackKeyDown() {

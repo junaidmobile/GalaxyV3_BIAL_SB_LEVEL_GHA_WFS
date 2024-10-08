@@ -318,7 +318,7 @@ function fnPackageIDList(TrollyRowId, FlightSeqNo, TrolleyNumber, StickerValue, 
     html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px">' + TrolleyNumber + '</td>';
     /* html += '<td style="background: rgb(224, 243, 215);">' + TrolleyStatus + '</td>';*/
     // html += '<td style="background: rgb(224, 243, 215);">  <a style="text-align: center;argin-left: 5px;background-color: #065da1;color: #fff;" type="button" onclick="getFormatedPRNText(\'' + HAWBNo + '\',\'' + Destination + '\',\'' + IGMNo + '\',\'' + MAWBNo + '\',\'' + PkgOfPkgCount + '\',\'' + FlightArrivalDate + '\',\'' + FlightArrivalTime + '\',\'' + CleintName + '\',\'' + MPSNo + '\',\'' + PackageId + '\');"class=" form-control glyphicon glyphicon-print"></a></td>';
-    html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px">  <a style="text-align: center;margin-left: 5px;color: #000;background-color: rgb(224, 243, 215);"  onclick="GetTrolleyDetailsonClickPrint(\'' + TrollyRowId + '\',\'' + ULDType + '\');"class=" form-control glyphicon glyphicon-print"></a></td>';
+    html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px">  <a style="text-align: center;margin-left: 5px;color: #000;background-color: rgb(224, 243, 215);"  onclick="GetTrolleyDetailsonClickPrint(\'' + TrollyRowId + '\',\'' + ULDType + '\');" class=" form-control glyphicon glyphicon-print"></a></td>';
     //html += '<td style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align:right;padding-right: 4px;">' + Remarks + '</td>';
     html += '</tr>';
     //  }

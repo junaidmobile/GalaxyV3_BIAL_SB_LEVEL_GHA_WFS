@@ -158,7 +158,7 @@ function ProcessLogin() {
                         window.localStorage.setItem("SHED_AIRPORT_CITY", $(this).find('SHED_AIRPORT_CITY').text());
                         window.localStorage.setItem("SHED_CODE", $(this).find('SHED_CODE').text());
                         window.localStorage.setItem("PreferredLanguage", $(this).find('PreferredLanguage').text());
-
+                        window.localStorage.setItem("ClientName", $(this).find("ClientName").text());
                         window.localStorage.setItem("GHAserviceURL", GHAserviceURL);
                         window.localStorage.setItem("GHAImportFlightserviceURL", GHAImportFlightserviceURL);
                         window.localStorage.setItem("GHAExportFlightserviceURL", GHAExportFlightserviceURL);
