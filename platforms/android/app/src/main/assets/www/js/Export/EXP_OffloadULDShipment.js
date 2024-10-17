@@ -39,7 +39,7 @@ function onMenuKeyDown() {
 }
 
 $(function () {
-
+    GetButtonRights_v3();
     if (window.localStorage.getItem("RoleExpUnitization") == '0') {
         window.location.href = 'EXP_Dashboard.html';
     }
@@ -242,7 +242,7 @@ function AutoChkCheck() {
     chkAuto = document.getElementById("chkAuto").checked;
     clearAWBDetails();
     if (chkAuto == true) {
-        $('#btnOffload').attr('disabled', 'disabled');
+       // $('#btnOffload').attr('disabled', 'disabled');
         $('#txtAWBNo').attr('disabled', 'disabled');
         $('#txtScannedID').removeAttr('disabled');
         $('#txtScannedID').focus();
@@ -257,7 +257,7 @@ function AutoChkCheck() {
         $('#txtAWBNo').focus();
         $('#txtAWBNo').val('');
         $('#txtScannedID').val('');
-        $('#btnOffload').removeAttr('disabled');
+       // $('#btnOffload').removeAttr('disabled');
 
 
     }
@@ -2335,3 +2335,79 @@ function ClearError(ID) {
 }
 
 function alertDismissed() { }
+
+
+function GetButtonRights_v3() {
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var inputXML = '<Root><ParentChildId>' + _ParentChildId + '</ParentChildId><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + CompanyCode + '</CompanyCode><UserId>' + UserId + '</UserId><Culture>' + PreferredLanguage + '</Culture></Root>';
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "GetButtonRights_v3",
+            data: JSON.stringify({ 'InputXML': inputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;                
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                console.log(xmlDoc)
+                $(xmlDoc).find('Table1').each(function (index) {
+
+                    ButtonId = $(this).find('ButtonId').text();
+                    ButtonName = $(this).find('ButtonName').text();
+                    IsEnable = $(this).find('IsEnable').text();
+
+
+                    if (index == 0) {
+                        if (ButtonId == 'btnGet' && IsEnable == 'Y') {
+                            $("#btnGet").removeAttr('disabled');
+                        } else {
+                            $("#btnGet").attr('disabled', 'disabled');
+
+                        }
+                    }
+
+                    if (index == 1) {
+                        if (ButtonId == 'btnOffload' && IsEnable == 'Y') {
+                            $("#btnOffload").removeAttr('disabled');
+                        } else {
+                            $("#btnOffload").attr('disabled', 'disabled');
+
+                        }
+                    }
+                   
+
+                });
+
+            },
+            error: function (msg) {
+                //debugger;
+                HideLoader();
+                var r = jQuery.parseJSON(msg.responseText);
+                alert("Message: " + r.Message);
+            }
+
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}

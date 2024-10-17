@@ -21,7 +21,7 @@ var currentDate;
 var currentYear;
 var QuestionaireId;
 $(function () {
-
+    GetButtonRights_v3();
     if (window.localStorage.getItem("RoleIMPBinning") == '0') {
         window.location.href = 'IMP_Dashboard.html';
     }
@@ -757,6 +757,79 @@ function GetExportCheckListSave() {
                 var r = jQuery.parseJSON(msg.responseText);
                 $.alert(r.Message);
             }
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}
+
+
+function GetButtonRights_v3() {
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var inputXML = '<Root><ParentChildId>' + _ParentChildId + '</ParentChildId><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + CompanyCode + '</CompanyCode><UserId>' + UserId + '</UserId><Culture>' + PreferredLanguage + '</Culture></Root>';
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "GetButtonRights_v3",
+            data: JSON.stringify({ 'InputXML': inputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;                
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                console.log(xmlDoc)
+                $(xmlDoc).find('Table1').each(function (index) {
+
+                    ButtonId = $(this).find('ButtonId').text();
+                    ButtonName = $(this).find('ButtonName').text();
+                    IsEnable = $(this).find('IsEnable').text();
+
+                    //if (index == 0) {
+                    //    if (ButtonId == 'btnUpload' && IsEnable == 'Y') {
+                    //        $("#btnUpload").removeAttr('disabled');
+                    //    } else {
+                    //        $("#btnUpload").attr('disabled', 'disabled');
+
+                    //    }
+                    //}
+                    if (index == 0) {
+                        if (ButtonId == 'btnNextBase' && IsEnable == 'Y') {
+                            $("#btnNextBase").removeAttr('disabled');
+                        } else {
+                            $("#btnNextBase").attr('disabled', 'disabled');
+
+                        }
+                    }
+
+                });
+
+            },
+            error: function (msg) {
+                //debugger;
+                HideLoader();
+                var r = jQuery.parseJSON(msg.responseText);
+                alert("Message: " + r.Message);
+            }
+
         });
     }
     else if (connectionStatus == "offline") {

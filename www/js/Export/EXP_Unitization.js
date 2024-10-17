@@ -35,7 +35,7 @@ function onMenuKeyDown() {
     HHTLogout();
 }
 $(function () {
-
+    GetButtonRights_v3();
     if (window.localStorage.getItem("RoleExpUnitization") == '0') {
         window.location.href = 'EXP_Dashboard.html';
     }
@@ -2130,4 +2130,87 @@ function allUnScanID(stckNo, Pcs) {
     //html += "<td height='30' style='background: rgb(224, 243, 215);padding-left: 4px;font-size:14px'align='center'>" + SDA_HAWBNo_C + "</td>";
     //html += "<td height='30' style='background: rgb(224, 243, 215);padding-left: 4px;font-size:14px'align='center'>" + SDA_PackageCount_I + "</td>";
     html += "</tr>";
+}
+
+
+function GetButtonRights_v3() {
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var inputXML = '<Root><ParentChildId>' + _ParentChildId + '</ParentChildId><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + CompanyCode + '</CompanyCode><UserId>' + UserId + '</UserId><Culture>' + PreferredLanguage + '</Culture></Root>';
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "GetButtonRights_v3",
+            data: JSON.stringify({ 'InputXML': inputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;                
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                console.log(xmlDoc)
+                $(xmlDoc).find('Table1').each(function (index) {
+
+                    ButtonId = $(this).find('ButtonId').text();
+                    ButtonName = $(this).find('ButtonName').text();
+                    IsEnable = $(this).find('IsEnable').text();
+
+                   
+                    if (index == 0) {
+                        if (ButtonId == 'btnAddULD' && IsEnable == 'Y') {
+                            $("#btnAddULD").removeAttr('disabled');
+                        } else {
+                            $("#btnAddULD").attr('disabled', 'disabled');
+
+                        }
+                    }
+
+                    if (index == 1) {
+                        if (ButtonId == 'btnAddAWB' && IsEnable == 'Y') {
+                            $("#btnAddAWB").removeAttr('disabled');
+                        } else {
+                            $("#btnAddAWB").attr('disabled', 'disabled');
+
+                        }
+                    }
+                    if (index == 2) {
+                        if (ButtonId == 'btnCloseULDBulk' && IsEnable == 'Y') {
+                            $("#btnCloseULDBulk").removeAttr('disabled');
+                        } else {
+                            $("#btnCloseULDBulk").attr('disabled', 'disabled');
+
+                        }
+                    }
+
+                });
+
+            },
+            error: function (msg) {
+                //debugger;
+                HideLoader();
+                var r = jQuery.parseJSON(msg.responseText);
+                alert("Message: " + r.Message);
+            }
+
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
 }

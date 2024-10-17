@@ -22,7 +22,7 @@ var IMPSHIPROWID;
 var _DamageDataXML2, _ShipTotalPcsXML2, _PackagingXML3, _OuterPackingXML4, _InnerPackingXML5, _IsSufficientXML6;
 var _DamageObserContainersXML7, _SpaceForMissingXML8, _SpaceForMissingXML9, _DamageRemarkedXML10, _DispositionXML11;
 $(document).ready(function () {
-
+    GetButtonRights_v3();
     if (localStorage.getItem('AWB_Number') != null && localStorage.getItem('HAWB_Number') != null && localStorage.getItem('Flight_Seq_No')) {
         $("#txtAWBNo").val(localStorage.getItem('AWB_Number'));
         $("#txtScanAWBNo").val(localStorage.getItem('AWB_Number'));
@@ -534,3 +534,90 @@ function GetImportDamageRecordDetails(ids) {
 
 
 
+function GetButtonRights_v3() {
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var inputXML = '<Root><ParentChildId>' + _ParentChildId + '</ParentChildId><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + CompanyCode + '</CompanyCode><UserId>' + UserId + '</UserId><Culture>' + PreferredLanguage + '</Culture></Root>';
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "GetButtonRights_v3",
+            data: JSON.stringify({ 'InputXML': inputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;                
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                console.log(xmlDoc)
+                $(xmlDoc).find('Table1').each(function (index) {
+
+                    ButtonId = $(this).find('ButtonId').text();
+                    ButtonName = $(this).find('ButtonName').text();
+                    IsEnable = $(this).find('IsEnable').text();
+
+                    if (index == 0) {
+                        if (ButtonId == 'btnNextBase' && IsEnable == 'Y') {
+                            $("#btnNextBase").removeAttr('disabled');
+                        } else {
+                            $("#btnNextBase").attr('disabled', 'disabled');
+
+                        }
+                    }
+                    if (index == 1) {
+                        if (ButtonId == 'btnGetDetail' && IsEnable == 'Y') {
+                            $("#btnGetDetail").removeAttr('disabled');
+                        } else {
+                            $("#btnGetDetail").attr('disabled', 'disabled');
+
+                        }
+                    }
+                    if (index == 2) {
+                        if (ButtonId == 'btnATA' && IsEnable == 'Y') {
+                            $("#btnATA").removeAttr('disabled');
+                        } else {
+                            $("#btnATA").attr('disabled', 'disabled');
+
+                        }
+                    }
+                    if (index == 3) {
+                        if (ButtonId == 'btnFinalize' && IsEnable == 'Y') {
+                            $("#btnFinalize").removeAttr('disabled');
+                        } else {
+                            $("#btnFinalize").attr('disabled', 'disabled');
+
+                        }
+                    }
+
+                });
+
+            },
+            error: function (msg) {
+                //debugger;
+                HideLoader();
+                var r = jQuery.parseJSON(msg.responseText);
+                alert("Message: " + r.Message);
+            }
+
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}

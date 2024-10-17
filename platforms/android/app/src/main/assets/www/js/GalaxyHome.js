@@ -10,8 +10,9 @@ var ClientName = window.localStorage.getItem("ClientName");
 $(function () {
     document.addEventListener('backbutton', onBackKeyDown, false);
     //document.addEventListener('deviceready', DropDown, false);
-   // GetMenuRolesRights();
+    // GetMenuRolesRights();
     $('#spnClientName').text(ClientName);
+    GetMenuRolesRights();
 });
 function onBackKeyDown() {
     //if ($('#divDashBoardImport').is(':visible')) {
@@ -119,6 +120,13 @@ function GetMenuRolesRights() {
                 var xmlDoc = $.parseXML(response);
                 xmlDocForClickSet = xmlDoc
                 console.log(xmlDoc);
+
+                //if (response.includes('Table1') == true) {
+                //    if (response.includes('Table1') == true) {
+
+                //    }
+                //}
+
                 $(xmlDoc).find('Table').each(function (index) {
                     Status = $(this).find('Status').text();
                     StrMessage = $(this).find('StrMessage').text();
@@ -127,6 +135,7 @@ function GetMenuRolesRights() {
 
                     }
                 });
+
                 $(xmlDoc).find('Table1').each(function (index) {
                     MenuName = $(this).find('MENUNAME').text();
                     ControlName = $(this).find('ControlName').text();
@@ -136,9 +145,10 @@ function GetMenuRolesRights() {
                     Sequence = $(this).find('Sequence').text();
                     ShortKey = $(this).find('ShortKey').text();
                     ParentChildId = $(this).find('ParentChildId').text();
+                    IsEnable = $(this).find('IsEnable').text();
 
                     if (index == 0) {
-                        if (ControlId == 'divImportMenu') {
+                        if (ControlId == 'divImportMenu' && IsEnable == 'Y') {
                             $('#divImportMenu').show();
                         } else {
                             $('#divImportMenu').hide();
@@ -146,7 +156,7 @@ function GetMenuRolesRights() {
                     }
 
                     if (index == 1) {
-                        if (ControlId == 'divExportMenu') {
+                        if (ControlId == 'divExportMenu' && IsEnable == 'Y') {
                             $('#divExportMenu').show();
                         } else {
                             $('#divExportMenu').hide();
@@ -154,7 +164,7 @@ function GetMenuRolesRights() {
                     }
 
                     if (index == 2) {
-                        if (ControlId == 'divVTMenu') {
+                        if (ControlId == 'divVTMenu' && IsEnable == 'Y') {
                             $('#divVTMenu').show();
                         } else {
                             $('#divVTMenu').hide();

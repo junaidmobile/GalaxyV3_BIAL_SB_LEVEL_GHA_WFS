@@ -109,6 +109,8 @@ var WtUOM;
 var filteredArrforno = [];
 $(function () {
 
+    GetButtonRights_v3();
+
     var formattedDate = new Date();
     var d = formattedDate.getDate();
     if (d.toString().length < Number(2))
@@ -330,7 +332,10 @@ $(function () {
     });
 
 
-
+    $('#txtFlightDate').change(function () {
+        var date = $(this).val();
+        GetFlightRoutingDetails_V3(date)
+    });
 
 
 });
@@ -339,7 +344,7 @@ $(function () {
 
 getAllValues = function () {
 
-    if ($('#ddlEquTrolley1').val() != '-1') {
+    if ($('#ddlEquTrolley1').val() != '-1' && $('#ddlEquTrolley1').val() != null) {
 
         if ($("#Pieces1").val() == '') {
             $("#Pieces1").css('background-color', '#FFCCCB');
@@ -379,7 +384,7 @@ getAllValues = function () {
         $("#Height1").css('background-color', 'white');
     }
 
-    if ($('#ddlEquTrolley2').val() != '-1') {
+    if ($('#ddlEquTrolley2').val() != '-1' && $('#ddlEquTrolley2').val() != null) {
 
         if ($("#Pieces2").val() == '') {
             $("#Pieces2").css('background-color', '#FFCCCB');
@@ -420,7 +425,7 @@ getAllValues = function () {
         $("#Height2").css('background-color', 'white');
     }
 
-    if ($('#ddlEquTrolley3').val() != '-1') {
+    if ($('#ddlEquTrolley3').val() != '-1' && $('#ddlEquTrolley3').val() != null) {
 
         if ($("#Pieces3").val() == '') {
             $("#Pieces3").css('background-color', '#FFCCCB');
@@ -461,7 +466,7 @@ getAllValues = function () {
         $("#Height3").css('background-color', 'white');
     }
 
-    if ($('#ddlEquTrolley4').val() != '-1') {
+    if ($('#ddlEquTrolley4').val() != '-1' && $('#ddlEquTrolley4').val() != null) {
 
         if ($("#Pieces4").val() == '') {
             $("#Pieces4").css('background-color', '#FFCCCB');
@@ -502,7 +507,7 @@ getAllValues = function () {
         $("#Height4").css('background-color', 'white');
     }
 
-    if ($('#ddlEquTrolley5').val() != '-1') {
+    if ($('#ddlEquTrolley5').val() != '-1' && $('#ddlEquTrolley5').val() != null) {
 
         if ($("#Pieces5").val() == '') {
             $("#Pieces5").css('background-color', '#FFCCCB');
@@ -547,7 +552,7 @@ getAllValues = function () {
     var three = "";
     var foure = "";
     var five = "";
-    if ($('#ddlEquTrolley1').val() != '-1') {
+    if ($('#ddlEquTrolley1').val() != '-1' && $('#ddlEquTrolley1').val() != null) {
 
         selectedVal = $('#ddlEquTrolley1').val();
         var arr = selectedVal.split('~')
@@ -572,7 +577,7 @@ getAllValues = function () {
         // $("#ddlUnit1").val()
     }
 
-    if ($('#ddlEquTrolley2').val() != '-1') {
+    if ($('#ddlEquTrolley2').val() != '-1' && $('#ddlEquTrolley2').val() != null) {
 
         selectedVal = $('#ddlEquTrolley2').val();
         var arr = selectedVal.split('~')
@@ -597,7 +602,7 @@ getAllValues = function () {
         // $("#ddlUnit1").val()
     }
 
-    if ($('#ddlEquTrolley3').val() != '-1') {
+    if ($('#ddlEquTrolley3').val() != '-1' && $('#ddlEquTrolley3').val() != null) {
 
         selectedVal = $('#ddlEquTrolley3').val();
         var arr = selectedVal.split('~')
@@ -622,7 +627,7 @@ getAllValues = function () {
         // $("#ddlUnit1").val()
     }
 
-    if ($('#ddlEquTrolley4').val() != '-1') {
+    if ($('#ddlEquTrolley4').val() != '-1' && $('#ddlEquTrolley4').val() != null) {
 
         selectedVal = $('#ddlEquTrolley4').val();
         var arr = selectedVal.split('~')
@@ -647,7 +652,7 @@ getAllValues = function () {
         // $("#ddlUnit1").val()
     }
 
-    if ($('#ddlEquTrolley5').val() != '-1') {
+    if ($('#ddlEquTrolley5').val() != '-1' && $('#ddlEquTrolley5').val() != null) {
 
         selectedVal = $('#ddlEquTrolley5').val();
         var arr = selectedVal.split('~')
@@ -801,11 +806,9 @@ function checkSpecialCharship() {
 
 function GetAWBDetailSearch_V3() {
 
-
     if ($('#txtAWBNo').val() == '') {
         return;
     }
-
 
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
@@ -1111,7 +1114,7 @@ function GetAWBDetailSearch_V3() {
 
                     });
 
-                    $("#btnSubmit").attr('disabled', 'disabled');
+
                 } else {
 
                     $(xmlDoc).find('Table4').each(function (index) {
@@ -1148,7 +1151,7 @@ function GetAWBDetailSearch_V3() {
 
                     });
 
-                    $("#btnSubmit").removeAttr('disabled');
+                    //$("#btnSubmit").removeAttr('disabled');
 
                 }
 
@@ -1814,6 +1817,8 @@ function Shipper_GetShipperConsigneeWithShortCode_V3() {
                     var ShortCode = $(this).find('ShortCode').text();
                     var Name = $(this).find('Name').text();
 
+                    Shipper_SCustID = Id;
+
                     $('#txtShipper').val(Name);
 
                     //if (index == 0) {
@@ -1959,6 +1964,8 @@ function Consignee_GetShipperConsigneeWithShortCode_V3() {
                     var Id = $(this).find('Id').text();
                     var ShortCode = $(this).find('ShortCode').text();
                     var Name = $(this).find('Name').text();
+                    Consignee_CCustID = Id;
+
                     $('#txtConsignee').val(Name);
 
                     //if (index == 0) {
@@ -2719,12 +2726,12 @@ function GetAWBDetailSave_V3() {
     //}
 
 
-    if ($('#txtFlightNo').val() == "") {
-        $("#AllMsg").text('Please enter all mandatory fields marked with an asterisk (*)').css({ 'color': 'red' });
-        return;
-    } else {
-        $("#AllMsg").text('');
-    }
+    //if ($('#txtFlightNo').val() == "") {
+    //    $("#AllMsg").text('Please enter all mandatory fields marked with an asterisk (*)').css({ 'color': 'red' });
+    //    return;
+    //} else {
+    //    $("#AllMsg").text('');
+    //}
 
     if ($('#txtOrigin').val() == "") {
         $("#AllMsg").text('Please enter all mandatory fields marked with an asterisk (*)').css({ 'color': 'red' });
@@ -2944,7 +2951,7 @@ function clearALLafterSave() {
 
     GetAWBDetailSearch_V3_onLoad();
     clearGrid();
-    $('#btnSubmit').removeAttr('disabled');
+
 
 }
 
@@ -3030,7 +3037,7 @@ function clearALL() {
     GetCommodityDataV3();
     GetAWBDetailSearch_V3_onLoad();
     clearGrid();
-    $('#btnSubmit').removeAttr('disabled');
+    //$('#btnSubmit').removeAttr('disabled');
 }
 
 function clearGrid() {
@@ -3111,7 +3118,7 @@ function clearALLNew() {
     $('#txtCharWt').removeAttr('disabled', 'disabled');
     $('#txtVolume').removeAttr('disabled', 'disabled');
     $('#txtCommodity').removeAttr('disabled');
-    $('#btnSubmit').removeAttr('disabled');
+    //$('#btnSubmit').removeAttr('disabled');
     $('#txtOffpoint').removeAttr('disabled');
 }
 
@@ -3318,27 +3325,35 @@ function CalculateVol_1() {
     if ($("#Height1").val() == '') {
         return;
     }
-    if ($("#txtPieces").val() == '') {
-        return;
-    }
-    if ($("#txtGrWt").val() == '') {
-        return;
-    }
-    var Volume;
-    Volume =
-        ($("#Length1").val() *
+
+    var decChargeableWt;
+
+    if ($("#ddlEquTrolley1").val() != '-1') {
+        decChargeableWt = ($("#Length1").val() *
+            $("#Width1").val() *
+            $("#Height1").val() *
+            // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
+            1) /
+            6000;
+
+    } else {
+        decChargeableWt = ($("#Length1").val() *
             $("#Width1").val() *
             $("#Height1").val() *
             // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
             $("#Pieces1").val()) /
-        6000;
+            6000;
 
-    tofixed = Volume.toFixed(2);
-    var GrWtForShow = $("#Length1").val() * $("#txtGrWt").val() / $("#txtPieces").val();
-    $("#txtCharWt").val(GrWtForShow.toFixed(2));
-    $("#txtVolume").val(tofixed);
-    allVolumn_1 = tofixed;
-    allCharWt_1 = GrWtForShow.toFixed(2);
+    }
+
+    volumetricWt = parseFloat(decChargeableWt) / 167;
+
+    $("#txtCharWt").val(Math.round(decChargeableWt.toFixed(2)));
+
+    $("#txtVolume").val(volumetricWt.toFixed(2));
+
+    allVolumn_1 = volumetricWt.toFixed(2);
+    allCharWt_1 = decChargeableWt.toFixed(2);
 }
 
 
@@ -3349,28 +3364,35 @@ function CalculateVol_2() {
     if ($("#Height2").val() == '') {
         return;
     }
-    if ($("#txtPieces").val() == '') {
-        return;
-    }
-    if ($("#txtGrWt").val() == '') {
-        return;
-    }
-    var Volume;
-    Volume =
-        ($("#Length2").val() *
+    var decChargeableWt;
+
+    if ($("#ddlEquTrolley2").val() != '-1') {
+        decChargeableWt = ($("#Length2").val() *
+            $("#Width2").val() *
+            $("#Height2").val() *
+            // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
+            1) /
+            6000;
+
+    } else {
+        decChargeableWt = ($("#Length2").val() *
             $("#Width2").val() *
             $("#Height2").val() *
             // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
             $("#Pieces2").val()) /
-        6000;
-    tofixed = Volume.toFixed(2);
-    var GrWtForShow = $("#Length2").val() * $("#txtGrWt").val() / $("#txtPieces").val();
-    allVolumn_2 = parseFloat(tofixed);
-    allCharWt_2 = parseFloat(GrWtForShow.toFixed(2));
-    var sv_1 = parseFloat(allVolumn_1) + parseFloat(allVolumn_2);
-    var chwt_1 = parseFloat(allCharWt_1) + parseFloat(allCharWt_2);
-    $("#txtCharWt").val(chwt_1.toFixed(2));
-    $("#txtVolume").val(sv_1.toFixed(2));
+            6000;
+
+    }
+
+   var volumetricWt = parseFloat(decChargeableWt) / 167;
+
+    allVolumn_2 = volumetricWt.toFixed(2);
+    allCharWt_2 = decChargeableWt.toFixed(2);
+
+    var v1 = parseFloat(allVolumn_1) + parseFloat(allVolumn_2);
+    var c1 = parseFloat(allCharWt_1) + parseFloat(allCharWt_2);
+    $("#txtVolume").val(v1.toFixed(2));
+    $("#txtCharWt").val(Math.round(c1));
 }
 
 
@@ -3381,28 +3403,35 @@ function CalculateVol_3() {
     if ($("#Height3").val() == '') {
         return;
     }
-    if ($("#txtPieces").val() == '') {
-        return;
-    }
-    if ($("#txtGrWt").val() == '') {
-        return;
-    }
-    var Volume;
-    Volume =
-        ($("#Length3").val() *
+    var decChargeableWt;
+
+    if ($("#ddlEquTrolley3").val() != '-1') {
+        decChargeableWt = ($("#Length3").val() *
+            $("#Width3").val() *
+            $("#Height3").val() *
+            // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
+            1) /
+            6000;
+
+    } else {
+        decChargeableWt = ($("#Length3").val() *
             $("#Width3").val() *
             $("#Height3").val() *
             // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
             $("#Pieces3").val()) /
-        6000;
-    tofixed = Volume.toFixed(2);
-    var GrWtForShow = $("#Length3").val() * $("#txtGrWt").val() / $("#txtPieces").val();
-    allVolumn_3 = parseFloat(tofixed);
-    allCharWt_3 = parseFloat(GrWtForShow.toFixed(2));
-    var sv_1 = parseFloat(allVolumn_1) + parseFloat(allVolumn_2) + parseFloat(allVolumn_3);
-    var chwt_1 = parseFloat(allCharWt_1) + parseFloat(allCharWt_2) + parseFloat(allCharWt_3);
-    $("#txtCharWt").val(chwt_1.toFixed(2));
-    $("#txtVolume").val(sv_1.toFixed(2));
+            6000;
+
+    }
+
+   var volumetricWt = parseFloat(decChargeableWt) / 167;
+
+    allVolumn_3 = volumetricWt.toFixed(2);
+    allCharWt_3 = decChargeableWt.toFixed(2);
+
+    var v1 = parseFloat(allVolumn_1) + parseFloat(allVolumn_2) + parseFloat(allVolumn_3);
+    var c1 = parseFloat(allCharWt_1) + parseFloat(allCharWt_2) + parseFloat(allCharWt_3);
+    $("#txtVolume").val(v1.toFixed(2));
+    $("#txtCharWt").val(Math.round(c1));
 }
 
 function CalculateVol_4() {
@@ -3412,28 +3441,35 @@ function CalculateVol_4() {
     if ($("#Height4").val() == '') {
         return;
     }
-    if ($("#txtPieces").val() == '') {
-        return;
-    }
-    if ($("#txtGrWt").val() == '') {
-        return;
-    }
-    var Volume;
-    Volume =
-        ($("#Length4").val() *
+    var decChargeableWt;
+
+    if ($("#ddlEquTrolley4").val() != '-1') {
+        decChargeableWt = ($("#Length4").val() *
+            $("#Width4").val() *
+            $("#Height4").val() *
+            // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
+            1) /
+            6000;
+
+    } else {
+        decChargeableWt = ($("#Length4").val() *
             $("#Width4").val() *
             $("#Height4").val() *
             // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
             $("#Pieces4").val()) /
-        6000;
-    tofixed = Volume.toFixed(2);
-    var GrWtForShow = $("#Length4").val() * $("#txtGrWt").val() / $("#txtPieces").val();
-    allVolumn_4 = parseFloat(tofixed);
-    allCharWt_4 = parseFloat(GrWtForShow.toFixed(2));
-    var sv_1 = parseFloat(allVolumn_1) + parseFloat(allVolumn_2) + parseFloat(allVolumn_3) + parseFloat(allVolumn_4);
-    var chwt_1 = parseFloat(allCharWt_1) + parseFloat(allCharWt_2) + parseFloat(allCharWt_3) + parseFloat(allCharWt_4);
-    $("#txtCharWt").val(chwt_1.toFixed(2));
-    $("#txtVolume").val(sv_1.toFixed(2));
+            6000;
+
+    }
+
+    var volumetricWt = parseFloat(decChargeableWt) / 167;
+
+    allVolumn_4 = volumetricWt.toFixed(2);
+    allCharWt_4 = decChargeableWt.toFixed(2);
+
+    var v1 = parseFloat(allVolumn_1) + parseFloat(allVolumn_2) + parseFloat(allVolumn_3) + parseFloat(allVolumn_4);
+    var c1 = parseFloat(allCharWt_1) + parseFloat(allCharWt_2) + parseFloat(allCharWt_3) + parseFloat(allCharWt_4);
+    $("#txtVolume").val(v1.toFixed(2));
+    $("#txtCharWt").val(Math.round(c1));
 }
 
 function CalculateVol_5() {
@@ -3443,26 +3479,252 @@ function CalculateVol_5() {
     if ($("#Height5").val() == '') {
         return;
     }
-    if ($("#txtPieces").val() == '') {
-        return;
-    }
-    if ($("#txtGrWt").val() == '') {
-        return;
-    }
-    var Volume;
-    Volume =
-        ($("#Length5").val() *
+    var decChargeableWt;
+
+    if ($("#ddlEquTrolley5").val() != '-1') {
+        decChargeableWt = ($("#Length5").val() *
+            $("#Width5").val() *
+            $("#Height5").val() *
+            // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
+            1) /
+            6000;
+
+    } else {
+        decChargeableWt = ($("#Length5").val() *
             $("#Width5").val() *
             $("#Height5").val() *
             // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
             $("#Pieces5").val()) /
-        6000;
-    tofixed = Volume.toFixed(2);
-    var GrWtForShow = $("#Length5").val() * $("#txtGrWt").val() / $("#txtPieces").val();
-    allVolumn_5 = parseFloat(tofixed);
-    allCharWt_5 = parseFloat(GrWtForShow.toFixed(2));
-    var sv_1 = parseFloat(allVolumn_1) + parseFloat(allVolumn_2) + parseFloat(allVolumn_3) + parseFloat(allVolumn_5);
-    var chwt_1 = parseFloat(allCharWt_1) + parseFloat(allCharWt_2) + parseFloat(allCharWt_3) + parseFloat(allCharWt_5);
-    $("#txtCharWt").val(chwt_1.toFixed(2));
-    $("#txtVolume").val(sv_1.toFixed(2));
+            6000;
+
+    }
+
+    var volumetricWt = parseFloat(decChargeableWt) / 167;
+
+    allVolumn_5 = volumetricWt.toFixed(2);
+    allCharWt_5 = decChargeableWt.toFixed(2);
+
+    var v1 = parseFloat(allVolumn_1) + parseFloat(allVolumn_2) + parseFloat(allVolumn_3) + parseFloat(allVolumn_4) + parseFloat(allVolumn_5);
+    var c1 = parseFloat(allCharWt_1) + parseFloat(allCharWt_2) + parseFloat(allCharWt_3) + parseFloat(allCharWt_4) + parseFloat(allCharWt_5);
+    $("#txtVolume").val(v1.toFixed(2));
+    $("#txtCharWt").val(Math.round(c1));
 }
+
+function GetButtonRights_v3() {
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var inputXML = '<Root><ParentChildId>' + _ParentChildId + '</ParentChildId><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + CompanyCode + '</CompanyCode><UserId>' + UserId + '</UserId><Culture>' + PreferredLanguage + '</Culture></Root>';
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "GetButtonRights_v3",
+            data: JSON.stringify({ 'InputXML': inputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;                
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                console.log(xmlDoc)
+                $(xmlDoc).find('Table1').each(function (index) {
+
+                    ButtonId = $(this).find('ButtonId').text();
+                    ButtonName = $(this).find('ButtonName').text();
+                    IsEnable = $(this).find('IsEnable').text();
+
+                    if (index == 0) {
+                        if (ButtonId == 'btnSubmit' && IsEnable == 'Y') {
+                            $("#btnSubmit").removeAttr('disabled');
+                        } else {
+                            $("#btnSubmit").attr('disabled', 'disabled');
+
+                        }
+                    }
+
+
+                });
+
+            },
+            error: function (msg) {
+                //debugger;
+                HideLoader();
+                var r = jQuery.parseJSON(msg.responseText);
+                alert("Message: " + r.Message);
+            }
+
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}
+
+function GetFlightRoutingDetails_V3(flightDateForFetch) {
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var inputXML = '<Root><FlightAirline>' + $("#txtAirline").val() + '</FlightAirline><FlightNumber>' + $("#txtFlightNo").val() + '</FlightNumber><FlightDate>' + flightDateForFetch + '</FlightDate></Root>';
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "GetFlightRoutingDetails_V3",
+            data: JSON.stringify({ 'InputXML': inputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;                
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                $("#txtDestination").val('');
+                $("#txtOffpoint").val('');
+                console.log(xmlDoc)
+                $(xmlDoc).find('Table1').each(function (index) {
+
+                    AirportCity_1 = $(this).find('AirportCity').text();
+                    Indicator = $(this).find('Indicator').text();
+
+                    if (Indicator == 'D') {
+                        $("#txtDestination").val(AirportCity_1);
+                    }
+                    if (Indicator == 'T') {
+                        $("#txtOffpoint").val(AirportCity_1);
+                    } else {
+                        $("#txtOffpoint").val(AirportCity_1);
+
+                    }
+
+                    //if (index == 0) {
+                    //    if (ButtonId == 'btnSubmit' && IsEnable == 'Y') {
+                    //        $("#btnSubmit").removeAttr('disabled');
+                    //    } else {
+                    //        $("#btnSubmit").attr('disabled', 'disabled');
+
+                    //    }
+                    //}
+
+
+                });
+
+            },
+            error: function (msg) {
+                //debugger;
+                HideLoader();
+                var r = jQuery.parseJSON(msg.responseText);
+                alert("Message: " + r.Message);
+            }
+
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}
+
+function GetFlightRoutingDetails_V3_onblure() {
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var inputXML = '<Root><FlightAirline>' + $("#txtAirline").val() + '</FlightAirline><FlightNumber>' + $("#txtFlightNo").val() + '</FlightNumber><FlightDate>' + $("#txtFlightDate").val() + '</FlightDate></Root>';
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "GetFlightRoutingDetails_V3",
+            data: JSON.stringify({ 'InputXML': inputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;                
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                $("#txtDestination").val('');
+                $("#txtOffpoint").val('');
+                
+                console.log(xmlDoc)
+                $(xmlDoc).find('Table1').each(function (index) {
+
+                    AirportCity_1 = $(this).find('AirportCity').text();
+                    Indicator = $(this).find('Indicator').text();
+
+                    if (Indicator == 'D') {
+                        $("#txtDestination").val(AirportCity_1);
+                    }
+                    if (Indicator == 'T') {
+                        $("#txtOffpoint").val(AirportCity_1);
+                    } else {
+                        $("#txtOffpoint").val(AirportCity_1);
+
+                    }
+
+                    //if (index == 0) {
+                    //    if (ButtonId == 'btnSubmit' && IsEnable == 'Y') {
+                    //        $("#btnSubmit").removeAttr('disabled');
+                    //    } else {
+                    //        $("#btnSubmit").attr('disabled', 'disabled');
+
+                    //    }
+                    //}
+
+
+                });
+
+            },
+            error: function (msg) {
+                //debugger;
+                HideLoader();
+                var r = jQuery.parseJSON(msg.responseText);
+                alert("Message: " + r.Message);
+            }
+
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}
+

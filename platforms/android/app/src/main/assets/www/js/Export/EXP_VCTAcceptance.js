@@ -122,7 +122,7 @@ var TrolleyCode_5;
 var isFiveFoure = '0';
 $(function () {
 
-
+    GetButtonRights_v3();
     var formattedDate = new Date();
     var d = formattedDate.getDate();
     if (d.toString().length < Number(2))
@@ -771,11 +771,11 @@ function getAgentList() {
                     var Name = $(this).find('Name').text();
                     // $('#txtAgentName').val(Name);
 
-                    if (index == 0) {
-                        var newOption = $('<option></option>');
-                        newOption.val(0).text('Select');
-                        newOption.appendTo('#ddlAgentName');
-                    }
+                    //if (index == 0) {
+                    //    var newOption = $('<option></option>');
+                    //    newOption.val(0).text('Select');
+                    //    newOption.appendTo('#ddlAgentName');
+                    //}
 
                     var newOption = $('<option></option>');
                     newOption.val(Id).text(Name);
@@ -1667,6 +1667,9 @@ function onChangeConsineeName(sssid) {
 }
 
 function Shipper_GetShipperConsigneeWithShortCode_V3() {
+
+    shipperID = $('#ddlShipper').val();
+   
     if ($("#txtShipperPrifix").val().length != '3') {
         return;
     }
@@ -1727,7 +1730,7 @@ function Shipper_GetShipperConsigneeWithShortCode_V3() {
                     var Id = $(this).find('Id').text();
                     var ShortCode = $(this).find('ShortCode').text();
                     var Name = $(this).find('Name').text();
-
+                    Shipper_SCustID = Id;
                     $('#txtShipper').val(Name);
 
                     //if (index == 0) {
@@ -1873,6 +1876,9 @@ function Consignee_GetShipperConsigneeWithShortCode_V3() {
                     var Id = $(this).find('Id').text();
                     var ShortCode = $(this).find('ShortCode').text();
                     var Name = $(this).find('Name').text();
+
+                    Consignee_CCustID = Id;
+
                     $('#txtConsignee').val(Name);
 
                     //if (index == 0) {
@@ -2284,7 +2290,7 @@ function GetRemainingPackgs() {
 
 getAllValues = function () {
 
-    if ($('#ddlEquTrolley1').val() != '-1') {
+    if ($('#ddlEquTrolley1').val() != '-1' && $('#ddlEquTrolley1').val() != null) {
 
         if ($("#Pieces1").val() == '') {
             $("#Pieces1").css('background-color', '#FFCCCB');
@@ -2324,7 +2330,7 @@ getAllValues = function () {
         $("#Height1").css('background-color', 'white');
     }
 
-    if ($('#ddlEquTrolley2').val() != '-1') {
+    if ($('#ddlEquTrolley2').val() != '-1' && $('#ddlEquTrolley2').val() != null) {
 
         if ($("#Pieces2").val() == '') {
             $("#Pieces2").css('background-color', '#FFCCCB');
@@ -2365,7 +2371,7 @@ getAllValues = function () {
         $("#Height2").css('background-color', 'white');
     }
 
-    if ($('#ddlEquTrolley3').val() != '-1') {
+    if ($('#ddlEquTrolley3').val() != '-1' && $('#ddlEquTrolley3').val() != null) {
 
         if ($("#Pieces3").val() == '') {
             $("#Pieces3").css('background-color', '#FFCCCB');
@@ -2406,7 +2412,7 @@ getAllValues = function () {
         $("#Height3").css('background-color', 'white');
     }
 
-    if ($('#ddlEquTrolley4').val() != '-1') {
+    if ($('#ddlEquTrolley4').val() != '-1' && $('#ddlEquTrolley4').val() != null) {
 
         if ($("#Pieces4").val() == '') {
             $("#Pieces4").css('background-color', '#FFCCCB');
@@ -2447,7 +2453,7 @@ getAllValues = function () {
         $("#Height4").css('background-color', 'white');
     }
 
-    if ($('#ddlEquTrolley5').val() != '-1') {
+    if ($('#ddlEquTrolley5').val() != '-1' && $('#ddlEquTrolley5').val() != null) {
 
         if ($("#Pieces5").val() == '') {
             $("#Pieces5").css('background-color', '#FFCCCB');
@@ -2492,7 +2498,7 @@ getAllValues = function () {
     var three = "";
     var foure = "";
     var five = "";
-    if ($('#ddlEquTrolley1').val() != '-1') {
+    if ($('#ddlEquTrolley1').val() != '-1' && $('#ddlEquTrolley1').val() != null) {
 
         selectedVal = $('#ddlEquTrolley1').val();
         var arr = selectedVal.split('~')
@@ -2520,7 +2526,7 @@ getAllValues = function () {
 
     }
 
-    if ($('#ddlEquTrolley2').val() != '-1') {
+    if ($('#ddlEquTrolley2').val() != '-1' && $('#ddlEquTrolley2').val() != null) {
 
         selectedVal = $('#ddlEquTrolley2').val();
         var arr = selectedVal.split('~')
@@ -2546,7 +2552,7 @@ getAllValues = function () {
         inputRows += '<DimDetails><Rows>' + two + '</Rows></DimDetails>';
     }
 
-    if ($('#ddlEquTrolley3').val() != '-1') {
+    if ($('#ddlEquTrolley3').val() != '-1' && $('#ddlEquTrolley3').val() != null) {
 
         selectedVal = $('#ddlEquTrolley3').val();
         var arr = selectedVal.split('~')
@@ -2572,7 +2578,7 @@ getAllValues = function () {
         inputRows += '<DimDetails><Rows>' + three + '</Rows></DimDetails>';
     }
 
-    if ($('#ddlEquTrolley4').val() != '-1') {
+    if ($('#ddlEquTrolley4').val() != '-1' && $('#ddlEquTrolley4').val() != null) {
 
         selectedVal = $('#ddlEquTrolley4').val();
         var arr = selectedVal.split('~')
@@ -2598,7 +2604,7 @@ getAllValues = function () {
         inputRows += '<DimDetails><Rows>' + foure + '</Rows></DimDetails>';
     }
 
-    if ($('#ddlEquTrolley5').val() != '-1') {
+    if ($('#ddlEquTrolley5').val() != '-1' && $('#ddlEquTrolley5').val() != null) {
 
         selectedVal = $('#ddlEquTrolley5').val();
         var arr = selectedVal.split('~')
@@ -2906,6 +2912,26 @@ function GetVCTUnScannedDetails_v3(VCTNo) {
                     $('#txtAgentNamePrifix').val(AgentShortCode);
 
 
+                    if (ShipperShortCode != '') {
+                        $('#ddlShipper').trigger("change");
+                        
+                    }
+
+                    if (ConsigneeShortCode != '') {
+                        $('#ddlConsignee').trigger("change");
+                        
+                    }
+
+                    if (AgentShortCode != '') {
+                        
+                        $('#ddlAgentName').trigger("change");
+                    }
+
+                    if (Description != '') {
+                        
+                        $('#ddlCommodity').trigger("change");
+                    }
+
                     if ($(xmlDoc).find('Table1').length > 1) {
                         if (index == 0 && $("#ddlAWBNo").val() != "0") {
                             var newOption = $('<option></option>');
@@ -3036,7 +3062,7 @@ function GetVCTUnScannedDetails_v3(VCTNo) {
                     //});
                 });
 
-
+                $("#TextBoxesGroup").find("input,select").attr("disabled", "disabled");
 
             },
             error: function (xhr, textStatus, errorThrown) {
@@ -3595,9 +3621,9 @@ function compareOriginDest() {
     }
 
     if (result == 0) {
-        $("#AllMsg").text('Origin and Destination should be different.').css({ 'color': 'red' });
+        $("#spnMsg").text('Origin and Destination should be different.').css({ 'color': 'red' });
     } else {
-        $("#AllMsg").text('');
+        $("#spnMsg").text('');
     }
 }
 
@@ -3615,8 +3641,6 @@ function SaveVCTCargoTrolleyDetailsBL_v3() {
     } else {
         $("#spnMsg").text('');
     }
-
-
 
     if ($('#txPieces').val() == "") {
         //errmsg = "Please enter valid flight No.";
@@ -3658,7 +3682,7 @@ function SaveVCTCargoTrolleyDetailsBL_v3() {
     }
 
     if ($('#txtCommodity').val() == "") {
-        $("#AllMsg").text('Please enter all mandatory fields marked with an asterisk (*)').css({ 'color': 'red' });
+        $("#spnMsg").text('Please enter all mandatory fields marked with an asterisk (*)').css({ 'color': 'red' });
         return;
     } else {
         $("#spnMsg").text('');
@@ -3684,19 +3708,19 @@ function SaveVCTCargoTrolleyDetailsBL_v3() {
     } else {
         $("#spnMsg").text('');
     }
-    if ($('#txtShipper').val() == "") {
-        $("#spnMsg").text('Please enter all mandatory fields marked with an asterisk (*)').css({ 'color': 'red' });
-        return;
-    } else {
-        $("#spnMsg").text('');
-    }
+    //if ($('#txtShipper').val() == "") {
+    //    $("#spnMsg").text('Please enter all mandatory fields marked with an asterisk (*)').css({ 'color': 'red' });
+    //    return;
+    //} else {
+    //    $("#spnMsg").text('');
+    //}
 
-    if ($('#txtConsignee').val() == "") {
-        $("#spnMsg").text('Please enter all mandatory fields marked with an asterisk (*)').css({ 'color': 'red' });
-        return;
-    } else {
-        $("#spnMsg").text('');
-    }
+    //if ($('#txtConsignee').val() == "") {
+    //    $("#spnMsg").text('Please enter all mandatory fields marked with an asterisk (*)').css({ 'color': 'red' });
+    //    return;
+    //} else {
+    //    $("#spnMsg").text('');
+    //}
     if ($('#txtAgentName').val() == "") {
         $("#spnMsg").text('Please enter all mandatory fields marked with an asterisk (*)').css({ 'color': 'red' });
         return;
@@ -3735,10 +3759,10 @@ function SaveVCTCargoTrolleyDetailsBL_v3() {
     // var inputxml = "<Root><VCTNo>" + VCTNo + "</VCTNo><AWBNo>" + $("#ddlAWBNo option:selected").text() + "</AWBNo><SBNumber>" + $("#txtSBNo").val() + "</SBNumber><VCTID>" + VCTId + "</VCTID><ISULD>False</ISULD><ConsignmentRowID>" + ConsignmentRowIDForSave + "</ConsignmentRowID><HouseRowId></HouseRowId><AWBULDNo></AWBULDNo><HAWB></HAWB><Package>" + $("#txPieces").val() + "</Package><GrossWt>" + $("#txtScaleWt").val() + "</GrossWt><WtUOM>" + WtUOM + "</WtUOM><TrolleyCode>" + IDENTIFIER + "</TrolleyCode><TrolleyWt>" + REFERENCE + "</TrolleyWt><IsSecured>" + isSecuredFlag + "</IsSecured><GroupId>" + $("#txtGroupId").val() + "</GroupId><DimUOM>" + $("#ddlUnit1").val() + "</DimUOM><DimDetails>" + inputRows + "</DimDetails><AirportCity>" + AirportCity + "</AirportCity><Culture>" + PreferredLanguage + "</Culture><UserId>" + UserId + "</UserId><NOG></NOG><CommSrNo>" + CommSrNo + "</CommSrNo><SHC1></SHC1><SHC2></SHC2><SHC3></SHC3><SHC4></SHC4><SHC5></SHC5><SHC6></SHC6><SHC7></SHC7><SHC8></SHC8><SHC9></SHC9></Root>";
     var shipConAgtXML = '<SCustID>' + Shipper_SCustID + '</SCustID><SName>' + $("#txtShipper").val().toUpperCase() + '</SName><CCustID>' + Consignee_CCustID + '</CCustID><CName>' + $("#txtConsignee").val().toUpperCase() + '</CName><IACustID>' + AgentName_IACustID + '</IACustID><IAName>' + $("#txtAgentName").val().toUpperCase() + '</IAName><AgentID>' + AgentName_IACustID + '</AgentID>';
 
-    var inputxml = "<Root><VCTNo>" + VCTNo + "</VCTNo><AWBNo>" + $("#ddlAWBNo option:selected").text() + "</AWBNo><SBNumber>" + $("#txtSBNo").val() + "</SBNumber><VCTID>" + VCTId + "</VCTID><ISULD>False</ISULD><ConsignmentRowID>" + ConsignmentRowIDForSave + "</ConsignmentRowID><HouseRowId></HouseRowId><AWBULDNo></AWBULDNo><HAWB></HAWB><Package>" + $("#txPieces").val() + "</Package><GrossWt>" + $("#txtScaleWt").val() + "</GrossWt><WtUOM>" + WtUOM + "</WtUOM><IsSecured>false</IsSecured><GroupId>" + $("#txtGroupId").val() + "</GroupId><DimUOM>" + $("#ddlUnit1").val() + "</DimUOM><ComSearchCode>" + passCommoId + "</ComSearchCode><FlightAirline>" + $("#txtAirline").val().toUpperCase() + "</FlightAirline><FlightNumber>" + $("#txtFlightNo").val().toUpperCase() + "</FlightNumber><FlightDate>" + $("#txtFlightDate").val() + "</FlightDate><OffPoint>" + $("#txtOffpoint").val().toUpperCase() + "</OffPoint>" + shipConAgtXML + "<AirportCity>" + AirportCity + "</AirportCity><Culture>" + PreferredLanguage + "</Culture><UserId>" + UserId + "</UserId><NOG></NOG><CommSrNo>" + $("#ddlCommodity").val() + "</CommSrNo>" + allSHCCodeSave + inputRows + "</Root>";
+    var inputxml = "<Root><VCTNo>" + VCTNo + "</VCTNo><AWBNo>" + $("#ddlAWBNo option:selected").text() + "</AWBNo><SBNumber>" + $("#txtSBNo").val() + "</SBNumber><VCTID>" + VCTId + "</VCTID><ISULD>False</ISULD><ConsignmentRowID>" + ConsignmentRowIDForSave + "</ConsignmentRowID><HouseRowId></HouseRowId><AWBULDNo></AWBULDNo><HAWB></HAWB><Package>" + $("#txPieces").val() + "</Package><GrossWt>" + $("#txtScaleWt").val() + "</GrossWt><WtUOM>" + WtUOM + "</WtUOM><IsSecured>false</IsSecured><GroupId>" + $("#txtGroupId").val() + "</GroupId><DimUOM>" + $("#ddlUnit1").val() + "</DimUOM><ComSearchCode>" + passCommoId + "</ComSearchCode><FlightAirline>" + $("#txtAirline").val().toUpperCase() + "</FlightAirline><FlightNumber>" + $("#txtFlightNo").val().toUpperCase() + "</FlightNumber><FlightDate>" + $("#txtFlightDate").val() + "</FlightDate><OffPoint>" + $("#txtOffpoint").val().toUpperCase() + "</OffPoint>" + shipConAgtXML + "<Volume>" + $("#txtVolume").val() + "</Volume><ChargeableWeight>" + $("#txtCharWt").val() + "</ChargeableWeight><AirportCity>" + AirportCity + "</AirportCity><Culture>" + PreferredLanguage + "</Culture><UserId>" + UserId + "</UserId><NOG></NOG><CommSrNo>" + $("#ddlCommodity").val() + "</CommSrNo>" + allSHCCodeSave + inputRows + "</Root>";
 
     console.log(inputxml);
-
+    
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: "POST",
@@ -3899,7 +3923,7 @@ function clearALL() {
     //    dateFormat: 'dd-M-yy',
 
     //});
-    $('#AllMsg').text('');
+    $('#spnMsg').text('');
 
     shipperCode = [];
     consigneeCode = [];
@@ -4286,7 +4310,7 @@ function GetAWBDetailSearch_V3_onLoad() {
                 //clearALLNew();
                 var xmlDoc = $.parseXML(response);
                 $('#ddlFlightNo').empty();
-                // $('#AllMsg').text('');
+                
                 filteredArrforno = [];
                 flightAirNoLists = [];
                 console.log(xmlDoc);
@@ -4635,7 +4659,7 @@ function GetAWBDetailSearch_V3_onLoad() {
                     });
                 }
                 if (flagforcheck2 == '0' && Status == 'E') {
-                    $("#AllMsg").text(StrMessage).css({ 'color': 'red' });
+                    $("#spnMsg").text(StrMessage).css({ 'color': 'red' });
                     $("#txtAWBNo").val('');
                     $("#txtAWBNo").focus();
                     return;
@@ -4869,4 +4893,80 @@ function CalculateVol_5() {
     var chwt_1 = parseFloat(allCharWt_1) + parseFloat(allCharWt_2) + parseFloat(allCharWt_3) + parseFloat(allCharWt_5);
     $("#txtCharWt").val(chwt_1.toFixed(2));
     $("#txtVolume").val(sv_1.toFixed(2));
+}
+
+function GetButtonRights_v3() {
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var inputXML = '<Root><ParentChildId>' + _ParentChildId + '</ParentChildId><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + CompanyCode + '</CompanyCode><UserId>' + UserId + '</UserId><Culture>' + PreferredLanguage + '</Culture></Root>';
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "GetButtonRights_v3",
+            data: JSON.stringify({ 'InputXML': inputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;                
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                console.log(xmlDoc)
+                $(xmlDoc).find('Table1').each(function (index) {
+
+                    ButtonId = $(this).find('ButtonId').text();
+                    ButtonName = $(this).find('ButtonName').text();
+                    IsEnable = $(this).find('IsEnable').text();
+
+                   
+                    if (index == 3) {
+                        if (ButtonId == 'btnSubmit' && IsEnable == 'Y') {
+                            $("#btnSubmit").removeAttr('disabled');
+                        } else {
+                            $("#btnSubmit").attr('disabled', 'disabled');
+
+                        }
+                    }
+
+                    if (index == 4) {
+                        if (ButtonId == 'btnComplete' && IsEnable == 'Y') {
+                            $("#btnComplete").removeAttr('disabled');
+                        } else {
+                            $("#btnComplete").attr('disabled', 'disabled');
+
+                        }
+                    }
+
+
+
+                });
+
+            },
+            error: function (msg) {
+                //debugger;
+                HideLoader();
+                var r = jQuery.parseJSON(msg.responseText);
+                alert("Message: " + r.Message);
+            }
+
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
 }

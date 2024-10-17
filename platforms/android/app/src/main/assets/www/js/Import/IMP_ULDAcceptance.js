@@ -1,9 +1,12 @@
 ﻿
-
+var GHAExportFlightserviceURL = window.localStorage.getItem("GHAExportFlightserviceURL");
 var GHAImportFlightserviceURL = window.localStorage.getItem("GHAImportFlightserviceURL");
 var AirportCity = window.localStorage.getItem("SHED_AIRPORT_CITY");
 var CMSserviceURL = window.localStorage.getItem("CMSserviceURL");
 var UserId = window.localStorage.getItem("UserID");
+var CompanyCode = window.localStorage.getItem("companyCode");
+var PreferredLanguage = window.localStorage.getItem("PreferredLanguage");
+
 var html;
 var LocationRowID;
 var AWBRowID;
@@ -35,7 +38,7 @@ $(function () {
         window.location.href = 'IMP_Dashboard.html';
     }
 
-  //  ImportDataList();
+    //  ImportDataList();
     var formattedDate = new Date();
     var d = formattedDate.getDate();
     if (d.toString().length < Number(2))
@@ -49,7 +52,7 @@ $(function () {
     var date = m.toString() + '/' + d.toString() + '/' + y.toString();
 
     newDate = y.toString() + '-' + m.toString() + '-' + d.toString();
-      $('#txtFlightDate').val(newDate);
+    $('#txtFlightDate').val(newDate);
 
     //var h = date.getHours();
     //var m = date.getMinutes();
@@ -68,6 +71,8 @@ $(function () {
         }
 
     });
+
+    GetButtonRights_v3();
 
 });
 
@@ -425,11 +430,11 @@ function GetImportULDList() {
                     var newdate = date.split("-").reverse().join("-");
 
                     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
                     ];
 
                     var d = new Date(newdate);
-                   
+
                     _Mont = monthNames[d.getMonth()]
 
                     DD = FlightDate.split("-")[0];
@@ -439,7 +444,7 @@ function GetImportULDList() {
 
                     var ulddate = DD + '-' + _Mont + '-' + YY;
                     $('#txtFlightDate').val(ulddate);
-                   
+
                     //  var date = FlightDate;
                     //var newdate = date.split("-").reverse().join("-");
                     //// var FlightDate = newdate
@@ -579,7 +584,7 @@ function GetImportULDListWithFlightDetails() {
     //    return;
     //}
 
-  
+
 
     if (FlightPrefix == "" || FlightNo == "") {
         //errmsg = "Please enter valid flight No.";
@@ -738,7 +743,7 @@ function ScanFlightDetail() {
         //errmsg = "Please enter Flight Date";
         //$.alert(errmsg);
         $('#spnMsg').text('');
-        
+
         return;
     }
 
@@ -807,7 +812,7 @@ function ScanFlightDetail() {
                     var newdate = date.split("-").reverse().join("-");
 
                     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
                     ];
 
                     var d = new Date(newdate);
@@ -828,7 +833,7 @@ function ScanFlightDetail() {
 
                     //var _FlightDate = $("#year").val(YY) + '-' + $("#month").val(MM) + '-' + $("#day").val(YY);
 
-                 //   $('#txtFlightDate').val(newdate);
+                    //   $('#txtFlightDate').val(newdate);
 
                     //DD = FlightDate.split("-")[0];
                     //MM = FlightDate.split("-")[1];
@@ -1173,7 +1178,7 @@ function clearAWBDetails() {
     $('#tblNewsForGatePass').hide();
     $('#divULDNumberDetails').empty();
     $('#divULDNumberDetails').hide();
-    
+
     //var now = new Date();
 
     //var day = ("0" + now.getDate()).slice(-2);
@@ -1259,8 +1264,8 @@ function ImportDataList() {
                     minLength: 1,
                     select: function (event, ui) {
                         log(ui.item ?
-                          "Selected: " + ui.item.label :
-                          "Nothing selected, input was " + this.value);
+                            "Selected: " + ui.item.label :
+                            "Nothing selected, input was " + this.value);
                     },
                     open: function () {
                         $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
@@ -1277,7 +1282,7 @@ function ImportDataList() {
                 var r = jQuery.parseJSON(msg.responseText);
                 alert("Message: " + r.Message);
             }
-            
+
         });
     }
     else if (connectionStatus == "offline") {
@@ -1299,3 +1304,82 @@ function log(message) {
     $("#log").scrollTop(0);
 }
 
+function GetButtonRights_v3() {
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var inputXML = '<Root><ParentChildId>' + _ParentChildId + '</ParentChildId><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + CompanyCode + '</CompanyCode><UserId>' + UserId + '</UserId><Culture>' + PreferredLanguage + '</Culture></Root>';
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: GHAExportFlightserviceURL + "GetButtonRights_v3",
+            data: JSON.stringify({ 'InputXML': inputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;                
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+                console.log(xmlDoc)
+                $(xmlDoc).find('Table1').each(function (index) {
+
+                    ButtonId = $(this).find('ButtonId').text();
+                    ButtonName = $(this).find('ButtonName').text();
+                    IsEnable = $(this).find('IsEnable').text();
+
+                    if (index == 0) {
+                        if (ButtonId == 'btnScanAccpt' && IsEnable == 'Y') {
+                            $("#btnScanAccpt").removeAttr('disabled');
+                        } else {
+                            $("#btnScanAccpt").attr('disabled', 'disabled');
+
+                        }
+                    }
+                    if (index == 1) {
+                        if (ButtonId == 'btnSearch' && IsEnable == 'Y') {
+                            $("#btnSearch").removeAttr('disabled');
+                        } else {
+                            $("#btnSearch").attr('disabled', 'disabled');
+
+                        }
+                    }
+                    if (index == 2) {
+                        if (ButtonId == 'btnGetFDetail' && IsEnable == 'Y') {
+                            $("#btnGetFDetail").removeAttr('disabled');
+                        } else {
+                            $("#btnGetFDetail").attr('disabled', 'disabled');
+
+                        }
+                    }
+
+                });
+
+            },
+            error: function (msg) {
+                //debugger;
+                HideLoader();
+                var r = jQuery.parseJSON(msg.responseText);
+                alert("Message: " + r.Message);
+            }
+
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}

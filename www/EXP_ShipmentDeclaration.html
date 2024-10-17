@@ -224,7 +224,7 @@
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-4 col-form-label">
                                         <label id="lblFlightNo" for="">Flt. No./Dt.</label>
-                                        <font color="red">*</font>
+                                        <!--<font color="red">*</font>-->
                                     </div>
                                     <div class="col-xs-2 NoPadding">
                                         <!--<select class="form-control" id="ddlFlightNo"
@@ -232,7 +232,7 @@
                                                 style="display: none;">
                                             <option value="0">Select</option>
                                         </select>-->
-                                        <input id="txtAirline" tabindex="2" autocomplete="off" onkeypress="return blockSpecialChar(event)" oninput="checkSpecialCharforFlightNo();" class="form-control" type="text" maxlength="6">
+                                        <input id="txtAirline"  tabindex="2" autocomplete="off" onkeypress="return blockSpecialChar(event)" oninput="checkSpecialCharforFlightNo();" class="form-control" type="text" maxlength="6">
                                         <!--<select class="form-control" id="ddlFlightNo"
                                         onchange="GetAWBDetailSearch_V3_onChangeFlight($('#ddlFlightNo').val())"></select>-->
 
@@ -240,7 +240,7 @@
                                     </div>
                                     <div class="col-xs-2 NoPadding">
 
-                                        <input id="txtFlightNo" tabindex="3" autocomplete="off" onkeypress="return blockSpecialChar(event)" oninput="checkSpecialCharforFlightNo();" class="form-control" type="text" maxlength="6">
+                                        <input id="txtFlightNo" tabindex="3" autocomplete="off" onblur="GetFlightRoutingDetails_V3_onblure();" onkeypress="return blockSpecialChar(event);" oninput="checkSpecialCharforFlightNo(); " class="form-control" type="text" maxlength="6">
                                         <!--<select class="form-control" id="ddlFlightNo"
                                         onchange="GetAWBDetailSearch_V3_onChangeFlight($('#ddlFlightNo').val())"></select>-->
                                         <select class="form-control" id="ddlFlightNo"
@@ -264,7 +264,7 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-4 NoPadding">
-                                        <input id="txtOrigin" tabindex="5" oninput="checkSpecialCharforOrigin();" onblur="compareOriginDest();" class="form-control" type="text" maxlength="3">
+                                        <input id="txtOrigin" value="BLR" tabindex="5" oninput="checkSpecialCharforOrigin();" onblur="compareOriginDest();" class="form-control" type="text" maxlength="3">
                                     </div>
                                     <div class="col-xs-4 NoPadding">
                                         <input id="txtDestination" tabindex="6" oninput="checkSpecialCharforDestination();" onblur="compareOriginDest();" class="form-control" type="text" maxlength="3">

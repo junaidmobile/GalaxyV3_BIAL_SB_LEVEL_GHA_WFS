@@ -133,7 +133,7 @@
                                                onclick="ImportULDAcceptance();" disabled>
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <input type="button" id="btnExit" class="form-control ButtonColor" value="Search"
+                                        <input type="button" id="btnSearch" class="form-control ButtonColor" value="Search"
                                                onclick="GetImportULDList();">
                                     </div>
                                 </div>
@@ -251,7 +251,7 @@
 
             </div>
             <div class="form-group col-xs-6 col-sm-6 col-md-6" style="margin-top:15px">
-                <input type="button" id="btnExcLanded" class="form-control ButtonColor" value="Exit" onclick="window.location.href = 'IMP_Dashboard.html'">
+                <input type="button" id="btnExit" class="form-control ButtonColor" value="Exit" onclick="window.location.href = 'IMP_Dashboard.html'">
             </div>
             <div class="form-group col-xs-6 col-sm-6 col-md-6" style="margin-top:15px">
                 <input type="button" id="btnClear" class="form-control ButtonColor" value="Clear" onclick="clearAWBDetails()">
@@ -357,165 +357,166 @@
             </div>
         </footer>
     </div>
+    <script language="javascript" type="text/javascript">
+        $('#RightsReserved').text(' \xA9 Kale Logistics Solutions Private Limited. ' + (new Date).getFullYear().toString());
+          //  $(document).ready(function () {
+                //var formattedDate = new Date();
+                //var d = formattedDate.getDate();
+                //if (d.toString().length < Number(2))
+                //    d = '0' + d;
+                //var m = formattedDate.getMonth();
+                //m += 1;  // JavaScript months are 0-11
+                //if (m.toString().length < Number(2))
+                //    m = '0' + m;
+                //var y = formattedDate.getFullYear();
+                //var t = formattedDate.getTime();
+                //var date = m.toString() + '/' + d.toString() + '/' + y.toString();
+
+                //newDate = y.toString() + '-' + m.toString() + '-' + d.toString();
+                //$('#txtFlightDate').val(newDate);
+
+                //var h = date.getHours();
+                //var m = date.getMinutes();
+                //var s = date.getSeconds();
+
+                //$("#txtFlightDate").datepicker().datepicker("setDate", new Date());
+
+
+            //    let date = new Date();
+            //    const day = date.toLocaleString('default', { day: '2-digit' });
+            //    const month = date.toLocaleString('default', { month: 'short' });
+            //    const year = date.toLocaleString('default', { year: 'numeric' });
+            //    var today = day + '-' + month + '-' + year;
+            //    $('#txtFlightDate').val(today);
+
+            //    $("#txtFlightDate").datepicker({
+            //        shortYearCutoff: 1,
+            //        changeMonth: true,
+            //        changeYear: true,
+            //        dateFormat: 'dd-M-yy'
+            //    });
+            //});
+
+
+
+            //      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+            //"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+            //      ];
+            //      let qntYears = 4;
+            //      let selectYear = $("#year");
+            //      let selectMonth = $("#month");
+            //      let selectDay = $("#day");
+            //      let currentYear = new Date().getFullYear();
+
+            //      for (var y = 0; y < qntYears; y++) {
+            //          let date = new Date(currentYear);
+            //          let yearElem = document.createElement("option");
+            //          yearElem.value = currentYear
+            //          yearElem.textContent = currentYear;
+            //          selectYear.append(yearElem);
+            //          currentYear--;
+            //      }
+
+            //      for (var m = 0; m < monthNames.length; m++) {
+            //          let month = monthNames[m];
+            //          let monthElem = document.createElement("option");
+            //          monthElem.value = m + 1;
+            //          monthElem.textContent = month ;
+            //          selectMonth.append(monthElem );
+            //      }
+
+            //      var d = new Date();
+            //      var month = d.getMonth();
+            //      var year = d.getFullYear();
+            //      var day = d.getDate();
+
+            //      selectYear.val(year);
+            //      selectYear.on("change", AdjustDays);
+            //      selectMonth.val(month+1);
+            //      selectMonth.on("change", AdjustDays);
+
+            //      AdjustDays();
+            //      selectDay.val(day)
+
+            //      function AdjustDays() {
+            //          var year = selectYear.val();
+            //          var month = parseInt(selectMonth.val()) + 1;
+            //          selectDay.empty();
+
+            //          //get the last day, so the number of days in that month
+            //          var days = new Date(year, month, 0).getDate();
+
+            //          //lets create the days of that month
+            //          for (var d = 1; d <= days; d++) {
+            //              var dayElem = document.createElement("option");
+            //              dayElem.value = d;
+            //              dayElem.textContent = d;
+            //              selectDay.append(dayElem);
+            //          }
+            //      }
+
+
+            //$('#txtFlightDate').keyup(function () {
+            //    var foo = $(this).val().split("-").join(""); // remove hyphens
+            //    if (foo.length > 0) {
+            //        foo = foo.match(new RegExp('.{1,2}', 'g')).join("-");
+            //    }
+            //    $(this).val(foo);
+            //});
+
+
+            //    var myObj = $.parseJSON('{"date_created":"1273185387"}'),
+            //myDate = new Date(1000 * myObj.date_created);
+
+            //    console.log(myDate.toString());
+            //    console.log(myDate.toLocaleString());
+            //    console.log(myDate.toUTCString());
+            //});
+
+
+
+            //function checkdate() {
+
+            //    if ($('#txtFlightDate').val().length != 8) {
+            //        $("#spnMsg").text('Invalid date format. Please enter ddmmyyyy').css({ 'color': 'red' });
+            //        return;
+            //    }
+            //    var d = $('#txtFlightDate').val().slice(0, 2);
+            //    var m = $('#txtFlightDate').val().slice(2, 4);
+            //    var y = $('#txtFlightDate').val().slice(4, 8);
+
+            //    day = Number(d);
+            //    month = Number(m) - 1; //bloody 0-indexed month
+            //    year = Number(y);
+
+            //    var nd = new Date(year, month, day);
+            //    if (nd.getFullYear() == year && nd.getMonth() == month && nd.getDate() == day) {
+            //        $("#spnMsg").text('');
+            //        return;
+            //    } else {
+            //        $("#spnMsg").text('Invalid date format. Please enter ddmmyyyy').css({ 'color': 'red' });
+            //        $('#txtFlightDate').val('');
+            //        return;
+            //    }
+            //var input = $('#txtFlightDate').val();
+            //if (input == '') {
+            //    return;
+            //}
+
+            //var reg = /(0[1-9]|[12][0-9]|3[01])(0[1-9]|1[012])(19|20)\d\d/;
+            //if (input.match(reg)) {
+            //    //alert("Input matched");
+            //    $("#spnMsg").text('');
+            //}
+            //else {
+            //    // alert("Invalid date format. Please enter dd-mm-yyyy");
+            //    $("#spnMsg").text('Invalid date format. Please enter ddmmyyyy').css({ 'color': 'red' });
+            //    $('#txtFlightDate').val('');
+            //    return;
+            //}
+            // }
+    </script>
 </body>
-<script language="javascript" type="text/javascript">
-    $('#RightsReserved').text(' \xA9 Kale Logistics Solutions Private Limited. ' + (new Date).getFullYear().toString());
-    $(document).ready(function () {
-        //var formattedDate = new Date();
-        //var d = formattedDate.getDate();
-        //if (d.toString().length < Number(2))
-        //    d = '0' + d;
-        //var m = formattedDate.getMonth();
-        //m += 1;  // JavaScript months are 0-11
-        //if (m.toString().length < Number(2))
-        //    m = '0' + m;
-        //var y = formattedDate.getFullYear();
-        //var t = formattedDate.getTime();
-        //var date = m.toString() + '/' + d.toString() + '/' + y.toString();
 
-        //newDate = y.toString() + '-' + m.toString() + '-' + d.toString();
-        //$('#txtFlightDate').val(newDate);
-
-        //var h = date.getHours();
-        //var m = date.getMinutes();
-        //var s = date.getSeconds();
-
-        //$("#txtFlightDate").datepicker().datepicker("setDate", new Date());
-
-
-    //    let date = new Date();
-    //    const day = date.toLocaleString('default', { day: '2-digit' });
-    //    const month = date.toLocaleString('default', { month: 'short' });
-    //    const year = date.toLocaleString('default', { year: 'numeric' });
-    //    var today = day + '-' + month + '-' + year;
-    //    $('#txtFlightDate').val(today);
-       
-    //    $("#txtFlightDate").datepicker({
-    //        shortYearCutoff: 1,
-    //        changeMonth: true,
-    //        changeYear: true,
-    //        dateFormat: 'dd-M-yy'
-    //    });
-    //});
-
-
-
-    //      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    //"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-    //      ];
-    //      let qntYears = 4;
-    //      let selectYear = $("#year");
-    //      let selectMonth = $("#month");
-    //      let selectDay = $("#day");
-    //      let currentYear = new Date().getFullYear();
-
-    //      for (var y = 0; y < qntYears; y++) {
-    //          let date = new Date(currentYear);
-    //          let yearElem = document.createElement("option");
-    //          yearElem.value = currentYear
-    //          yearElem.textContent = currentYear;
-    //          selectYear.append(yearElem);
-    //          currentYear--;
-    //      }
-
-    //      for (var m = 0; m < monthNames.length; m++) {
-    //          let month = monthNames[m];
-    //          let monthElem = document.createElement("option");
-    //          monthElem.value = m + 1;
-    //          monthElem.textContent = month ;
-    //          selectMonth.append(monthElem );
-    //      }
-
-    //      var d = new Date();
-    //      var month = d.getMonth();
-    //      var year = d.getFullYear();
-    //      var day = d.getDate();
-
-    //      selectYear.val(year);
-    //      selectYear.on("change", AdjustDays);
-    //      selectMonth.val(month+1);
-    //      selectMonth.on("change", AdjustDays);
-
-    //      AdjustDays();
-    //      selectDay.val(day)
-
-    //      function AdjustDays() {
-    //          var year = selectYear.val();
-    //          var month = parseInt(selectMonth.val()) + 1;
-    //          selectDay.empty();
-
-    //          //get the last day, so the number of days in that month
-    //          var days = new Date(year, month, 0).getDate();
-
-    //          //lets create the days of that month
-    //          for (var d = 1; d <= days; d++) {
-    //              var dayElem = document.createElement("option");
-    //              dayElem.value = d;
-    //              dayElem.textContent = d;
-    //              selectDay.append(dayElem);
-    //          }
-    //      }
-
-
-    //$('#txtFlightDate').keyup(function () {
-    //    var foo = $(this).val().split("-").join(""); // remove hyphens
-    //    if (foo.length > 0) {
-    //        foo = foo.match(new RegExp('.{1,2}', 'g')).join("-");
-    //    }
-    //    $(this).val(foo);
-    //});
-
-
-    //    var myObj = $.parseJSON('{"date_created":"1273185387"}'),
-    //myDate = new Date(1000 * myObj.date_created);
-
-    //    console.log(myDate.toString());
-    //    console.log(myDate.toLocaleString());
-    //    console.log(myDate.toUTCString());
-    //});
-
-
-
-    //function checkdate() {
-
-    //    if ($('#txtFlightDate').val().length != 8) {
-    //        $("#spnMsg").text('Invalid date format. Please enter ddmmyyyy').css({ 'color': 'red' });
-    //        return;
-    //    }
-    //    var d = $('#txtFlightDate').val().slice(0, 2);
-    //    var m = $('#txtFlightDate').val().slice(2, 4);
-    //    var y = $('#txtFlightDate').val().slice(4, 8);
-
-    //    day = Number(d);
-    //    month = Number(m) - 1; //bloody 0-indexed month
-    //    year = Number(y);
-
-    //    var nd = new Date(year, month, day);
-    //    if (nd.getFullYear() == year && nd.getMonth() == month && nd.getDate() == day) {
-    //        $("#spnMsg").text('');
-    //        return;
-    //    } else {
-    //        $("#spnMsg").text('Invalid date format. Please enter ddmmyyyy').css({ 'color': 'red' });
-    //        $('#txtFlightDate').val('');
-    //        return;
-    //    }
-    //var input = $('#txtFlightDate').val();
-    //if (input == '') {
-    //    return;
-    //}
-
-    //var reg = /(0[1-9]|[12][0-9]|3[01])(0[1-9]|1[012])(19|20)\d\d/;
-    //if (input.match(reg)) {
-    //    //alert("Input matched");
-    //    $("#spnMsg").text('');
-    //}
-    //else {
-    //    // alert("Invalid date format. Please enter dd-mm-yyyy");
-    //    $("#spnMsg").text('Invalid date format. Please enter ddmmyyyy').css({ 'color': 'red' });
-    //    $('#txtFlightDate').val('');
-    //    return;
-    //}
-    // }
-</script>
 
 </html>

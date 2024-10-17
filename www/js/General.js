@@ -3,6 +3,10 @@ var WebServiceUrl = "http://10.22.3.222/GalaxyMobAppService/GalaxyService.asmx/"
 var GHAserviceURL = window.localStorage.getItem("GHAserviceURL");
 var UserId = window.localStorage.getItem("UserID");
 var deviceUUID = window.localStorage.getItem("deviceUUID");
+var _ParentChildId = window.localStorage.getItem("_ParentChildId");
+var CompanyCode = window.localStorage.getItem("companyCode");
+var PreferredLanguage = window.localStorage.getItem("PreferredLanguage");
+var GHAExportFlightserviceURL = window.localStorage.getItem("GHAExportFlightserviceURL");
 
 (function () {
     document.addEventListener("deviceready", LoadNavBar, false);

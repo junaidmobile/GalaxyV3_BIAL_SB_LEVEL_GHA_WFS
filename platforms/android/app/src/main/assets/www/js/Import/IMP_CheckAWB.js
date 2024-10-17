@@ -1104,8 +1104,6 @@ function SaveImportMaifestDetailsV3() {
     console.log(inputXML)
     serviceName = 'SaveImportMaifestDetailsV3';
 
-
-
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: "POST",
