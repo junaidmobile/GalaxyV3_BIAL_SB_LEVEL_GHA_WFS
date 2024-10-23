@@ -183,16 +183,20 @@ $(function () {
         if (ExpAwbRowId != '-1') {
             $("#Pieces1").val(isFixed).attr('disabled', 'disabled');
         }
-
-        $("#Length1").val(isLength).attr('disabled', 'disabled');
-        $("#Width1").val(isWidth).attr('disabled', 'disabled');
-
-        if (isHeight > 0) {
-            $("#Height1").val(isHeight).attr('disabled', 'disabled');
+        
+        if (is1 != 'cms') {
+            $("#Length1").val(isLength).attr('disabled', 'disabled');
+            $("#Width1").val(isWidth).attr('disabled', 'disabled');
+            if (isHeight > 0) {
+                $("#Height1").val(isHeight).attr('disabled', 'disabled');
+            } else {
+                $("#Height1").val('').removeAttr('disabled');
+            }
         } else {
+            $("#Length1").val('').removeAttr('disabled');
+            $("#Width1").val('').removeAttr('disabled');
             $("#Height1").val('').removeAttr('disabled');
         }
-
     });
 
     $("#ddlEquTrolley2").change(function () {
@@ -218,15 +222,27 @@ $(function () {
             $("#Pieces2").val(isFixed).attr('disabled', 'disabled');
         }
 
-        $("#Length2").val(isLength).attr('disabled', 'disabled');
-        $("#Width2").val(isWidth).attr('disabled', 'disabled');
+        //$("#Length2").val(isLength).attr('disabled', 'disabled');
+        //$("#Width2").val(isWidth).attr('disabled', 'disabled');
 
-        if (isHeight > 0) {
-            $("#Height2").val(isHeight).attr('disabled', 'disabled');
+        //if (isHeight > 0) {
+        //    $("#Height2").val(isHeight).attr('disabled', 'disabled');
+        //} else {
+        //    $("#Height2").val('').removeAttr('disabled');
+        //}
+        if (is1 != 'cms') {
+            $("#Length2").val(isLength).attr('disabled', 'disabled');
+            $("#Width2").val(isWidth).attr('disabled', 'disabled');
+            if (isHeight > 0) {
+                $("#Height2").val(isHeight).attr('disabled', 'disabled');
+            } else {
+                $("#Height2").val('').removeAttr('disabled');
+            }
         } else {
+            $("#Length2").val('').removeAttr('disabled');
+            $("#Width2").val('').removeAttr('disabled');
             $("#Height2").val('').removeAttr('disabled');
         }
-
     });
 
     $("#ddlEquTrolley3").change(function () {
@@ -252,12 +268,26 @@ $(function () {
             $("#Pieces3").val(isFixed).attr('disabled', 'disabled');
         }
 
-        $("#Length3").val(isLength).attr('disabled', 'disabled');
-        $("#Width3").val(isWidth).attr('disabled', 'disabled');
+        //$("#Length3").val(isLength).attr('disabled', 'disabled');
+        //$("#Width3").val(isWidth).attr('disabled', 'disabled');
 
-        if (isHeight > 0) {
-            $("#Height3").val(isHeight).attr('disabled', 'disabled');
+        //if (isHeight > 0) {
+        //    $("#Height3").val(isHeight).attr('disabled', 'disabled');
+        //} else {
+        //    $("#Height3").val('').removeAttr('disabled');
+        //}
+
+        if (is1 != 'cms') {
+            $("#Length3").val(isLength).attr('disabled', 'disabled');
+            $("#Width3").val(isWidth).attr('disabled', 'disabled');
+            if (isHeight > 0) {
+                $("#Height3").val(isHeight).attr('disabled', 'disabled');
+            } else {
+                $("#Height3").val('').removeAttr('disabled');
+            }
         } else {
+            $("#Length3").val('').removeAttr('disabled');
+            $("#Width3").val('').removeAttr('disabled');
             $("#Height3").val('').removeAttr('disabled');
         }
 
@@ -286,12 +316,26 @@ $(function () {
             $("#Pieces4").val(isFixed).attr('disabled', 'disabled');
         }
 
-        $("#Length4").val(isLength).attr('disabled', 'disabled');
-        $("#Width4").val(isWidth).attr('disabled', 'disabled');
+        //$("#Length4").val(isLength).attr('disabled', 'disabled');
+        //$("#Width4").val(isWidth).attr('disabled', 'disabled');
 
-        if (isHeight > 0) {
-            $("#Height4").val(isHeight).attr('disabled', 'disabled');
+        //if (isHeight > 0) {
+        //    $("#Height4").val(isHeight).attr('disabled', 'disabled');
+        //} else {
+        //    $("#Height4").val('').removeAttr('disabled');
+        //}
+
+        if (is1 != 'cms') {
+            $("#Length4").val(isLength).attr('disabled', 'disabled');
+            $("#Width4").val(isWidth).attr('disabled', 'disabled');
+            if (isHeight > 0) {
+                $("#Height4").val(isHeight).attr('disabled', 'disabled');
+            } else {
+                $("#Height4").val('').removeAttr('disabled');
+            }
         } else {
+            $("#Length4").val('').removeAttr('disabled');
+            $("#Width4").val('').removeAttr('disabled');
             $("#Height4").val('').removeAttr('disabled');
         }
 
@@ -320,12 +364,26 @@ $(function () {
             $("#Pieces5").val(isFixed).attr('disabled', 'disabled');
         }
 
-        $("#Length5").val(isLength).attr('disabled', 'disabled');
-        $("#Width5").val(isWidth).attr('disabled', 'disabled');
+        //$("#Length5").val(isLength).attr('disabled', 'disabled');
+        //$("#Width5").val(isWidth).attr('disabled', 'disabled');
 
-        if (isHeight > 0) {
-            $("#Height5").val(isHeight).attr('disabled', 'disabled');
+        //if (isHeight > 0) {
+        //    $("#Height5").val(isHeight).attr('disabled', 'disabled');
+        //} else {
+        //    $("#Height5").val('').removeAttr('disabled');
+        //}
+
+        if (is1 != 'cms') {
+            $("#Length5").val(isLength).attr('disabled', 'disabled');
+            $("#Width5").val(isWidth).attr('disabled', 'disabled');
+            if (isHeight > 0) {
+                $("#Height5").val(isHeight).attr('disabled', 'disabled');
+            } else {
+                $("#Height5").val('').removeAttr('disabled');
+            }
         } else {
+            $("#Length5").val('').removeAttr('disabled');
+            $("#Width5").val('').removeAttr('disabled');
             $("#Height5").val('').removeAttr('disabled');
         }
 
@@ -344,338 +402,370 @@ $(function () {
 
 getAllValues = function () {
 
-    if ($('#ddlEquTrolley1').val() != '-1' && $('#ddlEquTrolley1').val() != null) {
+    //if ($('#ddlEquTrolley1').val() != '-1' && $('#ddlEquTrolley1').val() != null) {
 
-        if ($("#Pieces1").val() == '') {
-            $("#Pieces1").css('background-color', '#FFCCCB');
-            return;
-        } else {
-            $("#Pieces1").css('background-color', 'white');
+    //    if ($("#Pieces1").val() == '') {
+    //        $("#Pieces1").css('background-color', '#FFCCCB');
+    //        return;
+    //    } else {
+    //        $("#Pieces1").css('background-color', 'white');
 
-        }
-        if ($("#Length1").val() == '') {
-            $("#Length1").css('background-color', '#FFCCCB');
-            return;
-        } else {
-            $("#Length1").css('background-color', 'white');
+    //    }
+    //    if ($("#Length1").val() == '') {
+    //        $("#Length1").css('background-color', '#FFCCCB');
+    //        return;
+    //    } else {
+    //        $("#Length1").css('background-color', 'white');
 
-        }
-        if ($("#Width1").val() == '') {
-            $("#Width1").css('background-color', '#FFCCCB');
-            return;
-        } else {
-            $("#Width1").css('background-color', 'white');
+    //    }
+    //    if ($("#Width1").val() == '') {
+    //        $("#Width1").css('background-color', '#FFCCCB');
+    //        return;
+    //    } else {
+    //        $("#Width1").css('background-color', 'white');
 
-        }
+    //    }
 
-        if ($("#Height1").val() == '') {
-            $("#Height1").css('background-color', '#FFCCCB');
-            return;
-        } else {
-            $("#Height1").css('background-color', 'white');
+    //    if ($("#Height1").val() == '') {
+    //        $("#Height1").css('background-color', '#FFCCCB');
+    //        return;
+    //    } else {
+    //        $("#Height1").css('background-color', 'white');
 
-        }
-
-
-    } else {
-        $("#Pieces1").css('background-color', 'white');
-        $("#Length1").css('background-color', 'white');
-        $("#Width1").css('background-color', 'white');
-        $("#Height1").css('background-color', 'white');
-    }
-
-    if ($('#ddlEquTrolley2').val() != '-1' && $('#ddlEquTrolley2').val() != null) {
-
-        if ($("#Pieces2").val() == '') {
-            $("#Pieces2").css('background-color', '#FFCCCB');
-            return;
-        } else {
-            $("#Pieces2").css('background-color', 'white');
-
-        }
-        if ($("#Length2").val() == '') {
-            $("#Length2").css('background-color', '#FFCCCB');
-            return;
-        } else {
-            $("#Length2").css('background-color', 'white');
-
-        }
-        if ($("#Width2").val() == '') {
-            $("#Width2").css('background-color', '#FFCCCB');
-            return;
-        } else {
-            $("#Width2").css('background-color', 'white');
-
-        }
+    //    }
 
 
-        if ($("#Height2").val() == '') {
-            $("#Height2").css('background-color', '#FFCCCB');
-            return;
-        } else {
-            $("#Height2").css('background-color', 'white');
+    //} else {
+    //    $("#Pieces1").css('background-color', 'white');
+    //    $("#Length1").css('background-color', 'white');
+    //    $("#Width1").css('background-color', 'white');
+    //    $("#Height1").css('background-color', 'white');
+    //}
 
-        }
+    //if ($('#ddlEquTrolley2').val() != '-1' && $('#ddlEquTrolley2').val() != null) {
 
+    //    if ($("#Pieces2").val() == '') {
+    //        $("#Pieces2").css('background-color', '#FFCCCB');
+    //        return;
+    //    } else {
+    //        $("#Pieces2").css('background-color', 'white');
 
-    } else {
-        $("#Pieces2").css('background-color', 'white');
-        $("#Length2").css('background-color', 'white');
-        $("#Width2").css('background-color', 'white');
-        $("#Height2").css('background-color', 'white');
-    }
+    //    }
+    //    if ($("#Length2").val() == '') {
+    //        $("#Length2").css('background-color', '#FFCCCB');
+    //        return;
+    //    } else {
+    //        $("#Length2").css('background-color', 'white');
 
-    if ($('#ddlEquTrolley3').val() != '-1' && $('#ddlEquTrolley3').val() != null) {
+    //    }
+    //    if ($("#Width2").val() == '') {
+    //        $("#Width2").css('background-color', '#FFCCCB');
+    //        return;
+    //    } else {
+    //        $("#Width2").css('background-color', 'white');
 
-        if ($("#Pieces3").val() == '') {
-            $("#Pieces3").css('background-color', '#FFCCCB');
-            return;
-        } else {
-            $("#Pieces3").css('background-color', 'white');
-
-        }
-        if ($("#Length3").val() == '') {
-            $("#Length2").css('background-color', '#FFCCCB');
-            return;
-        } else {
-            $("#Length2").css('background-color', 'white');
-
-        }
-        if ($("#Width3").val() == '') {
-            $("#Width3").css('background-color', '#FFCCCB');
-            return;
-        } else {
-            $("#Width3").css('background-color', 'white');
-
-        }
+    //    }
 
 
-        if ($("#Height3").val() == '') {
-            $("#Height3").css('background-color', '#FFCCCB');
-            return;
-        } else {
-            $("#Height3").css('background-color', 'white');
+    //    if ($("#Height2").val() == '') {
+    //        $("#Height2").css('background-color', '#FFCCCB');
+    //        return;
+    //    } else {
+    //        $("#Height2").css('background-color', 'white');
 
-        }
-
-
-    } else {
-        $("#Pieces3").css('background-color', 'white');
-        $("#Length3").css('background-color', 'white');
-        $("#Width3").css('background-color', 'white');
-        $("#Height3").css('background-color', 'white');
-    }
-
-    if ($('#ddlEquTrolley4').val() != '-1' && $('#ddlEquTrolley4').val() != null) {
-
-        if ($("#Pieces4").val() == '') {
-            $("#Pieces4").css('background-color', '#FFCCCB');
-            return;
-        } else {
-            $("#Pieces4").css('background-color', 'white');
-
-        }
-        if ($("#Length4").val() == '') {
-            $("#Length4").css('background-color', '#FFCCCB');
-            return;
-        } else {
-            $("#Length4").css('background-color', 'white');
-
-        }
-        if ($("#Width4").val() == '') {
-            $("#Width4").css('background-color', '#FFCCCB');
-            return;
-        } else {
-            $("#Width4").css('background-color', 'white');
-
-        }
+    //    }
 
 
-        if ($("#Height2").val() == '') {
-            $("#Height2").css('background-color', '#FFCCCB');
-            return;
-        } else {
-            $("#Height4").css('background-color', 'white');
+    //} else {
+    //    $("#Pieces2").css('background-color', 'white');
+    //    $("#Length2").css('background-color', 'white');
+    //    $("#Width2").css('background-color', 'white');
+    //    $("#Height2").css('background-color', 'white');
+    //}
 
-        }
+    //if ($('#ddlEquTrolley3').val() != '-1' && $('#ddlEquTrolley3').val() != null) {
 
+    //    if ($("#Pieces3").val() == '') {
+    //        $("#Pieces3").css('background-color', '#FFCCCB');
+    //        return;
+    //    } else {
+    //        $("#Pieces3").css('background-color', 'white');
 
-    } else {
-        $("#Pieces4").css('background-color', 'white');
-        $("#Length4").css('background-color', 'white');
-        $("#Width4").css('background-color', 'white');
-        $("#Height4").css('background-color', 'white');
-    }
+    //    }
+    //    if ($("#Length3").val() == '') {
+    //        $("#Length2").css('background-color', '#FFCCCB');
+    //        return;
+    //    } else {
+    //        $("#Length2").css('background-color', 'white');
 
-    if ($('#ddlEquTrolley5').val() != '-1' && $('#ddlEquTrolley5').val() != null) {
+    //    }
+    //    if ($("#Width3").val() == '') {
+    //        $("#Width3").css('background-color', '#FFCCCB');
+    //        return;
+    //    } else {
+    //        $("#Width3").css('background-color', 'white');
 
-        if ($("#Pieces5").val() == '') {
-            $("#Pieces5").css('background-color', '#FFCCCB');
-            return;
-        } else {
-            $("#Pieces5").css('background-color', 'white');
-
-        }
-        if ($("#Length5").val() == '') {
-            $("#Length5").css('background-color', '#FFCCCB');
-            return;
-        } else {
-            $("#Length5").css('background-color', 'white');
-
-        }
-        if ($("#Width5").val() == '') {
-            $("#Width5").css('background-color', '#FFCCCB');
-            return;
-        } else {
-            $("#Width5").css('background-color', 'white');
-
-        }
+    //    }
 
 
-        if ($("#Height5").val() == '') {
-            $("#Height5").css('background-color', '#FFCCCB');
-            return;
-        } else {
-            $("#Height5").css('background-color', 'white');
+    //    if ($("#Height3").val() == '') {
+    //        $("#Height3").css('background-color', '#FFCCCB');
+    //        return;
+    //    } else {
+    //        $("#Height3").css('background-color', 'white');
 
-        }
+    //    }
 
 
-    } else {
-        $("#Pieces5").css('background-color', 'white');
-        $("#Length5").css('background-color', 'white');
-        $("#Width5").css('background-color', 'white');
-        $("#Height5").css('background-color', 'white');
-    }
+    //} else {
+    //    $("#Pieces3").css('background-color', 'white');
+    //    $("#Length3").css('background-color', 'white');
+    //    $("#Width3").css('background-color', 'white');
+    //    $("#Height3").css('background-color', 'white');
+    //}
+
+    //if ($('#ddlEquTrolley4').val() != '-1' && $('#ddlEquTrolley4').val() != null) {
+
+    //    if ($("#Pieces4").val() == '') {
+    //        $("#Pieces4").css('background-color', '#FFCCCB');
+    //        return;
+    //    } else {
+    //        $("#Pieces4").css('background-color', 'white');
+
+    //    }
+    //    if ($("#Length4").val() == '') {
+    //        $("#Length4").css('background-color', '#FFCCCB');
+    //        return;
+    //    } else {
+    //        $("#Length4").css('background-color', 'white');
+
+    //    }
+    //    if ($("#Width4").val() == '') {
+    //        $("#Width4").css('background-color', '#FFCCCB');
+    //        return;
+    //    } else {
+    //        $("#Width4").css('background-color', 'white');
+
+    //    }
+
+
+    //    if ($("#Height2").val() == '') {
+    //        $("#Height2").css('background-color', '#FFCCCB');
+    //        return;
+    //    } else {
+    //        $("#Height4").css('background-color', 'white');
+
+    //    }
+
+
+    //} else {
+    //    $("#Pieces4").css('background-color', 'white');
+    //    $("#Length4").css('background-color', 'white');
+    //    $("#Width4").css('background-color', 'white');
+    //    $("#Height4").css('background-color', 'white');
+    //}
+
+    //if ($('#ddlEquTrolley5').val() != '-1' && $('#ddlEquTrolley5').val() != null) {
+
+    //    if ($("#Pieces5").val() == '') {
+    //        $("#Pieces5").css('background-color', '#FFCCCB');
+    //        return;
+    //    } else {
+    //        $("#Pieces5").css('background-color', 'white');
+
+    //    }
+    //    if ($("#Length5").val() == '') {
+    //        $("#Length5").css('background-color', '#FFCCCB');
+    //        return;
+    //    } else {
+    //        $("#Length5").css('background-color', 'white');
+
+    //    }
+    //    if ($("#Width5").val() == '') {
+    //        $("#Width5").css('background-color', '#FFCCCB');
+    //        return;
+    //    } else {
+    //        $("#Width5").css('background-color', 'white');
+
+    //    }
+
+
+    //    if ($("#Height5").val() == '') {
+    //        $("#Height5").css('background-color', '#FFCCCB');
+    //        return;
+    //    } else {
+    //        $("#Height5").css('background-color', 'white');
+
+    //    }
+
+
+    //} else {
+    //    $("#Pieces5").css('background-color', 'white');
+    //    $("#Length5").css('background-color', 'white');
+    //    $("#Width5").css('background-color', 'white');
+    //    $("#Height5").css('background-color', 'white');
+    //}
+
+
     var one = "";
     var two = "";
     var three = "";
     var foure = "";
     var five = "";
-    if ($('#ddlEquTrolley1').val() != '-1' && $('#ddlEquTrolley1').val() != null) {
+    // if ($('#ddlEquTrolley1').val() != '-1' && $('#ddlEquTrolley1').val() != null) {
 
-        selectedVal = $('#ddlEquTrolley1').val();
-        var arr = selectedVal.split('~')
-        var isREFERENCE_DATA_IDENTIFIER = arr[0];
-        var isFixed = arr[1];
-        var isLength = arr[2];
-        var isWidth = arr[3];
-        var isHeight = arr[4];
-        var isUnit = arr[5];
-        var isWeight = arr[6];
-        var L;
-        var W;
-        var H;
+    selectedVal = $('#ddlEquTrolley1').val();
+    var arr = selectedVal.split('~')
+    var isREFERENCE_DATA_IDENTIFIER = arr[0];
+    var isFixed = arr[1];
+    var isLength = arr[2];
+    var isWidth = arr[3];
+    var isHeight = arr[4];
+    var isUnit = arr[5];
+    var isWeight = arr[6];
+    var L;
+    var W;
+    var H;
 
-        one += "<REFERENCE_DATA_IDENTIFIER>" + isREFERENCE_DATA_IDENTIFIER + "</REFERENCE_DATA_IDENTIFIER>";
-        one += "<TrolleyFixed>" + isFixed + "</TrolleyFixed>";
-        one += "<TrolleyWt>" + isWeight + "</TrolleyWt>";
-        one += "<Pieces>" + $("#Pieces1").val() + "</Pieces>";
-        one += "<Length>" + $("#Length1").val() + "</Length>";
-        one += "<Width>" + $("#Width1").val() + "</Width>";
-        one += "<Height>" + $("#Height1").val() + "</Height>";
-        // $("#ddlUnit1").val()
+    if (isREFERENCE_DATA_IDENTIFIER == '-1') {
+        isREFERENCE_DATA_IDENTIFIER = '-1';
+        isFixed = '';
+        isWeight = '';
     }
 
-    if ($('#ddlEquTrolley2').val() != '-1' && $('#ddlEquTrolley2').val() != null) {
+    one += "<REFERENCE_DATA_IDENTIFIER>" + isREFERENCE_DATA_IDENTIFIER + "</REFERENCE_DATA_IDENTIFIER>";
+    one += "<TrolleyFixed>" + isFixed + "</TrolleyFixed>";
+    one += "<TrolleyWt>" + isWeight + "</TrolleyWt>";
+    one += "<Pieces>" + $("#Pieces1").val() + "</Pieces>";
+    one += "<Length>" + $("#Length1").val() + "</Length>";
+    one += "<Width>" + $("#Width1").val() + "</Width>";
+    one += "<Height>" + $("#Height1").val() + "</Height>";
+    // $("#ddlUnit1").val()
+    // }
 
-        selectedVal = $('#ddlEquTrolley2').val();
-        var arr = selectedVal.split('~')
-        var isREFERENCE_DATA_IDENTIFIER = arr[0];
-        var isFixed = arr[1];
-        var isLength = arr[2];
-        var isWidth = arr[3];
-        var isHeight = arr[4];
-        var isUnit = arr[5];
-        var isWeight = arr[6];
-        var L;
-        var W;
-        var H;
+    //  if ($('#ddlEquTrolley2').val() != '-1' && $('#ddlEquTrolley2').val() != null) {
 
-        two += "<REFERENCE_DATA_IDENTIFIER>" + isREFERENCE_DATA_IDENTIFIER + "</REFERENCE_DATA_IDENTIFIER>";
-        two += "<TrolleyFixed>" + isFixed + "</TrolleyFixed>";
-        two += "<TrolleyWt>" + isWeight + "</TrolleyWt>";
-        two += "<Pieces>" + $("#Pieces2").val() + "</Pieces>";
-        two += "<Length>" + $("#Length2").val() + "</Length>";
-        two += "<Width>" + $("#Width2").val() + "</Width>";
-        two += "<Height>" + $("#Height2").val() + "</Height>";
-        // $("#ddlUnit1").val()
+    selectedVal = $('#ddlEquTrolley2').val();
+    var arr = selectedVal.split('~')
+    var isREFERENCE_DATA_IDENTIFIER = arr[0];
+    var isFixed = arr[1];
+    var isLength = arr[2];
+    var isWidth = arr[3];
+    var isHeight = arr[4];
+    var isUnit = arr[5];
+    var isWeight = arr[6];
+    var L;
+    var W;
+    var H;
+
+    if (isREFERENCE_DATA_IDENTIFIER == '-1') {
+        isREFERENCE_DATA_IDENTIFIER = '-1';
+        isFixed = '';
+        isWeight = '';
     }
 
-    if ($('#ddlEquTrolley3').val() != '-1' && $('#ddlEquTrolley3').val() != null) {
+    two += "<REFERENCE_DATA_IDENTIFIER>" + isREFERENCE_DATA_IDENTIFIER + "</REFERENCE_DATA_IDENTIFIER>";
+    two += "<TrolleyFixed>" + isFixed + "</TrolleyFixed>";
+    two += "<TrolleyWt>" + isWeight + "</TrolleyWt>";
+    two += "<Pieces>" + $("#Pieces2").val() + "</Pieces>";
+    two += "<Length>" + $("#Length2").val() + "</Length>";
+    two += "<Width>" + $("#Width2").val() + "</Width>";
+    two += "<Height>" + $("#Height2").val() + "</Height>";
+    // $("#ddlUnit1").val()
+    //  }
 
-        selectedVal = $('#ddlEquTrolley3').val();
-        var arr = selectedVal.split('~')
-        var isREFERENCE_DATA_IDENTIFIER = arr[0];
-        var isFixed = arr[1];
-        var isLength = arr[2];
-        var isWidth = arr[3];
-        var isHeight = arr[4];
-        var isUnit = arr[5];
-        var isWeight = arr[6];
-        var L;
-        var W;
-        var H;
+    //  if ($('#ddlEquTrolley3').val() != '-1' && $('#ddlEquTrolley3').val() != null) {
 
-        three += "<REFERENCE_DATA_IDENTIFIER>" + isREFERENCE_DATA_IDENTIFIER + "</REFERENCE_DATA_IDENTIFIER>";
-        three += "<TrolleyFixed>" + isFixed + "</TrolleyFixed>";
-        three += "<TrolleyWt>" + isWeight + "</TrolleyWt>";
-        three += "<Pieces>" + $("#Pieces3").val() + "</Pieces>";
-        three += "<Length>" + $("#Length3").val() + "</Length>";
-        three += "<Width>" + $("#Width3").val() + "</Width>";
-        three += "<Height>" + $("#Height3").val() + "</Height>";
-        // $("#ddlUnit1").val()
+    selectedVal = $('#ddlEquTrolley3').val();
+    var arr = selectedVal.split('~')
+    var isREFERENCE_DATA_IDENTIFIER = arr[0];
+    var isFixed = arr[1];
+    var isLength = arr[2];
+    var isWidth = arr[3];
+    var isHeight = arr[4];
+    var isUnit = arr[5];
+    var isWeight = arr[6];
+    var L;
+    var W;
+    var H;
+
+    if (isREFERENCE_DATA_IDENTIFIER == '-1') {
+        isREFERENCE_DATA_IDENTIFIER = '-1';
+        isFixed = '';
+        isWeight = '';
     }
 
-    if ($('#ddlEquTrolley4').val() != '-1' && $('#ddlEquTrolley4').val() != null) {
+    three += "<REFERENCE_DATA_IDENTIFIER>" + isREFERENCE_DATA_IDENTIFIER + "</REFERENCE_DATA_IDENTIFIER>";
+    three += "<TrolleyFixed>" + isFixed + "</TrolleyFixed>";
+    three += "<TrolleyWt>" + isWeight + "</TrolleyWt>";
+    three += "<Pieces>" + $("#Pieces3").val() + "</Pieces>";
+    three += "<Length>" + $("#Length3").val() + "</Length>";
+    three += "<Width>" + $("#Width3").val() + "</Width>";
+    three += "<Height>" + $("#Height3").val() + "</Height>";
+    // $("#ddlUnit1").val()
+    //  }
 
-        selectedVal = $('#ddlEquTrolley4').val();
-        var arr = selectedVal.split('~')
-        var isREFERENCE_DATA_IDENTIFIER = arr[0];
-        var isFixed = arr[1];
-        var isLength = arr[2];
-        var isWidth = arr[3];
-        var isHeight = arr[4];
-        var isUnit = arr[5];
-        var isWeight = arr[6];
-        var L;
-        var W;
-        var H;
+    //  if ($('#ddlEquTrolley4').val() != '-1' && $('#ddlEquTrolley4').val() != null) {
 
-        foure += "<REFERENCE_DATA_IDENTIFIER>" + isREFERENCE_DATA_IDENTIFIER + "</REFERENCE_DATA_IDENTIFIER>";
-        foure += "<TrolleyFixed>" + isFixed + "</TrolleyFixed>";
-        foure += "<TrolleyWt>" + isWeight + "</TrolleyWt>";
-        foure += "<Pieces>" + $("#Pieces4").val() + "</Pieces>";
-        foure += "<Length>" + $("#Length4").val() + "</Length>";
-        foure += "<Width>" + $("#Width4").val() + "</Width>";
-        foure += "<Height>" + $("#Height4").val() + "</Height>";
-        // $("#ddlUnit1").val()
+    selectedVal = $('#ddlEquTrolley4').val();
+    var arr = selectedVal.split('~')
+    var isREFERENCE_DATA_IDENTIFIER = arr[0];
+    var isFixed = arr[1];
+    var isLength = arr[2];
+    var isWidth = arr[3];
+    var isHeight = arr[4];
+    var isUnit = arr[5];
+    var isWeight = arr[6];
+    var L;
+    var W;
+    var H;
+
+    if (isREFERENCE_DATA_IDENTIFIER == '-1') {
+        isREFERENCE_DATA_IDENTIFIER = '-1';
+        isFixed = '';
+        isWeight = '';
     }
 
-    if ($('#ddlEquTrolley5').val() != '-1' && $('#ddlEquTrolley5').val() != null) {
+    foure += "<REFERENCE_DATA_IDENTIFIER>" + isREFERENCE_DATA_IDENTIFIER + "</REFERENCE_DATA_IDENTIFIER>";
+    foure += "<TrolleyFixed>" + isFixed + "</TrolleyFixed>";
+    foure += "<TrolleyWt>" + isWeight + "</TrolleyWt>";
+    foure += "<Pieces>" + $("#Pieces4").val() + "</Pieces>";
+    foure += "<Length>" + $("#Length4").val() + "</Length>";
+    foure += "<Width>" + $("#Width4").val() + "</Width>";
+    foure += "<Height>" + $("#Height4").val() + "</Height>";
+    // $("#ddlUnit1").val()
+    //  }
 
-        selectedVal = $('#ddlEquTrolley5').val();
-        var arr = selectedVal.split('~')
-        var isREFERENCE_DATA_IDENTIFIER = arr[0];
-        var isFixed = arr[1];
-        var isLength = arr[2];
-        var isWidth = arr[3];
-        var isHeight = arr[4];
-        var isUnit = arr[5];
-        var isWeight = arr[6];
-        var L;
-        var W;
-        var H;
+    //  if ($('#ddlEquTrolley5').val() != '-1' && $('#ddlEquTrolley5').val() != null) {
 
-        five += "<REFERENCE_DATA_IDENTIFIER>" + isREFERENCE_DATA_IDENTIFIER + "</REFERENCE_DATA_IDENTIFIER>";
-        five += "<TrolleyFixed>" + isFixed + "</TrolleyFixed>";
-        five += "<TrolleyWt>" + isWeight + "</TrolleyWt>";
-        five += "<Pieces>" + $("#Pieces5").val() + "</Pieces>";
-        five += "<Length>" + $("#Length5").val() + "</Length>";
-        five += "<Width>" + $("#Width5").val() + "</Width>";
-        five += "<Height>" + $("#Height5").val() + "</Height>";
-        // $("#ddlUnit1").val()
+    selectedVal = $('#ddlEquTrolley5').val();
+    var arr = selectedVal.split('~')
+    var isREFERENCE_DATA_IDENTIFIER = arr[0];
+    var isFixed = arr[1];
+    var isLength = arr[2];
+    var isWidth = arr[3];
+    var isHeight = arr[4];
+    var isUnit = arr[5];
+    var isWeight = arr[6];
+    var L;
+    var W;
+    var H;
+
+    if (isREFERENCE_DATA_IDENTIFIER == '-1') {
+        isREFERENCE_DATA_IDENTIFIER = '-1';
+        isFixed = '';
+        isWeight = '';
     }
+
+    five += "<REFERENCE_DATA_IDENTIFIER>" + isREFERENCE_DATA_IDENTIFIER + "</REFERENCE_DATA_IDENTIFIER>";
+    five += "<TrolleyFixed>" + isFixed + "</TrolleyFixed>";
+    five += "<TrolleyWt>" + isWeight + "</TrolleyWt>";
+    five += "<Pieces>" + $("#Pieces5").val() + "</Pieces>";
+    five += "<Length>" + $("#Length5").val() + "</Length>";
+    five += "<Width>" + $("#Width5").val() + "</Width>";
+    five += "<Height>" + $("#Height5").val() + "</Height>";
+    // $("#ddlUnit1").val()
+    // }
     inputRows = '<Rows>' + one + '</Rows>' + '<Rows>' + two + '</Rows>' + '<Rows>' + three + '</Rows>' + '<Rows>' + foure + '</Rows>' + '<Rows>' + five + '</Rows>';
     console.log(inputRows)
 }
@@ -936,7 +1026,7 @@ function GetAWBDetailSearch_V3() {
                         //$('#txtGrWt').val(Weight).css('text-align', 'right');
                         //$('#txtCharWt').val(ChargeableWt).css('text-align', 'right');
                         //$('#txtVolume').val(Volume).css('text-align', 'right');
-                        $('#txtOrigin').val(Origin);
+                        //$('#txtOrigin').val('BLR');
                         $('#txtDestination').val(Destination);
                         $('#txtShipperPrifix').val(ShipperShortCode);
                         $('#txtShipper').val(ShipperName);
@@ -1355,7 +1445,7 @@ function GetAWBDetailSearch_V3_onLoad() {
                         //$('#txtGrWt').val(Weight).css('text-align', 'right');
                         //$('#txtCharWt').val(ChargeableWt).css('text-align', 'right');
                         //$('#txtVolume').val(Volume).css('text-align', 'right');
-                        $('#txtOrigin').val(Origin);
+                        //$('#txtOrigin').val(Origin);
                         $('#txtDestination').val(Destination);
                         $('#txtShipperPrifix').val(ShipperShortCode);
                         $('#txtShipper').val(ShipperName);
@@ -2890,7 +2980,7 @@ function log(message) {
 
 function clearALLafterSave() {
     $('#txtAWBNo').val('');
-    $('#txtOrigin').val('');
+    //$('#txtOrigin').val('');
     $('#txtDestination').val('');
     $('#txtFlightNo').val('');
     $('#txtPieces').val('');
@@ -2958,7 +3048,7 @@ function clearALLafterSave() {
 
 function clearALL() {
     $('#txtAWBNo').val('');
-    $('#txtOrigin').val('');
+    //$('#txtOrigin').val('');
     $('#txtDestination').val('');
     $('#txtFlightNo').val('');
     $('#txtPieces').val('');
@@ -3069,7 +3159,7 @@ function clearGrid() {
 
 function clearALLNew() {
 
-    $('#txtOrigin').val('');
+   // $('#txtOrigin').val('');
     $('#txtDestination').val('');
     $('#txtFlightNo').val('');
     $('#txtPieces').val('');
@@ -3328,7 +3418,7 @@ function CalculateVol_1() {
 
     var decChargeableWt;
 
-    if ($("#ddlEquTrolley1").val() != '-1') {
+    if ($("#ddlEquTrolley1").val() != '-1' && $("#ddlEquTrolley1 option:selected").text() != 'cms') {
         decChargeableWt = ($("#Length1").val() *
             $("#Width1").val() *
             $("#Height1").val() *
@@ -3348,12 +3438,20 @@ function CalculateVol_1() {
 
     volumetricWt = parseFloat(decChargeableWt) / 167;
 
-    $("#txtCharWt").val(Math.round(decChargeableWt.toFixed(2)));
 
     $("#txtVolume").val(volumetricWt.toFixed(2));
 
     allVolumn_1 = volumetricWt.toFixed(2);
     allCharWt_1 = decChargeableWt.toFixed(2);
+
+    //var grWT = parseFloat($("#txtGrWt").val());
+    //var chaWT = parseFloat(allCharWt_1);
+    if (parseFloat($("#txtGrWt").val()) > parseFloat(allCharWt_1)) {
+        $("#txtCharWt").val($("#txtGrWt").val());
+    } else {
+        $("#txtCharWt").val(Math.round(decChargeableWt.toFixed(2)));
+    }
+
 }
 
 
@@ -3366,7 +3464,7 @@ function CalculateVol_2() {
     }
     var decChargeableWt;
 
-    if ($("#ddlEquTrolley2").val() != '-1') {
+    if ($("#ddlEquTrolley2").val() != '-1' && $("#ddlEquTrolley2 option:selected").text() != 'cms') {
         decChargeableWt = ($("#Length2").val() *
             $("#Width2").val() *
             $("#Height2").val() *
@@ -3384,7 +3482,7 @@ function CalculateVol_2() {
 
     }
 
-   var volumetricWt = parseFloat(decChargeableWt) / 167;
+    var volumetricWt = parseFloat(decChargeableWt) / 167;
 
     allVolumn_2 = volumetricWt.toFixed(2);
     allCharWt_2 = decChargeableWt.toFixed(2);
@@ -3392,7 +3490,13 @@ function CalculateVol_2() {
     var v1 = parseFloat(allVolumn_1) + parseFloat(allVolumn_2);
     var c1 = parseFloat(allCharWt_1) + parseFloat(allCharWt_2);
     $("#txtVolume").val(v1.toFixed(2));
-    $("#txtCharWt").val(Math.round(c1));
+
+
+    if (parseFloat($("#txtGrWt").val()) > parseFloat(allCharWt_2)) {
+        $("#txtCharWt").val($("#txtGrWt").val());
+    } else {
+        $("#txtCharWt").val(Math.round(c1));
+    }
 }
 
 
@@ -3405,7 +3509,7 @@ function CalculateVol_3() {
     }
     var decChargeableWt;
 
-    if ($("#ddlEquTrolley3").val() != '-1') {
+    if ($("#ddlEquTrolley3").val() != '-1' && $("#ddlEquTrolley3 option:selected").text() != 'cms') {
         decChargeableWt = ($("#Length3").val() *
             $("#Width3").val() *
             $("#Height3").val() *
@@ -3423,7 +3527,7 @@ function CalculateVol_3() {
 
     }
 
-   var volumetricWt = parseFloat(decChargeableWt) / 167;
+    var volumetricWt = parseFloat(decChargeableWt) / 167;
 
     allVolumn_3 = volumetricWt.toFixed(2);
     allCharWt_3 = decChargeableWt.toFixed(2);
@@ -3431,7 +3535,13 @@ function CalculateVol_3() {
     var v1 = parseFloat(allVolumn_1) + parseFloat(allVolumn_2) + parseFloat(allVolumn_3);
     var c1 = parseFloat(allCharWt_1) + parseFloat(allCharWt_2) + parseFloat(allCharWt_3);
     $("#txtVolume").val(v1.toFixed(2));
-    $("#txtCharWt").val(Math.round(c1));
+    // $("#txtCharWt").val(Math.round(c1));
+
+    if (parseFloat($("#txtGrWt").val()) > parseFloat(allCharWt_3)) {
+        $("#txtCharWt").val($("#txtGrWt").val());
+    } else {
+        $("#txtCharWt").val(Math.round(c1));
+    }
 }
 
 function CalculateVol_4() {
@@ -3443,7 +3553,7 @@ function CalculateVol_4() {
     }
     var decChargeableWt;
 
-    if ($("#ddlEquTrolley4").val() != '-1') {
+    if ($("#ddlEquTrolley4").val() != '-1' && $("#ddlEquTrolley4 option:selected").text() != 'cms') {
         decChargeableWt = ($("#Length4").val() *
             $("#Width4").val() *
             $("#Height4").val() *
@@ -3469,7 +3579,13 @@ function CalculateVol_4() {
     var v1 = parseFloat(allVolumn_1) + parseFloat(allVolumn_2) + parseFloat(allVolumn_3) + parseFloat(allVolumn_4);
     var c1 = parseFloat(allCharWt_1) + parseFloat(allCharWt_2) + parseFloat(allCharWt_3) + parseFloat(allCharWt_4);
     $("#txtVolume").val(v1.toFixed(2));
-    $("#txtCharWt").val(Math.round(c1));
+    // $("#txtCharWt").val(Math.round(c1));
+
+    if (parseFloat($("#txtGrWt").val()) > parseFloat(allCharWt_4)) {
+        $("#txtCharWt").val($("#txtGrWt").val());
+    } else {
+        $("#txtCharWt").val(Math.round(c1));
+    }
 }
 
 function CalculateVol_5() {
@@ -3481,7 +3597,7 @@ function CalculateVol_5() {
     }
     var decChargeableWt;
 
-    if ($("#ddlEquTrolley5").val() != '-1') {
+    if ($("#ddlEquTrolley5").val() != '-1' && $("#ddlEquTrolley5 option:selected").text() != 'cms') {
         decChargeableWt = ($("#Length5").val() *
             $("#Width5").val() *
             $("#Height5").val() *
@@ -3507,7 +3623,12 @@ function CalculateVol_5() {
     var v1 = parseFloat(allVolumn_1) + parseFloat(allVolumn_2) + parseFloat(allVolumn_3) + parseFloat(allVolumn_4) + parseFloat(allVolumn_5);
     var c1 = parseFloat(allCharWt_1) + parseFloat(allCharWt_2) + parseFloat(allCharWt_3) + parseFloat(allCharWt_4) + parseFloat(allCharWt_5);
     $("#txtVolume").val(v1.toFixed(2));
-    $("#txtCharWt").val(Math.round(c1));
+    // $("#txtCharWt").val(Math.round(c1));
+    if (parseFloat($("#txtGrWt").val()) > parseFloat(allCharWt_5)) {
+        $("#txtCharWt").val($("#txtGrWt").val());
+    } else {
+        $("#txtCharWt").val(Math.round(c1));
+    }
 }
 
 function GetButtonRights_v3() {
@@ -3676,7 +3797,7 @@ function GetFlightRoutingDetails_V3_onblure() {
                 var xmlDoc = $.parseXML(response);
                 $("#txtDestination").val('');
                 $("#txtOffpoint").val('');
-                
+
                 console.log(xmlDoc)
                 $(xmlDoc).find('Table1').each(function (index) {
 

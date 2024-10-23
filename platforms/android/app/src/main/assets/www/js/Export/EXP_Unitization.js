@@ -1198,7 +1198,7 @@ function GetShipmentInfoForAWBforScanID() {
                     var newOption = $('<option></option>');
                     newOption.val($(this).find('EXPSHIPROWID').text()).text($(this).find('RNo').text());
                     newOption.appendTo('#ddlShipmentNo');
-                    $('#txtPackages').focus();
+                    //$('#txtPackages').focus();
                     $('#ddlShipmentNo').trigger('change');
                     if (index == 0) {
                         //$('#txtPackages').val($(this).find('NOP').text());
@@ -1228,6 +1228,7 @@ function GetShipmentInfoForAWBforScanID() {
                 if (chkAuto == true && totalPkgs != undefined && totalWeight != undefined && EXPSHIPROWID != '') {
 
                     SaveAWBforULDDetailsOnScanID();
+                    $('#txtScannedID').focus();
                 }
             },
             error: function (msg) {
@@ -1900,7 +1901,7 @@ function GetAWBDetailsForULD() {
                     html += "<tbody>";
 
                     var xmlDoc = $.parseXML(str);
-
+                    console.log(xmlDoc)
                     $(xmlDoc).find('Table1').each(function (index) {
 
                         //var outMsg = $(this).find('Status').text();

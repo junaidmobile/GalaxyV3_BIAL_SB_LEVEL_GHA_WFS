@@ -1669,7 +1669,7 @@ function onChangeConsineeName(sssid) {
 function Shipper_GetShipperConsigneeWithShortCode_V3() {
 
     shipperID = $('#ddlShipper').val();
-   
+
     if ($("#txtShipperPrifix").val().length != '3') {
         return;
     }
@@ -2900,6 +2900,8 @@ function GetVCTUnScannedDetails_v3(VCTNo) {
                     $('#txtFlightNo').val(FlightNumber);
                     $('#txtCharWt').val(ChargeableWt);
                     $('#txtVolume').val(Volume);
+                    $('#ddlAgentName').val(AgentCode);
+                    $('#ddlAgentName').val(CommSearchCode);
 
                     $('#txtOffpoint').val(OffPoint);
                     $('#txtOrigin').val(Origin);
@@ -2913,23 +2915,25 @@ function GetVCTUnScannedDetails_v3(VCTNo) {
 
 
                     if (ShipperShortCode != '') {
-                        $('#ddlShipper').trigger("change");
-                        
+                        Shipper_SCustID = ShipperId;
+                       // $('#ddlShipper').trigger("change");
+
                     }
 
                     if (ConsigneeShortCode != '') {
-                        $('#ddlConsignee').trigger("change");
-                        
+                        Consignee_CCustID = ConsigneeId;
+                        // $('#ddlConsignee').trigger("change");
+
                     }
 
                     if (AgentShortCode != '') {
-                        
-                        $('#ddlAgentName').trigger("change");
+                        AgentName_IACustID = AgentCode;
+                        // $('#ddlAgentName').trigger("change");
                     }
 
                     if (Description != '') {
-                        
-                        $('#ddlCommodity').trigger("change");
+                        passCommoId = CommSearchCode;
+                        // $('#ddlCommodity').trigger("change");
                     }
 
                     if ($(xmlDoc).find('Table1').length > 1) {
@@ -3759,10 +3763,10 @@ function SaveVCTCargoTrolleyDetailsBL_v3() {
     // var inputxml = "<Root><VCTNo>" + VCTNo + "</VCTNo><AWBNo>" + $("#ddlAWBNo option:selected").text() + "</AWBNo><SBNumber>" + $("#txtSBNo").val() + "</SBNumber><VCTID>" + VCTId + "</VCTID><ISULD>False</ISULD><ConsignmentRowID>" + ConsignmentRowIDForSave + "</ConsignmentRowID><HouseRowId></HouseRowId><AWBULDNo></AWBULDNo><HAWB></HAWB><Package>" + $("#txPieces").val() + "</Package><GrossWt>" + $("#txtScaleWt").val() + "</GrossWt><WtUOM>" + WtUOM + "</WtUOM><TrolleyCode>" + IDENTIFIER + "</TrolleyCode><TrolleyWt>" + REFERENCE + "</TrolleyWt><IsSecured>" + isSecuredFlag + "</IsSecured><GroupId>" + $("#txtGroupId").val() + "</GroupId><DimUOM>" + $("#ddlUnit1").val() + "</DimUOM><DimDetails>" + inputRows + "</DimDetails><AirportCity>" + AirportCity + "</AirportCity><Culture>" + PreferredLanguage + "</Culture><UserId>" + UserId + "</UserId><NOG></NOG><CommSrNo>" + CommSrNo + "</CommSrNo><SHC1></SHC1><SHC2></SHC2><SHC3></SHC3><SHC4></SHC4><SHC5></SHC5><SHC6></SHC6><SHC7></SHC7><SHC8></SHC8><SHC9></SHC9></Root>";
     var shipConAgtXML = '<SCustID>' + Shipper_SCustID + '</SCustID><SName>' + $("#txtShipper").val().toUpperCase() + '</SName><CCustID>' + Consignee_CCustID + '</CCustID><CName>' + $("#txtConsignee").val().toUpperCase() + '</CName><IACustID>' + AgentName_IACustID + '</IACustID><IAName>' + $("#txtAgentName").val().toUpperCase() + '</IAName><AgentID>' + AgentName_IACustID + '</AgentID>';
 
-    var inputxml = "<Root><VCTNo>" + VCTNo + "</VCTNo><AWBNo>" + $("#ddlAWBNo option:selected").text() + "</AWBNo><SBNumber>" + $("#txtSBNo").val() + "</SBNumber><VCTID>" + VCTId + "</VCTID><ISULD>False</ISULD><ConsignmentRowID>" + ConsignmentRowIDForSave + "</ConsignmentRowID><HouseRowId></HouseRowId><AWBULDNo></AWBULDNo><HAWB></HAWB><Package>" + $("#txPieces").val() + "</Package><GrossWt>" + $("#txtScaleWt").val() + "</GrossWt><WtUOM>" + WtUOM + "</WtUOM><IsSecured>false</IsSecured><GroupId>" + $("#txtGroupId").val() + "</GroupId><DimUOM>" + $("#ddlUnit1").val() + "</DimUOM><ComSearchCode>" + passCommoId + "</ComSearchCode><FlightAirline>" + $("#txtAirline").val().toUpperCase() + "</FlightAirline><FlightNumber>" + $("#txtFlightNo").val().toUpperCase() + "</FlightNumber><FlightDate>" + $("#txtFlightDate").val() + "</FlightDate><OffPoint>" + $("#txtOffpoint").val().toUpperCase() + "</OffPoint>" + shipConAgtXML + "<Volume>" + $("#txtVolume").val() + "</Volume><ChargeableWeight>" + $("#txtCharWt").val() + "</ChargeableWeight><AirportCity>" + AirportCity + "</AirportCity><Culture>" + PreferredLanguage + "</Culture><UserId>" + UserId + "</UserId><NOG></NOG><CommSrNo>" + $("#ddlCommodity").val() + "</CommSrNo>" + allSHCCodeSave + inputRows + "</Root>";
+    var inputxml = "<Root><VCTNo>" + VCTNo + "</VCTNo><AWBNo>" + $("#ddlAWBNo option:selected").text() + "</AWBNo><SBNumber>" + $("#txtSBNo").val() + "</SBNumber><VCTID>" + VCTId + "</VCTID><ISULD>False</ISULD><ConsignmentRowID>" + ConsignmentRowIDForSave + "</ConsignmentRowID><HouseRowId></HouseRowId><AWBULDNo></AWBULDNo><HAWB></HAWB><Package>" + $("#txPieces").val() + "</Package><GrossWt>" + $("#txtScaleWt").val() + "</GrossWt><WtUOM>" + WtUOM + "</WtUOM><IsSecured>false</IsSecured><GroupId>" + $("#txtGroupId").val() + "</GroupId><DimUOM>" + $("#ddlUnit1").val() + "</DimUOM><ComSearchCode>" + passCommoId + "</ComSearchCode><FlightAirline>" + $("#txtAirline").val().toUpperCase() + "</FlightAirline><FlightNumber>" + $("#txtFlightNo").val().toUpperCase() + "</FlightNumber><FlightDate>" + $("#txtFlightDate").val() + "</FlightDate><OffPoint>" + $("#txtOffpoint").val().toUpperCase() + "</OffPoint>" + shipConAgtXML + "<Volume>" + $("#txtVolume").val() + "</Volume><ChargeableWeight>" + $("#txtCharWt").val() + "</ChargeableWeight><AirportCity>" + AirportCity + "</AirportCity><Culture>" + PreferredLanguage + "</Culture><UserId>" + UserId + "</UserId><NOG></NOG><CommSrNo>" + passCommoId + "</CommSrNo>" + allSHCCodeSave + inputRows + "</Root>";
 
     console.log(inputxml);
-    
+
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: "POST",
@@ -4310,7 +4314,7 @@ function GetAWBDetailSearch_V3_onLoad() {
                 //clearALLNew();
                 var xmlDoc = $.parseXML(response);
                 $('#ddlFlightNo').empty();
-                
+
                 filteredArrforno = [];
                 flightAirNoLists = [];
                 console.log(xmlDoc);
@@ -4925,7 +4929,7 @@ function GetButtonRights_v3() {
                     ButtonName = $(this).find('ButtonName').text();
                     IsEnable = $(this).find('IsEnable').text();
 
-                   
+
                     if (index == 3) {
                         if (ButtonId == 'btnSubmit' && IsEnable == 'Y') {
                             $("#btnSubmit").removeAttr('disabled');

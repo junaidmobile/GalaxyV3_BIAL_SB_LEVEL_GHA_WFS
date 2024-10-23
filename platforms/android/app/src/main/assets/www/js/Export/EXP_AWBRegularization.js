@@ -193,7 +193,7 @@ function ChangeAWBNo_GetData() {
                         $('#txtFlightNo').val(FLIGHT_NUMBER);
                         
                         var newdate = FLIGHT_DATE.split("-").reverse().join("-");
-                        alert(newdate)
+                        
                         $('#txtFlightDate').val(FLIGHT_DATE);
 
                         OldAWBNoDetails(Pieces, GrWt, ChWt, Commodity, Agent);
