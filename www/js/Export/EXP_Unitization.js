@@ -21,7 +21,10 @@ var EXPSHIPROWID;
 document.addEventListener("pause", onPause, false);
 document.addEventListener("resume", onResume, false);
 document.addEventListener("menubutton", onMenuKeyDown, false);
-
+var trolleyScalWeight;
+var uLDScalWeight;
+var trolleyldSeqNumber;
+var UldSeqNumber;
 function onPause() {
 
     HHTLogout();
@@ -240,6 +243,7 @@ function CheckULDBulk() {
         $('#divDdlULD').show();
         $('#divDdlBulk').hide();
         $('#divContour').show();
+        $('#txtGrossWt').val('');
 
     }
     if (document.getElementById('rdoBulk').checked) {
@@ -248,6 +252,7 @@ function CheckULDBulk() {
         $('#divDdlULD').hide();
         $('#divDdlBulk').show();
         $('#divContour').hide();
+        $('#txtGrossWt').val('');
     }
 }
 
@@ -533,9 +538,9 @@ function GetULDs(offPonit) {
 
                     ULDId = $(this).find('ULD_SEQUENCE_NUMBER').text();
                     ULDNo = $(this).find('ULDBULKNO').text();
-
+                    SCALE_WEIGHT = $(this).find('SCALE_WEIGHT').text();
                     var newOption = $('<option></option>');
-                    newOption.val(ULDId).text(ULDNo);
+                    newOption.val(ULDId + '~' + SCALE_WEIGHT).text(ULDNo);
                     newOption.appendTo('#ddlULD');
                 });
 
@@ -546,9 +551,9 @@ function GetULDs(offPonit) {
 
                     TrolleyId = $(this).find('TrolleySeqNo').text();
                     TrolleyNo = $(this).find('TrolleyNo').text();
-
+                    SCALE_WEIGHT = $(this).find('SCALE_WEIGHT').text();
                     var newOption = $('<option></option>');
-                    newOption.val(TrolleyId).text(TrolleyNo);
+                    newOption.val(TrolleyId + '~' + SCALE_WEIGHT).text(TrolleyNo);
                     newOption.appendTo('#ddlBulk');
                 });
 
@@ -573,6 +578,26 @@ function GetULDs(offPonit) {
         $("body").mLoading('hide');
     }
 }
+
+function onChangeTrolley(trolleyID) {
+
+    var spliVal = trolleyID.split('~');
+    trolleyldSeqNumber = spliVal[0];
+    trolleyScalWeight = spliVal[1];
+    $('#txtGrossWt').val(trolleyScalWeight);
+}
+
+
+function onChangeULds(UldID) {
+
+    var spliVal = UldID.split('~');
+    UldSeqNumber = spliVal[0];
+    uLDScalWeight = spliVal[1];
+    $('#txtGrossWt').val(uLDScalWeight);
+}
+
+
+
 
 function AddULD() {
 
@@ -793,7 +818,7 @@ function CloseULD() {
             url: GHAExportFlightserviceURL + "EXPULDClose",
             data: JSON.stringify({
                 'ULDType': uldType, 'ULDNo': uldNumber, 'ULDOwner': uldOwner.toUpperCase(),
-                'ULDSequenceNo': $('#ddlULD').find('option:selected').val(), 'AirportCity': AirportCity, 'ScaleWeight': $('#txtGrossWt').val(),
+                'ULDSequenceNo': UldSeqNumber, 'AirportCity': AirportCity, 'ScaleWeight': $('#txtGrossWt').val(),
                 'ContourCode': contourCode, 'CompanyCode': window.localStorage.getItem("companyCode"), 'strUserID': window.localStorage.getItem("UserID"),
                 'FlightSeqNumber': FlightSeqNo, 'routepoint': $('#ddlOffPoint').find('option:selected').text(), 'ULDManpower': Manpower, 'Remark': '',
             }),
@@ -847,16 +872,14 @@ function CloseBulk() {
         $('#spnValMsg').text("");
     }
 
-    if ($('#txtGrossWt').val() == "") {
-        //errmsg = "Please select Bulk";
-        //$.alert(errmsg).css('color', 'red');
-        $('#spnValMsg').text("Please enter scale weight.").css('color', 'red');
-        return;
-    } else {
-        $('#spnValMsg').text("");
-    }
-
-
+    //if ($('#txtGrossWt').val() == "") {
+    //    //errmsg = "Please select Bulk";
+    //    //$.alert(errmsg).css('color', 'red');
+    //    $('#spnValMsg').text("Please enter scale weight.").css('color', 'red');
+    //    return;
+    //} else {
+    //    $('#spnValMsg').text("");
+    //}
 
 
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
@@ -868,7 +891,7 @@ function CloseBulk() {
             type: "POST",
             url: GHAExportFlightserviceURL + "EXPTrolleyClose",
             data: JSON.stringify({
-                'ULDSequenceNo': $('#ddlBulk').find('option:selected').val(), 'AirportCity': AirportCity, 'ScaleWeight': $('#txtGrossWt').val(),
+                'ULDSequenceNo': trolleyldSeqNumber, 'AirportCity': AirportCity, 'ScaleWeight': $('#txtGrossWt').val(),
                 'CompanyCode': window.localStorage.getItem("companyCode"), 'strUserID': window.localStorage.getItem("UserID"),
                 'FlightSeqNumber': FlightSeqNo, 'routepoint': $('#ddlOffPoint').find('option:selected').text(),
             }),
@@ -988,7 +1011,7 @@ function SaveDateTimeForULD() {
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
 
-    var inputXML = '<Root><FlightSeqNo>' + FlightSeqNo + '</FlightSeqNo><ULDSeqNo>' + $('#ddlULD').find('option:selected').val() + '</ULDSeqNo><Offpoint>' + $('#ddlOffPoint').find('option:selected').text() + '</Offpoint><BuiltUpStart>' + StartDate + '</BuiltUpStart><BuiltUpStartTime>' + $('#txtStartTimeFrom').val() + ':' + $('#txtStartTimeTo').val() + '</BuiltUpStartTime><BuiltUpEnd>' + EndDate + '</BuiltUpEnd><BuiltUpEndTime>' + $('#txtEndTimeFrom').val() + ':' + $('#txtEndTimeTo').val() + '</BuiltUpEndTime><UserId>' + UserId + '</UserId><AirportCity>' + AirportCity + '</AirportCity></Root>';
+    var inputXML = '<Root><FlightSeqNo>' + FlightSeqNo + '</FlightSeqNo><ULDSeqNo>' + UldSeqNumber + '</ULDSeqNo><Offpoint>' + $('#ddlOffPoint').find('option:selected').text() + '</Offpoint><BuiltUpStart>' + StartDate + '</BuiltUpStart><BuiltUpStartTime>' + $('#txtStartTimeFrom').val() + ':' + $('#txtStartTimeTo').val() + '</BuiltUpStartTime><BuiltUpEnd>' + EndDate + '</BuiltUpEnd><BuiltUpEndTime>' + $('#txtEndTimeFrom').val() + ':' + $('#txtEndTimeTo').val() + '</BuiltUpEndTime><UserId>' + UserId + '</UserId><AirportCity>' + AirportCity + '</AirportCity></Root>';
 
 
     if (errmsg == "" && connectionStatus == "online") {
@@ -1490,11 +1513,11 @@ function SaveAWBforULDDetails() {
 
     if (document.getElementById('rdoULD').checked) {
         Type = 'U';
-        ULDNo = $('#ddlULD').find('option:selected').val();
+        ULDNo = UldSeqNumber;// $('#ddlULD').find('option:selected').val();
     }
     if (document.getElementById('rdoBulk').checked) {
         Type = 'T';
-        ULDNo = $('#ddlBulk').find('option:selected').val();
+        ULDNo = trolleyldSeqNumber;// $('#ddlBulk').find('option:selected').val();
     }
 
     //if (AWBNo == "" || Packages == "" || GrossWt == "") {
@@ -1597,7 +1620,7 @@ function SaveAWBforULDDetails() {
                 //$('#txtVolume').val('');
                 //window.location.reload();
 
-                // GetAWBDetailsForULD();
+                GetAWBDetailsForULD();
             },
             //error: function (msg) {
             //    $("body").mLoading('hide');
@@ -1678,11 +1701,11 @@ function SaveAWBforULDDetailsOnScanID() {
 
     if (document.getElementById('rdoULD').checked) {
         Type = 'U';
-        ULDNo = $('#ddlULD').find('option:selected').val();
+        ULDNo = UldSeqNumber;// $('#ddlULD').find('option:selected').val();
     }
     if (document.getElementById('rdoBulk').checked) {
         Type = 'T';
-        ULDNo = $('#ddlBulk').find('option:selected').val();
+        ULDNo = trolleyldSeqNumber;// $('#ddlBulk').find('option:selected').val();
     }
 
     //if (AWBNo == "" || Packages == "" || GrossWt == "") {
@@ -1785,7 +1808,7 @@ function SaveAWBforULDDetailsOnScanID() {
                 //$('#txtVolume').val('');
                 //window.location.reload();
 
-                // GetAWBDetailsForULD();
+                GetAWBDetailsForULD();
             },
             //error: function (msg) {
             //    $("body").mLoading('hide');
@@ -1849,12 +1872,12 @@ function GetAWBDetailsForULD() {
     var type;
 
     if (document.getElementById('rdoULD').checked) {
-        ULDid = $("#ddlULD option:selected").val();
+        ULDid = UldSeqNumber;//$("#ddlULD option:selected").val();
         type = 'U';
     }
 
     if (document.getElementById('rdoBulk').checked) {
-        ULDid = $("#ddlBulk option:selected").val();
+        ULDid = trolleyldSeqNumber;// $("#ddlBulk option:selected").val();
         type = 'T';
     }
 
@@ -2092,8 +2115,8 @@ function UnscannedAWB(AWBRowid) {
                         StickerNo = $(this).find('StickerNo').text();
                         PieceNo = $(this).find('PieceNo').text();
                         AWBPieceNo = $(this).find('AWBPieceNo').text();
-                        
-                        
+
+
 
                         $("#myModalUnScan").modal('show');
                         $('#spnErrormsg').text('');
@@ -2164,7 +2187,7 @@ function GetButtonRights_v3() {
                     ButtonName = $(this).find('ButtonName').text();
                     IsEnable = $(this).find('IsEnable').text();
 
-                   
+
                     if (index == 0) {
                         if (ButtonId == 'btnAddULD' && IsEnable == 'Y') {
                             $("#btnAddULD").removeAttr('disabled');

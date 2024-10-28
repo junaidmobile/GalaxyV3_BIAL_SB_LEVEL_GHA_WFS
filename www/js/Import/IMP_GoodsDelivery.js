@@ -81,8 +81,8 @@ $(function () {
 
     });
 
-    $('#btnGoodsDelever').attr('disabled', 'disabled');
-    $('#cameraTakePicture').attr('disabled', 'disabled');
+    //$('#btnGoodsDelever').attr('disabled', 'disabled');
+    //$('#cameraTakePicture').attr('disabled', 'disabled');
 
 });
 
@@ -307,8 +307,8 @@ function GetGatePassDetails() {
                             signaturePad.clear();
                             return true;
                         } else {
-                            $('#btnGoodsDelever').removeAttr('disabled');
-                            $('#cameraTakePicture').removeAttr('disabled');
+                            //$('#btnGoodsDelever').removeAttr('disabled');
+                            //$('#cameraTakePicture').removeAttr('disabled');
 
                         }
 
@@ -503,9 +503,9 @@ function RecordGoodsDelivery_PDA() {
     var txtGatePassScanNo = $('#txtGatePassScanNo').val();
 
     if (txtGatePassScanNo != "") {
-        $('#btnGoodsDelever').removeAttr('disabled');
+        //$('#btnGoodsDelever').removeAttr('disabled');
     } else {
-        $('#btnGoodsDelever').attr('disabled', 'disabled');
+      //  $('#btnGoodsDelever').attr('disabled', 'disabled');
         return;
     }
 
@@ -546,8 +546,8 @@ function RecordGoodsDelivery_PDA() {
                     } else {
                         $("#spnMsg").text($(this).find('OutMsg').text()).css('color', 'green');
                         if ($(this).find('OutMsg').text() == 'Shipment released Successfully.') {
-                            $('#btnGoodsDelever').attr('disabled', 'disabled');
-                            $('#cameraTakePicture').attr('disabled', 'disabled');
+                           // $('#btnGoodsDelever').attr('disabled', 'disabled');
+                           // $('#cameraTakePicture').attr('disabled', 'disabled');
                         }
                     }
 
@@ -602,8 +602,8 @@ function clearAWBDetails() {
     $('#myImage').hide();
     $('#spnMsg').text('');
     // $('#txtGatePassScanNo').focus();
-    $('#btnGoodsDelever').attr('disabled', 'disabled');
-    $('#cameraTakePicture').attr('disabled', 'disabled');
+    //$('#btnGoodsDelever').attr('disabled', 'disabled');
+    //$('#cameraTakePicture').attr('disabled', 'disabled');
     signaturePad.clear();
     $('#txtAWBNo').val('');
     $('#txtAWBNo').focus();
@@ -773,7 +773,7 @@ function clearBeforAWBSearch() {
     $('#myImage').hide();
     $('#spnMsg').text('');
     // $('#txtGatePassScanNo').focus();
-    $('#btnGoodsDelever').attr('disabled', 'disabled');
+   // $('#btnGoodsDelever').attr('disabled', 'disabled');
     signaturePad.clear();
     $('#divImages').empty();
     gatePassList = [];

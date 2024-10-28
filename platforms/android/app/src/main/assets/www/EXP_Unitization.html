@@ -346,14 +346,14 @@
                                 </div>
                             </div>-->
                             <div class="row form-group" style="margin-top:5px;">
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" id="divDdlULD">
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding"  id="divDdlULD">
                                     <div class="col-xs-5 col-form-label">
                                         <label id="lblULD">ULD's</label>
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-7 NoPadding">
                                         <!--<select class="form-control" id="ddlULD" onchange="ShowBulkWtField()">-->
-                                        <select class="form-control" id="ddlULD">
+                                        <select class="form-control" onchange="onChangeULds($('#ddlULD').val())" id="ddlULD">
                                             <option value="0">Select</option>
                                         </select>
                                     </div>
@@ -366,7 +366,7 @@
                                     </div>
                                     <div class="col-xs-7 NoPadding">
                                         <!--<select class="form-control" id="ddlULD" onchange="ShowBulkWtField()">-->
-                                        <select class="form-control" id="ddlBulk">
+                                        <select class="form-control" onchange="onChangeTrolley($('#ddlBulk').val())" id="ddlBulk">
                                             <option value="0">Select</option>
                                         </select>
                                     </div>

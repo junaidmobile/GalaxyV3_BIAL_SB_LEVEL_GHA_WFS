@@ -200,7 +200,7 @@ function CalculateTSP() {
 
                 });
 
-                $(xmlDoc).find('Table3').each(function () {
+                $(xmlDoc).find('Table4').each(function () {
 
                     var PaymentId = $(this).find('PaymentId').text();
                     var PaymentMode = $(this).find('PaymentMode').text();
@@ -210,7 +210,7 @@ function CalculateTSP() {
                     newOption.appendTo('#ddlPaymentMode');
                 });
 
-                $(xmlDoc).find('Table4').each(function () {
+                $(xmlDoc).find('Table5').each(function () {
                     Pieces = $(this).find('Pieces').text();
                     ChargebleWeight = $(this).find('ChargebleWeight').text();
                     GrossWeight = $(this).find('GrossWeight').text();
