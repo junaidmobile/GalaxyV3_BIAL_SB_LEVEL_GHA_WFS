@@ -184,7 +184,15 @@ $(function () {
 
     });
 
+    $("#btnOpenSHCModal").click(function () {
+        $("#spnValdatemsg").text('');
+        SHCCodePopupField();
+
+    });
+
 });
+
+
 
 function checkSpecialChar() {
     var string = $('#txtScanGroupId').val();
@@ -454,7 +462,7 @@ function GetULDDetails() {
 function GetAWBDetailsForULD(ULDid) {
 
     $("#hawbLists").val('');
-   // $("#successMsg").text('');
+    // $("#successMsg").text('');
     if (chkShowAll.checked || selectedRowULDNo != '')
         showAll = 'Y';
     else
@@ -1599,34 +1607,164 @@ function ClearFields() {
 }
 
 
-  //0: "AOG"
-        //1: "ATT"
-        //2: "AVI"
-        //3: "DGR"
-        //4: "GEN"
-        //5: "HUM"
-        //6: "PER"
-        //7: "VAL"
-       // console.log(filtered)
-/* spanStr += "&nbsp;<td  class='foo'>" + newSpanSHC[n] + "</td>";*/
+function SHCCodePopupField() {
+    $('#dvSHCCode').empty();
+    //var allSHCCodeSave = '';
+    //var joinAllValuesWithComma = '';
 
-        //if (n == 0 && newSpanSHC[n] == "")
-        //    spanStr += "&nbsp;<td  style=\"background-color:rgb(177,112,136);color:white;padding:2px;text-align: center;\">" + newSpanSHC[0] + "</td>";
-        //if (n == 1 && newSpanSHC[n] != "")
-        //    spanStr += "&nbsp;<td style=\"background-color:rgb(27,81,141);color:white;padding:2px;text-align: center;\">" + newSpanSHC[n] + "</td>";
-        //if (n == 2 && newSpanSHC[n] != "")
-        //    spanStr += "&nbsp;<td style=\"background-color:rgb(13,150,68);color:white;padding:2px;text-align: center;\">" + newSpanSHC[n] + "</td>";
-        //if (n == 3 && newSpanSHC[n] != "")
-        //    spanStr += "&nbsp;<td style=\"background-color:rgb(35,29,31);color:white;padding:2px;text-align: center;\">" + newSpanSHC[n] + "</td>";
-        //if (n == 4 && newSpanSHC[n] != "")
-        //    spanStr += "&nbsp;<td style=\"background-color:rgb(157,124,43);color:white;padding:2px;text-align: center;\">" + newSpanSHC[n] + "</td>";
-        //if (n == 5 && newSpanSHC[n] != "")
-        //    spanStr += "&nbsp;<td style=\"background-color:rgb(14,76,166);color:white;padding:2px;text-align: center;\">" + newSpanSHC[n] + "</td>";
-        //if (n == 6 && newSpanSHC[n] != "")
-        //    spanStr += "&nbsp;<td style=\"background-color:rgb(206,84,209);color:white;padding:2px;text-align: center;\">" + newSpanSHC[n] + "</td>";
-        //if (n == 7 && newSpanSHC[n] != "")
-        //    spanStr += "&nbsp;<td style=\"background-color:rgb(143,74,219);color:white;padding:2px;text-align: center;\">" + newSpanSHC[n] + "</td>";
-        //if (n == 8 && newSpanSHC[n] != "")
-        //    spanStr += "&nbsp;<td style=\"background-color:rgb(198,139,74);color:white;padding:2px;text-align: center;\">" + newSpanSHC[n] + "</td>";
-        //if (n == 9 && newSpanSHC[n] != "")
-        //    spanStr += "&nbsp;<td style=\"background-color:rgb(198,139,74);color:white;padding:2px;text-align: center;\">" + newSpanSHC[n] + "</td>";
+    html = '';
+    html += '<table id="tblSHCCode"  class="table  table-bordered table-striped mb-0" style="border: 1px solid #eee;">';
+    html += '<thead class="theadClass">';
+    html += '<tr>';
+    html += '<th id="lblRemark">Sr No</th>';
+    html += '<th id="lbRemark">SHC Code</th>';
+
+    html += '</tr>';
+    html += '</thead>';
+    html += '<tbody class="">';
+    var ShcForSave = joinAllValuesWithComma.replace(/\"/g, "")
+    if (joinAllValuesWithComma != '') {
+        var newSpanSHC = ShcForSave.split(',');
+        //var newSpanSHC = newSpanSHC_.replace(/\"/g, "");
+        for (var n = 0; n < 9; n++) {
+
+            html += '<tr id="row1 ' + n + '">';
+            html += '<td style="text-align:center;">' + (n + 1) + '</td>';
+            html += "<td><input onkeypress='return blockSpecialChar(event)' maxlength='3' value='" + newSpanSHC[n] + "' type='text' id='txtSHC " + n + "' class='form-control' placeholder='' style='text-transform: uppercase;'></td>";
+            html += '</tr>';
+        }
+    } else {
+        var newSpanSHC = _XmlForSHCCode.split(',');
+        var filtered = newSpanSHC.filter(function (el) {
+            return el != "";
+        });
+
+        for (var n = 0; n < filtered.length; n++) {
+            var blink = filtered[n].split('~');
+            html += '<tr id="row1 ' + n + '">';
+            html += '<td style="text-align:center;">' + (n + 1) + '</td>';
+            html += '<td><input onkeypress="return blockSpecialChar(event)" maxlength="3" value="' + blink[0] + '" type="text" id="txtSHC ' + n + '" class="textfieldClass" placeholder="" style="text-transform: uppercase;"></td>';
+            html += '</tr>';
+        }
+    }
+
+
+
+    html += "</tbody></table>";
+    $('#dvSHCCode').append(html);
+    $('#SHCCode').modal('show');
+}
+
+
+function getAllSHCCodefromPopup() {
+    var inputName = "";
+    var values = "";
+    var htmlVal = '';
+    var jionOfComma = '';
+    $('#dvSHCCode tr').each(function (i, el) {
+
+        $(this).find("input").each(function () {
+            inputName = $(this).attr("Value");
+            values = $(this).val();
+            if (i == 1) {
+                htmlVal += 'SHC1="' + values.toUpperCase() + '" ';
+                jionOfComma += values.toUpperCase() + '","'
+            }
+            if (i == 2) {
+                htmlVal += 'SHC2="' + values.toUpperCase() + '" ';
+                jionOfComma += values.toUpperCase() + '","'
+            }
+            if (i == 3) {
+                htmlVal += 'SHC3="' + values.toUpperCase() + '" ';
+                jionOfComma += values.toUpperCase() + '","'
+            }
+            if (i == 4) {
+                htmlVal += 'SHC4="' + values.toUpperCase() + '" ';
+                jionOfComma += values.toUpperCase() + '","'
+            }
+            if (i == 5) {
+                htmlVal += 'SHC5="' + values.toUpperCase() + '" ';
+                jionOfComma += values.toUpperCase() + '","'
+            }
+            if (i == 6) {
+                htmlVal += 'SHC6="' + values.toUpperCase() + '" ';
+                jionOfComma += values.toUpperCase() + '","'
+            }
+            if (i == 7) {
+                htmlVal += 'SHC7="' + values.toUpperCase() + '" ';
+                jionOfComma += values.toUpperCase() + '","'
+            }
+            if (i == 8) {
+                htmlVal += 'SHC8="' + values.toUpperCase() + '" ';
+                jionOfComma += values.toUpperCase() + '","'
+            }
+            if (i == 9) {
+                htmlVal += 'SHC9="' + values.toUpperCase() + '" ';
+                jionOfComma += values.toUpperCase()
+            }
+        });
+
+    });
+
+    allSHCCodeSave = htmlVal;
+    joinAllValuesWithComma = jionOfComma;
+    console.log("Values====", joinAllValuesWithComma)
+    ValidateSHCCodes();
+}
+
+function ValidateSHCCodes() {
+    var awbid = '"' + AWBid + '"';
+    var uname = '"' + UserName + '"';
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+    var InputXML = '<SHCInfo><SHCDetail ALRowId=' + awbid + ' ' + allSHCCodeSave + '  CreatedBy =' + uname + '/></SHCInfo>';
+    console.log("InputXML====   ", InputXML)
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: CMSserviceURL + "TDGAcceptanceUpdateSHC_PDA",
+            data: JSON.stringify({ 'pi_strSHCDetails': InputXML }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                //$('.dialog-background').css('display', 'block');
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                $("body").mLoading('hide');
+                var str = response.d;
+                if (str != null && str != "") {
+
+                    var xmlDoc = $.parseXML(str);
+                    $(xmlDoc).find('Table').each(function (index) {
+
+                        Status = $(this).find('Status').text();
+                        StrMessage = $(this).find('OutMsg').text();
+                        if (Status == 'E') {
+                            $("#spnValdatemsg").text(StrMessage).css({ "color": "Red", "font-weight": "bold" });
+                            allSHCCodeSave = '';
+                            joinAllValuesWithComma = '';
+                        } else if (Status == 'S') {
+                            $("#spnValdatemsg").text('');
+                            $('#SHCCode').modal('hide');
+                           // GetShipmentDetailsForTDG();
+                        }
+
+                    });
+
+                }
+                else {
+
+                }
+
+            },
+            error: function (msg) {
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    }
+}

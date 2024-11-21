@@ -156,6 +156,10 @@
             .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
                 vertical-align: inherit;
             }
+
+        table, tbody, tr, th {
+            background-color: rgb(224, 243, 215);
+        }
     </style>
 </head>
 <body>
@@ -232,7 +236,7 @@
                                                 style="display: none;">
                                             <option value="0">Select</option>
                                         </select>-->
-                                        <input id="txtAirline"  tabindex="2" autocomplete="off" onkeypress="return blockSpecialChar(event)" oninput="checkSpecialCharforFlightNo();" class="form-control" type="text" maxlength="6">
+                                        <input id="txtAirline" tabindex="2" autocomplete="off" onkeypress="return blockSpecialChar(event)" oninput="checkSpecialCharforFlightNo();" class="form-control" type="text" maxlength="6">
                                         <!--<select class="form-control" id="ddlFlightNo"
                                         onchange="GetAWBDetailSearch_V3_onChangeFlight($('#ddlFlightNo').val())"></select>-->
 
@@ -305,12 +309,16 @@
                                         <label id="lblCommodity" for="">Commodity </label>
                                         <font color="red">*</font>
                                     </div>
-                                    <div class="col-xs-8 NoPadding">
+                                    <div class="col-xs-6 NoPadding">
                                         <select class="form-control" onchange="onChangeComm($('#ddlCommodity').val())" id="ddlCommodity"
                                                 style="display:none ;">
                                             <!--<option value="0">Select</option>-->
                                         </select>
                                         <input id="txtCommodity" tabindex="8" onkeyup="ChkMaxLength(this, '50');" onkeypress="return blockSpecialChar(event)" class="form-control" type="text" style="text-align:left;">
+                                    </div>
+
+                                    <div class="col-xs-2 NoPadding">
+                                        <input  id="txtSHCCode" tabindex="8" onkeyup="ChkMaxLength(this, '5');" disabled="disabled" onkeypress="return blockSpecialChar(event)" class="form-control" type="text" style="text-align: left; background-color: lightgreen;">
                                     </div>
 
                                 </div>
@@ -342,7 +350,7 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-8 NoPadding">
-                                        <input id="txtCharWt"  tabindex="11" onkeyup="ChkMaxLength(this, '6');" class="form-control" type="number" style="text-align:right;">
+                                        <input id="txtCharWt" tabindex="11" onkeyup="ChkMaxLength(this, '6');" class="form-control" type="number" style="text-align:right;">
                                     </div>
 
                                 </div>
@@ -405,30 +413,30 @@
                                     </div>
                                 </div>
 
-                                <!--<div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding">
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding">
                                     <div class="col-xs-4 col-form-label">
                                         <label id="lblEqpt" for="ddEqpt"
-                                               class="control-label labelFont">Eqpt./Trolley</label>
+                                               class="control-label labelFont">Trolley</label>
 
                                     </div>
                                     <div class="col-xs-8 NoPadding">
-                                        <select class="form-control" id="ddlEquTrolley" onchange="onchangeddlEquTrolley($('#ddlEquTrolley').val())"></select>
+                                        <select class="form-control" id="ddlAccCMIN"></select>
                                     </div>
-                                </div>-->
+                                </div>
 
-                                <div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding">
-                                    <table class="table  table-bordered">
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding" id="divAddDim">
+                                    <table id="tblNews" border="1" style="width:100%;table-layout:fixed;word-break:break-word;border-color: white;margin-top: 2%;">
                                         <thead class="theadClass">
                                             <tr>
-                                                <th colspan="1"><span id="lblDimp">Trolley</span></th>
-                                                <th colspan="1"><span id="lblDimp">Pieces</span></th>
-                                                <th colspan="1"><span id="lblDimv">Volume (LWH)</span></th>
-                                                <th colspan="1">
+                                                <th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight:" bold"" align="center" colspan="1"><span id="lblDimp">Pieces</span></th>
+                                                <th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight:" bold"" align="center" colspan="1"><span id="lblDimv">Volume (LWH)</span></th>
+                                                <th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight:" bold"" align="center" colspan="1">
                                                     <span id="lblDimUn">UOM</span>
-                                                    <select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select>
+                                                    <select id="ddlUnit1"><option value="cm">cm</option></select>
                                                     <button type="button" style="float: right;display:none;" id='addButton' class=""><i class="glyphicon glyphicon-plus"></i></button>
                                                 </th>
                                             </tr>
+
                                         </thead>
 
                                     </table>
@@ -436,54 +444,61 @@
                                     <table id="TextBoxesGroup" class="table  table-bordered">
                                         <tbody class="theadClass">
                                             <tr id="TextBoxDiv1m">
-                                                <td style="width: 30%;"><select name="part_no[]" class="form-control clsEquTrolley" id="ddlEquTrolley1"></select></td>
-                                                <td><input onblur="CalculateVol_1();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces1" type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length1" type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width1" type="number" /></td>
-                                                <td><input onblur="CalculateVol_1();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height1" type="number" /></td>
-                                                <!--<td><select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select></td>-->
-                                                <!--<td><button type="button" onclick="removeRow();" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>-->
+                                                <td height="30" style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px"align="left"><input onblur="CalculateVol_1();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="txtAccPieces" type="number" /></td>
+                                                <td height="30" style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px"align="left"><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="txtAccLength" type="number" /></td>
+                                                <td height="30" style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px"align="left"><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="txtAccWidth" type="number" /></td>
+                                                <td height="30" style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px"align="left"><input onblur="CalculateVol_1();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="txtAccHeight" type="number" /></td>
+                                                <td height="30" style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px"align="left"><input type="button" id="btnAddDimention" disabled="disabled" class="form-control ButtonColor" value="Add" onclick="addDimentionRows(); hideTdVal();"></td>
                                             </tr>
-                                            <tr id="TextBoxDiv1m">
-                                                <td style="width: 30%;"><select name="part_no[]" class="form-control clsEquTrolley" id="ddlEquTrolley2"></select></td>
-                                                <td><input onblur="CalculateVol_2();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces2" type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length2" type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width2" type="number" /></td>
-                                                <td><input onblur="CalculateVol_2();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height2" type="number" /></td>
-                                                <!--<td><select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select></td>-->
-                                                <!--<td><button type="button" onclick="removeRow();" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>-->
-                                            </tr>
-                                            <tr id="TextBoxDiv1m">
-                                                <td style="width: 30%;"><select name="part_no[]" class="form-control clsEquTrolley" id="ddlEquTrolley3"></select></td>
-                                                <td><input onblur="CalculateVol_3();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces3" type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length3" type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width3" type="number" /></td>
-                                                <td><input onblur="CalculateVol_3();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height3" type="number" /></td>
-                                                <!--<td><select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select></td>-->
-                                                <!--<td><button type="button" onclick="removeRow();" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>-->
-                                            </tr>
-                                            <tr id="TextBoxDiv1m">
-                                                <td style="width: 30%;"><select name="part_no[]" class="form-control clsEquTrolley" id="ddlEquTrolley4"></select></td>
-                                                <td><input onblur="CalculateVol_4();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces4" type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length4" type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width4" type="number" /></td>
-                                                <td><input onblur="CalculateVol_4();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height4" type="number" /></td>
-                                                <!--<td><select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select></td>-->
-                                                <!--<td><button type="button" onclick="removeRow();" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>-->
-                                            </tr>
-                                            <tr id="TextBoxDiv1m">
-                                                <td style="width: 30%;"><select name="part_no[]" class="form-control clsEquTrolley" id="ddlEquTrolley5"></select></td>
-                                                <td><input onblur="CalculateVol_5();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces5" type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length5" type="number" /></td>
-                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width5" type="number" /></td>
-                                                <td><input onblur="CalculateVol_5();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height5" type="number" /></td>
-                                                <!--<td><select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select></td>-->
-                                                <!--<td><button type="button" onclick="removeRow();" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>-->
-                                            </tr>
+
                                         </tbody>
 
                                     </table>
+                                    <span id="validateTXT"></span>
                                 </div>
+                                <div style="margin-top:10px;" class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" id="divAcceptPoPUp">
+
+                                </div>
+                                <div style="margin-top:10px;" class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <table id="dtable" border="1" style="width:100%;table-layout:fixed;word-break:break-word;border-color: white;margin-top: 2%;display:none">
+                                        <thead>
+                                            <tr>
+                                                <th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight:" bold"" align="center">Trolley</th>
+                                                <th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight:" bold"" align="center">Pieces</th>
+                                                <th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight:" bold"" align="center">Length</th>
+                                                <th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight:" bold"" align="center">Width</th>
+                                                <th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight:" bold"" align="center">Height</th>
+                                                <!--<th>Action</th>-->
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!--<table class="table  table-bordered" id="customFields">
+                                    <thead class="theadClass">
+                                        <tr>
+                                            <th colspan="1"><span id="lblDimp">Pieces</span></th>
+                                            <th colspan="1"><span id="lblDimv">Volume (LWH)</span></th>
+                                            <th colspan="1">
+                                                <span id="lblDimUn">UOM</span>
+                                                <select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select>
+                                                <button type="button" style="float: right;display:none;" id='addButton' class=""><i class="glyphicon glyphicon-plus"></i></button>
+                                            </th>
+                                        </tr>
+
+                                    </thead>
+                                    <tr valign="top">
+
+                                        <td><input name="customFieldName[]" onblur="CalculateVol_1();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="txtAccPieces" type="number" /></td>
+                                        <td><input name="customFieldName[]" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="txtAccLength" type="number" /></td>
+                                        <td><input name="customFieldName[]" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="txtAccWidth" type="number" /></td>
+                                        <td><input name="customFieldName[]" onblur="CalculateVol_1();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="txtAccHeight" type="number" /></td>
+                                        <td><input name="customFieldName[]" type="button" id="btnAddDimention" disabled="disabled" class="form-control ButtonColor addCF" value="Add" ></td>
+                                    </tr>
+                                </table>-->
+
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <label id="AllMsg" for=""></label>

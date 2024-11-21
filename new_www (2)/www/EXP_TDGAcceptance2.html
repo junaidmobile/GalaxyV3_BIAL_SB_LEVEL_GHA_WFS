@@ -1,0 +1,626 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=0">
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script src="bootstrap-3.3.7-dist/js/jquery-1.12.0.min.js"></script>
+    <link href="bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+
+    <link href="css/sticky-footer.css" rel="stylesheet" />
+    <script src="scripts/LoadingModel.js"></script>
+    <script src="scripts/LoaderShow-Hide.js"></script>
+    <script src="scripts/dialog.js"></script>
+    <script src="js/General.js"></script>
+    <link href="css/General.css" rel="stylesheet" />
+    <script src="scripts/alert.mob.js"></script>
+    <link href="css/Loader.css" rel="stylesheet" />
+    <link href="css/dialog.css" rel="stylesheet" />
+    <link href="css/alert.mob.css" rel="stylesheet" />
+    <script src="scripts/jquery-ui.js"></script>
+
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link href="css/style.css" rel="stylesheet" />
+    <script src="js/Export/EXP_VCTAcceptance.js"></script>
+    <!--<script src="//cdnjs.cloudflare.com/ajax/libs/wow/0.1.12/wow.min.js"></script>-->
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <script>new WOW().init();</script>-->
+    <style>
+        table, td, th {
+            /* border: 1px solid black;*/
+            background: rgb(224, 243, 215);
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        table, tbody, tr, th {
+            background-color: rgb(208, 225, 244);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-color: white;
+        }
+
+        .textpackges {
+            width: 100% !important;
+        }
+
+        .txtDimRow {
+            width: 10% !important;
+        }
+
+        .table {
+            margin-bottom: 0px !important;
+        }
+
+        #TextBoxDivforSHCCode td.foo:nth-child(7n+1) {
+            background-color: rgb(177,112,136);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDivforSHCCode td.foo:nth-child(7n+2) {
+            background-color: rgb(27,81,141);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDivforSHCCode td.foo:nth-child(7n+3) {
+            background-color: rgb(13,150,68);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDivforSHCCode td.foo:nth-child(7n+4) {
+            background-color: rgb(35,29,31);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDivforSHCCode td.foo:nth-child(7n+5) {
+            background-color: rgb(157,124,43);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDivforSHCCode td.foo:nth-child(7n+6) {
+            background-color: rgb(14,76,166);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDivforSHCCode td.foo:nth-child(7n+7) {
+            background-color: rgb(206,84,209);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDivforSHCCode td.foo:nth-child(7n+8) {
+            background-color: rgb(143,74,219);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDivforSHCCode td.foo:nth-child(7n+9) {
+            background-color: rgb(198,139,74);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDivforSHCCode > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            font-size: 12px;
+        }
+
+        #TextBoxDivforSHCCode {
+            margin-bottom: 0px !important;
+            margin-top: 5px;
+        }
+
+        .blink_me {
+            animation: blinker 1s linear infinite;
+            background-color: yellow;
+            padding: 15px;
+            text-align: center;
+            line-height: 50px;
+            font-weight: bolder;
+        }
+
+        @keyframes blinker {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            vertical-align: inherit;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="navbar">
+        <div class="container-fluid">
+            <div class="navbar-header" style="background-color:#065da1;">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" id="btnnavbar"
+                        data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#" id="navhdrName" style="text-align:right;padding-left: 50px;"></a>
+                <img class="navbarImage" src="images/Logo.png" onclick="ShowHomePage();">
+                <a href="#" id="navhdr" class="loggedinUser"></a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid" style="margin-top:63px;">
+        <div class="panel-body">
+            <div class="panel panel-widget forms-panel form-grids widget-shadow">
+                <div class="forms">
+                    <div class="form-body">
+                        <form>
+                            <div class="row">
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding">
+                                    <div class="col-xs-6 col-form-label">
+                                        <label id="lblVCTNo" style="color:red"></label>
+                                        <!-- <font color="red">*</font> -->
+                                    </div>
+                                    <!-- <div class="col-xs-6 col-form-label">
+                                        <label class="checkbox-inline"><input type="checkbox"
+                                                id="chkSecured">Secured</label>
+                                    </div> -->
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label for="txtScanAWB">Scan AWB</label>
+                                        <!-- <font color="red">*</font> -->
+                                    </div>
+                                    <div class="col-xs-8 NoPadding">
+                                        <input id="txtScanAWB" class="form-control" type="number"
+                                               style="text-align:left;" onkeyup="ChkMaxLength(this, '12');"
+                                               onblur="" autofocus>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblMawb" for="ddlAWBNo" class="control-label labelFont">MAWB No.</label>
+                                    </div>
+                                    <div class="col-xs-8 NoPadding">
+                                        <select class="form-control" id="ddlAWBNo">
+                                            <option value="0">Select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label for="txtVCTNo">SB No.</label>
+                                        <!-- <font color="red">*</font> -->
+                                    </div>
+                                    <div class="col-xs-8 NoPadding">
+                                        <input id="txtSBNo" class="form-control" type="number" style="text-align:left;"
+                                               onkeyup="ChkMaxLength(this, '12');"
+                                               disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblHawb" for="txtHAWB"
+                                               class="control-label labelFont">HAWB No.</label>
+                                        <!-- <font color="red">*</font> -->
+                                    </div>
+                                    <div class="col-xs-8 NoPadding">
+                                        <input type="text" style="text-align:left;" id="txtHAWB"
+                                               class="form-control" onkeyup="ChkMaxLength(this, '7');" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!--<div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblHawb" for="txtCommodityType"
+                                               class="control-label labelFont">Comm. Type</label>
+
+                                    </div>
+                                    <div class="col-xs-8 NoPadding">
+                                        <input type="text" style="text-align:left;" id="txtCommodityType"
+                                               class="form-control" onkeyup="ChkMaxLength(this, '30');" disabled>
+                                    </div>
+                                </div>-->
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblCommodity" for="">Commodity </label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-8 NoPadding">
+                                        <select class="form-control" onchange="onChangeComm($('#ddlCommodity').val())" id="ddlCommodity"
+                                                style="display:none ;">
+                                            <!--<option value="0">Select</option>-->
+                                        </select>
+                                        <input id="txtCommodity" tabindex="1" onkeyup="ChkMaxLength(this, '100');" onkeypress="return blockSpecialChar(event)" class="form-control" type="text" style="text-align:left;">
+                                    </div>
+
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding">
+                                    <!--<div class="col-xs-3 col-form-label">
+                                        <label id="lblSHCCode" for="lblSHCCode" class="control-label labelFont">
+                                            SHC Code
+                                        </label>
+                                    </div>-->
+                                    <!--<div class="col-xs-1  ButtonColor" style="display: flex; justify-content: center; align-items: center;">
+                                        <span style="font-size: 20px;" class="glyphicon glyphicon-pencil "></span>
+                                    </div>-->
+
+                                    <div class="col-xs-12 NoPadding">
+                                        <table class="table" id="TextBoxDivforSHCCode">
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblFlightNo" for="">Flt. No./Dt.</label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-2 NoPadding">
+                                        <!--<select class="form-control" id="ddlFlightNo"
+                                                onchange="GetAWBDetailSearch_V3_onChangeFlight($('#ddlFlightNo').val())"
+                                                style="display: none;">
+                                            <option value="0">Select</option>
+                                        </select>-->
+                                        <input id="txtAirline" tabindex="2" autocomplete="off" onkeypress="return blockSpecialChar(event)"  class="form-control" type="text" maxlength="6">
+                                        <!--<select class="form-control" id="ddlFlightNo"
+                                        onchange="GetAWBDetailSearch_V3_onChangeFlight($('#ddlFlightNo').val())"></select>-->
+
+
+                                    </div>
+                                    <div class="col-xs-2 NoPadding">
+
+                                        <input id="txtFlightNo" tabindex="3" autocomplete="off" onkeypress="return blockSpecialChar(event)"  class="form-control" type="text" maxlength="6">
+                                        <!--<select class="form-control" id="ddlFlightNo"
+                                        onchange="GetAWBDetailSearch_V3_onChangeFlight($('#ddlFlightNo').val())"></select>-->
+                                        <select class="form-control" id="ddlFlightNo"
+                                                onchange="GetAWBDetailSearch_V3_onChangeFlight($('#ddlFlightNo').val())"
+                                                style="display: none;">
+                                        </select>
+
+                                    </div>
+                                    <div class="col-xs-4 NoPadding ClearFields">
+
+                                        <input type="date" style="text-transform: none;"
+                                               id="txtFlightDate" class="form-control"
+                                               title="Date" tabindex="4">
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblDestination" for="">Origin/Dest.</label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-4 NoPadding">
+                                        <input id="txtOrigin" tabindex="5"  onblur="compareOriginDest();" class="form-control" type="text" maxlength="3">
+                                    </div>
+                                    <div class="col-xs-4 NoPadding">
+                                        <input id="txtDestination" tabindex="6"  onblur="compareOriginDest();" class="form-control" type="text" maxlength="3">
+                                    </div>
+
+                                </div>
+                                <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblFlightNo" for="txtFlightDate" class="control-label">Flight Date</label>
+
+                                    </div>
+
+                                    <div class="col-xs-8 NoPadding ClearFields">
+
+                                        <input type="text" style="text-transform: none;"
+                                               id="txtFlightDate" class="form-control"
+                                               title="Date">
+
+                                    </div>
+                                </div>-->
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblOffpoint" for="">Offpoint </label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-8 NoPadding">
+                                        <select class="form-control" onchange="fnOffpoint($('#ddlOffpoint').val())" id="ddlOffpoint"
+                                                style="display:none ;">
+                                            <!--<option value="0">Select</option>-->
+                                        </select>
+                                        <input id="txtOffpoint" tabindex="7" onkeyup="ChkMaxLength(this, '50');" onkeypress="return blockSpecialChar(event)" class="form-control" type="text" style="text-align:left;">
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label for="txtGroupId">Group Id</label>
+                                        <!--<font color="red">*</font>-->
+                                    </div>
+                                    <div class="col-xs-8 NoPadding" tabindex="8" style="padding-left:0px;padding-right:0px;">
+                                        <input id="txtGroupId" class="form-control" type="text" maxlength="14"
+                                               style="text-align:left;text-transform: uppercase;"
+                                               onkeyup="ChkMaxLength(this, '14');" onblur="onFocusChangeGrpID();">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label for="txtFromLocation">Pcs./Gr Wt.</label>
+                                    </div>
+                                    <div class="col-xs-4 NoPadding">
+                                        <input id="txPieces" tabindex="9" style="text-align:right;" class="form-control" type="number" maxlength="20">
+                                    </div>
+                                    <div class="col-xs-4 NoPadding">
+                                        <input id="txtScaleWt" tabindex="10" style="text-align:right;" class="form-control" type="number" maxlength="20">
+                                    </div>
+                                </div>
+                            </div>
+                            <!--<div class="row">
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding">
+                                    <div class="col-xs-6 col-form-label">
+                                        <label id="lblEqpt" for="ddEqpt"
+                                               class="control-label labelFont">Eqpt./Trolley</label>
+                                    </div>
+                                    <div class="col-xs-6 NoPadding">
+                                        <select class="form-control" id="ddlEquTrolley" onchange="onchangeddlEquTrolley($('#ddlEquTrolley').val())">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>-->
+                            <div class="row">
+                                <!--<div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding">
+                                    <div class="col-xs-6 col-form-label">
+                                        <label for="">Tare Wt. : </label>&nbsp;
+                                        <label id="TareWt"></label>
+                                    </div>
+                                    <div class="col-xs-6 col-form-label">
+                                        <label for="">Net Wt. : </label>&nbsp;
+                                        <label id="NetWt"></label>
+                                    </div>
+                                </div>-->
+
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblCharWt" for="">Ch. Wt.</label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-8 NoPadding">
+                                        <input id="txtCharWt" tabindex="11" onkeyup="ChkMaxLength(this, '6');" class="form-control" type="number" style="text-align:right;">
+                                    </div>
+
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblVolume" for="">Volume</label>
+                                        <!--<font color="red">*</font>-->
+                                    </div>
+                                    <div class="col-xs-8 NoPadding">
+                                        <input id="txtVolume" tabindex="12" onkeyup="ChkMaxLength(this, '4');" class="form-control" type="number" style="text-align:right;">
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblShipper" for="">Shipper </label>
+                                       
+                                    </div>
+                                    <div class="col-xs-2 NoPadding">
+                                        <input id="txtShipperPrifix" tabindex="13" maxlength="3" class="form-control" onkeypress="return blockSpecialChar(event)" type="text" onblur="Shipper_GetShipperConsigneeWithShortCode_V3();">
+                                    </div>
+                                    <div class="col-xs-6 NoPadding">
+                                        <select class="form-control" id="ddlShipper" onchange="onChangeShipperText($('#ddlShipper').val())"
+                                                style="display: none;">
+                                            <!--<option value="0">Select</option>-->
+                                        </select>
+                                        <input id="txtShipper" tabindex="14" maxlength="30" onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblConsignee" for="">Consignee </label>
+                                       
+                                    </div>
+                                    <div class="col-xs-2 NoPadding">
+                                        <input id="txtConsigneePrifix" tabindex="15" maxlength="3" class="form-control" onkeypress="return blockSpecialChar(event)" type="text" onblur="Consignee_GetShipperConsigneeWithShortCode_V3();">
+                                    </div>
+                                    <div class="col-xs-6 NoPadding">
+                                        <input id="txtConsignee" tabindex="16" maxlength="30" onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
+                                        <select class="form-control" id="ddlConsignee" onchange="onChangeConsineeName($('#ddlConsignee').val());"
+                                                style="display: none;"></select>
+                                    </div>
+
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblAgentName" for="">Agent Name</label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-2 NoPadding">
+                                        <input id="txtAgentNamePrifix" tabindex="17" maxlength="3" class="form-control" onkeypress="return blockSpecialChar(event)" type="text" onblur="AgentName_GetShipperConsigneeWithShortCode_V3();">
+                                    </div>
+                                    <div class="col-xs-6 NoPadding">
+                                        <input id="txtAgentName" tabindex="18" onkeypress="return blockSpecialChar(event)" class="form-control" type="text">
+                                        <select class="form-control" id="ddlAgentName" onchange="onChangeAgentName($('#ddlAgentName').val())"
+                                                style="display: none;"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding">
+                                    <span id="spnMsg"></span>
+                                </div>
+                            </div>
+                            <div id="" class="row form-group">
+
+
+                                <!--<table id="TextBoxesGroup" class="table  table-bordered">
+                                    <tbody class="theadClass">
+                                        <tr id="TextBoxDiv1m">
+
+                                        </tr>
+                                    </tbody>
+
+                                </table>-->
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding">
+                                    <table class="table  table-bordered">
+                                        <thead class="theadClass">
+                                            <tr>
+                                                <th colspan="1"><span id="lblDimp">Trolley</span></th>
+                                                <th colspan="1"><span id="lblDimp">Pieces</span></th>
+                                                <th colspan="1"><span id="lblDimv">Volume (LWH)</span></th>
+                                                <th colspan="1">
+                                                    <span id="lblDimUn">UOM</span>
+                                                    <select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select>
+                                                    <button type="button" style="float: right;display:none;" id='addButton' class=""><i class="glyphicon glyphicon-plus"></i></button>
+                                                </th>
+                                            </tr>
+                                        </thead>
+
+                                    </table>
+
+                                    <table id="TextBoxesGroup" class="table  table-bordered">
+                                        <tbody class="theadClass">
+                                            <tr id="TextBoxDiv1m">
+                                                <td style="width: 30%;"><select name="part_no[]" class="form-control clsEquTrolley" id="ddlEquTrolley1"></select></td>
+                                                <td><input onblur="CalculateVol_1();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces1" type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length1" type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width1" type="number" /></td>
+                                                <td><input onblur="CalculateVol_1();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height1" type="number" /></td>
+                                                <!--<td><select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select></td>-->
+                                                <!--<td><button type="button" onclick="removeRow();" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>-->
+                                            </tr>
+                                            <tr id="TextBoxDiv1m">
+                                                <td style="width: 30%;"><select name="part_no[]" class="form-control clsEquTrolley" id="ddlEquTrolley2"></select></td>
+                                                <td><input onblur="CalculateVol_2();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces2" type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length2" type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width2" type="number" /></td>
+                                                <td><input onblur="CalculateVol_2();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height2" type="number" /></td>
+                                                <!--<td><select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select></td>-->
+                                                <!--<td><button type="button" onclick="removeRow();" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>-->
+                                            </tr>
+                                            <tr id="TextBoxDiv1m">
+                                                <td style="width: 30%;"><select name="part_no[]" class="form-control clsEquTrolley" id="ddlEquTrolley3"></select></td>
+                                                <td><input onblur="CalculateVol_3();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces3" type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length3" type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width3" type="number" /></td>
+                                                <td><input onblur="CalculateVol_3();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height3" type="number" /></td>
+                                                <!--<td><select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select></td>-->
+                                                <!--<td><button type="button" onclick="removeRow();" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>-->
+                                            </tr>
+                                            <tr id="TextBoxDiv1m">
+                                                <td style="width: 30%;"><select name="part_no[]" class="form-control clsEquTrolley" id="ddlEquTrolley4"></select></td>
+                                                <td><input onblur="CalculateVol_4();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces4" type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length4" type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width4" type="number" /></td>
+                                                <td><input onblur="CalculateVol_4();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height4" type="number" /></td>
+                                                <!--<td><select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select></td>-->
+                                                <!--<td><button type="button" onclick="removeRow();" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>-->
+                                            </tr>
+                                            <tr id="TextBoxDiv1m">
+                                                <td style="width: 30%;"><select name="part_no[]" class="form-control clsEquTrolley" id="ddlEquTrolley5"></select></td>
+                                                <td><input onblur="CalculateVol_5();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Pieces5" type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Length5" type="number" /></td>
+                                                <td><input onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Width5" type="number" /></td>
+                                                <td><input onblur="CalculateVol_5();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="Height5" type="number" /></td>
+                                                <!--<td><select id="ddlUnit1"><option value="cm">cm</option><option value="inch">inch</option></select></td>-->
+                                                <!--<td><button type="button" onclick="removeRow();" id="btnAdd" style="background-color: red;" class=""><i class="glyphicon glyphicon-minus"></i></button></td>-->
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="row form-group" style="margin-top:5px;">
+                                <div class="form-group col-xs-6 col-sm-6 col-md-6 ">
+                                    <input type="button" id="btnExit" class="form-control ButtonColor" value="Back" onclick="returnToBack();">
+                                </div>
+                                <div class="form-group col-xs-6 col-sm-3 col-md-3 ">
+                                    <input type="button" tabindex="23" id="btnSubmit" class="form-control ButtonColor"  value="Submit" onclick="SaveVCTCargoTrolleyDetailsBL_v3();">
+                                </div>
+                                <div class="form-group col-xs-6 col-sm-3 col-md-3" style="margin-top:10px;">
+                                    <input type="button" tabindex="24" id="btnClear" class="form-control ButtonColor" value="Clear" onclick="clearALL();">
+                                </div>
+
+                                <div class="form-group col-xs-6 col-sm-3 col-md-3" style="margin-top:10px;">
+                                    <input type="button" id="btnComplete" class="form-control ButtonColor" value="Complete Accept." disabled="disabled" onclick="SaveCompleteAcceptance();">
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div id="divShippingBillInfo" style="display:none">
+                    <div id="divAddLocation">
+
+                    </div>
+                    <div class="row" style="margin-top: 5px;">
+                        <div class="form-group col-xs-4 col-sm-4 col-md-4">
+                        </div>
+                        <div class="form-group col-xs-4 col-sm-4 col-md-4">
+                        </div>
+                        <div class="form-group col-xs-4 col-sm-4 col-md-4">
+                        </div>
+                        <div class="form-group col-xs-5 col-sm-4 col-md-4">
+                            <input type="button" id="btnBack" class="form-control ButtonColor" value="Back" onclick="BackFromSbill()">
+                        </div>
+                    </div>
+                </div> -->
+            <div id="temp">
+                <br />
+            </div>
+        </div>
+    </div>
+    <div>
+        <footer class="footer" style="color: white; font-size :12px; background-color:#0967b0;">
+            <div class="container">
+                <center>
+                    <p class="text-muted" id="RightsReserved"></p>
+                </center>
+            </div>
+        </footer>
+    </div>
+</body>
+<script language="javascript" type="text/javascript">
+    $('#RightsReserved').text(' \xA9 Kale Logistics Solutions Private Limited. ' + (new Date).getFullYear().toString());
+</script>
+</html>

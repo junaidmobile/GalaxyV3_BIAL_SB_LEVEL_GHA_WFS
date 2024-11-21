@@ -49,6 +49,7 @@ var agentCode = [];
 var commodiyCode = [];
 var ppcs = '';
 var passCommoId = '';
+var passCommoSHC = '';
 var Shipper_SCustID;
 var Consignee_CCustID;
 var AgentName_IACustID;
@@ -109,6 +110,8 @@ var WtUOM;
 var filteredArrforno = [];
 $(function () {
 
+   
+
     GetButtonRights_v3();
 
     var formattedDate = new Date();
@@ -160,15 +163,34 @@ $(function () {
 
     });
 
-    $("#ddlEquTrolley1").change(function () {
-        // alert($(this).val());
 
+
+
+
+    $('#txtFlightDate').change(function () {
+        var date = $(this).val();
+        GetFlightRoutingDetails_V3(date)
+    });
+
+
+    $("#ddlAccCMIN").change(function () {
         if ($(this).val() == '-1') {
-            $("#Length1").val('').removeAttr('disabled');
-            $("#Width1").val('').removeAttr('disabled');
-            $("#Height1").val('').removeAttr('disabled');
+
+            $('#txtAccPieces').val('').removeAttr('disabled');
+            $('#txtAccLength').val('').removeAttr('disabled');
+            $('#txtAccWidth').val('').removeAttr('disabled');
+            $('#txtAccHeight').val('').removeAttr('disabled');
             return;
         }
+
+        $('#txtAccPieces').val('').removeAttr('disabled');
+        $('#txtAccLength').val('').removeAttr('disabled');
+        $('#txtAccWidth').val('').removeAttr('disabled');
+        $('#txtAccHeight').val('').removeAttr('disabled');
+
+        $("#btnAddDimention").removeAttr('disabled');
+
+
         var arr = $(this).val().split('~')
         var is1 = arr[0];
         var isFixed = arr[1];
@@ -183,590 +205,61 @@ $(function () {
         if (ExpAwbRowId != '-1') {
             $("#Pieces1").val(isFixed).attr('disabled', 'disabled');
         }
-        
-        if (is1 != 'cms') {
-            $("#Length1").val(isLength).attr('disabled', 'disabled');
-            $("#Width1").val(isWidth).attr('disabled', 'disabled');
-            if (isHeight > 0) {
-                $("#Height1").val(isHeight).attr('disabled', 'disabled');
-            } else {
-                $("#Height1").val('').removeAttr('disabled');
-            }
-        } else {
-            $("#Length1").val('').removeAttr('disabled');
-            $("#Width1").val('').removeAttr('disabled');
-            $("#Height1").val('').removeAttr('disabled');
-        }
-    });
-
-    $("#ddlEquTrolley2").change(function () {
-        // alert($(this).val());
-        if ($(this).val() == '-1') {
-            $("#Length2").val('').removeAttr('disabled');
-            $("#Width2").val('').removeAttr('disabled');
-            $("#Height2").val('').removeAttr('disabled');
-            return;
-        }
-        var arr = $(this).val().split('~')
-        var is1 = arr[0];
-        var isFixed = arr[1];
-        var isLength = arr[2];
-        var isWidth = arr[3];
-        var isHeight = arr[4];
-        var isUnit = arr[5];
-        var L;
-        var W;
-        var H;
-
-        if (ExpAwbRowId != '-1') {
-            $("#Pieces2").val(isFixed).attr('disabled', 'disabled');
-        }
-
-        //$("#Length2").val(isLength).attr('disabled', 'disabled');
-        //$("#Width2").val(isWidth).attr('disabled', 'disabled');
-
-        //if (isHeight > 0) {
-        //    $("#Height2").val(isHeight).attr('disabled', 'disabled');
-        //} else {
-        //    $("#Height2").val('').removeAttr('disabled');
-        //}
-        if (is1 != 'cms') {
-            $("#Length2").val(isLength).attr('disabled', 'disabled');
-            $("#Width2").val(isWidth).attr('disabled', 'disabled');
-            if (isHeight > 0) {
-                $("#Height2").val(isHeight).attr('disabled', 'disabled');
-            } else {
-                $("#Height2").val('').removeAttr('disabled');
-            }
-        } else {
-            $("#Length2").val('').removeAttr('disabled');
-            $("#Width2").val('').removeAttr('disabled');
-            $("#Height2").val('').removeAttr('disabled');
-        }
-    });
-
-    $("#ddlEquTrolley3").change(function () {
-        // alert($(this).val());
-        if ($(this).val() == '-1') {
-            $("#Length3").val('').removeAttr('disabled');
-            $("#Width3").val('').removeAttr('disabled');
-            $("#Height3").val('').removeAttr('disabled');
-            return;
-        }
-        var arr = $(this).val().split('~')
-        var is1 = arr[0];
-        var isFixed = arr[1];
-        var isLength = arr[2];
-        var isWidth = arr[3];
-        var isHeight = arr[4];
-        var isUnit = arr[5];
-        var L;
-        var W;
-        var H;
-
-        if (ExpAwbRowId != '-1') {
-            $("#Pieces3").val(isFixed).attr('disabled', 'disabled');
-        }
-
-        //$("#Length3").val(isLength).attr('disabled', 'disabled');
-        //$("#Width3").val(isWidth).attr('disabled', 'disabled');
-
-        //if (isHeight > 0) {
-        //    $("#Height3").val(isHeight).attr('disabled', 'disabled');
-        //} else {
-        //    $("#Height3").val('').removeAttr('disabled');
-        //}
 
         if (is1 != 'cms') {
-            $("#Length3").val(isLength).attr('disabled', 'disabled');
-            $("#Width3").val(isWidth).attr('disabled', 'disabled');
+            $("#txtAccLength").val(isLength).attr('disabled', 'disabled');
+            $("#txtAccWidth").val(isWidth).attr('disabled', 'disabled');
             if (isHeight > 0) {
-                $("#Height3").val(isHeight).attr('disabled', 'disabled');
+                $("#txtAccHeight").val(isHeight).attr('disabled', 'disabled');
             } else {
-                $("#Height3").val('').removeAttr('disabled');
+                $("#txtAccHeight").val('').removeAttr('disabled');
             }
         } else {
-            $("#Length3").val('').removeAttr('disabled');
-            $("#Width3").val('').removeAttr('disabled');
-            $("#Height3").val('').removeAttr('disabled');
-        }
-
-    });
-
-    $("#ddlEquTrolley4").change(function () {
-        // alert($(this).val());
-        if ($(this).val() == '-1') {
-            $("#Length4").val('').removeAttr('disabled');
-            $("#Width4").val('').removeAttr('disabled');
-            $("#Height4").val('').removeAttr('disabled');
-            return;
-        }
-        var arr = $(this).val().split('~')
-        var is1 = arr[0];
-        var isFixed = arr[1];
-        var isLength = arr[2];
-        var isWidth = arr[3];
-        var isHeight = arr[4];
-        var isUnit = arr[5];
-        var L;
-        var W;
-        var H;
-
-        if (ExpAwbRowId != '-1') {
-            $("#Pieces4").val(isFixed).attr('disabled', 'disabled');
-        }
-
-        //$("#Length4").val(isLength).attr('disabled', 'disabled');
-        //$("#Width4").val(isWidth).attr('disabled', 'disabled');
-
-        //if (isHeight > 0) {
-        //    $("#Height4").val(isHeight).attr('disabled', 'disabled');
-        //} else {
-        //    $("#Height4").val('').removeAttr('disabled');
-        //}
-
-        if (is1 != 'cms') {
-            $("#Length4").val(isLength).attr('disabled', 'disabled');
-            $("#Width4").val(isWidth).attr('disabled', 'disabled');
-            if (isHeight > 0) {
-                $("#Height4").val(isHeight).attr('disabled', 'disabled');
+            if (isLength > 0) {
+                $("#txtAccLength").val(isLength).attr('disabled', 'disabled');
+                $("#txtAccWidth").val(isWidth).attr('disabled', 'disabled');
+                $("#txtAccHeight").val(isHeight).attr('disabled', 'disabled');
             } else {
-                $("#Height4").val('').removeAttr('disabled');
+                $("#txtAccLength").val('').removeAttr('disabled');
+                $("#txtAccWidth").val('').removeAttr('disabled');
+                $("#txtAccHeight").val('').removeAttr('disabled');
             }
-        } else {
-            $("#Length4").val('').removeAttr('disabled');
-            $("#Width4").val('').removeAttr('disabled');
-            $("#Height4").val('').removeAttr('disabled');
+
+
+
         }
-
-    });
-
-    $("#ddlEquTrolley5").change(function () {
-        // alert($(this).val());
-        if ($(this).val() == '-1') {
-            $("#Length5").val('').removeAttr('disabled');
-            $("#Width5").val('').removeAttr('disabled');
-            $("#Height5").val('').removeAttr('disabled');
-            return;
-        }
-        var arr = $(this).val().split('~')
-        var is1 = arr[0];
-        var isFixed = arr[1];
-        var isLength = arr[2];
-        var isWidth = arr[3];
-        var isHeight = arr[4];
-        var isUnit = arr[5];
-        var L;
-        var W;
-        var H;
-
-        if (ExpAwbRowId != '-1') {
-            $("#Pieces5").val(isFixed).attr('disabled', 'disabled');
-        }
-
-        //$("#Length5").val(isLength).attr('disabled', 'disabled');
-        //$("#Width5").val(isWidth).attr('disabled', 'disabled');
-
-        //if (isHeight > 0) {
-        //    $("#Height5").val(isHeight).attr('disabled', 'disabled');
-        //} else {
-        //    $("#Height5").val('').removeAttr('disabled');
-        //}
-
-        if (is1 != 'cms') {
-            $("#Length5").val(isLength).attr('disabled', 'disabled');
-            $("#Width5").val(isWidth).attr('disabled', 'disabled');
-            if (isHeight > 0) {
-                $("#Height5").val(isHeight).attr('disabled', 'disabled');
-            } else {
-                $("#Height5").val('').removeAttr('disabled');
-            }
-        } else {
-            $("#Length5").val('').removeAttr('disabled');
-            $("#Width5").val('').removeAttr('disabled');
-            $("#Height5").val('').removeAttr('disabled');
-        }
-
-    });
-
-
-    $('#txtFlightDate').change(function () {
-        var date = $(this).val();
-        GetFlightRoutingDetails_V3(date)
     });
 
 
 });
 
-
+function deleteRow(buttonId) {
+    $("#" + buttonId).each(function () {
+        {
+            $(this).parents("tr").remove();
+        }
+    });
+};
 
 getAllValues = function () {
+    inputRows = '';
 
-    //if ($('#ddlEquTrolley1').val() != '-1' && $('#ddlEquTrolley1').val() != null) {
 
-    //    if ($("#Pieces1").val() == '') {
-    //        $("#Pieces1").css('background-color', '#FFCCCB');
-    //        return;
-    //    } else {
-    //        $("#Pieces1").css('background-color', 'white');
+    var TableData = new Array();
+    $("#dtable tbody").find("tr").each(function () { //get all rows in table
 
-    //    }
-    //    if ($("#Length1").val() == '') {
-    //        $("#Length1").css('background-color', '#FFCCCB');
-    //        return;
-    //    } else {
-    //        $("#Length1").css('background-color', 'white');
+        inputRows += "<Rows>"
 
-    //    }
-    //    if ($("#Width1").val() == '') {
-    //        $("#Width1").css('background-color', '#FFCCCB');
-    //        return;
-    //    } else {
-    //        $("#Width1").css('background-color', 'white');
+        inputRows += "<REFERENCE_DATA_IDENTIFIER>" + $(this).find("td").eq(0).text() + "</REFERENCE_DATA_IDENTIFIER>";
+        inputRows += "<TrolleyFixed>" + $(this).find("td").eq(1).text() + "</TrolleyFixed>";
+        inputRows += "<TrolleyWt>" + $(this).find("td").eq(2).text() + "</TrolleyWt>";
+        inputRows += "<Pieces>" + $(this).find("td").eq(4).text() + "</Pieces>";
+        inputRows += "<Length>" + $(this).find("td").eq(5).text() + "</Length>";
+        inputRows += "<Width>" + $(this).find("td").eq(6).text() + "</Width>";
+        inputRows += "<Height>" + $(this).find("td").eq(7).text() + "</Height>";
 
-    //    }
-
-    //    if ($("#Height1").val() == '') {
-    //        $("#Height1").css('background-color', '#FFCCCB');
-    //        return;
-    //    } else {
-    //        $("#Height1").css('background-color', 'white');
-
-    //    }
-
-
-    //} else {
-    //    $("#Pieces1").css('background-color', 'white');
-    //    $("#Length1").css('background-color', 'white');
-    //    $("#Width1").css('background-color', 'white');
-    //    $("#Height1").css('background-color', 'white');
-    //}
-
-    //if ($('#ddlEquTrolley2').val() != '-1' && $('#ddlEquTrolley2').val() != null) {
-
-    //    if ($("#Pieces2").val() == '') {
-    //        $("#Pieces2").css('background-color', '#FFCCCB');
-    //        return;
-    //    } else {
-    //        $("#Pieces2").css('background-color', 'white');
-
-    //    }
-    //    if ($("#Length2").val() == '') {
-    //        $("#Length2").css('background-color', '#FFCCCB');
-    //        return;
-    //    } else {
-    //        $("#Length2").css('background-color', 'white');
-
-    //    }
-    //    if ($("#Width2").val() == '') {
-    //        $("#Width2").css('background-color', '#FFCCCB');
-    //        return;
-    //    } else {
-    //        $("#Width2").css('background-color', 'white');
-
-    //    }
-
-
-    //    if ($("#Height2").val() == '') {
-    //        $("#Height2").css('background-color', '#FFCCCB');
-    //        return;
-    //    } else {
-    //        $("#Height2").css('background-color', 'white');
-
-    //    }
-
-
-    //} else {
-    //    $("#Pieces2").css('background-color', 'white');
-    //    $("#Length2").css('background-color', 'white');
-    //    $("#Width2").css('background-color', 'white');
-    //    $("#Height2").css('background-color', 'white');
-    //}
-
-    //if ($('#ddlEquTrolley3').val() != '-1' && $('#ddlEquTrolley3').val() != null) {
-
-    //    if ($("#Pieces3").val() == '') {
-    //        $("#Pieces3").css('background-color', '#FFCCCB');
-    //        return;
-    //    } else {
-    //        $("#Pieces3").css('background-color', 'white');
-
-    //    }
-    //    if ($("#Length3").val() == '') {
-    //        $("#Length2").css('background-color', '#FFCCCB');
-    //        return;
-    //    } else {
-    //        $("#Length2").css('background-color', 'white');
-
-    //    }
-    //    if ($("#Width3").val() == '') {
-    //        $("#Width3").css('background-color', '#FFCCCB');
-    //        return;
-    //    } else {
-    //        $("#Width3").css('background-color', 'white');
-
-    //    }
-
-
-    //    if ($("#Height3").val() == '') {
-    //        $("#Height3").css('background-color', '#FFCCCB');
-    //        return;
-    //    } else {
-    //        $("#Height3").css('background-color', 'white');
-
-    //    }
-
-
-    //} else {
-    //    $("#Pieces3").css('background-color', 'white');
-    //    $("#Length3").css('background-color', 'white');
-    //    $("#Width3").css('background-color', 'white');
-    //    $("#Height3").css('background-color', 'white');
-    //}
-
-    //if ($('#ddlEquTrolley4').val() != '-1' && $('#ddlEquTrolley4').val() != null) {
-
-    //    if ($("#Pieces4").val() == '') {
-    //        $("#Pieces4").css('background-color', '#FFCCCB');
-    //        return;
-    //    } else {
-    //        $("#Pieces4").css('background-color', 'white');
-
-    //    }
-    //    if ($("#Length4").val() == '') {
-    //        $("#Length4").css('background-color', '#FFCCCB');
-    //        return;
-    //    } else {
-    //        $("#Length4").css('background-color', 'white');
-
-    //    }
-    //    if ($("#Width4").val() == '') {
-    //        $("#Width4").css('background-color', '#FFCCCB');
-    //        return;
-    //    } else {
-    //        $("#Width4").css('background-color', 'white');
-
-    //    }
-
-
-    //    if ($("#Height2").val() == '') {
-    //        $("#Height2").css('background-color', '#FFCCCB');
-    //        return;
-    //    } else {
-    //        $("#Height4").css('background-color', 'white');
-
-    //    }
-
-
-    //} else {
-    //    $("#Pieces4").css('background-color', 'white');
-    //    $("#Length4").css('background-color', 'white');
-    //    $("#Width4").css('background-color', 'white');
-    //    $("#Height4").css('background-color', 'white');
-    //}
-
-    //if ($('#ddlEquTrolley5').val() != '-1' && $('#ddlEquTrolley5').val() != null) {
-
-    //    if ($("#Pieces5").val() == '') {
-    //        $("#Pieces5").css('background-color', '#FFCCCB');
-    //        return;
-    //    } else {
-    //        $("#Pieces5").css('background-color', 'white');
-
-    //    }
-    //    if ($("#Length5").val() == '') {
-    //        $("#Length5").css('background-color', '#FFCCCB');
-    //        return;
-    //    } else {
-    //        $("#Length5").css('background-color', 'white');
-
-    //    }
-    //    if ($("#Width5").val() == '') {
-    //        $("#Width5").css('background-color', '#FFCCCB');
-    //        return;
-    //    } else {
-    //        $("#Width5").css('background-color', 'white');
-
-    //    }
-
-
-    //    if ($("#Height5").val() == '') {
-    //        $("#Height5").css('background-color', '#FFCCCB');
-    //        return;
-    //    } else {
-    //        $("#Height5").css('background-color', 'white');
-
-    //    }
-
-
-    //} else {
-    //    $("#Pieces5").css('background-color', 'white');
-    //    $("#Length5").css('background-color', 'white');
-    //    $("#Width5").css('background-color', 'white');
-    //    $("#Height5").css('background-color', 'white');
-    //}
-
-
-    var one = "";
-    var two = "";
-    var three = "";
-    var foure = "";
-    var five = "";
-    // if ($('#ddlEquTrolley1').val() != '-1' && $('#ddlEquTrolley1').val() != null) {
-
-    selectedVal = $('#ddlEquTrolley1').val();
-    var arr = selectedVal.split('~')
-    var isREFERENCE_DATA_IDENTIFIER = arr[0];
-    var isFixed = arr[1];
-    var isLength = arr[2];
-    var isWidth = arr[3];
-    var isHeight = arr[4];
-    var isUnit = arr[5];
-    var isWeight = arr[6];
-    var L;
-    var W;
-    var H;
-
-    if (isREFERENCE_DATA_IDENTIFIER == '-1') {
-        isREFERENCE_DATA_IDENTIFIER = '-1';
-        isFixed = '';
-        isWeight = '';
-    }
-
-    one += "<REFERENCE_DATA_IDENTIFIER>" + isREFERENCE_DATA_IDENTIFIER + "</REFERENCE_DATA_IDENTIFIER>";
-    one += "<TrolleyFixed>" + isFixed + "</TrolleyFixed>";
-    one += "<TrolleyWt>" + isWeight + "</TrolleyWt>";
-    one += "<Pieces>" + $("#Pieces1").val() + "</Pieces>";
-    one += "<Length>" + $("#Length1").val() + "</Length>";
-    one += "<Width>" + $("#Width1").val() + "</Width>";
-    one += "<Height>" + $("#Height1").val() + "</Height>";
-    // $("#ddlUnit1").val()
-    // }
-
-    //  if ($('#ddlEquTrolley2').val() != '-1' && $('#ddlEquTrolley2').val() != null) {
-
-    selectedVal = $('#ddlEquTrolley2').val();
-    var arr = selectedVal.split('~')
-    var isREFERENCE_DATA_IDENTIFIER = arr[0];
-    var isFixed = arr[1];
-    var isLength = arr[2];
-    var isWidth = arr[3];
-    var isHeight = arr[4];
-    var isUnit = arr[5];
-    var isWeight = arr[6];
-    var L;
-    var W;
-    var H;
-
-    if (isREFERENCE_DATA_IDENTIFIER == '-1') {
-        isREFERENCE_DATA_IDENTIFIER = '-1';
-        isFixed = '';
-        isWeight = '';
-    }
-
-    two += "<REFERENCE_DATA_IDENTIFIER>" + isREFERENCE_DATA_IDENTIFIER + "</REFERENCE_DATA_IDENTIFIER>";
-    two += "<TrolleyFixed>" + isFixed + "</TrolleyFixed>";
-    two += "<TrolleyWt>" + isWeight + "</TrolleyWt>";
-    two += "<Pieces>" + $("#Pieces2").val() + "</Pieces>";
-    two += "<Length>" + $("#Length2").val() + "</Length>";
-    two += "<Width>" + $("#Width2").val() + "</Width>";
-    two += "<Height>" + $("#Height2").val() + "</Height>";
-    // $("#ddlUnit1").val()
-    //  }
-
-    //  if ($('#ddlEquTrolley3').val() != '-1' && $('#ddlEquTrolley3').val() != null) {
-
-    selectedVal = $('#ddlEquTrolley3').val();
-    var arr = selectedVal.split('~')
-    var isREFERENCE_DATA_IDENTIFIER = arr[0];
-    var isFixed = arr[1];
-    var isLength = arr[2];
-    var isWidth = arr[3];
-    var isHeight = arr[4];
-    var isUnit = arr[5];
-    var isWeight = arr[6];
-    var L;
-    var W;
-    var H;
-
-    if (isREFERENCE_DATA_IDENTIFIER == '-1') {
-        isREFERENCE_DATA_IDENTIFIER = '-1';
-        isFixed = '';
-        isWeight = '';
-    }
-
-    three += "<REFERENCE_DATA_IDENTIFIER>" + isREFERENCE_DATA_IDENTIFIER + "</REFERENCE_DATA_IDENTIFIER>";
-    three += "<TrolleyFixed>" + isFixed + "</TrolleyFixed>";
-    three += "<TrolleyWt>" + isWeight + "</TrolleyWt>";
-    three += "<Pieces>" + $("#Pieces3").val() + "</Pieces>";
-    three += "<Length>" + $("#Length3").val() + "</Length>";
-    three += "<Width>" + $("#Width3").val() + "</Width>";
-    three += "<Height>" + $("#Height3").val() + "</Height>";
-    // $("#ddlUnit1").val()
-    //  }
-
-    //  if ($('#ddlEquTrolley4').val() != '-1' && $('#ddlEquTrolley4').val() != null) {
-
-    selectedVal = $('#ddlEquTrolley4').val();
-    var arr = selectedVal.split('~')
-    var isREFERENCE_DATA_IDENTIFIER = arr[0];
-    var isFixed = arr[1];
-    var isLength = arr[2];
-    var isWidth = arr[3];
-    var isHeight = arr[4];
-    var isUnit = arr[5];
-    var isWeight = arr[6];
-    var L;
-    var W;
-    var H;
-
-    if (isREFERENCE_DATA_IDENTIFIER == '-1') {
-        isREFERENCE_DATA_IDENTIFIER = '-1';
-        isFixed = '';
-        isWeight = '';
-    }
-
-    foure += "<REFERENCE_DATA_IDENTIFIER>" + isREFERENCE_DATA_IDENTIFIER + "</REFERENCE_DATA_IDENTIFIER>";
-    foure += "<TrolleyFixed>" + isFixed + "</TrolleyFixed>";
-    foure += "<TrolleyWt>" + isWeight + "</TrolleyWt>";
-    foure += "<Pieces>" + $("#Pieces4").val() + "</Pieces>";
-    foure += "<Length>" + $("#Length4").val() + "</Length>";
-    foure += "<Width>" + $("#Width4").val() + "</Width>";
-    foure += "<Height>" + $("#Height4").val() + "</Height>";
-    // $("#ddlUnit1").val()
-    //  }
-
-    //  if ($('#ddlEquTrolley5').val() != '-1' && $('#ddlEquTrolley5').val() != null) {
-
-    selectedVal = $('#ddlEquTrolley5').val();
-    var arr = selectedVal.split('~')
-    var isREFERENCE_DATA_IDENTIFIER = arr[0];
-    var isFixed = arr[1];
-    var isLength = arr[2];
-    var isWidth = arr[3];
-    var isHeight = arr[4];
-    var isUnit = arr[5];
-    var isWeight = arr[6];
-    var L;
-    var W;
-    var H;
-
-    if (isREFERENCE_DATA_IDENTIFIER == '-1') {
-        isREFERENCE_DATA_IDENTIFIER = '-1';
-        isFixed = '';
-        isWeight = '';
-    }
-
-    five += "<REFERENCE_DATA_IDENTIFIER>" + isREFERENCE_DATA_IDENTIFIER + "</REFERENCE_DATA_IDENTIFIER>";
-    five += "<TrolleyFixed>" + isFixed + "</TrolleyFixed>";
-    five += "<TrolleyWt>" + isWeight + "</TrolleyWt>";
-    five += "<Pieces>" + $("#Pieces5").val() + "</Pieces>";
-    five += "<Length>" + $("#Length5").val() + "</Length>";
-    five += "<Width>" + $("#Width5").val() + "</Width>";
-    five += "<Height>" + $("#Height5").val() + "</Height>";
-    // $("#ddlUnit1").val()
-    // }
-    inputRows = '<Rows>' + one + '</Rows>' + '<Rows>' + two + '</Rows>' + '<Rows>' + three + '</Rows>' + '<Rows>' + foure + '</Rows>' + '<Rows>' + five + '</Rows>';
+        inputRows += "</Rows>";
+    });
     console.log(inputRows)
 }
 
@@ -942,15 +435,14 @@ function GetAWBDetailSearch_V3() {
                 $('#AllMsg').text('');
                 filteredArrforno = [];
                 flightAirNoLists = [];
+
+                console.log('All Data after save');
                 console.log(xmlDoc);
                 var Status;
                 var flagforcheck2 = '0';
                 var StrMessage;
-                $('#ddlEquTrolley1').empty();
-                $('#ddlEquTrolley2').empty();
-                $('#ddlEquTrolley3').empty();
-                $('#ddlEquTrolley4').empty();
-                $('#ddlEquTrolley5').empty();
+                $('#ddlAccCMIN').empty();
+
                 $(xmlDoc).find('Table').each(function () {
                     Status = $(this).find('Status').text();
                     StrMessage = $(this).find('StrMessage').text();
@@ -998,6 +490,7 @@ function GetAWBDetailSearch_V3() {
                     var OffPoint = $(this).find('OffPoint').text();
                     var FlightAirline = $(this).find('FlightAirline').text();
                     var FlightNumber = $(this).find('FlightNumber').text();
+                    var SHCCode = $(this).find('SHCCode').text();
 
 
                     ppcs = Pieces;
@@ -1008,6 +501,7 @@ function GetAWBDetailSearch_V3() {
                         $('#txtVolume').val(Volume).css('text-align', 'right').attr('disabled', 'disabled');
                         $('#txtCommodity').val(CommodityDesc).css('text-align', 'left').attr('disabled', 'disabled');
                         $('#txtOffpoint').val(OffPoint).css('text-align', 'left').attr('disabled', 'disabled');
+                        $('#txtSHCCode').val(SHCCode).css('text-align', 'left').attr('disabled', 'disabled');
 
                         $('#ddlShipper').val(ShipperId);
                         $('#ddlConsignee').val(ConsigneeId);
@@ -1015,6 +509,7 @@ function GetAWBDetailSearch_V3() {
                         $('#ddlCommodity').val(Commodity);
                         $('#txtAirline').val(FlightAirline);
                         $('#txtFlightNo').val(FlightNumber);
+                        $('#txtSHCCode').val(SHCCode);
 
 
                         $('#ddlShipper').trigger("change");
@@ -1064,6 +559,7 @@ function GetAWBDetailSearch_V3() {
                         $('#txtCharWt').removeAttr('disabled', 'disabled');
                         $('#txtVolume').removeAttr('disabled', 'disabled');
                         $('#txtCommodity').val('').removeAttr('disabled');
+                        $('#txtSHCCode').val('').removeAttr('disabled');
 
                     }
 
@@ -1154,9 +650,31 @@ function GetAWBDetailSearch_V3() {
 
                 xmlDocForTrolley = xmlDoc;
 
+                html = "";
 
+                html =
+                    "<table id='tblDimentionAcceptance' border='1' style='padding:20px;width: 100%; background-color: white;'>";
+                html += "<thead><tr>";
+
+                html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>Trolley</th>";
+                html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>Pieces</th>";
+                // html += "<th style='background-color:#bcd233;'>Gr.Wt.</th>";
+                html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>Length</th>";
+                html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>Width</th>";
+                html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>Height</th>";
+                // html += "<th style='background-color:#bcd233;'>Vol. Wt.</th>";
+                /*  html += "<th>UOM</th>";*/
+                //html += "<th></th>";
+                //html += "<th></th>";
+                // html += "<th style='background-color:#bcd233;'>Action</th>";
+
+                html += "</tr></thead>";
+                html += "<tbody>";
 
                 if (ExpAwbRowId != '-1') {
+                    $('#btnSubmit').attr('disabled', 'disabled');
+                    $('#divAddDim').hide();
+
                     $(xmlDoc).find('Table5').each(function (index) {
 
 
@@ -1166,47 +684,33 @@ function GetAWBDetailSearch_V3() {
                         var REFERENCE_DATA_IDENTIFIER = $(this).find('REFERENCE_DATA_IDENTIFIER').text();
                         var TrolleyFixed = $(this).find('TrolleyFixed').text();
 
-                        if (index == 0) {
-                            var newOption = $('<option></option>');
-                            newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                            newOption.appendTo('#ddlEquTrolley1');
-                            $('#ddlEquTrolley1').trigger('change');
-                        }
 
-                        if (index == 1) {
-                            var newOption = $('<option></option>');
-                            newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                            newOption.appendTo('#ddlEquTrolley2');
-                            $('#ddlEquTrolley2').trigger('change');
-                        }
+                        var arr = TrolleyCode.split('~');
+                        var is1 = arr[0];
+                        var isFixed = arr[1];
+                        var isLength = arr[2];
+                        var isWidth = arr[3];
+                        var isHeight = arr[4];
+                        var isUnit = arr[5];
+                        var L;
+                        var W;
+                        var H;
 
-                        if (index == 2) {
-                            var newOption = $('<option></option>');
-                            newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                            newOption.appendTo('#ddlEquTrolley3');
-                            $('#ddlEquTrolley3').trigger('change');
-                        }
+                        scalDetailTableForAcceptance(REFERENCE_DESCRIPTION, isFixed, isLength, isWidth, isHeight, isUnit, index);
 
 
-                        if (index == 3) {
-                            var newOption = $('<option></option>');
-                            newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                            newOption.appendTo('#ddlEquTrolley4');
-                            $('#ddlEquTrolley4').trigger('change');
-                        }
-
-                        if (index == 4) {
-                            var newOption = $('<option></option>');
-                            newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                            newOption.appendTo('#ddlEquTrolley5');
-                            $('#ddlEquTrolley5').trigger('change');
-                        }
 
                     });
 
+                    html += "</tbody></table>";
+
+                    $("#divAcceptPoPUp").html(html);
+
+
 
                 } else {
-
+                    $('#btnSubmit').removeAttr('disabled');
+                    $('#divAddDim').show();
                     $(xmlDoc).find('Table4').each(function (index) {
 
                         flagforcheck2 = '1';
@@ -1220,24 +724,9 @@ function GetAWBDetailSearch_V3() {
 
                         var newOption = $('<option></option>');
                         newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                        newOption.appendTo('#ddlEquTrolley1');
-
-                        var newOption = $('<option></option>');
-                        newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                        newOption.appendTo('#ddlEquTrolley2');
+                        newOption.appendTo('#ddlAccCMIN');
 
 
-                        var newOption = $('<option></option>');
-                        newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                        newOption.appendTo('#ddlEquTrolley3');
-
-                        var newOption = $('<option></option>');
-                        newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                        newOption.appendTo('#ddlEquTrolley4');
-
-                        var newOption = $('<option></option>');
-                        newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                        newOption.appendTo('#ddlEquTrolley5');
 
                     });
 
@@ -1310,6 +799,135 @@ function GetAWBDetailSearch_V3() {
         $("body").mLoading('hide');
     }
 }
+
+var _selectIndex = 0
+function scalDetailTableForAcceptance(REFERENCE_DESCRIPTION, isFixed, isLength, isWidth, isHeight, isUnit, index) {
+
+    _selectIndex = index;
+    // textBoxID = "txt" + _selectIndex.toString();
+    html += "<tr " + _selectIndex + ">";
+    // html += "<td style='padding: 2px;display:none;' align='right'><input id='' class='form-control' type='text' value='" + RowId + "' disabled></td>";
+    html += "<td style='padding: 2px;text-align: left;' >" + REFERENCE_DESCRIPTION + "</td>";
+    html += "<td style='padding: 2px;' >" + isFixed + "</td>";
+    html += "<td style='padding: 2px;' >" + isLength + "</td>";
+    html += "<td style='padding: 2px;' >" + isWidth + "</td>";
+    html += "<td style='padding: 2px;' >" + isHeight + "</td>";
+    //html += "<td style='padding: 2px;' align='left'><input id='textVol" + _selectIndex + "' class='form-control' type='text' value='" + isUnit + "' disabled='disabled'></td>";
+
+    //html += "<td style='padding: 2px;' align='right'> <select class='form-control pnlTextBox' id='ddlAccCMINDynamic" + _selectIndex + "'  onchange='getValues(" + _selectIndex + ")' disabled='disabled'>></select></td>";
+
+    //  html += "<td contenteditable='false' style='padding: 2px;' align='center'><button onclick="deleteAcceptanceDimention(\'' + RowId + '\',\'' + NOP + '\',\'' + WEIGHT + '\',\'' + Length + '\',\'' + Width + '\',\'' + Height + '\',\'' + Volume + '\')" type='button' style='background-color:#bcd233;color:black;' id='addButton' class='btn'><span class='glyphicon glyphicon-pencil'></span></button></td>";
+    //html += '<td onclick="editAcceptanceDimention(\'' + RowId + '\',\'' + NOP + '\',\'' + WEIGHT + '\',\'' + Length + '\',\'' + Width + '\',\'' + Height + '\',\'' + Volume + '\',this)" style="padding: 2px;" align="center" id="pencil"><span  class="glyphicon glyphicon-pencil"></span></td>';
+
+    //html += '<td id="fnPencil"  style="padding: 2px;" align="center" id="pencil"><span  class="glyphicon glyphicon-pencil"></span></td>';
+    //html += '<td id="fnSaveFile" onclick="SaveDimentionGrigValue(this);hideShow(\'' + 'S' + '\');" style="padding: 2px;display:none;" align="center" id="file-save"><span  class="glyphicon glyphicon-save-file"></span></td>';
+    // html += '<td onclick="deleteAcceptanceDimention(\'' + RowId + '\',\'' + NOP + '\',\'' + WEIGHT + '\',\'' + Length + '\',\'' + Width + '\',\'' + Height + '\',\'' + Volume + '\')" style="padding: 2px;" align="center"><i class="glyphicon glyphicon-trash"></i></td>';
+    // html += '<td onclick="deleteAcceptanceDimention()" style="padding: 2px;" align="center"><i class="glyphicon glyphicon-trash"></i></td>';
+
+    html += "</tr>";
+    //_selectIndex = _selectIndex + 1;
+
+}
+var $input;
+var formElements = new Array();
+var counterForDim = 0;
+function addDimentionRows() {
+
+    if ($('#ddlAccCMIN').val() == '-1') {
+        $('#validateTXT').text("Please select Trolley").css('color', 'red');
+        return
+    } else {
+        $('#validateTXT').text("");
+    }
+
+    if ($('#txtAccPieces').val() == '' || $('#txtAccLength').val() == '' || $('#txtAccWidth').val() == '' || $('#txtAccHeight').val() == '') {
+        $('#validateTXT').text("Please fill all values in current row.").css('color', 'red');
+        return
+    } else {
+        $('#validateTXT').text("");
+    }
+
+
+
+    $("#dtable").show();
+    var arr = $('#ddlAccCMIN').val().split('~')
+    var REFERENCE_DATA_IDENTIFIER = arr[0];
+    var TrolleyFixed = arr[1];
+    var isLength = arr[2];
+    var isWidth = arr[3];
+    var isHeight = arr[4];
+    var isUnit = arr[5];
+    var TrolleyWt = arr[6];
+    //const tr = document.createElement('tr');
+
+
+    //var supname = $("#supplyingLocation").val();
+    //$('#supplyingLocation').val('');
+    const ddlAccCMIN = $("#ddlAccCMIN option:selected").text();//document.getElementById('ddlAccCMIN');
+
+    const txtAccPieces = document.getElementById('txtAccPieces').value;
+    const txtAccLength = document.getElementById('txtAccLength').value;
+    const txtAccWidth = document.getElementById('txtAccWidth').value;
+    const txtAccHeight = document.getElementById('txtAccHeight').value;
+
+    var buttonId = "deletesupLoc" + parseInt(counterForDim + 1);
+    var supDeleteButton = $("<i class='glyphicon glyphicon-trash' id='" + buttonId + "'></i>");
+    $(document).on('click', '#' + buttonId, function () { deleteRow(buttonId); });
+    var supRow = $("<tr>");
+    supRow.append("<td>" + REFERENCE_DATA_IDENTIFIER + "");
+    supRow.append("<td>" + TrolleyFixed + "");
+    supRow.append("<td>" + TrolleyWt + "");
+    supRow.append("<td>" + ddlAccCMIN + "");
+    supRow.append("<td>" + txtAccPieces + "");
+    supRow.append("<td>" + txtAccLength + "");
+    supRow.append("<td>" + txtAccWidth + "");
+    supRow.append("<td>" + txtAccHeight + "");
+
+    supRow.append("<td>").append(supDeleteButton);
+    $("#dtable tbody").append(supRow);
+    counterForDim++;
+
+
+
+    $('#txtAccPieces').val('').removeAttr('disabled');
+    $('#txtAccLength').val('').removeAttr('disabled');
+    $('#txtAccWidth').val('').removeAttr('disabled');
+    $('#txtAccHeight').val('').removeAttr('disabled');
+    $('#ddlAccCMIN').val('-1').removeAttr('disabled');
+
+}
+
+
+function hideTdVal() {
+    var TableData = new Array();
+    inputRowsforLocation = "";
+
+    //$('#dtable tbody tr').each((tr_idx, tr) => {
+    //    $(tr).children('td').each((td_idx, td) => {
+
+    //        console.log('[' + tr_idx + ',' + td_idx + '] => ' + $(td).text());
+    //    });
+    //});
+
+    $('#dtable tbody').find('tr').each(function (tr_idx, tr) {
+
+
+        $(tr).children('td').each((td_idx, td) => {
+            if (td_idx == 0) {
+                $(td).hide();
+            }
+            if (td_idx == 1) {
+                $(td).hide();
+            }
+            if (td_idx == 2) {
+                $(td).hide();
+            }
+            console.log('[' + tr_idx + ',' + td_idx + '] => ' + $(td).text());
+        });
+    });
+    $("td:empty").remove();
+}
+
 
 function GetAWBDetailSearch_V3_onLoad() {
 
@@ -1585,24 +1203,7 @@ function GetAWBDetailSearch_V3_onLoad() {
 
                     var newOption = $('<option></option>');
                     newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                    newOption.appendTo('#ddlEquTrolley1');
-
-                    var newOption = $('<option></option>');
-                    newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                    newOption.appendTo('#ddlEquTrolley2');
-
-
-                    var newOption = $('<option></option>');
-                    newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                    newOption.appendTo('#ddlEquTrolley3');
-
-                    var newOption = $('<option></option>');
-                    newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                    newOption.appendTo('#ddlEquTrolley4');
-
-                    var newOption = $('<option></option>');
-                    newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                    newOption.appendTo('#ddlEquTrolley5');
+                    newOption.appendTo('#ddlAccCMIN');
 
                 });
 
@@ -1676,7 +1277,14 @@ function fnOffpoint() {
 
 }
 function onChangeComm(commID) {
-    passCommoId = commID;
+    if (commID == null) {
+        return
+    }
+    var arr = commID.split('~');
+     
+    passCommoId = arr[0];
+    passCommoSHC = arr[1];
+    $('#txtSHCCode').val(passCommoSHC);
 }
 
 
@@ -2909,7 +2517,7 @@ function GetAWBDetailSave_V3() {
 
     var shipConAgtXML = '<SCustID>' + Shipper_SCustID + '</SCustID><SName>' + $("#txtShipper").val().toUpperCase() + '</SName><CCustID>' + Consignee_CCustID + '</CCustID><CName>' + $("#txtConsignee").val().toUpperCase() + '</CName><IACustID>' + AgentName_IACustID + '</IACustID><IAName>' + $("#txtAgentName").val().toUpperCase() + '</IAName><AgentID>' + AgentName_IACustID + '</AgentID>';
 
-    var InputXML = '<Root><EAID>0</EAID><AWBPrefix>' + AWBPrefix + '</AWBPrefix><AWBNo>' + AWBNo + '</AWBNo><Origin>' + $("#txtOrigin").val().toUpperCase() + '</Origin><Dest>' + $("#txtDestination").val().toUpperCase() + '</Dest><OffPoint>' + $("#txtOffpoint").val().toUpperCase() + '</OffPoint><ComSearchCode>' + passCommoId + '</ComSearchCode><FlightAirline>' + $("#txtAirline").val().toUpperCase() + '</FlightAirline><FlightNumber>' + $("#txtFlightNo").val().toUpperCase() + '</FlightNumber><FlightDate1>' + $("#txtFlightDate").val() + '</FlightDate1><Pieces>' + $("#txtPieces").val() + '</Pieces><GrWt>' + $("#txtGrWt").val() + '</GrWt><ChWt>' + $("#txtCharWt").val() + '</ChWt><Volume>' + $("#txtVolume").val() + '</Volume><DimUom>' + $("#ddlUnit1").val() + '</DimUom><DimDetails>' + inputRows + '</DimDetails><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode><UserID>' + UserID + '</UserID>' + shipConAgtXML + '</Root > ';
+    var InputXML = '<Root><EAID>0</EAID><AWBPrefix>' + AWBPrefix + '</AWBPrefix><AWBNo>' + AWBNo + '</AWBNo><Origin>' + $("#txtOrigin").val().toUpperCase() + '</Origin><Dest>' + $("#txtDestination").val().toUpperCase() + '</Dest><OffPoint>' + $("#txtOffpoint").val().toUpperCase() + '</OffPoint><ComSearchCode>' + passCommoId + '</ComSearchCode><FlightAirline>' + $("#txtAirline").val().toUpperCase() + '</FlightAirline><FlightNumber>' + $("#txtFlightNo").val().toUpperCase() + '</FlightNumber><SHCCode>' + $("#txtSHCCode").val().toUpperCase() + '</SHCCode><FlightDate1>' + $("#txtFlightDate").val() + '</FlightDate1><Pieces>' + $("#txtPieces").val() + '</Pieces><GrWt>' + $("#txtGrWt").val() + '</GrWt><ChWt>' + $("#txtCharWt").val() + '</ChWt><Volume>' + $("#txtVolume").val() + '</Volume><DimUom>' + $("#ddlUnit1").val() + '</DimUom><DimDetails>' + inputRows + '</DimDetails><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + companyCode + '</CompanyCode><UserID>' + UserID + '</UserID>' + shipConAgtXML + '</Root > ';
 
 
     if (errmsg == "" && connectionStatus == "online") {
@@ -3013,7 +2621,7 @@ function clearALLafterSave() {
     //    dateFormat: 'dd-M-yy',
 
     //});
-
+    $('#txtSHCCode').val('');
     shipperCode = [];
     consigneeCode = [];
     agentCode = [];
@@ -3023,7 +2631,7 @@ function clearALLafterSave() {
     C_List = [];
 
     $('#ddlFlightNo').empty();
-    // $('#ddlCommodity').empty();
+    $('#dtable').hide();
     $('#txtCommodity').val('');
     passCommoId = '';
     commodiyCode = [];
@@ -3047,6 +2655,7 @@ function clearALLafterSave() {
 
 
 function clearALL() {
+    $('#dtable').hide();
     $('#txtAWBNo').val('');
     //$('#txtOrigin').val('');
     $('#txtDestination').val('');
@@ -3127,10 +2736,14 @@ function clearALL() {
     GetCommodityDataV3();
     GetAWBDetailSearch_V3_onLoad();
     clearGrid();
-    //$('#btnSubmit').removeAttr('disabled');
+    $('#divAcceptPoPUp').empty();
+    $('#dtable').hide();
+    $('#divAddDim').show();
 }
 
 function clearGrid() {
+    $('#divAcceptPoPUp').empty();
+    $('#dtable').hide();
     $("#Pieces1").val('').removeAttr('disabled');
     $("#Length1").val('').removeAttr('disabled');
     $("#Width1").val('').removeAttr('disabled');
@@ -3159,7 +2772,7 @@ function clearGrid() {
 
 function clearALLNew() {
 
-   // $('#txtOrigin').val('');
+    // $('#txtOrigin').val('');
     $('#txtDestination').val('');
     $('#txtFlightNo').val('');
     $('#txtPieces').val('');
@@ -3210,6 +2823,8 @@ function clearALLNew() {
     $('#txtCommodity').removeAttr('disabled');
     //$('#btnSubmit').removeAttr('disabled');
     $('#txtOffpoint').removeAttr('disabled');
+    $('#divAcceptPoPUp').empty();
+    $('#dtable').hide();
 }
 
 function ClearIGM() {
@@ -3218,6 +2833,8 @@ function ClearIGM() {
 }
 
 function clearBeforePopulate() {
+    $('#divAcceptPoPUp').empty();
+    $('#dtable').hide();
     $('#txtFromLoc').val('');
     $('#txtTotPkgs').val('');
     $('#txtMovePkgs').val('');
@@ -3393,8 +3010,8 @@ function GetCommodityDataV3() {
     }
 }
 
-var allVolumn_1;
-var allCharWt_1;
+let allVolumn_1 = 0;
+let allCharWt_1 = 0;
 
 var allVolumn_2;
 var allCharWt_2;
@@ -3409,227 +3026,107 @@ var allVolumn_5;
 var allCharWt_5;
 
 function CalculateVol_1() {
-    if ($("#Pieces1").val() == '') {
+    if ($("#txtAccPieces").val() == '') {
         return;
     }
-    if ($("#Height1").val() == '') {
+    if ($("#txtAccHeight").val() == '') {
         return;
     }
 
     var decChargeableWt;
 
-    if ($("#ddlEquTrolley1").val() != '-1' && $("#ddlEquTrolley1 option:selected").text() != 'cms') {
-        decChargeableWt = ($("#Length1").val() *
-            $("#Width1").val() *
-            $("#Height1").val() *
-            // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
-            1) /
-            6000;
+    if ($("#ddlAccCMIN").val() != '-1' && $("#ddlAccCMIN option:selected").text() != 'cms') {
+        //if gage selected
+
+        if ($("#ddlUnit1").val() == 'cm') {
+            //if centimeter calculate chargeable wt start here
+            decChargeableWt = (1 * parseFloat($("#txtAccLength").val()) *
+                parseFloat($("#txtAccWidth").val()) *
+                parseFloat($("#txtAccHeight").val())) /
+                6000;
+            /// end ch wt calculation
+
+            //vol wt cal start here
+            volumetricWt = (1 * parseFloat($("#txtAccLength").val()) *
+                parseFloat($("#txtAccWidth").val()) *
+                parseFloat($("#txtAccHeight").val())) /
+                1000000;
+            /// end vloume wt calculation
+
+
+        } else {
+            // if inches ch wt start here
+            decChargeableWt = (parseFloat($("#txtAccLength").val()) *
+                parseFloat($("#txtAccWidth").val()) *
+                parseFloat($("#txtAccHeight").val()) *
+                1) /
+                366;
+
+            volumetricWt = (parseFloat($("#txtAccLength").val()) *
+                parseFloat($("#txtAccWidth").val()) *
+                parseFloat($("#txtAccHeight").val()) *
+                // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
+                (1 * 16.39)) /
+                1000000;
+        }
 
     } else {
-        decChargeableWt = ($("#Length1").val() *
-            $("#Width1").val() *
-            $("#Height1").val() *
-            // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
-            $("#Pieces1").val()) /
-            6000;
+
+
+        //if CMS selected fro ddl
+
+        if ($("#ddlUnit1").val() == 'cm') {
+            //if centimeter calculate chargeable wt start here
+            decChargeableWt = (parseInt($("#txtAccPieces").val()) * parseFloat($("#txtAccLength").val()) *
+                parseFloat($("#txtAccWidth").val()) *
+                parseFloat($("#txtAccHeight").val())) /
+                6000;
+            /// end ch wt calculation
+
+            //vol wt cal start here
+            volumetricWt = (parseInt($("#txtAccPieces").val()) * parseFloat($("#txtAccLength").val()) *
+                parseFloat($("#txtAccWidth").val()) *
+                parseFloat($("#txtAccHeight").val())) /
+                1000000;
+            /// end vloume wt calculation
+
+
+        } else {
+            // if inches ch wt start here
+            decChargeableWt = (parseFloat($("#txtAccLength").val()) *
+                parseFloat($("#txtAccWidth").val()) *
+                parseFloat($("#txtAccHeight").val()) *
+                parseInt($("#txtAccPieces").val())) /
+                366;
+
+            volumetricWt = (parseFloat($("#txtAccLength").val()) *
+                parseFloat($("#txtAccWidth").val()) *
+                parseFloat($("#txtAccHeight").val()) *
+                // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
+                ($("#txtAccPieces").val() * 16.39)) /
+                1000000;
+        }
 
     }
 
-    volumetricWt = parseFloat(decChargeableWt) / 167;
+   
 
-
-    $("#txtVolume").val(volumetricWt.toFixed(2));
-
-    allVolumn_1 = volumetricWt.toFixed(2);
-    allCharWt_1 = decChargeableWt.toFixed(2);
+    allVolumn_1 += Number(volumetricWt.toFixed(2));
+    allCharWt_1 += Number(decChargeableWt.toFixed(2));
+    $("#txtVolume").val(parseFloat(allVolumn_1));
 
     //var grWT = parseFloat($("#txtGrWt").val());
     //var chaWT = parseFloat(allCharWt_1);
     if (parseFloat($("#txtGrWt").val()) > parseFloat(allCharWt_1)) {
         $("#txtCharWt").val($("#txtGrWt").val());
     } else {
-        $("#txtCharWt").val(Math.round(decChargeableWt.toFixed(2)));
+        $("#txtCharWt").val(allCharWt_1.toFixed(2));
     }
 
 }
 
 
-function CalculateVol_2() {
-    if ($("#Pieces2").val() == '') {
-        return;
-    }
-    if ($("#Height2").val() == '') {
-        return;
-    }
-    var decChargeableWt;
 
-    if ($("#ddlEquTrolley2").val() != '-1' && $("#ddlEquTrolley2 option:selected").text() != 'cms') {
-        decChargeableWt = ($("#Length2").val() *
-            $("#Width2").val() *
-            $("#Height2").val() *
-            // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
-            1) /
-            6000;
-
-    } else {
-        decChargeableWt = ($("#Length2").val() *
-            $("#Width2").val() *
-            $("#Height2").val() *
-            // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
-            $("#Pieces2").val()) /
-            6000;
-
-    }
-
-    var volumetricWt = parseFloat(decChargeableWt) / 167;
-
-    allVolumn_2 = volumetricWt.toFixed(2);
-    allCharWt_2 = decChargeableWt.toFixed(2);
-
-    var v1 = parseFloat(allVolumn_1) + parseFloat(allVolumn_2);
-    var c1 = parseFloat(allCharWt_1) + parseFloat(allCharWt_2);
-    $("#txtVolume").val(v1.toFixed(2));
-
-
-    if (parseFloat($("#txtGrWt").val()) > parseFloat(allCharWt_2)) {
-        $("#txtCharWt").val($("#txtGrWt").val());
-    } else {
-        $("#txtCharWt").val(Math.round(c1));
-    }
-}
-
-
-function CalculateVol_3() {
-    if ($("#Pieces3").val() == '') {
-        return;
-    }
-    if ($("#Height3").val() == '') {
-        return;
-    }
-    var decChargeableWt;
-
-    if ($("#ddlEquTrolley3").val() != '-1' && $("#ddlEquTrolley3 option:selected").text() != 'cms') {
-        decChargeableWt = ($("#Length3").val() *
-            $("#Width3").val() *
-            $("#Height3").val() *
-            // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
-            1) /
-            6000;
-
-    } else {
-        decChargeableWt = ($("#Length3").val() *
-            $("#Width3").val() *
-            $("#Height3").val() *
-            // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
-            $("#Pieces3").val()) /
-            6000;
-
-    }
-
-    var volumetricWt = parseFloat(decChargeableWt) / 167;
-
-    allVolumn_3 = volumetricWt.toFixed(2);
-    allCharWt_3 = decChargeableWt.toFixed(2);
-
-    var v1 = parseFloat(allVolumn_1) + parseFloat(allVolumn_2) + parseFloat(allVolumn_3);
-    var c1 = parseFloat(allCharWt_1) + parseFloat(allCharWt_2) + parseFloat(allCharWt_3);
-    $("#txtVolume").val(v1.toFixed(2));
-    // $("#txtCharWt").val(Math.round(c1));
-
-    if (parseFloat($("#txtGrWt").val()) > parseFloat(allCharWt_3)) {
-        $("#txtCharWt").val($("#txtGrWt").val());
-    } else {
-        $("#txtCharWt").val(Math.round(c1));
-    }
-}
-
-function CalculateVol_4() {
-    if ($("#Pieces4").val() == '') {
-        return;
-    }
-    if ($("#Height4").val() == '') {
-        return;
-    }
-    var decChargeableWt;
-
-    if ($("#ddlEquTrolley4").val() != '-1' && $("#ddlEquTrolley4 option:selected").text() != 'cms') {
-        decChargeableWt = ($("#Length4").val() *
-            $("#Width4").val() *
-            $("#Height4").val() *
-            // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
-            1) /
-            6000;
-
-    } else {
-        decChargeableWt = ($("#Length4").val() *
-            $("#Width4").val() *
-            $("#Height4").val() *
-            // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
-            $("#Pieces4").val()) /
-            6000;
-
-    }
-
-    var volumetricWt = parseFloat(decChargeableWt) / 167;
-
-    allVolumn_4 = volumetricWt.toFixed(2);
-    allCharWt_4 = decChargeableWt.toFixed(2);
-
-    var v1 = parseFloat(allVolumn_1) + parseFloat(allVolumn_2) + parseFloat(allVolumn_3) + parseFloat(allVolumn_4);
-    var c1 = parseFloat(allCharWt_1) + parseFloat(allCharWt_2) + parseFloat(allCharWt_3) + parseFloat(allCharWt_4);
-    $("#txtVolume").val(v1.toFixed(2));
-    // $("#txtCharWt").val(Math.round(c1));
-
-    if (parseFloat($("#txtGrWt").val()) > parseFloat(allCharWt_4)) {
-        $("#txtCharWt").val($("#txtGrWt").val());
-    } else {
-        $("#txtCharWt").val(Math.round(c1));
-    }
-}
-
-function CalculateVol_5() {
-    if ($("#Pieces5").val() == '') {
-        return;
-    }
-    if ($("#Height5").val() == '') {
-        return;
-    }
-    var decChargeableWt;
-
-    if ($("#ddlEquTrolley5").val() != '-1' && $("#ddlEquTrolley5 option:selected").text() != 'cms') {
-        decChargeableWt = ($("#Length5").val() *
-            $("#Width5").val() *
-            $("#Height5").val() *
-            // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
-            1) /
-            6000;
-
-    } else {
-        decChargeableWt = ($("#Length5").val() *
-            $("#Width5").val() *
-            $("#Height5").val() *
-            // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
-            $("#Pieces5").val()) /
-            6000;
-
-    }
-
-    var volumetricWt = parseFloat(decChargeableWt) / 167;
-
-    allVolumn_5 = volumetricWt.toFixed(2);
-    allCharWt_5 = decChargeableWt.toFixed(2);
-
-    var v1 = parseFloat(allVolumn_1) + parseFloat(allVolumn_2) + parseFloat(allVolumn_3) + parseFloat(allVolumn_4) + parseFloat(allVolumn_5);
-    var c1 = parseFloat(allCharWt_1) + parseFloat(allCharWt_2) + parseFloat(allCharWt_3) + parseFloat(allCharWt_4) + parseFloat(allCharWt_5);
-    $("#txtVolume").val(v1.toFixed(2));
-    // $("#txtCharWt").val(Math.round(c1));
-    if (parseFloat($("#txtGrWt").val()) > parseFloat(allCharWt_5)) {
-        $("#txtCharWt").val($("#txtGrWt").val());
-    } else {
-        $("#txtCharWt").val(Math.round(c1));
-    }
-}
 
 function GetButtonRights_v3() {
     var connectionStatus = navigator.onLine ? 'online' : 'offline'

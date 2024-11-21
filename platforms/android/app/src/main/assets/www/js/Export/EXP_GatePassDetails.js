@@ -10,7 +10,7 @@ var flSeqID = localStorage.getItem('flSeqID');
 var SHED_CODE = localStorage.getItem('SHED_CODE');
 var _uldtyp = localStorage.getItem('_uldtyp');
 var gatePassComing = localStorage.getItem('gatePassComing');
-
+var GPNumberForSave = '';
 var SelectedHawbId;
 var SelectedHawbIdCMS;
 var SelectedHawbNo;
@@ -211,7 +211,7 @@ function ExportAirside_Search_V3_Onblur() {
                         ScreeningMethod = $(this).find('ScreeningMethod').text();
                         CurrentDate = $(this).find('CurrentDate').text();
                         IsReleased = $(this).find('IsReleased').text();
-                        
+                        GPNumberForSave = $(this).find('PermitNo').text();
                         //JsBarcode("#barcode", PermitNo, {
 
                         //    width: 2,
@@ -982,7 +982,7 @@ function ReleaseULDBulk() {
 
     //var inputXML = '<Root><ULDSeqNo>' + ULDseqNo + '</ULDSeqNo><AirportCity>' + AirportCity + '</AirportCity></Root>';
 
-    var inputXML = '<Root><GPNo>' + PermitNo + '</GPNo><ULDSeqNo>' + _ulddSQ + '</ULDSeqNo><AirportCity>' + AirportCity + '</AirportCity><ULDType>' + uldComing + '</ULDType><UserId>' + UserId + '</UserId></Root>';
+    var inputXML = '<Root><GPNo>' + GPNumberForSave + '</GPNo><ULDSeqNo>' + _ulddSQ + '</ULDSeqNo><AirportCity>' + AirportCity + '</AirportCity><ULDType>' + uldComing + '</ULDType><UserId>' + UserId + '</UserId></Root>';
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
