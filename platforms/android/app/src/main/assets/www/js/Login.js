@@ -1,12 +1,12 @@
 ﻿
 //BAIL QA INTL
-//var GHAImportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3dom/services/HHTImpServices.asmx/';
-//var GHAExportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3dom/services/hhtExpservices.asmx/';
+var GHAImportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3dom/services/HHTImpServices.asmx/';
+var GHAExportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3dom/services/hhtExpservices.asmx/';
 
 
 //BAIL UAT INTL
-var GHAImportFlightserviceURL = 'https://galaxyuat.kalelogistics.com/GalaxyV3DOM/Services/HHTimpServices.asmx/';
-var GHAExportFlightserviceURL = 'https://galaxyuat.kalelogistics.com/GalaxyV3DOM/Services/HHTExpServices.asmx/';
+//var GHAImportFlightserviceURL = 'https://galaxyuat.kalelogistics.com/GalaxyV3DOM/Services/HHTimpServices.asmx/';
+//var GHAExportFlightserviceURL = 'https://galaxyuat.kalelogistics.com/GalaxyV3DOM/Services/HHTExpServices.asmx/';
 
 //var GHAImportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3/services/HHTImpServices.asmx/';
 //var GHAExportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3/services/hhtExpservices.asmx/';
@@ -38,7 +38,7 @@ document.addEventListener("backbutton", exitFromApp, false);
 var allData;
 
 $(function () {
-    
+
     //$(":text").addClear();
     //$(":password").addClear();
     //$('input[type=text]').addClear();

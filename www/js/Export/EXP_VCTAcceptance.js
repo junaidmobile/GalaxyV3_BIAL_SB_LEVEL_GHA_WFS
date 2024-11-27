@@ -120,6 +120,7 @@ var TrolleyCode_3;
 var TrolleyCode_4;
 var TrolleyCode_5;
 var isFiveFoure = '0';
+var _EXPAWBROWID;
 $(function () {
 
 
@@ -238,6 +239,20 @@ $(function () {
 
                     // $('#txtScaleWt').val($(this).find('SDA_GrossWt_I').text());
                     $('#txtScaleWt').val($(this).find('RemainingWt').text());
+
+                    if ($('#txPieces').val() == '0') {
+
+                        $('#divShowHideSHC').hide();
+                        $('#txtCharWt').attr('disabled', 'disabled');
+                        $('#txtVolume').attr('disabled', 'disabled');
+
+                    } else {
+                        $('#divShowHideSHC').show();
+                        $('#txtCharWt').removeAttr('disabled');
+                        $('#txtVolume').removeAttr('disabled');
+                    }
+                    $('#txRecPieces').val($(this).find('ReceivedPkg').text());
+                    $('#txtRecScaleWt').val($(this).find('ReceivedWt').text());
                     $('#txtGroupId').focus();
 
                     aaSDA_SBNo_C = SDA_SBNo_C;
@@ -526,7 +541,7 @@ $(function () {
     $("input").keyup(function () {
         var string = $(this).val();
         // var string = $('#txtOrigin').val();
-        if (string.match(/[`!₹£•√Π÷×§∆€¥¢©®™✓π@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
+        if (string.match(/[`!₹£•√Π÷×§∆€¥¢©®™✓π@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?~]/)) {
             /*$('#txtOrigin').val('');*/
             $(this).val('');
             return true;    // Contains at least one special character or space
@@ -1919,14 +1934,14 @@ function SHCSpanHtml(newSHC) {
 
         if (filtered[n].indexOf('~') > -1) {
             if (blink[1] == 'Y' && filtered[n] != '~Y') {
-                spanStr += "<td class='blink_me'>" + blink[0] + "</td>";
+                spanStr += "<td class='blink_me clsSave'>" + blink[0] + "</td>";
                 console.log(filtered[n])
             }
         }
 
         if (filtered[n].indexOf('~') > -1) {
             if (blink[1] == 'N' && filtered[n] != '~N') {
-                spanStr += "<td class='foo'>" + blink[0] + "</td>";
+                spanStr += "<td class='foo clsSave'>" + blink[0] + "</td>";
                 console.log(filtered[n])
             }
         }
@@ -2132,13 +2147,13 @@ getAllValues = function () {
 
 
     var TableData = new Array();
-    $("#dtable tbody").find("tr").each(function () { //get all rows in table
+    $("#tblDimentionAcceptance tbody").find("tr").each(function () { //get all rows in table
 
         inputRows += "<DimDetails><Rows>"
 
-        inputRows += "<REFERENCE_DATA_IDENTIFIER>" + $(this).find("td").eq(0).text() + "</REFERENCE_DATA_IDENTIFIER>";
-        inputRows += "<TrolleyFixed>" + $(this).find("td").eq(1).text() + "</TrolleyFixed>";
-        inputRows += "<TrolleyWt>" + $(this).find("td").eq(2).text() + "</TrolleyWt>";
+        inputRows += "<REFERENCE_DATA_IDENTIFIER>" + $(this).find("td").eq(1).text() + "</REFERENCE_DATA_IDENTIFIER>";
+        inputRows += "<TrolleyFixed>" + $(this).find("td").eq(2).text() + "</TrolleyFixed>";
+        inputRows += "<TrolleyWt>" + $(this).find("td").eq(3).text() + "</TrolleyWt>";
         inputRows += "<Pieces>" + $(this).find("td").eq(4).text() + "</Pieces>";
         inputRows += "<Length>" + $(this).find("td").eq(5).text() + "</Length>";
         inputRows += "<Width>" + $(this).find("td").eq(6).text() + "</Width>";
@@ -2338,11 +2353,7 @@ function GetVCTUnScannedDetails_v3(VCTNo) {
                 _xmlDocTable = xmlDoc;
                 console.log(xmlDoc)
                 $("body").mLoading('hide');
-                $('#ddlEquTrolley1').empty();
-                $('#ddlEquTrolley2').empty();
-                $('#ddlEquTrolley3').empty();
-                $('#ddlEquTrolley4').empty();
-                $('#ddlEquTrolley5').empty();
+
 
                 $(xmlDoc).find('Table').each(function (index) {
                     Status = $(this).find('Status').text();
@@ -2352,6 +2363,7 @@ function GetVCTUnScannedDetails_v3(VCTNo) {
                         //    return;
                         //}
                         $('#btnSubmit').attr('disabled', 'disabled');
+                        $('#btnComplete').attr('disabled', 'disabled');
                         $("#spnMsg").text(StrMessage).css({ 'color': 'red' });
                         return;
                     } else {
@@ -2436,6 +2448,7 @@ function GetVCTUnScannedDetails_v3(VCTNo) {
                     OffPoint = $(this).find('OffPoint').text();
                     ChargeableWt = $(this).find('ChargeableWt').text();
                     Volume = $(this).find('Volume').text();
+                    _EXPAWBROWID = $(this).find('EXPAWBROWID').text();
 
 
                     _XmlForSHCCode = SHCAll;
@@ -2510,15 +2523,42 @@ function GetVCTUnScannedDetails_v3(VCTNo) {
 
 
                 if (ConsignmentRowID != '-1') {
+                    html = '';
+                    html += '<table id="tblDimentionAcceptance" border="1" style="width:100%;table-layout:fixed;word-break:break-word;border-color: white;margin-top: 2%;">';
+                    html += '<thead>';
+                    html += '<tr>';
+                    html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight:" bold"" align="center">Trolley</th>';
+                    html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight:" bold"" align="center">Pieces</th>';
+                    html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight:" bold"" align = "center" > Length</th >';
+                    html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight:" bold"" align = "center" > Width</th >';
+                    html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight:" bold"" align = "center" > Height</th >';
+                    html += '</tr>';
+                    html += '</thead>';
+                    html += "<tbody>";
                     $(xmlDoc).find('Table4').each(function (index) {
 
                         var REFERENCE_DESCRIPTION = $(this).find('REFERENCE_DESCRIPTION').text();
                         var TrolleyCode = $(this).find('TrolleyCode').text();
                         var REFERENCE_NUMBER_1 = $(this).find('REFERENCE_NUMBER_1').text();
 
+                        var arr = TrolleyCode.split('~');
+                        var isName = arr[0];
+                        var isTFixed = arr[1];
+                        var isPieces = arr[2];
+                        var isLength = arr[3];
+                        var isWidth = arr[4];
+                        var isHeight = arr[5];
+                        // var isUnit = arr[5];
+                        var TrolleyWt = arr[7];
+
+                        scalDetailTableForAcceptance(REFERENCE_DESCRIPTION, isName, isTFixed, isPieces, isLength, isWidth, isHeight, TrolleyWt);
 
                     });
-                    GetAWBDetailSearch_V3_onLoad();
+
+                    html += "</tbody></table>";
+
+                    $("#divDimention").html(html);
+                    // GetAWBDetailSearch_V3_onLoad();
                     // $("#btnSubmit").attr('disabled', 'disabled');
                 }
                 else {
@@ -2941,226 +2981,7 @@ function getAllSHCCodefromPopup() {
 }
 
 
-function SaveVCTCargoDetails_v3() {
 
-    var connectionStatus = navigator.onLine ? 'online' : 'offline'
-    var errmsg = "";
-
-
-
-    //var strAWBNo = $('#ddlAWBNo').find('option:selected').text();
-    //var strPkgs = $('#txtPackages').val();
-    //var strGrossWt = $('#txtGrossWt').val();
-    //var strLocationCode = $('#txtLocation').val();
-    //var strShipmentNo = $('#ddlShipmentNo').find('option:selected').text();
-    //var strWtUnit = 'KG';
-
-    //var receive = '1';
-
-    //if (document.getElementById('chkReceive').checked) {
-    //    receive = '1';
-    //} else {
-    //    receive = '0';
-    //}
-
-
-    //if (strAWBNo == "" || strPkgs == "" || strGrossWt == "" || strLocationCode) {
-
-    //    errmsg = "Please enter all the required fields.</br>";
-    //    $.alert(errmsg);
-    //    return;
-    //}
-
-    //if (strAWBNo.length != '11') {
-    //    errmsg = "Please enter valid AWB No.";
-    //    $.alert(errmsg);
-    //    return;
-    //}
-    var formattedDate = new Date();
-    var d = formattedDate.getDate();
-    if (d.toString().length < Number(2))
-        d = '0' + d;
-    var m = formattedDate.getMonth();
-    m += 1;  // JavaScript months are 0-11
-    if (m.toString().length < Number(2))
-        m = '0' + m;
-    var y = formattedDate.getFullYear();
-    var t = formattedDate.getTime();
-    var date = m.toString() + '/' + d.toString() + '/' + y.toString();
-
-    newDate = y.toString() + '-' + m.toString() + '-' + d.toString();
-    getAllValues();
-
-
-    if (selectedAWBNo == "") {
-        //errmsg = "Please enter valid flight No.";
-        //$.alert(errmsg);
-        $("#spnMsg").text('Please scan/select MAWB No.').css({ 'color': 'red' });
-        return;
-    } else {
-        $("#spnMsg").text('');
-    }
-
-    //if ($('#txtGroupId').val() == "") {
-    //    //errmsg = "Please enter valid flight No.";
-    //    //$.alert(errmsg);
-    //    $("#spnMsg").text('Please enter group Id.').css({ 'color': 'red' });
-    //    $('#txtGroupId').focus();
-    //    return;
-    //} else {
-    //    $("#spnMsg").text('');
-    //}
-
-    //if (parseInt($("#txPieces").val()) <= 0) {
-
-    //    $("#txPieces").val(remPCS);
-    //    //errmsg = "Entered pieces must be greater than 0.</br>";
-    //    //$.alert(errmsg);
-    //    $("#spnMsg").text('Entered pieces must be greater than 0.').css({ 'color': 'red' });
-    //    return;
-
-    //} else {
-    //    $("#spnMsg").text('');
-    //}
-
-    if ($('#txPieces').val() == "") {
-        //errmsg = "Please enter valid flight No.";
-        //$.alert(errmsg);
-        $("#spnMsg").text('Please enter pieces').css({ 'color': 'red' });
-        return;
-    } else {
-        $("#spnMsg").text('');
-    }
-
-    if ($('#txtScaleWt').val() == "") {
-        //errmsg = "Please enter valid flight No.";
-        //$.alert(errmsg);
-        $("#spnMsg").text('Please enter gross wt.').css({ 'color': 'red' });
-        return;
-    } else {
-        $("#spnMsg").text('');
-    }
-
-    //if ($('#ddlEquTrolley').val() == "0") {
-    //    //errmsg = "Please enter valid flight No.";
-    //    //$.alert(errmsg);
-    //    $("#spnMsg").text('Please select trolley.').css({ 'color': 'red' });
-    //    return;
-    //} else {
-    //    $("#spnMsg").text('');
-    //}
-
-    //var $input;
-    //var formElements = new Array();
-    //var firstTextBox = parseInt($("#Pieces1").val())
-    //var CurrSumDImPcs = 0;
-    //var j = 0
-    //$('#TextBoxesGroup').find('input').each(function (i, input) {
-
-    //    $input = $(input);
-    //    $input.css('background-color', $input.val() ? 'white' : '#FFCCCB');
-    //    formElements.push($input.val());
-
-    //    if ($(input).attr('id') == "Pieces" + parseInt(j + 1)) {
-    //        CurrSumDImPcs = CurrSumDImPcs + parseInt($input.val());
-    //        j++;
-    //    }
-
-    //});
-
-
-
-    //if ($input.val() == '') {
-    //    $input.css('background-color', $input.val() ? 'white' : '#FFCCCB');
-    //    $("#spnMsg").text('Please enter dimensions.').css({ 'color': 'red' });
-    //    $("#Length1").focus();
-
-    //    return;
-    //}
-
-    // inputxml = "<Root><VCTNo>" + VCTNo + "</VCTNo><VCTID>" + VCTId + "</VCTID><ISULD>False</ISULD><ConsignmentRowID>" + ConsignmentRowID + "</ConsignmentRowID><HouseRowId></HouseRowId><AWBULDNo>" + $("#ddlMAWBNo").val() + "</AWBULDNo><HAWB>" + $("#ddlHAWBNo option:selected").text() + "</HAWB><Package>" + $("#txPieces").val() + "</Package><GrossWt>" + $("#txtScaleWt").val() + "</GrossWt><WtUOM>KG</WtUOM><TrolleyCode>" + IDENTIFIER + "</TrolleyCode><TrolleyWt>" + REFERENCE + "</TrolleyWt><IsSecured>" + IsSecuredTF + "</IsSecured><GroupId>" + $("#txtGroupId").val() + "</GroupId><DimUOM>" + $("#ddlUnit").val() + "</DimUOM><DimDetails>" + inputRows + "</DimDetails><AirportCity>" + SHED_AIRPORT_CITY + "</AirportCity><Culture>" + language + "</Culture><UserId>" + Userid + "</UserId><NOG>" + $("#txtNOG").val() + "</NOG><CommSrNo>" + $("#ddlComCode").val() + "</CommSrNo>" + allSHCCodeSave + "</Root>"
-    // var inputxml = "<Root><VCTNo>" + VCTNo + "</VCTNo><VCTID>" + VCTId + "</VCTID><ISULD>False</ISULD><ConsignmentRowID>" + ConsignmentRowIDForSave + "</ConsignmentRowID><HouseRowId></HouseRowId><AWBULDNo></AWBULDNo><HAWB></HAWB><Package>" + $("#txPieces").val() + "</Package><GrossWt>" + $("#txtScaleWt").val() + "</GrossWt><WtUOM>" + WtUOM + "</WtUOM><TrolleyCode>" + IDENTIFIER + "</TrolleyCode><TrolleyWt>" + REFERENCE + "</TrolleyWt><IsSecured>" + isSecuredFlag + "</IsSecured><GroupId>" + $("#txtGroupId").val() + "</GroupId><DimUOM>" + $("#ddlUnit1").val() + "</DimUOM><DimDetails>" + inputRows + "</DimDetails><AirportCity>" + AirportCity + "</AirportCity><Culture>" + PreferredLanguage + "</Culture><UserId>" + UserId + "</UserId><NOG></NOG><CommSrNo>" + CommSrNo + "</CommSrNo><SHC1></SHC1><SHC2></SHC2><SHC3></SHC3><SHC4></SHC4><SHC5></SHC5><SHC6></SHC6><SHC7></SHC7><SHC8></SHC8><SHC9></SHC9></Root>";
-    var inputxml = "<Root><VCTNo>" + VCTNo + "</VCTNo><AWBNo>" + $("#ddlAWBNo option:selected").text() + "</AWBNo><SBNumber>" + $("#txtSBNo").val() + "</SBNumber><VCTID>" + VCTId + "</VCTID><ISULD>False</ISULD><ConsignmentRowID>" + ConsignmentRowIDForSave + "</ConsignmentRowID><HouseRowId></HouseRowId><AWBULDNo></AWBULDNo><HAWB></HAWB><Package>" + $("#txPieces").val() + "</Package><GrossWt>" + $("#txtScaleWt").val() + "</GrossWt><WtUOM>" + WtUOM + "</WtUOM><TrolleyCode>" + IDENTIFIER + "</TrolleyCode><TrolleyWt>" + REFERENCE + "</TrolleyWt><IsSecured>" + isSecuredFlag + "</IsSecured><GroupId>" + $("#txtGroupId").val() + "</GroupId><DimUOM>" + $("#ddlUnit1").val() + "</DimUOM>" + inputRows + "<AirportCity>" + AirportCity + "</AirportCity><Culture>" + PreferredLanguage + "</Culture><UserId>" + UserId + "</UserId><NOG></NOG><CommSrNo>" + CommSrNo + "</CommSrNo><SHC1></SHC1><SHC2></SHC2><SHC3></SHC3><SHC4></SHC4><SHC5></SHC5><SHC6></SHC6><SHC7></SHC7><SHC8></SHC8><SHC9></SHC9></Root>";
-    console.log(inputxml);
-
-    if (errmsg == "" && connectionStatus == "online") {
-        $.ajax({
-            type: "POST",
-            url: GHAExportFlightserviceURL + "SaveVCTCargoDetails_v3 ",
-            data: JSON.stringify({
-                'InputXML': inputxml,
-
-            }),
-
-            //url: CMSserviceURL + "CreateTDGAcceptance_SB_HHT ",
-            //data: JSON.stringify({
-            //    'pi_strGroupID': pi_strGroupID,
-            //    'pi_intRemPkgs': pi_intRemPkgs,
-            //    'pi_dcmlRemGrWt': pi_dcmlRemGrWt,
-            //    'pi_dcmlTDGchrgWt': pi_dcmlTDGchrgWt,
-            //    'pi_intEquipmentId': pi_intEquipmentId,
-            //    'pi_strRemarks': '',
-            //    'pi_strAWBNo': pi_strAWBNo,
-            //    'pi_strSBNo': pi_strSBNo,
-            //    'pi_dtTDGDate': newDate,
-            //    'pi_xmlSBDimensions': pi_xmlSBDimensions,
-            //    'pi_strUserName': pi_strUserName,
-            //    'pi_strVCTNo': pi_strVCTNo
-
-            //}),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            beforeSend: function doStuff() {
-                //$('.dialog-background').css('display', 'block');
-                $('body').mLoading({
-                    text: "Please Wait..",
-                });
-            },
-            success: function (response) {
-                $("body").mLoading('hide');
-                Result = response.d;
-                var xmlDoc = $.parseXML(Result);
-                //if (Result == '') {
-                //    clearALL();
-                //    $('#spnMsg').text('TDG acceptance done successfully').css('color', 'green');
-                //    GetAWBSBDetail_HHT(VCTNo);
-                //} else {
-
-                //    $('#spnMsg').text(Result).css('color', 'red');
-                //}
-                var xmlDoc = $.parseXML(Result);
-                $(xmlDoc).find('Table').each(function () {
-                    Status = $(this).find('Status').text();
-                    StrMessage = $(this).find('StrMessage ').text();
-                    if (Status == 'E') {
-                        // $('#spnMsg').text(StrMessage).css('color', 'red');
-                        $.alert(StrMessage);
-                        return;
-                    }
-                    if (Status == 'S') {
-                        // $('#spnMsg').text(StrMessage).css('color', 'green');
-                        $.alert(StrMessage);
-                        _xmlDocTable = '';
-                        clearALL();
-
-                        // InputXML = '<Root><VCTNo>' + VCTNo + '</VCTNo><AirportCity>' + AirportCity + '</AirportCity><Culture>' + PreferredLanguage + '</Culture><UserId>' + UserId + '</UserId><ScanId></ScanId></Root>';
-                        GetVCTUnScannedDetails_v3(VCTNo);
-                        return;
-                    }
-                });
-
-
-                //window.location.reload();
-            },
-            error: function (msg) {
-                $("body").mLoading('hide');
-                // $.alert('Some error occurred while saving data');
-            }
-        });
-        return false;
-    }
-
-}
 
 
 function compareOriginDest() {
@@ -3299,9 +3120,9 @@ function SaveVCTCargoTrolleyDetailsBL_v3() {
 
     newDate = y.toString() + '-' + m.toString() + '-' + d.toString();
     getAllValues();
-    //getAllSHCCodefromPopup();
+    getAllSHCCodefromPopupOnSave();
 
-    allSHCCodeSave = "<SHC1></SHC1><SHC2></SHC2><SHC3></SHC3><SHC4></SHC4><SHC5></SHC5><SHC6></SHC6><SHC7></SHC7><SHC8></SHC8><SHC9></SHC9>";
+    //allSHCCodeSave = "<SHC1></SHC1><SHC2></SHC2><SHC3></SHC3><SHC4></SHC4><SHC5></SHC5><SHC6></SHC6><SHC7></SHC7><SHC8></SHC8><SHC9></SHC9>";
     if (Shipper_SCustID == undefined) {
         Shipper_SCustID = '';
     }
@@ -3314,7 +3135,7 @@ function SaveVCTCargoTrolleyDetailsBL_v3() {
     // var inputxml = "<Root><VCTNo>" + VCTNo + "</VCTNo><AWBNo>" + $("#ddlAWBNo option:selected").text() + "</AWBNo><SBNumber>" + $("#txtSBNo").val() + "</SBNumber><VCTID>" + VCTId + "</VCTID><ISULD>False</ISULD><ConsignmentRowID>" + ConsignmentRowIDForSave + "</ConsignmentRowID><HouseRowId></HouseRowId><AWBULDNo></AWBULDNo><HAWB></HAWB><Package>" + $("#txPieces").val() + "</Package><GrossWt>" + $("#txtScaleWt").val() + "</GrossWt><WtUOM>" + WtUOM + "</WtUOM><TrolleyCode>" + IDENTIFIER + "</TrolleyCode><TrolleyWt>" + REFERENCE + "</TrolleyWt><IsSecured>" + isSecuredFlag + "</IsSecured><GroupId>" + $("#txtGroupId").val() + "</GroupId><DimUOM>" + $("#ddlUnit1").val() + "</DimUOM><DimDetails>" + inputRows + "</DimDetails><AirportCity>" + AirportCity + "</AirportCity><Culture>" + PreferredLanguage + "</Culture><UserId>" + UserId + "</UserId><NOG></NOG><CommSrNo>" + CommSrNo + "</CommSrNo><SHC1></SHC1><SHC2></SHC2><SHC3></SHC3><SHC4></SHC4><SHC5></SHC5><SHC6></SHC6><SHC7></SHC7><SHC8></SHC8><SHC9></SHC9></Root>";
     var shipConAgtXML = '<SCustID>' + Shipper_SCustID + '</SCustID><SName>' + $("#txtShipper").val().toUpperCase() + '</SName><CCustID>' + Consignee_CCustID + '</CCustID><CName>' + $("#txtConsignee").val().toUpperCase() + '</CName><IACustID>' + AgentName_IACustID + '</IACustID><IAName>' + $("#txtAgentName").val().toUpperCase() + '</IAName><AgentID>' + AgentName_IACustID + '</AgentID>';
 
-    var inputxml = "<Root><VCTNo>" + VCTNo + "</VCTNo><AWBNo>" + $("#ddlAWBNo option:selected").text() + "</AWBNo><SBNumber>" + $("#txtSBNo").val() + "</SBNumber><VCTID>" + VCTId + "</VCTID><ISULD>False</ISULD><ConsignmentRowID>" + ConsignmentRowIDForSave + "</ConsignmentRowID><HouseRowId></HouseRowId><AWBULDNo></AWBULDNo><HAWB></HAWB><Package>" + $("#txPieces").val() + "</Package><GrossWt>" + $("#txtScaleWt").val() + "</GrossWt><WtUOM>" + WtUOM + "</WtUOM><IsSecured>false</IsSecured><GroupId>" + $("#txtGroupId").val() + "</GroupId><DimUOM>" + $("#ddlUnit1").val() + "</DimUOM><ComSearchCode>" + passCommoId + "</ComSearchCode><FlightAirline>" + $("#txtAirline").val().toUpperCase() + "</FlightAirline><FlightNumber>" + $("#txtFlightNo").val().toUpperCase() + "</FlightNumber><FlightDate>" + $("#txtFlightDate").val() + "</FlightDate><OffPoint>" + $("#txtOffpoint").val().toUpperCase() + "</OffPoint>" + shipConAgtXML + "<Volume>" + $("#txtVolume").val() + "</Volume><ChargeableWeight>" + $("#txtCharWt").val() + "</ChargeableWeight><AirportCity>" + AirportCity + "</AirportCity><Culture>" + PreferredLanguage + "</Culture><UserId>" + UserId + "</UserId><NOG></NOG><CommSrNo>" + passCommoId + "</CommSrNo>" + allSHCCodeSave + inputRows + "</Root>";
+    var inputxml = "<Root><VCTNo>" + VCTNo + "</VCTNo><AWBNo>" + $("#ddlAWBNo option:selected").text() + "</AWBNo><SBNumber>" + $("#txtSBNo").val() + "</SBNumber><VCTID>" + VCTId + "</VCTID><ISULD>False</ISULD><ConsignmentRowID>" + ConsignmentRowIDForSave + "</ConsignmentRowID><HouseRowId></HouseRowId><AWBULDNo></AWBULDNo><HAWB></HAWB><Package>" + $("#txPieces").val() + "</Package><GrossWt>" + $("#txtScaleWt").val() + "</GrossWt><WtUOM>" + WtUOM + "</WtUOM><IsSecured>false</IsSecured><GroupId>" + $("#txtGroupId").val() + "</GroupId><DimUOM>cm</DimUOM><ComSearchCode>" + passCommoId + "</ComSearchCode><FlightAirline>" + $("#txtAirline").val().toUpperCase() + "</FlightAirline><FlightNumber>" + $("#txtFlightNo").val().toUpperCase() + "</FlightNumber><FlightDate>" + $("#txtFlightDate").val() + "</FlightDate><OffPoint>" + $("#txtOffpoint").val().toUpperCase() + "</OffPoint>" + shipConAgtXML + "<Volume>" + $("#txtVolume").val() + "</Volume><ChargeableWeight>" + $("#txtCharWt").val() + "</ChargeableWeight><AirportCity>" + AirportCity + "</AirportCity><Culture>" + PreferredLanguage + "</Culture><UserId>" + UserId + "</UserId><NOG></NOG><CommSrNo>" + passCommoId + "</CommSrNo>" + AllSHCFinalSave + inputRows + "</Root>";
 
     console.log(inputxml);
 
@@ -3326,23 +3147,7 @@ function SaveVCTCargoTrolleyDetailsBL_v3() {
                 'InputXML': inputxml,
 
             }),
-
-            //url: CMSserviceURL + "CreateTDGAcceptance_SB_HHT ",
-            //data: JSON.stringify({
-            //    'pi_strGroupID': pi_strGroupID,
-            //    'pi_intRemPkgs': pi_intRemPkgs,
-            //    'pi_dcmlRemGrWt': pi_dcmlRemGrWt,
-            //    'pi_dcmlTDGchrgWt': pi_dcmlTDGchrgWt,
-            //    'pi_intEquipmentId': pi_intEquipmentId,
-            //    'pi_strRemarks': '',
-            //    'pi_strAWBNo': pi_strAWBNo,
-            //    'pi_strSBNo': pi_strSBNo,
-            //    'pi_dtTDGDate': newDate,
-            //    'pi_xmlSBDimensions': pi_xmlSBDimensions,
-            //    'pi_strUserName': pi_strUserName,
-            //    'pi_strVCTNo': pi_strVCTNo
-
-            //}),
+           
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function doStuff() {
@@ -3408,7 +3213,9 @@ function clearALL() {
     $('#ddlEquTrolley').val(0);
     // $('#ddlAWBNo').val(0);
 
-    //
+    $('#divDimention').empty();
+    $("#txRecPieces").val('');
+    $("#txtRecScaleWt").val('');
     selectedAWBNo = '';
 
 
@@ -3672,6 +3479,9 @@ function SaveCompleteAcceptance() {
                         // $("#spnMsg").text(SM).css({ 'color': 'green' });
                         // $("#spnMsg").text('');
                         $.alert(SM).css({ 'color': 'green' });
+                        
+                        $("#btnComplete").attr('disabled', 'disabled');
+
                         _xmlDocTable = '';
                         clearALL();
                         GetVCTUnScannedDetails_v3(VCTNo);
@@ -3878,123 +3688,7 @@ function GetAWBDetailSearch_V3_onLoad() {
                 $('#ddlEquTrolley3').empty();
                 $('#ddlEquTrolley4').empty();
                 $('#ddlEquTrolley5').empty();
-                //$(xmlDoc).find('Table').each(function () {
-                //    Status = $(this).find('Status').text();
-                //    StrMessage = $(this).find('StrMessage').text();
-                //    checkingStatus = Status;
-                //    if (Status == 'E') {
-                //        // $.alert(StrMessage).css('color', 'red');
-                //        //$(".alert_btn_ok").click(function () {
-                //        //    $('#txtAWBNo').focus();
-                //        //});
-                //        //return true;
-                //        $('#txtPieces').removeAttr('disabled', 'disabled');
-                //        $('#txtGrWt').removeAttr('disabled', 'disabled');
-                //        $('#txtCharWt').removeAttr('disabled', 'disabled');
-                //        $('#txtVolume').removeAttr('disabled', 'disabled');
-                //        //$('#txtOrigin').removeAttr('disabled', 'disabled');
-                //        //$('#txtDestination').removeAttr('disabled', 'disabled');
-                //    }
-                //});
 
-
-                //$(xmlDoc).find('Table1').each(function () {
-                //    ExpAwbRowId = $(this).find('ExpAwbRowId').text();
-                //    var AwbPrefix = $(this).find('AwbPrefix').text();
-                //    var AwbNo = $(this).find('AwbNo').text();
-                //    var ShipperId = $(this).find('ShipperId').text();
-                //    var ConsigneeId = $(this).find('ConsigneeId').text();
-                //    var AgentId = $(this).find('AgentId').text();
-                //    var AgentShortCode = $(this).find('AgentShortCode').text();
-                //    var AgentName = $(this).find('AgentName').text();
-                //    var Pieces = $(this).find('Pieces').text();
-                //    var Weight = $(this).find('Weight').text();
-                //    var Volume = $(this).find('Volume').text();
-                //    var ChargeableWt = $(this).find('ChargeableWt').text();
-                //    var FlightNo = $(this).find('FlightNo').text();
-                //    var FlightDate = $(this).find('FlightDate').text();
-                //    var Origin = $(this).find('Origin').text();
-                //    var Destination = $(this).find('Destination').text();
-                //    var ShipperName = $(this).find('ShipperName').text();
-                //    var ConsigneeName = $(this).find('ConsigneeName').text();
-                //    var ShipperShortCode = $(this).find('ShipperShortCode').text();
-                //    var ConsigneeShortCode = $(this).find('ConsigneeShortCode').text();
-                //    var AgentShortCode = $(this).find('AgentShortCode').text();
-                //    var Commodity = $(this).find('CommSearchCode').text();
-                //    var CommodityDesc = $(this).find('Description').text();
-                //    var OffPoint = $(this).find('OffPoint').text();
-                //    var FlightAirline = $(this).find('FlightAirline').text();
-                //    var FlightNumber = $(this).find('FlightNumber').text();
-
-
-                //    ppcs = Pieces;
-                //    if (Pieces != '') {
-                //        $('#txtPieces').val(Pieces).css('text-align', 'right').attr('disabled', 'disabled');
-                //        $('#txtGrWt').val(Weight).css('text-align', 'right').attr('disabled', 'disabled');
-                //        $('#txtCharWt').val(ChargeableWt).css('text-align', 'right').attr('disabled', 'disabled');
-                //        $('#txtVolume').val(Volume).css('text-align', 'right').attr('disabled', 'disabled');
-                //        $('#txtCommodity').val(CommodityDesc).css('text-align', 'left').attr('disabled', 'disabled');
-                //        $('#txtOffpoint').val(OffPoint).css('text-align', 'left').attr('disabled', 'disabled');
-
-                //        $('#ddlShipper').val(ShipperId);
-                //        $('#ddlConsignee').val(ConsigneeId);
-                //        $('#txtAgentName').val(AgentId);
-                //        $('#ddlCommodity').val(Commodity);
-                //        $('#txtAirline').val(FlightAirline);
-                //        $('#txtFlightNo').val(FlightNumber);
-
-
-                //        $('#ddlShipper').trigger("change");
-                //        $('#ddlConsignee').trigger("change");
-                //        $('#ddlAgentName').trigger("change");
-                //        $('#ddlCommodity').trigger("change");
-
-                //        //$('#txtPieces').val(Pieces).css('text-align', 'right');
-                //        //$('#txtGrWt').val(Weight).css('text-align', 'right');
-                //        //$('#txtCharWt').val(ChargeableWt).css('text-align', 'right');
-                //        //$('#txtVolume').val(Volume).css('text-align', 'right');
-                //        $('#txtOrigin').val(Origin);
-                //        $('#txtDestination').val(Destination);
-                //        $('#txtShipperPrifix').val(ShipperShortCode);
-                //        $('#txtShipper').val(ShipperName);
-                //        $('#txtConsignee').val(ConsigneeName);
-                //        $('#txtConsigneePrifix').val(ConsigneeShortCode);
-                //        $('#txtAgentName').val(AgentName);
-                //        $('#txtAgentNamePrifix').val(AgentShortCode);
-
-                //        //  $('#txtFlightNo').val(FlightNo);
-                //        //$('#txtOffpoint').val(OffPoint);
-
-                //        var date = FlightDate;
-
-                //        var newdate = date.split("-").reverse().join("-");
-
-                //        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                //            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-                //        ];
-
-                //        var d = new Date(date);
-
-                //        _Mont = monthNames[d.getMonth()]
-
-                //        DD = FlightDate.split("-")[2];
-                //        MM = FlightDate.split("-")[1];
-                //        YY = FlightDate.split("-")[0];
-
-
-                //        var ulddate = DD + '-' + _Mont + '-' + YY;
-                //        $('#txtFlightDate').val(FlightDate);
-
-                //    } else {
-                //        $('#txtPieces').removeAttr('disabled', 'disabled');
-                //        $('#txtGrWt').removeAttr('disabled', 'disabled');
-                //        $('#txtCharWt').removeAttr('disabled', 'disabled');
-                //        $('#txtVolume').removeAttr('disabled', 'disabled');
-                //        $('#txtCommodity').val('').removeAttr('disabled');
-
-                //    }
-
-                //});
 
                 var filteredArr;
 
@@ -4119,136 +3813,60 @@ function GetAWBDetailSearch_V3_onLoad() {
                         var REFERENCE_DATA_IDENTIFIER = $(this).find('REFERENCE_DATA_IDENTIFIER').text();
                         var TrolleyFixed = $(this).find('TrolleyFixed').text();
 
-                        var arr = TrolleyCode.split('~');
-                        var is1 = arr[0];
-                        var isFixed = arr[1];
-                        var isLength = arr[2];
-                        var isWidth = arr[3];
-                        var isHeight = arr[4];
-                        var isUnit = arr[5];
-                        var L;
-                        var W;
-                        var H;
+                        //    var arr = TrolleyCode.split('~');
+                        //    var isName = arr[0];
+                        //    var isTFixed = arr[1];
+                        //    var isPieces = arr[2];
+                        //    var isLength = arr[3];
+                        //    var isWidth = arr[4];
+                        //    var isHeight = arr[5];
+                        //   // var isUnit = arr[5];
+                        //    var TrolleyWt = arr[6];
 
-                        scalDetailTableForAcceptance(REFERENCE_DESCRIPTION, isFixed, isLength, isWidth, isHeight, isUnit, index);
-
-                        //if (index == 0) {
-                        //    TrolleyCode_1 = TrolleyCode;
-                        //    var newOption = $('<option></option>');
-                        //    newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                        //    newOption.appendTo('#ddlEquTrolley1');
-                        //    $('#ddlEquTrolley1').trigger('change');
-                        //    $('#ddlEquTrolley1').attr('disabled', 'disabled');
-                        //}
-
-                        //if (index == 1) {
-                        //    TrolleyCode_2 = TrolleyCode;
-                        //    var newOption = $('<option></option>');
-                        //    newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                        //    newOption.appendTo('#ddlEquTrolley2');
-                        //    $('#ddlEquTrolley2').trigger('change');
-                        //    $('#ddlEquTrolley2').attr('disabled', 'disabled');
-
-                        //}
-
-                        //if (index == 2) {
-                        //    TrolleyCode_3 = TrolleyCode;
-                        //    var newOption = $('<option></option>');
-                        //    newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                        //    newOption.appendTo('#ddlEquTrolley3');
-                        //    $('#ddlEquTrolley3').trigger('change');
-                        //    $('#ddlEquTrolley3').attr('disabled', 'disabled');
-
-                        //}
+                        //    scalDetailTableForAcceptance(isName, isTFixed, isPieces, isLength, isWidth, isHeight, TrolleyWt);
 
 
-                        //if (index == 3) {
-                        //    TrolleyCode_4 = TrolleyCode;
-                        //    var newOption = $('<option></option>');
-                        //    newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                        //    newOption.appendTo('#ddlEquTrolley4');
-                        //    $('#ddlEquTrolley4').trigger('change');
-                        //    $('#ddlEquTrolley4').attr('disabled', 'disabled');
-
-                        //}
-
-                        //if (index == 4) {
-                        //    TrolleyCode_5 = REFERENCE_DESCRIPTION;
-                        //    var newOption = $('<option></option>');
-                        //    newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                        //    newOption.appendTo('#ddlEquTrolley5');
-                        //    $('#ddlEquTrolley5').trigger('change');
-                        //    $('#ddlEquTrolley5').attr('disabled', 'disabled');
-
-                        //}
-
-                        //$('#ddlEquTrolley1 option')
-                        //    .filter(function () {
-                        //        return !this.value || $.trim(this.value).length == 0 || $.trim(this.text).length == 0;
-                        //    })
-                        //    .remove();
-
-                        //$('#ddlEquTrolley2 option')
-                        //    .filter(function () {
-                        //        return !this.value || $.trim(this.value).length == 0 || $.trim(this.text).length == 0;
-                        //    })
-                        //    .remove();
-                        //$('#ddlEquTrolley3 option')
-                        //    .filter(function () {
-                        //        return !this.value || $.trim(this.value).length == 0 || $.trim(this.text).length == 0;
-                        //    })
-                        //    .remove();
-                        //$('#ddlEquTrolley4 option')
-                        //    .filter(function () {
-                        //        return !this.value || $.trim(this.value).length == 0 || $.trim(this.text).length == 0;
-                        //    })
-                        //    .remove();
-                        //$('#ddlEquTrolley5 option')
-                        //    .filter(function () {
-                        //        return !this.value || $.trim(this.value).length == 0 || $.trim(this.text).length == 0;
-                        //    })
-                        //    .remove();
 
                     });
 
 
-                    html += "</tbody></table>";
+                    //html += "</tbody></table>";
 
-                    $("#divAcceptPoPUp").html(html);
+                    //$("#divAcceptPoPUp").html(html);
                 } else {
 
                     $(xmlDoc).find('Table4').each(function (index) {
-                        $("#txtCharWt").removeAttr('disabled');
-                        flagforcheck2 = '1';
+                        //$("#txtCharWt").removeAttr('disabled');
+                        //flagforcheck2 = '1';
 
-                        var REFERENCE_DESCRIPTION = $(this).find('REFERENCE_DESCRIPTION').text();
-                        var TrolleyCode = $(this).find('TrolleyCode').text();
-                        var REFERENCE_NUMBER_1 = $(this).find('REFERENCE_NUMBER_1').text();
-                        var REFERENCE_DATA_IDENTIFIER = $(this).find('REFERENCE_DATA_IDENTIFIER').text();
-                        var TrolleyFixed = $(this).find('TrolleyFixed').text();
-
-
-                        var newOption = $('<option></option>');
-                        newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                        newOption.appendTo('#ddlEquTrolley1');
-
-                        var newOption = $('<option></option>');
-                        newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                        newOption.appendTo('#ddlEquTrolley2');
+                        //var REFERENCE_DESCRIPTION = $(this).find('REFERENCE_DESCRIPTION').text();
+                        //var TrolleyCode = $(this).find('TrolleyCode').text();
+                        //var REFERENCE_NUMBER_1 = $(this).find('REFERENCE_NUMBER_1').text();
+                        //var REFERENCE_DATA_IDENTIFIER = $(this).find('REFERENCE_DATA_IDENTIFIER').text();
+                        //var TrolleyFixed = $(this).find('TrolleyFixed').text();
 
 
-                        var newOption = $('<option></option>');
-                        newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                        newOption.appendTo('#ddlEquTrolley3');
+                        //var newOption = $('<option></option>');
+                        //newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
+                        //newOption.appendTo('#ddlEquTrolley1');
+
+                        //var newOption = $('<option></option>');
+                        //newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
+                        //newOption.appendTo('#ddlEquTrolley2');
 
 
-                        var newOption = $('<option></option>');
-                        newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                        newOption.appendTo('#ddlEquTrolley4');
+                        //var newOption = $('<option></option>');
+                        //newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
+                        //newOption.appendTo('#ddlEquTrolley3');
 
-                        var newOption = $('<option></option>');
-                        newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
-                        newOption.appendTo('#ddlEquTrolley5');
+
+                        //var newOption = $('<option></option>');
+                        //newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
+                        //newOption.appendTo('#ddlEquTrolley4');
+
+                        //var newOption = $('<option></option>');
+                        //newOption.val(TrolleyCode).text(REFERENCE_DESCRIPTION);
+                        //newOption.appendTo('#ddlEquTrolley5');
 
                     });
                 }
@@ -4317,14 +3935,18 @@ function GetAWBDetailSearch_V3_onLoad() {
 }
 
 var _selectIndex = 0
-function scalDetailTableForAcceptance(REFERENCE_DESCRIPTION, isFixed, isLength, isWidth, isHeight, isUnit, index) {
+function scalDetailTableForAcceptance(REFERENCE_DESCRIPTION, isName, isTFixed, isPieces, isLength, isWidth, isHeight, TrolleyWt) {
 
-    _selectIndex = index;
+    // _selectIndex = index;
     // textBoxID = "txt" + _selectIndex.toString();
-    html += "<tr " + _selectIndex + ">";
+    //html += "<tr " + _selectIndex + ">";
+    html += "<tr>";
     // html += "<td style='padding: 2px;display:none;' align='right'><input id='' class='form-control' type='text' value='" + RowId + "' disabled></td>";
     html += "<td style='padding: 2px;text-align: left;' >" + REFERENCE_DESCRIPTION + "</td>";
-    html += "<td style='padding: 2px;' >" + isFixed + "</td>";
+    html += "<td style='padding: 2px;text-align: left;display:none;' >" + isName + "</td>";
+    html += "<td style='padding: 2px;display:none;' >" + isTFixed + "</td>";
+    html += "<td style='padding: 2px;display:none;' >" + TrolleyWt + "</td>";
+    html += "<td style='padding: 2px;' >" + isPieces + "</td>";
     html += "<td style='padding: 2px;' >" + isLength + "</td>";
     html += "<td style='padding: 2px;' >" + isWidth + "</td>";
     html += "<td style='padding: 2px;' >" + isHeight + "</td>";
@@ -4707,17 +4329,114 @@ function getAllSHCCodefromPopup() {
     ValidateSHCCodes();
 }
 
+
+function getAllSHCCodefromPopupOnSave() {
+    var inputName = "";
+    var values = "";
+    var htmlVal = '';
+    var jionOfComma = '';
+
+    $('#TextBoxDivforSHCCode .clsSave').each(function (indix) {
+        if (indix == 0) {
+            htmlVal += '<SHC1>' + $(this).html() + '</SHC1>';
+        }
+        if (indix == 1) {
+            htmlVal += '<SHC2>' + $(this).html() + '</SHC2>';
+        }
+        if (indix == 2) {
+            htmlVal += '<SHC3>' + $(this).html() + '</SHC3>';
+        }
+        if (indix == 3) {
+            htmlVal += '<SHC4>' + $(this).html() + '</SHC4>';
+        }
+        if (indix == 4) {
+            htmlVal += '<SHC5>' + $(this).html() + '</SHC5>';
+        }
+        if (indix == 5) {
+            htmlVal += '<SHC6>' + $(this).html() + '</SHC6>';
+        }
+        if (indix == 6) {
+            htmlVal += '<SHC7>' + $(this).html() + '</SHC7>';
+        }
+        if (indix == 7) {
+            htmlVal += '<SHC8>' + $(this).html() + '</SHC8>';
+        }
+        if (indix == 8) {
+            htmlVal += '<SHC9>' + $(this).html() + '</SHC9>';
+        }
+    });
+    AllSHCFinalSave = htmlVal;
+    // $('#TextBoxDivforSHCCode tr').each(function (i, el) {
+
+
+
+    //$(this).find("input").each(function () {
+    //    inputName = $(this).attr("Value");
+    //    values = $(this).val();
+    //    if (i == 1) {
+    //        htmlVal += '<SHC1>' + values.toUpperCase() + '</SHC1>';
+    //        jionOfComma += values.toUpperCase() + '","'
+    //    }
+    //    if (i == 2) {
+    //        htmlVal += '<SHC2>' + values.toUpperCase() + '</SHC2>';
+
+    //        jionOfComma += values.toUpperCase() + '","'
+    //    }
+    //    if (i == 3) {
+    //        htmlVal += '<SHC3>' + values.toUpperCase() + '</SHC3>';
+
+    //        jionOfComma += values.toUpperCase() + '","'
+    //    }
+    //    if (i == 4) {
+    //        htmlVal += '<SHC4>' + values.toUpperCase() + '</SHC4>';
+
+    //        jionOfComma += values.toUpperCase() + '","'
+    //    }
+    //    if (i == 5) {
+    //        htmlVal += '<SHC5>' + values.toUpperCase() + '</SHC5>';
+    //        jionOfComma += values.toUpperCase() + '","'
+    //    }
+    //    if (i == 6) {
+    //        htmlVal += '<SHC6>' + values.toUpperCase() + '</SHC6>';
+
+    //        jionOfComma += values.toUpperCase() + '","'
+    //    }
+    //    if (i == 7) {
+    //        htmlVal += '<SHC7>' + values.toUpperCase() + '</SHC7>';
+
+    //        jionOfComma += values.toUpperCase() + '","'
+    //    }
+    //    if (i == 8) {
+    //        htmlVal += '<SHC8>' + values.toUpperCase() + '</SHC8>';
+
+    //        jionOfComma += values.toUpperCase() + '","'
+    //    }
+    //    if (i == 9) {
+    //        htmlVal += '<SHC9>' + values.toUpperCase() + '</SHC9>';
+
+    //        jionOfComma += values.toUpperCase()
+    //    }
+    //});
+
+    // });
+
+    //allSHCCodeSave = htmlVal;
+    //joinAllValuesWithComma = jionOfComma;
+
+    // ValidateSHCCodes();
+}
+
 function ValidateSHCCodes() {
     // var awbid = '"' + AWBid + '"';
     // var uname = '"' + UserName + '"';
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
-    var InputXML = '<SHCInfo><SHCDetail><AWBId>' + $('#ddlAWBNo').val() + '</AWBId><House_seq_no>' + $('#ddlHAWBNo').find('option:selected').val() + '</House_seq_no><AirportCity>' + AirportCity + '</AirportCity>' + allSHCCodeSave + '<CreatedBy>' + UserId + '</CreatedBy></SHCDetail></SHCInfo>';
+    var InputXML = '<SHCInfo><SHCDetail><AWBId>' + _EXPAWBROWID + '</AWBId><AirportCity>' + AirportCity + '</AirportCity>' + allSHCCodeSave + '<CreatedBy>' + UserId + '</CreatedBy></SHCDetail></SHCInfo>';
     console.log("InputXML====   ", InputXML)
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: 'POST',
-            url: GHAImportFlightserviceURL + "ImportCheckAWBSHC",
+            url: GHAExportFlightserviceURL + "HHTExportSaveSHC",
             data: JSON.stringify({ 'InputXML': InputXML }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -4744,11 +4463,13 @@ function ValidateSHCCodes() {
                         } else if (Status == 'S') {
                             $("#spnValdatemsg").text('');
                             $('#SHCCode').modal('hide');
-                            if ($('#ddlHAWBNo').val() != '0') {
-                                $('#ddlHAWBNo').trigger('change');
-                            } else {
-                                $('#ddlAWBNo').trigger('change');
-                            }
+
+                            GetVCTUnScannedDetails_v3(VCTNo);
+                            //if ($('#ddlHAWBNo').val() != '0') {
+                            //    $('#ddlHAWBNo').trigger('change');
+                            //} else {
+                            //    $('#ddlAWBNo').trigger('change');
+                            //}
 
                             // GetShipmentDetailsForTDG();
                         }

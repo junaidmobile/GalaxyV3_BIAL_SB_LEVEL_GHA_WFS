@@ -110,7 +110,7 @@ var WtUOM;
 var filteredArrforno = [];
 $(function () {
 
-   
+
 
     GetButtonRights_v3();
 
@@ -206,7 +206,7 @@ $(function () {
             $("#Pieces1").val(isFixed).attr('disabled', 'disabled');
         }
 
-        if (is1 != 'cms') {
+        if (isFixed != '0') {
             $("#txtAccLength").val(isLength).attr('disabled', 'disabled');
             $("#txtAccWidth").val(isWidth).attr('disabled', 'disabled');
             if (isHeight > 0) {
@@ -233,12 +233,128 @@ $(function () {
 
 });
 
-function deleteRow(buttonId) {
-    $("#" + buttonId).each(function () {
-        {
-            $(this).parents("tr").remove();
+min_allVolumn_1 = 0;
+min_allCharWt_1 = 0;
+
+function deleteRow(buttonId, REFERENCE_DATA_IDENTIFIER, txtAccPieces, txtAccLength, txtAccWidth, txtAccHeight) {
+
+
+    //if ($("#txtAccPieces").val() == '') {
+    //    return;
+    //}
+    //if ($("#txtAccHeight").val() == '') {
+    //    return;
+    //}
+    if ($("#dtable tbody").find("tr").length != 1) {
+        var decChargeableWt;
+
+        if (REFERENCE_DATA_IDENTIFIER != '-1' && REFERENCE_DATA_IDENTIFIER != 'cms') {
+            //if gage selected
+
+            if ($("#ddlUnit1").val() == 'cm') {
+                //if centimeter calculate chargeable wt start here
+                decChargeableWt = (1 * parseFloat(txtAccLength) *
+                    parseFloat(txtAccWidth) *
+                    parseFloat(txtAccHeight)) /
+                    6000;
+                /// end ch wt calculation
+
+                //vol wt cal start here
+                volumetricWt = (1 * parseFloat(txtAccLength) *
+                    parseFloat(txtAccWidth) *
+                    parseFloat(txtAccHeight)) /
+                    1000000;
+                /// end vloume wt calculation
+
+
+            } else {
+                // if inches ch wt start here
+                decChargeableWt = (1 * parseFloat(txtAccLength) *
+                    parseFloat(txtAccWidth) *
+                    parseFloat(txtAccHeight)) /
+                    366;
+
+                volumetricWt = (1 * parseFloat(txtAccLength) *
+                    parseFloat(txtAccWidth) *
+                    parseFloat(txtAccHeight)
+                        // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
+                        (1 * 16.39)) /
+                    1000000;
+            }
+
+        } else {
+
+
+            //if CMS selected fro ddl
+
+            if ($("#ddlUnit1").val() == 'cm') {
+                //if centimeter calculate chargeable wt start here
+                decChargeableWt = (parseInt(txtAccPieces) *
+                    parseFloat(txtAccLength) *
+                    parseFloat(txtAccWidth) *
+                    parseFloat(txtAccHeight)) /
+                    6000;
+                /// end ch wt calculation
+
+                //vol wt cal start here
+                volumetricWt = (parseInt(txtAccPieces) *
+                    parseFloat(txtAccLength) *
+                    parseFloat(txtAccWidth) *
+                    parseFloat(txtAccHeight)) /
+                    1000000;
+                /// end vloume wt calculation
+
+
+            } else {
+                // if inches ch wt start here
+                decChargeableWt = (parseInt(txtAccPieces) *
+                    parseFloat(txtAccLength) *
+                    parseFloat(txtAccWidth) *
+                    parseFloat(txtAccHeight)) /
+                    366;
+
+                volumetricWt = (parseFloat(txtAccLength) *
+                    parseFloat(txtAccWidth) *
+                    parseFloat(txtAccHeight) *
+                    // $("#txtAccPieces").val()) /  calculate with static 1 change by junaid 16032023
+                    (txtAccPieces * 16.39)) /
+                    1000000;
+            }
+
         }
-    });
+
+
+
+        min_allVolumn_1 += Number(parseFloat($("#txtVolume").val()) - volumetricWt);
+        min_allCharWt_1 += Number(parseFloat($("#txtCharWt").val()) - decChargeableWt);
+        $("#txtVolume").val(parseFloat(min_allVolumn_1).toFixed(2));
+
+        //var grWT = parseFloat($("#txtGrWt").val());
+        //var chaWT = parseFloat(allCharWt_1);
+        if (parseFloat($("#txtGrWt").val()) > parseFloat(min_allCharWt_1)) {
+            $("#txtCharWt").val($("#txtGrWt").val().toFixed(2));
+        } else {
+            $("#txtCharWt").val(min_allCharWt_1.toFixed(2));
+        }
+
+        $("#" + buttonId).each(function () {
+            {
+                $(this).parents("tr").remove();
+            }
+        });
+
+    } else {
+        $("#txtVolume").val('');
+        $("#txtCharWt").val('');
+
+        $("#" + buttonId).each(function () {
+            {
+                $(this).parents("tr").remove();
+            }
+        });
+    }
+
+
 };
 
 getAllValues = function () {
@@ -552,7 +668,7 @@ function GetAWBDetailSearch_V3() {
 
                         var ulddate = DD + '-' + _Mont + '-' + YY;
                         $('#txtFlightDate').val(FlightDate);
-
+                        return
                     } else {
                         $('#txtPieces').removeAttr('disabled', 'disabled');
                         $('#txtGrWt').removeAttr('disabled', 'disabled');
@@ -560,6 +676,9 @@ function GetAWBDetailSearch_V3() {
                         $('#txtVolume').removeAttr('disabled', 'disabled');
                         $('#txtCommodity').val('').removeAttr('disabled');
                         $('#txtSHCCode').val('').removeAttr('disabled');
+                        if ($("#txtAWBNo").val() != '') {
+                            $("#txtFlightNo").focus();
+                        }
 
                     }
 
@@ -640,9 +759,6 @@ function GetAWBDetailSearch_V3() {
                     $("#txtFlightNo").focus(function () {
                         // $(this).autocomplete("search", $(this).val());
                     });
-                    if ($("#txtAWBNo").val() != '') {
-                        $("#txtFlightNo").focus();
-                    }
 
 
                 }
@@ -834,17 +950,17 @@ var counterForDim = 0;
 function addDimentionRows() {
 
     if ($('#ddlAccCMIN').val() == '-1') {
-        $('#validateTXT').text("Please select Trolley").css('color', 'red');
+        $('#AllMsg').text("Please select Trolley").css('color', 'red');
         return
     } else {
-        $('#validateTXT').text("");
+        $('#AllMsg').text("");
     }
 
     if ($('#txtAccPieces').val() == '' || $('#txtAccLength').val() == '' || $('#txtAccWidth').val() == '' || $('#txtAccHeight').val() == '') {
-        $('#validateTXT').text("Please fill all values in current row.").css('color', 'red');
+        $('#AllMsg').text("Please fill all values in current row.").css('color', 'red');
         return
     } else {
-        $('#validateTXT').text("");
+        $('#AllMsg').text("");
     }
 
 
@@ -872,7 +988,7 @@ function addDimentionRows() {
 
     var buttonId = "deletesupLoc" + parseInt(counterForDim + 1);
     var supDeleteButton = $("<i class='glyphicon glyphicon-trash' id='" + buttonId + "'></i>");
-    $(document).on('click', '#' + buttonId, function () { deleteRow(buttonId); });
+    $(document).on('click', '#' + buttonId, function () { deleteRow(buttonId, REFERENCE_DATA_IDENTIFIER, txtAccPieces, txtAccLength, txtAccWidth, txtAccHeight); });
     var supRow = $("<tr>");
     supRow.append("<td>" + REFERENCE_DATA_IDENTIFIER + "");
     supRow.append("<td>" + TrolleyFixed + "");
@@ -1277,11 +1393,13 @@ function fnOffpoint() {
 
 }
 function onChangeComm(commID) {
+
+
     if (commID == null) {
         return
     }
     var arr = commID.split('~');
-     
+
     passCommoId = arr[0];
     passCommoSHC = arr[1];
     $('#txtSHCCode').val(passCommoSHC);
@@ -2492,6 +2610,13 @@ function GetAWBDetailSave_V3() {
         $("#AllMsg").text('');
     }
 
+    if ($("#dtable tbody").find("tr").length == 0) {
+        $("#AllMsg").text('Please add dimension data.').css({ 'color': 'red' });
+        return;
+    } else {
+        $("#AllMsg").text('');
+    }
+
 
     getAllValues();
 
@@ -2650,6 +2775,12 @@ function clearALLafterSave() {
     GetAWBDetailSearch_V3_onLoad();
     clearGrid();
 
+    $('#txtAccPieces').val('');
+    $('#txtAccLength').val('');
+    $('#txtAccWidth').val('');
+    $('#txtAccHeight').val('');
+    $('#ddlAccCMIN').val('-1');
+
 
 }
 
@@ -2657,6 +2788,7 @@ function clearALLafterSave() {
 function clearALL() {
     $('#dtable').hide();
     $('#txtAWBNo').val('');
+    $('#txtSHCCode').val('');
     //$('#txtOrigin').val('');
     $('#txtDestination').val('');
     $('#txtFlightNo').val('');
@@ -2919,13 +3051,14 @@ function GetCommodityDataV3() {
 
                     var SrNO = $(this).find('SrNO').text();
                     var Description = $(this).find('Description').text();
+                    var GroupCode = $(this).find('GroupCode').text();
                     /* $('#txtConsignee').val(Name);*/
 
                     var newOption = $('<option></option>');
-                    newOption.val(SrNO).text(Description);
+                    newOption.val(SrNO + '~' + GroupCode).text(Description);
                     newOption.appendTo('#ddlCommodity');
 
-                    commodiyCode.push({ 'value': SrNO, 'label': Description });
+                    commodiyCode.push({ 'value': SrNO + '~' + GroupCode, 'label': Description });
                     _data = JSON.stringify(commodiyCode);
 
 
@@ -3032,10 +3165,19 @@ function CalculateVol_1() {
     if ($("#txtAccHeight").val() == '') {
         return;
     }
-
+    var arr = $("#ddlAccCMIN").val().split('~')
+    var is1 = arr[0];
+    var isFixed = arr[1];
+    var isLength = arr[2];
+    var isWidth = arr[3];
+    var isHeight = arr[4];
+    var isUnit = arr[5];
+    var L;
+    var W;
+    var H;
     var decChargeableWt;
 
-    if ($("#ddlAccCMIN").val() != '-1' && $("#ddlAccCMIN option:selected").text() != 'cms') {
+    if ($("#ddlAccCMIN").val() != '-1' && isFixed != 0) {
         //if gage selected
 
         if ($("#ddlUnit1").val() == 'cm') {
@@ -3109,11 +3251,11 @@ function CalculateVol_1() {
 
     }
 
-   
+
 
     allVolumn_1 += Number(volumetricWt.toFixed(2));
     allCharWt_1 += Number(decChargeableWt.toFixed(2));
-    $("#txtVolume").val(parseFloat(allVolumn_1));
+    $("#txtVolume").val(parseFloat(allVolumn_1.toFixed(2)));
 
     //var grWT = parseFloat($("#txtGrWt").val());
     //var chaWT = parseFloat(allCharWt_1);

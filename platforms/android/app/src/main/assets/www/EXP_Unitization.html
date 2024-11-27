@@ -328,7 +328,7 @@
 
                                     </div>
                                     <div class="col-xs-5 NoPadding">
-                                        <input type="button" id="btnAddULD" class="form-control ButtonColor" value="Add ULD/Bulk" onclick="AddULD();">
+                                        <button type="button" id="btnAddULD" class="form-control ButtonColor" onclick="AddULD();">Add ULD/Bulk</button>
                                     </div>
                                 </div>
                             </div>
@@ -346,7 +346,7 @@
                                 </div>
                             </div>-->
                             <div class="row form-group" style="margin-top:5px;">
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding"  id="divDdlULD">
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" id="divDdlULD">
                                     <div class="col-xs-5 col-form-label">
                                         <label id="lblULD">ULD's</label>
                                         <font color="red">*</font>
@@ -373,32 +373,32 @@
                                 </div>
 
                                 <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" id="divBulkScaleWt" style="display:none">
-                                    <div class="col-xs-6 col-form-label">
-                                        <label id="lblBulkScaleWt" for="txtBulkScaleWt" class="control-label labelFont">Bulk Scale Wt.</label>
-                                    </div>
-                                    <div class="col-xs-6 NoPadding">
-                                        <input type="text" id="txtBulkScaleWt" class="form-control" maxlength="3">
-                                    </div>
-                                </div>-->
+        <div class="col-xs-6 col-form-label">
+            <label id="lblBulkScaleWt" for="txtBulkScaleWt" class="control-label labelFont">Bulk Scale Wt.</label>
+        </div>
+        <div class="col-xs-6 NoPadding">
+            <input type="text" id="txtBulkScaleWt" class="form-control" maxlength="3">
+        </div>
+    </div>-->
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-5 col-form-label">
                                         <label for="txtGrossWt">Scale Weight</label>
                                     </div>
                                     <!--<div class="col-xs-3" style="padding-left:0px;padding-right:0px;">
-                                        <input id="txtHeight" class="form-control" type="number" style="text-align:right;" onkeyup="ChkMaxLength(this, '9');">
-                                    </div>-->
+            <input id="txtHeight" class="form-control" type="number" style="text-align:right;" onkeyup="ChkMaxLength(this, '9');">
+        </div>-->
                                     <div class="col-xs-7" style="padding-left:0px;padding-right:0px;">
                                         <input id="txtGrossWt" class="form-control" type="number" style="text-align:right;" onkeyup="ChkMaxLength(this, '9');">
                                     </div>
                                 </div>
                                 <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                    <div class="col-xs-6 col-form-label">
-                                        <label id="lblContour" for="txtContour" class="control-label labelFont">Contour</label>
-                                    </div>
-                                    <div class="col-xs-6 NoPadding">
-                                        <input type="text" id="txtContour" class="form-control" maxlength="3">
-                                    </div>
-                                </div>-->
+        <div class="col-xs-6 col-form-label">
+            <label id="lblContour" for="txtContour" class="control-label labelFont">Contour</label>
+        </div>
+        <div class="col-xs-6 NoPadding">
+            <input type="text" id="txtContour" class="form-control" maxlength="3">
+        </div>
+    </div>-->
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" id="divContour">
                                     <div class="col-xs-5 col-form-label">
                                         <label id="lblContour">Contour</label>
@@ -409,14 +409,24 @@
                                         </select>
                                     </div>
                                 </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-5 col-form-label">
+                                        <label id="lblPriority">Priority</label>
+                                    </div>
+                                    <div class="col-xs-7 NoPadding">
+                                        <input id="txtPriority" class="form-control" type="number" style="text-align:right;" onkeyup="ChkMaxLength(this, '2');">
+
+                                    </div>
+                                </div>
                                 <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                    <div class="col-xs-6 col-form-label">
-                                        <label id="lblDestination" for="txtDestination" class="control-label labelFont">Destination</label>
-                                    </div>
-                                    <div class="col-xs-6 NoPadding">
-                                        <input type="text" id="txtDestination" class="form-control" maxlength="3">
-                                    </div>
-                                </div>-->
+        <div class="col-xs-6 col-form-label">
+            <label id="lblDestination" for="txtDestination" class="control-label labelFont">Destination</label>
+        </div>
+        <div class="col-xs-6 NoPadding">
+            <input type="text" id="txtDestination" class="form-control" maxlength="3">
+        </div>
+    </div>-->
                             </div>
                             <div class="row">
                                 <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">

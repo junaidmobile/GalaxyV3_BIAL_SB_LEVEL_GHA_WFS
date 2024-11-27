@@ -244,6 +244,7 @@ function CheckULDBulk() {
         $('#divDdlBulk').hide();
         $('#divContour').show();
         $('#txtGrossWt').val('');
+        $('#txtPriority').val('');
 
     }
     if (document.getElementById('rdoBulk').checked) {
@@ -253,6 +254,8 @@ function CheckULDBulk() {
         $('#divDdlBulk').show();
         $('#divContour').hide();
         $('#txtGrossWt').val('');
+        $('#txtPriority').val('');
+
     }
 }
 
@@ -366,7 +369,7 @@ function GetOffPointForFlight() {
     var newOption = $('<option></option>');
     newOption.val(0).text('Select');
     newOption.appendTo('#ddlULD');
-
+    $('#txtPriority').val('');
 
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
@@ -539,8 +542,9 @@ function GetULDs(offPonit) {
                     ULDId = $(this).find('ULD_SEQUENCE_NUMBER').text();
                     ULDNo = $(this).find('ULDBULKNO').text();
                     SCALE_WEIGHT = $(this).find('SCALE_WEIGHT').text();
+                    Priority = $(this).find('Priority').text();
                     var newOption = $('<option></option>');
-                    newOption.val(ULDId + '~' + SCALE_WEIGHT).text(ULDNo);
+                    newOption.val(ULDId + '~' + SCALE_WEIGHT + '~' + Priority).text(ULDNo);
                     newOption.appendTo('#ddlULD');
                 });
 
@@ -552,8 +556,9 @@ function GetULDs(offPonit) {
                     TrolleyId = $(this).find('TrolleySeqNo').text();
                     TrolleyNo = $(this).find('TrolleyNo').text();
                     SCALE_WEIGHT = $(this).find('SCALE_WEIGHT').text();
+                    Priority = $(this).find('Priority').text();
                     var newOption = $('<option></option>');
-                    newOption.val(TrolleyId + '~' + SCALE_WEIGHT).text(TrolleyNo);
+                    newOption.val(TrolleyId + '~' + SCALE_WEIGHT + '~' + Priority).text(TrolleyNo);
                     newOption.appendTo('#ddlBulk');
                 });
 
@@ -584,7 +589,9 @@ function onChangeTrolley(trolleyID) {
     var spliVal = trolleyID.split('~');
     trolleyldSeqNumber = spliVal[0];
     trolleyScalWeight = spliVal[1];
+    Priority = spliVal[2];
     $('#txtGrossWt').val(trolleyScalWeight);
+    $('#txtPriority').val(Priority);
 }
 
 
@@ -593,7 +600,9 @@ function onChangeULds(UldID) {
     var spliVal = UldID.split('~');
     UldSeqNumber = spliVal[0];
     uLDScalWeight = spliVal[1];
+    Priority = spliVal[2];
     $('#txtGrossWt').val(uLDScalWeight);
+    $('#txtPriority').val(Priority);
 }
 
 
@@ -820,7 +829,7 @@ function CloseULD() {
                 'ULDType': uldType, 'ULDNo': uldNumber, 'ULDOwner': uldOwner.toUpperCase(),
                 'ULDSequenceNo': UldSeqNumber, 'AirportCity': AirportCity, 'ScaleWeight': $('#txtGrossWt').val(),
                 'ContourCode': contourCode, 'CompanyCode': window.localStorage.getItem("companyCode"), 'strUserID': window.localStorage.getItem("UserID"),
-                'FlightSeqNumber': FlightSeqNo, 'routepoint': $('#ddlOffPoint').find('option:selected').text(), 'ULDManpower': Manpower, 'Remark': '',
+                'FlightSeqNumber': FlightSeqNo, 'routepoint': $('#ddlOffPoint').find('option:selected').text(), 'ULDManpower': Manpower, 'Remark': '', 'Priority': $('#txtPriority').val(),
             }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -893,7 +902,7 @@ function CloseBulk() {
             data: JSON.stringify({
                 'ULDSequenceNo': trolleyldSeqNumber, 'AirportCity': AirportCity, 'ScaleWeight': $('#txtGrossWt').val(),
                 'CompanyCode': window.localStorage.getItem("companyCode"), 'strUserID': window.localStorage.getItem("UserID"),
-                'FlightSeqNumber': FlightSeqNo, 'routepoint': $('#ddlOffPoint').find('option:selected').text(),
+                'FlightSeqNumber': FlightSeqNo, 'routepoint': $('#ddlOffPoint').find('option:selected').text(), 'Priority': $('#txtPriority').val(),
             }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -2011,6 +2020,7 @@ function AddTableLocation(AWB, Pkgs, AWBRowid, Color) {
 
 function clearAllULDDetails() {
 
+    $('#txtPriority').val('');
     $('#txtFlightPrefix').val('');
     $('#txtFlightNo').val('');
     $('#txtFlightDate').val('');

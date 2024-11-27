@@ -265,6 +265,23 @@
                                     </div>
 
                                 </div>
+
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+
+                                    <div id="divShowHideSHC" class=" form-group" style="margin-top: 5px; display: none;">
+                                        <div class="form-group col-xs-6 col-sm-4 col-md-4 NoPadding">
+                                            <label for="txtSlotNo">SHC</label>
+                                        </div>
+                                        <div id="dvForEditBtn" style="text-align:right;" class="form-group col-xs-6 col-sm-4 col-md-4 NoPadding">
+                                            <input type="button" id="btnOpenSHCModal" class="form-control ButtonColor caseLow" value="SHC">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 NoPadding" ">
+                                        <table class="table" id="TextBoxDiv">
+                                        </table>
+                                    </div>
+                                </div>
                                 <div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding">
                                     <!--<div class="col-xs-3 col-form-label">
                 <label id="lblSHCCode" for="lblSHCCode" class="control-label labelFont">
@@ -378,13 +395,27 @@
 
                                 <div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding">
                                     <div class="col-xs-4 col-form-label">
-                                        <label for="txtFromLocation">Pcs./Gr Wt.</label>
+                                        <label for="txtFromLocation">Rem Pcs./Gr Wt.</label>
                                     </div>
                                     <div class="col-xs-4 NoPadding">
                                         <input id="txPieces" tabindex="9" style="text-align:right;" class="form-control" type="number" maxlength="20">
                                     </div>
                                     <div class="col-xs-4 NoPadding">
                                         <input id="txtScaleWt" tabindex="10" style="text-align:right;" class="form-control" type="number" maxlength="20">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label for="txtFromLocation">Rec. Pcs./Gr Wt.</label>
+                                    </div>
+                                    <div class="col-xs-4 NoPadding">
+                                        <input id="txRecPieces" disabled tabindex="9" style="text-align:right;" class="form-control" type="number" maxlength="20">
+                                    </div>
+                                    <div class="col-xs-4 NoPadding">
+                                        <input id="txtRecScaleWt" disabled tabindex="10" style="text-align:right;" class="form-control" type="number" maxlength="20">
                                     </div>
                                 </div>
                             </div>
@@ -403,15 +434,15 @@
     </div>-->
                             <div class="row">
                                 <!--<div class="form-group col-xs-12 col-sm-12 col-md-12 NoPadding">
-        <div class="col-xs-6 col-form-label">
-            <label for="">Tare Wt. : </label>&nbsp;
-            <label id="TareWt"></label>
-        </div>
-        <div class="col-xs-6 col-form-label">
-            <label for="">Net Wt. : </label>&nbsp;
-            <label id="NetWt"></label>
-        </div>
-    </div>-->
+            <div class="col-xs-6 col-form-label">
+                <label for="">Tare Wt. : </label>&nbsp;
+                <label id="TareWt"></label>
+            </div>
+            <div class="col-xs-6 col-form-label">
+                <label for="">Net Wt. : </label>&nbsp;
+                <label id="NetWt"></label>
+            </div>
+        </div>-->
 
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
@@ -487,12 +518,12 @@
                                 </div>
 
 
-                                <div style="margin-top:10px;" class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" id="divAcceptPoPUp">
+                                <div style="margin-top:10px;" class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" id="divDimention">
 
                                 </div>
 
                             </div>
-                           
+
 
                             <div class="row form-group" style="margin-top:5px;">
                                 <div class="form-group col-xs-6 col-sm-6 col-md-6 ">
@@ -533,6 +564,41 @@
                 </div> -->
             <div id="temp">
                 <br />
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade preview-modal" data-backdrop="" id="SHCCode" style="padding-top: 50px !important;" role="dialog" aria-labelledby="preview-modal" aria-hidden="true">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#065da1;">
+                    <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+                    <h5 style="text-align:center;color:rgb(224, 243, 215);">Add SHC</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div id="dvSHCCode" style="padding-right: 7%; padding-left: 7%;">
+                        </div>
+                        <span id="spnValdatemsg"></span>
+                    </div>
+                    <!--<div class="modal-footer">
+                        <button type="button" id="btnOk" onclick="getAllSHCCodefromPopup();" class="form-control ButtonColor"
+                                >
+                            Save
+                        </button>
+                        <button type="button"  id="btnCancelSHCCode" data-dismiss="modal" onclick="cleatInvalidSHCCode();" class="form-control ButtonColor"
+                                >
+                            Clear
+                        </button>
+                    </div>-->
+                    <div class="modal-footer">
+                        <button type="button" id="btnOk" onclick="cleatInvalidSHCCode();" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" id="btnCancelSHCCode" onclick="getAllSHCCodefromPopup();" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
