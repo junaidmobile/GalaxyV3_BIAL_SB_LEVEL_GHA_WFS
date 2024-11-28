@@ -164,6 +164,16 @@ $(function () {
         }
 
     });
+
+
+    $('#txtScannedID').on('input', function () {
+        if ($('#txtScannedID').val().length == 16) {
+            GetShipmentInfoForAWBforScanID();
+        }
+    });
+
+    $('#btnSave').attr('disabled', 'disabled');
+
 });
 function SHCSpanHtml(newSHC) {
     var spanStr = "<tr class=''>";
@@ -804,6 +814,15 @@ function CloseULD() {
         $('#spnValMsg').text("");
     }
 
+    if (parseFloat($('#txtGrossWt').val()) == 0) {
+        //errmsg = "Please select Bulk";
+        //$.alert(errmsg).css('color', 'red');
+        $('#spnValMsg').text("Please enter valid scale weight.").css('color', 'red');
+        return;
+    } else {
+        $('#spnValMsg').text("");
+    }
+
 
     var uldType = $('#ddlULD').find('option:selected').text().substring(0, 3);
     var tempSTR = $('#ddlULD').find('option:selected').text().substring(3);
@@ -889,6 +908,15 @@ function CloseBulk() {
     //} else {
     //    $('#spnValMsg').text("");
     //}
+
+    if (parseFloat($('#txtGrossWt').val()) == 0) {
+        //errmsg = "Please select Bulk";
+        //$.alert(errmsg).css('color', 'red');
+        $('#spnValMsg').text("Please enter valid scale weight.").css('color', 'red');
+        return;
+    } else {
+        $('#spnValMsg').text("");
+    }
 
 
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
@@ -1130,11 +1158,12 @@ function onChangeLenthCheck() {
 }
 
 
-function onChangeLenthCheckForScanID() {
-    if ($('#txtScannedID').val().length == 16) {
-        GetShipmentInfoForAWBforScanID();
-    }
-}
+//function onChangeLenthCheckForScanID() {
+//    debugger
+//    if ($('#txtScannedID').val().length == 16) {
+//        GetShipmentInfoForAWBforScanID();
+//    }
+//}
 
 function GetShipmentInfoForAWBforScanID() {
 
@@ -1837,6 +1866,7 @@ function AutoChkCheck() {
     clearAWBDetails();
     if (chkAuto == true) {
         $('#txtAWBNo').attr('disabled', 'disabled');
+        $('#btnSave').attr('disabled', 'disabled');
         $('#txtScannedID').removeAttr('disabled');
 
         $('#txtScannedID').val('');
@@ -1845,6 +1875,7 @@ function AutoChkCheck() {
 
     if (chkAuto == false) {
         $('#txtAWBNo').removeAttr('disabled');
+        $('#btnSave').removeAttr('disabled');
         $('#txtScannedID').attr('disabled', 'disabled');
         $('#txtAWBNo').focus();
         $('#txtScannedID').val('');

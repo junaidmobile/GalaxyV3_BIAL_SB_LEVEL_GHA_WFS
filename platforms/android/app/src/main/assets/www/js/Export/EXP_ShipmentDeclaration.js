@@ -236,7 +236,7 @@ $(function () {
 min_allVolumn_1 = 0;
 min_allCharWt_1 = 0;
 
-function deleteRow(buttonId, REFERENCE_DATA_IDENTIFIER, txtAccPieces, txtAccLength, txtAccWidth, txtAccHeight) {
+function deleteRow(buttonId, REFERENCE_DATA_IDENTIFIER, txtAccPieces, txtAccLength, txtAccWidth, txtAccHeight, TrolleyFixed) {
 
 
     //if ($("#txtAccPieces").val() == '') {
@@ -248,7 +248,8 @@ function deleteRow(buttonId, REFERENCE_DATA_IDENTIFIER, txtAccPieces, txtAccLeng
     if ($("#dtable tbody").find("tr").length != 1) {
         var decChargeableWt;
 
-        if (REFERENCE_DATA_IDENTIFIER != '-1' && REFERENCE_DATA_IDENTIFIER != 'cms') {
+        if (TrolleyFixed != '0') {
+            // if (REFERENCE_DATA_IDENTIFIER != '-1' && REFERENCE_DATA_IDENTIFIER != 'cms') {
             //if gage selected
 
             if ($("#ddlUnit1").val() == 'cm') {
@@ -325,10 +326,11 @@ function deleteRow(buttonId, REFERENCE_DATA_IDENTIFIER, txtAccPieces, txtAccLeng
 
 
 
-        min_allVolumn_1 += Number(parseFloat($("#txtVolume").val()) - volumetricWt);
-        min_allCharWt_1 += Number(parseFloat($("#txtCharWt").val()) - decChargeableWt);
+        min_allVolumn_1 = Number(parseFloat($("#txtVolume").val()) - volumetricWt);
+        min_allCharWt_1 = Number(parseFloat($("#txtCharWt").val()) - decChargeableWt);
         $("#txtVolume").val(parseFloat(min_allVolumn_1).toFixed(2));
-
+        allVolumn_1 = min_allVolumn_1;
+        allCharWt_1 = min_allCharWt_1;
         //var grWT = parseFloat($("#txtGrWt").val());
         //var chaWT = parseFloat(allCharWt_1);
         if (parseFloat($("#txtGrWt").val()) > parseFloat(min_allCharWt_1)) {
@@ -352,6 +354,9 @@ function deleteRow(buttonId, REFERENCE_DATA_IDENTIFIER, txtAccPieces, txtAccLeng
                 $(this).parents("tr").remove();
             }
         });
+        $("#dtable").hide();
+        allVolumn_1 = 0;
+        allCharWt_1 = 0;
     }
 
 
@@ -950,7 +955,7 @@ var counterForDim = 0;
 function addDimentionRows() {
 
     if ($('#ddlAccCMIN').val() == '-1') {
-        $('#AllMsg').text("Please select Trolley").css('color', 'red');
+        $('#AllMsg').text("Please select Trolley.").css('color', 'red');
         return
     } else {
         $('#AllMsg').text("");
@@ -963,7 +968,7 @@ function addDimentionRows() {
         $('#AllMsg').text("");
     }
 
-
+    CalculateVol_1();
 
     $("#dtable").show();
     var arr = $('#ddlAccCMIN').val().split('~')
@@ -988,7 +993,7 @@ function addDimentionRows() {
 
     var buttonId = "deletesupLoc" + parseInt(counterForDim + 1);
     var supDeleteButton = $("<i class='glyphicon glyphicon-trash' id='" + buttonId + "'></i>");
-    $(document).on('click', '#' + buttonId, function () { deleteRow(buttonId, REFERENCE_DATA_IDENTIFIER, txtAccPieces, txtAccLength, txtAccWidth, txtAccHeight); });
+    $(document).on('click', '#' + buttonId, function () { deleteRow(buttonId, REFERENCE_DATA_IDENTIFIER, txtAccPieces, txtAccLength, txtAccWidth, txtAccHeight, TrolleyFixed); });
     var supRow = $("<tr>");
     supRow.append("<td>" + REFERENCE_DATA_IDENTIFIER + "");
     supRow.append("<td>" + TrolleyFixed + "");
@@ -998,8 +1003,10 @@ function addDimentionRows() {
     supRow.append("<td>" + txtAccLength + "");
     supRow.append("<td>" + txtAccWidth + "");
     supRow.append("<td>" + txtAccHeight + "");
+    supRow.append("<td><i class='glyphicon glyphicon-trash' id='" + buttonId + "'></i>");
 
-    supRow.append("<td>").append(supDeleteButton);
+    // supRow.append("<td>").append(supDeleteButton);
+
     $("#dtable tbody").append(supRow);
     counterForDim++;
 
@@ -1304,7 +1311,7 @@ function GetAWBDetailSearch_V3_onLoad() {
 
                 }
 
-
+                $('#ddlAccCMIN').empty();
                 xmlDocForTrolley = xmlDoc;
                 $(xmlDoc).find('Table4').each(function (index) {
 
@@ -2786,7 +2793,12 @@ function clearALLafterSave() {
 
 
 function clearALL() {
-    $('#dtable').hide();
+    /* $('#dtable').hide();*/
+    $("#dtable tbody").empty();
+    min_allVolumn_1 = 0;
+    min_allCharWt_1 = 0;
+    allVolumn_1 = 0;
+    allCharWt_1 = 0;
     $('#txtAWBNo').val('');
     $('#txtSHCCode').val('');
     //$('#txtOrigin').val('');
@@ -3031,6 +3043,7 @@ function GetCommodityDataV3() {
                 var xmlDoc = $.parseXML(response);
                 // console.log(xmlDoc);
                 commodiyCode = [];
+                
                 $(xmlDoc).find('Table').each(function () {
                     //var outMsg = $(this).find('OutMsg').text(); //added on 17/06
 
@@ -3146,17 +3159,7 @@ function GetCommodityDataV3() {
 let allVolumn_1 = 0;
 let allCharWt_1 = 0;
 
-var allVolumn_2;
-var allCharWt_2;
-
-var allVolumn_3;
-var allCharWt_3;
-
-var allVolumn_4;
-var allCharWt_4;
-
-var allVolumn_5;
-var allCharWt_5;
+//$('#ddlAccCMIN').empty();
 
 function CalculateVol_1() {
     if ($("#txtAccPieces").val() == '') {
@@ -3250,8 +3253,6 @@ function CalculateVol_1() {
         }
 
     }
-
-
 
     allVolumn_1 += Number(volumetricWt.toFixed(2));
     allCharWt_1 += Number(decChargeableWt.toFixed(2));

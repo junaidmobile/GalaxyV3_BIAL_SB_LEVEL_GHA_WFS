@@ -160,6 +160,9 @@
         table, tbody, tr, th {
             background-color: rgb(224, 243, 215);
         }
+        #dtable, td, th {
+            padding: 4px !important;
+        }
     </style>
 </head>
 <body>
@@ -444,10 +447,10 @@
                                     <table id="TextBoxesGroup" class="table  table-bordered">
                                         <tbody class="theadClass">
                                             <tr id="TextBoxDiv1m">
-                                                <td height="30" style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px"align="left"><input onblur="CalculateVol_1();" onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="txtAccPieces" type="number" /></td>
+                                                <td height="30" style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px"align="left"><input  onkeyup="NumberOnly(event);ChkMaxLength(this, '4');" autocomplete="off" class="textpackges text-right" id="txtAccPieces" type="number" /></td>
                                                 <td height="30" style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px"align="left"><input onkeyup="ChkMaxLength(this, '8');" autocomplete="off" class="textpackges text-right" id="txtAccLength" type="number" /></td>
                                                 <td height="30" style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px"align="left"><input onkeyup="ChkMaxLength(this, '8');" autocomplete="off" class="textpackges text-right" id="txtAccWidth" type="number" /></td>
-                                                <td height="30" style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px"align="left"><input onblur="CalculateVol_1();" onkeyup="ChkMaxLength(this, '8');" autocomplete="off" class="textpackges text-right" id="txtAccHeight" type="number" /></td>
+                                                <td height="30" style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px"align="left"><input  onkeyup="ChkMaxLength(this, '8');" autocomplete="off" class="textpackges text-right" id="txtAccHeight" type="number" /></td>
                                                 <td height="30" style="background: rgb(224, 243, 215);padding-left: 4px;font-size:14px"align="left"><input type="button" id="btnAddDimention" disabled="disabled" class="form-control ButtonColor" value="Add" onclick="addDimentionRows(); hideTdVal();"></td>
                                             </tr>
 
@@ -463,19 +466,19 @@
                                     <table id="dtable" border="1" style="width:100%;table-layout:fixed;word-break:break-word;border-color: white;margin-top: 2%;display:none">
                                         <thead>
                                             <tr>
-                                                <th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight:" bold"" align="center">Trolley</th>
-                                                <th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight:" bold"" align="center">Pieces</th>
-                                                <th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight:" bold"" align="center">Length</th>
-                                                <th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight:" bold"" align="center">Width</th>
-                                                <th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight:" bold"" align="center">Height</th>
-                                                <!--<th>Action</th>-->
+                                                <th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight: bold;" align="center">Trolley</th>
+                                                <th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight: bold;" align="center">Pieces</th>
+                                                <th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight: bold;" align="center">Length</th>
+                                                <th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight: bold;" align="center">Width</th>
+                                                <th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight: bold;" align="center">Height</th>
+                                                <th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;font-weight: bold;" align="center">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                         </tbody>
                                     </table>
                                 </div>
-
+                               
                                 <!--<table class="table  table-bordered" id="customFields">
                                     <thead class="theadClass">
                                         <tr>
