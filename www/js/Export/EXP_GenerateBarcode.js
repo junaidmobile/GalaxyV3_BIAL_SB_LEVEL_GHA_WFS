@@ -324,6 +324,11 @@ function fnPackageIDList(TrollyRowId, FlightSeqNo, TrolleyNumber, StickerValue, 
     //  }
 }
 
+//var ref = cordova.InAppBrowser.open(
+//    '' + Url_Print + '',
+//    '_blank',
+//    'location=yes');
+
 
 function GetTrolleyDetailsonClickPrint(TrollyRowId, ULDType) {
 

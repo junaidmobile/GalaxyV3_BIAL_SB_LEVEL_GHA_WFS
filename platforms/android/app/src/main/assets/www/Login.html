@@ -54,10 +54,12 @@
     <link href="css/alert.mob.css" rel="stylesheet" />
     <link href="css/Common.css" rel="stylesheet" />
     <link href="css/General.css" rel="stylesheet" />
+    <link href="css/print.min.css" rel="stylesheet" />
     <link href="css/sticky-footer.css" rel="stylesheet" />
     <script src="scripts/bootstrap-add-clear.js"></script>
     <script src="js/aes.js"></script>
     <script src="js/General.js"></script>
+    <script src="js/print.min.js"></script>
     <script src="js/Login.js"></script>
 </head>
 
@@ -112,7 +114,7 @@
                                 <div class="form-group col-xs-4 col-sm-4 col-md-4">
                                     <input class="form-control btn-success btn-block hvr-glow ButtonColor"
                                            style="height:35px;font-size:medium" value="Clear" type="button" id="ClearBtn"
-                                           onclick="clearALL();" />
+                                           onclick="printTestFn();" />
                                 </div>
                             </div>
 
@@ -144,7 +146,9 @@
         </footer>
     </div>
 
-
+    <!--<button type="button" onclick="printJS({printable:'js/sunmi.pdf', type:'pdf', showModal:true})">
+        Print PDF with Message
+    </button>-->
 
 </body>
 <!--<script language="javascript" type="text/javascript">

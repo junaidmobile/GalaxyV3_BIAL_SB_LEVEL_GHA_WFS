@@ -1,12 +1,6 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\plugins",
-    "\\plugins\\cordova-plugin-datecs-printer",
-    "\\plugins\\cordova-plugin-datecs-printer\\www",
-    "\\www",
-    "\\www\\js"
+    ""
   ],
-  "SelectedNode": "\\www\\js\\Export",
   "PreviewInSolutionExplorer": false
 }

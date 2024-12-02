@@ -509,7 +509,11 @@ function checkSpecialCharship() {
 
 
 function GetAWBDetailSearch_V3() {
-
+    $("#dtable tbody").empty();
+    min_allVolumn_1 = 0;
+    min_allCharWt_1 = 0;
+    allVolumn_1 = 0;
+    allCharWt_1 = 0;
     if ($('#txtAWBNo').val() == '') {
         return;
     }

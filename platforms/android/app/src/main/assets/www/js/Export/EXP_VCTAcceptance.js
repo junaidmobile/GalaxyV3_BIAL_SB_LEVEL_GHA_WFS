@@ -4490,3 +4490,7 @@ function ValidateSHCCodes() {
         });
     }
 }
+
+function cleatInvalidSHCCode() {
+    allSHCCodeSave = '';
+}

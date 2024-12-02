@@ -28,6 +28,9 @@
     },
     "cordova-plugin-zebra-printer": {
       "PACKAGE_NAME": "com.BIAL.GalaxyV3"
+    },
+    "cordova-plugin-inappbrowser": {
+      "PACKAGE_NAME": "com.BIAL.GalaxyV3"
     }
   },
   "dependent_plugins": {}
