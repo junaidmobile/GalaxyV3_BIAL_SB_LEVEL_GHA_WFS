@@ -3450,11 +3450,14 @@ function GetFlightRoutingDetails_V3_onblure() {
 
                     if (Indicator == 'D') {
                         $("#txtDestination").val(AirportCity_1);
+                        
                     }
                     if (Indicator == 'T') {
                         $("#txtOffpoint").val(AirportCity_1);
                     } else {
-                        $("#txtOffpoint").val(AirportCity_1);
+                        if ($("#txtOrigin").val() == AirportCity_1) {
+                            $("#txtOffpoint").val($("#txtDestination").val());
+                        }
 
                     }
 

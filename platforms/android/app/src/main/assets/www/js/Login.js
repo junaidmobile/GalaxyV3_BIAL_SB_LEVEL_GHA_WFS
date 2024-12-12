@@ -5,30 +5,15 @@
 
 
 //BAIL UAT INTL
-var GHAImportFlightserviceURL = 'https://galaxyuat.kalelogistics.com/GalaxyV3DOM/Services/HHTimpServices.asmx/';
-var GHAExportFlightserviceURL = 'https://galaxyuat.kalelogistics.com/GalaxyV3DOM/Services/HHTExpServices.asmx/';
-
-//var GHAImportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3/services/HHTImpServices.asmx/';
-//var GHAExportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3/services/hhtExpservices.asmx/';
+//var GHAImportFlightserviceURL = 'https://galaxyuat.kalelogistics.com/GalaxyV3DOM/Services/HHTimpServices.asmx/';
+//var GHAExportFlightserviceURL = 'https://galaxyuat.kalelogistics.com/GalaxyV3DOM/Services/HHTExpServices.asmx/';
 
 
-//var GHAImportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3_Dev/Services/HHTImpServices.asmx/';
-//var GHAExportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3_Dev/Services/HHTExpServices.asmx/';
+//BAIL LIVE INTL
+var GHAImportFlightserviceURL = 'https://dom.mabcargoedi.com/GalaxyV3Dom/services/hhtImpservices.asmx/';
+var GHAExportFlightserviceURL = 'https://dom.mabcargoedi.com/GalaxyV3Dom/services/hhtExpservices.asmx/';
 
 
-
-//WFS QA
-//var GHAImportFlightserviceURL = 'https://wfsuat.kalelogistics.com/Galaxy/services/hhtImpservices.asmx/';
-//var GHAExportFlightserviceURL = 'https://wfsuat.kalelogistics.com/Galaxy/services/hhtExpservices.asmx/';
-
-
-//WFS UAT INTL
-//var GHAImportFlightserviceURL = 'https://wfsuat.kalelogistics.com/Galaxy/services/hhtImpservices.asmx/';
-//var GHAExportFlightserviceURL = 'https://wfsuat.kalelogistics.com/Galaxy/services/hhtExpservices.asmx/';
-
-//WFS LIVE INTL
-//var GHAImportFlightserviceURL = 'https://galaxy.wfsblr.com/Galaxy/services/hhtImpservices.asmx/';
-//var GHAExportFlightserviceURL = 'https://galaxy.wfsblr.com/Galaxy/services/hhtExpservices.asmx/';
 
 var deviceUUID;
 var encryptedUUID;
@@ -73,6 +58,17 @@ $(function () {
     localStorage.removeItem('UserName');
     $('#txtUserName').val('');
     $('#txtPassword').val('');
+
+    if (GHAImportFlightserviceURL == 'https://galaxyqa.kalelogistics.com/GalaxyV3dom/services/HHTImpServices.asmx/') {
+        $('#spnVerionNo').text('QA');
+    }
+    if (GHAImportFlightserviceURL == 'https://galaxyuat.kalelogistics.com/GalaxyV3DOM/Services/HHTimpServices.asmx/') {
+        $('#spnVerionNo').text('UAT');
+    }
+    if (GHAImportFlightserviceURL == 'https://dom.mabcargoedi.com/GalaxyV3Dom/services/hhtImpservices.asmx/') {
+        $('#spnVerionNo').text('LIVE');
+    }
+    
 
 });
 
@@ -594,115 +590,6 @@ function ProcessLoginCORVI() {
     }
 
 }
-
-
-function printTestFn() {
-
-    //'https://mitchellcottsuat.kalelogistics.com/UATHHT/HHTReport/09827489232_H1.pdf';
-
-    let pdfVar = "https://mitchellcottsuat.kalelogistics.com/UATHHT/HHTReport/09827489232_H1.pdf"
-    // cordova.plugins.printer.print(pdfVar);
-    // window.open(pdfVar, '_blank');
-    //cordova.plugins.printer.print('' + pdfVar + '');
-
-    //var ref = cordova.InAppBrowser.open(
-    //    '' + pdfVar + '',
-    //    '_blank',
-    //    'location=yes');
-
-
-
-    var inAppBrowserRef;
-
-    var target = "random_string";
-
-    var options = "location=yes";
-
-    inAppBrowserRef = cordova.InAppBrowser.open('' + pdfVar + '', target, options);
-
-    inAppBrowserRef.addEventListener('loadstart', loadStartCallBack);
-
-    inAppBrowserRef.addEventListener('loadstop', loadStopCallBack);
-
-    inAppBrowserRef.addEventListener('loaderror', loadErrorCallBack);
-
-    inAppBrowserRef.addEventListener('beforeload', beforeloadCallBack);
-
-    inAppBrowserRef.addEventListener('message', messageCallBack);
-}
-
-function loadStartCallBack() {
-
-    $('#status-message').text("loading please wait ...");
-
-}
-
-function loadStopCallBack() {
-
-    if (inAppBrowserRef != undefined) {
-
-        inAppBrowserRef.insertCSS({ code: "body{font-size: 25px;}" });
-
-        inAppBrowserRef.executeScript({
-            code: "\
-            var message = 'this is the message';\
-            var messageObj = {my_message: message};\
-            var stringifiedMessageObj = JSON.stringify(messageObj);\
-            webkit.messageHandlers.cordova_iab.postMessage(stringifiedMessageObj);"
-        });
-
-        $('#status-message').text("");
-
-        inAppBrowserRef.show();
-    }
-
-}
-
-function loadErrorCallBack(params) {
-
-    $('#status-message').text("");
-
-    var scriptErrorMesssage =
-        "alert('Sorry we cannot open that page. Message from the server is : "
-        + params.message + "');"
-
-    inAppBrowserRef.executeScript({ code: scriptErrorMesssage }, executeScriptCallBack);
-
-    inAppBrowserRef.close();
-
-    inAppBrowserRef = undefined;
-
-}
-
-function executeScriptCallBack(params) {
-
-    if (params[0] == null) {
-
-        $('#status-message').text(
-            "Sorry we couldn't open that page. Message from the server is : '"
-            + params.message + "'");
-    }
-
-}
-
-function beforeloadCallBack(params, callback) {
-
-    if (params.url.startsWith("http://www.example.com/")) {
-
-        // Load this URL in the inAppBrowser.
-        callback(params.url);
-    } else {
-
-        // The callback is not invoked, so the page will not be loaded.
-        $('#status-message').text("This browser only opens pages on http://www.example.com/");
-    }
-
-}
-
-function messageCallBack(params) {
-    $('#status-message').text("message received: " + params.data.my_message);
-}
-
 
 
 

@@ -84,6 +84,13 @@ $(function () {
     //$('#btnGoodsDelever').attr('disabled', 'disabled');
     //$('#cameraTakePicture').attr('disabled', 'disabled');
 
+    $('#txtAWBNo').on('input', function () {
+        if ($('#txtAWBNo').val().length == '11') {
+            GetHHTImportWDOAWBSearchV3();
+            $('#txtGatePassScanNo').focus();
+        }
+    });
+
 });
 
 
@@ -505,7 +512,7 @@ function RecordGoodsDelivery_PDA() {
     if (txtGatePassScanNo != "") {
         //$('#btnGoodsDelever').removeAttr('disabled');
     } else {
-      //  $('#btnGoodsDelever').attr('disabled', 'disabled');
+        //  $('#btnGoodsDelever').attr('disabled', 'disabled');
         return;
     }
 
@@ -546,8 +553,8 @@ function RecordGoodsDelivery_PDA() {
                     } else {
                         $("#spnMsg").text($(this).find('OutMsg').text()).css('color', 'green');
                         if ($(this).find('OutMsg').text() == 'Shipment released Successfully.') {
-                           // $('#btnGoodsDelever').attr('disabled', 'disabled');
-                           // $('#cameraTakePicture').attr('disabled', 'disabled');
+                            // $('#btnGoodsDelever').attr('disabled', 'disabled');
+                            // $('#cameraTakePicture').attr('disabled', 'disabled');
                         }
                     }
 
@@ -677,6 +684,7 @@ function GetHHTImportWDOAWBSearchV3() {
                 });
                 gatePassList = [];
                 var wddo;
+                var arr = [];
                 $(xmlDoc).find('Table1').each(function (index) {
                     var WDONo = $(this).find('WDONo').text();
                     var WDOSEQNO = $(this).find('WDOSEQNO').text();
@@ -689,10 +697,23 @@ function GetHHTImportWDOAWBSearchV3() {
                     newOption.appendTo('#ddlGatePassScanNo');
 
 
+                    if (arr.indexOf(WDONo) == -1) {
+                        arr.push(WDONo);
+                        console.log(arr)
+                    }
 
-                    gatePassList.push({ 'value': WDOSEQNO, 'label': WDONo });
-                    _data = JSON.stringify(gatePassList);
-                    console.log(_data)
+
+                    gatePassList = arr;
+                    _data = JSON.stringify(arr);
+                    // console.log(_data)
+
+
+                    const options = []
+
+                    document.querySelectorAll('#ddlGatePassScanNo > option').forEach((option) => {
+                        if (options.includes(option.text)) option.remove()
+                        else options.push(option.text)
+                    })
 
                 });
 
@@ -773,7 +794,7 @@ function clearBeforAWBSearch() {
     $('#myImage').hide();
     $('#spnMsg').text('');
     // $('#txtGatePassScanNo').focus();
-   // $('#btnGoodsDelever').attr('disabled', 'disabled');
+    // $('#btnGoodsDelever').attr('disabled', 'disabled');
     signaturePad.clear();
     $('#divImages').empty();
     gatePassList = [];

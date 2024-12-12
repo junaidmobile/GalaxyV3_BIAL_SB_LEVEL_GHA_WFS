@@ -8,27 +8,12 @@
 var GHAImportFlightserviceURL = 'https://galaxyuat.kalelogistics.com/GalaxyV3DOM/Services/HHTimpServices.asmx/';
 var GHAExportFlightserviceURL = 'https://galaxyuat.kalelogistics.com/GalaxyV3DOM/Services/HHTExpServices.asmx/';
 
-//var GHAImportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3/services/HHTImpServices.asmx/';
-//var GHAExportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3/services/hhtExpservices.asmx/';
+
+//BAIL LIVE INTL
+//var GHAImportFlightserviceURL = 'https://dom.mabcargoedi.com/GalaxyV3Dom/services/hhtImpservices.asmx/';
+//var GHAExportFlightserviceURL = 'https://dom.mabcargoedi.com/GalaxyV3Dom/services/hhtExpservices.asmx/';
 
 
-//var GHAImportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3_Dev/Services/HHTImpServices.asmx/';
-//var GHAExportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3_Dev/Services/HHTExpServices.asmx/';
-
-
-
-//WFS QA
-//var GHAImportFlightserviceURL = 'https://wfsuat.kalelogistics.com/Galaxy/services/hhtImpservices.asmx/';
-//var GHAExportFlightserviceURL = 'https://wfsuat.kalelogistics.com/Galaxy/services/hhtExpservices.asmx/';
-
-
-//WFS UAT INTL
-//var GHAImportFlightserviceURL = 'https://wfsuat.kalelogistics.com/Galaxy/services/hhtImpservices.asmx/';
-//var GHAExportFlightserviceURL = 'https://wfsuat.kalelogistics.com/Galaxy/services/hhtExpservices.asmx/';
-
-//WFS LIVE INTL
-//var GHAImportFlightserviceURL = 'https://galaxy.wfsblr.com/Galaxy/services/hhtImpservices.asmx/';
-//var GHAExportFlightserviceURL = 'https://galaxy.wfsblr.com/Galaxy/services/hhtExpservices.asmx/';
 
 var deviceUUID;
 var encryptedUUID;
@@ -73,6 +58,17 @@ $(function () {
     localStorage.removeItem('UserName');
     $('#txtUserName').val('');
     $('#txtPassword').val('');
+
+    if (GHAImportFlightserviceURL == 'https://galaxyqa.kalelogistics.com/GalaxyV3dom/services/HHTImpServices.asmx/') {
+        $('#spnVerionNo').text('QA');
+    }
+    if (GHAImportFlightserviceURL == 'https://galaxyuat.kalelogistics.com/GalaxyV3DOM/Services/HHTimpServices.asmx/') {
+        $('#spnVerionNo').text('UAT');
+    }
+    if (GHAImportFlightserviceURL == 'https://dom.mabcargoedi.com/GalaxyV3Dom/services/hhtImpservices.asmx/') {
+        $('#spnVerionNo').text('LIVE');
+    }
+    
 
 });
 

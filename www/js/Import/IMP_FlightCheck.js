@@ -36,23 +36,7 @@ $(function () {
         window.location.href = 'IMP_Dashboard.html';
     }
 
-    var formattedDate = new Date();
-    var d = formattedDate.getDate();
-    if (d.toString().length < Number(2))
-        d = '0' + d;
-    var m = formattedDate.getMonth();
-    m += 1;  // JavaScript months are 0-11
-    if (m.toString().length < Number(2))
-        m = '0' + m;
-    var y = formattedDate.getFullYear();
-    var date = y.toString() + '-' + m.toString() + '-' + d.toString();
-
-
-    $('#txtFlightDate').val(date);
-
-
-
-
+    currentDatefixed();
 
     //var now = new Date();
 
@@ -67,7 +51,7 @@ $(function () {
     _flightNo = amplify.store("flightNo");
     _flightDate = amplify.store("flightDate");
 
-    $('#txtIGMYear').val(y);
+
 
     if ((_flightPrefix != undefined && _flightPrefix != '') && (_flightNo != undefined && _flightNo != '') && (_flightDate != undefined && _flightDate != '')) {
         $("#txtFlightPrefix").val(amplify.store("flightPrefix"));
@@ -114,7 +98,9 @@ $(function () {
         }
 
     });
-
+    //$("#txtFlightDate").blur(function () {
+    //    currentDatefixed();
+    //});
     GetButtonRights_v3();
 
 });
@@ -283,6 +269,7 @@ function GetFlightDetails() {
 
                         if (flightSeqNo == 0) {
                             // $.alert('Flight not found!');
+                            currentDatefixed()
                             $('#lblFlightStatusError').text('Flight not found!').css('color', 'red');
                             return;
                         }
@@ -294,10 +281,12 @@ function GetFlightDetails() {
                         $('#txtIGMNo').val($(this).find('CustomRef').text());
                         flightPrefix = $(this).find('FlightAirline').text();
                         flightNo = $(this).find('FlightNo').text();
-                        flightDate = $(this).find('DisplaySTA').text();
+                        DisplaySTA = $(this).find('DisplaySTA').text();
                         FlightDate = $(this).find('FlightDate').text();
+                        ATAT = $(this).find('ATAT').text();
                         $('#txtFlightPrefix').val($(this).find('FlightAirline').text());
                         $('#txtFlightNo').val($(this).find('FlightNo').text());
+                        $('#txtFlightTime').val($(this).find('ATAT').text());
 
 
                         var date = FlightDate;
@@ -317,7 +306,9 @@ function GetFlightDetails() {
 
 
                         var ulddate = DD + '-' + _Mont + '-' + YY;
-                        $('#txtFlightDate').val(ulddate);
+
+                        $('#txtFlightDate').val(FlightDate);
+                        $('#txtFlightATA').val(FlightDate);
 
                         //var date = $(this).find('FlightDate').text();
                         //var newdate = FlightDate.split("-").reverse().join("-");
@@ -589,8 +580,12 @@ function ViewFlightRelatedDetails() {
                         DD = FlightDate.split("-")[0];
 
 
+
+                        var newdate = FlightDate.split("-").reverse().join("-");
+                    
                         var ulddate = DD + '-' + _Mont + '-' + YY;
-                        $('#txtFlightDate').val(ulddate);
+
+                        $('#txtFlightDate').val(newdate);
 
                         $('#lblFlightStatus').text('Flight Status:' + ' ' + $(this).find('Status').text());
 
@@ -1134,4 +1129,22 @@ function GetButtonRights_v3() {
     else {
         $("body").mLoading('hide');
     }
+}
+
+
+function currentDatefixed() {
+    var formattedDate = new Date();
+    var d = formattedDate.getDate();
+    if (d.toString().length < Number(2))
+        d = '0' + d;
+    var m = formattedDate.getMonth();
+    m += 1;  // JavaScript months are 0-11
+    if (m.toString().length < Number(2))
+        m = '0' + m;
+    var y = formattedDate.getFullYear();
+    var date = y.toString() + '-' + m.toString() + '-' + d.toString();
+
+
+    $('#txtFlightDate').val(date);
+    $('#txtIGMYear').val(y);
 }
