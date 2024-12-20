@@ -354,14 +354,14 @@ function GetGatePassDetails() {
                             //}
 
                             flag = '1';
-
+                           
                             WDOSeqNo = $(this).find('WDOSeqNo').text();
                             WDONo = $(this).find('WDONo').text();
                             AWBNo = $(this).find('AWBNo').text();
                             Pieces = $(this).find('Pieces').text();
                             GroupId = $(this).find('GroupId').text();
                             Location = $(this).find('Location').text();
-
+                           
                             WDONoDetails(AWBNo, Pieces, GroupId, Location);
 
                             //  VCTNoDetails(MAWBNO, HAWBNO, DlvblPkgs, Remarks);
@@ -691,7 +691,7 @@ function GetHHTImportWDOAWBSearchV3() {
                     var AWBNO = $(this).find('AWBNO').text();
                     var isActive = $(this).find('isActive').text();
                     wddo = WDONo;
-
+                   
                     var newOption = $('<option></option>');
                     newOption.val(WDOSEQNO).text(WDONo);
                     newOption.appendTo('#ddlGatePassScanNo');
@@ -748,6 +748,8 @@ function GetHHTImportWDOAWBSearchV3() {
                             // $("#project-id").val(ui.item.label);
                             return false;
                         }
+                    }).focus(function () {
+                        $(this).autocomplete("search");
                     });
 
                     if ($(xmlDoc).find('Table1').length == 1) {

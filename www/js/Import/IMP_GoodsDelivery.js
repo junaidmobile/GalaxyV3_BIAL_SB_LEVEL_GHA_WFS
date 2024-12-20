@@ -748,6 +748,8 @@ function GetHHTImportWDOAWBSearchV3() {
                             // $("#project-id").val(ui.item.label);
                             return false;
                         }
+                    }).focus(function () {
+                        $(this).autocomplete("search");
                     });
 
                     if ($(xmlDoc).find('Table1').length == 1) {

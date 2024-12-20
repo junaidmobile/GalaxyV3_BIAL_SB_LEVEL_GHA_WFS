@@ -2,9 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\www",
-    "\\www\\js",
-    "\\www\\js\\Import"
+    "\\www\\js"
   ],
-  "SelectedNode": "\\www\\js\\Import\\IMP_GoodsDelivery.js",
+  "SelectedNode": "\\www\\js\\Login.js",
   "PreviewInSolutionExplorer": false
 }

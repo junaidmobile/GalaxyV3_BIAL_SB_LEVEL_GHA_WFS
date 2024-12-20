@@ -58,6 +58,14 @@ $(function () {
         $("#txtVCTNo").focus();
     }
 
+    // this code use for only domestic customer
+    $('#txtVCTNo').on('input', function () {
+        if ($('#txtVCTNo').val().length == 11) {
+            GetVCTDetailsForTDGAcceptance('true', 'true');
+            $('#txtDoor').focus()
+        }
+    });
+
 });
 
 
@@ -146,15 +154,15 @@ function GetAWBForSlotNumber() {
 
 }
 
-function onKeyPressVTNo() {
+//function onKeyPressVTNo() {
 
-    if ($('#txtVCTNo').val().length == 11) {
-        GetVCTDetailsForTDGAcceptance('true', 'true');
-        $('#txtDoor').focus()
-    }
+//    if ($('#txtVCTNo').val().length == 11) {
+//        GetVCTDetailsForTDGAcceptance('true', 'true');
+//        $('#txtDoor').focus()
+//    }
 
 
-}
+//}
 
 
 function GetVCTDetailsForTDGAcceptance(clearMsg, overwriteMsg) {
