@@ -10,7 +10,7 @@
             return false;
         }        
 
-        if ($(this).text() == 'Cargo Acceptance' && window.localStorage.getItem("RoleExpTDG") == '0') {
+        if ($(this).text() == 'TDG Acceptance' && window.localStorage.getItem("RoleExpTDG") == '0') {
             $.alert('You are not authorized to view this page');
             return false;
         }        

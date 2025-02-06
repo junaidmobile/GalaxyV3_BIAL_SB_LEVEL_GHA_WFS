@@ -5,22 +5,7 @@ var html;
 var htmlAWB;
 var strXmlStore;
 var flag = "";
-document.addEventListener("pause", onPause, false);
-document.addEventListener("resume", onResume, false);
-document.addEventListener("menubutton", onMenuKeyDown, false);
 
-function onPause() {
-
-    HHTLogout();
-}
-
-function onResume() {
-    HHTLogout();
-}
-
-function onMenuKeyDown() {
-    HHTLogout();
-}
 $(function () {
 
     if (window.localStorage.getItem("RoleExpVCTCheck") == '0') {

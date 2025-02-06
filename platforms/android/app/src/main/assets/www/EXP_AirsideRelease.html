@@ -31,7 +31,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#" id="navhdrName" style="text-align:right;padding-left: 50px;"></a>
+                <a class="navbar-brand" href="#" id="navhdrName" style="text-align:right;"></a>
                 <img class="navbarImage" src="images/Logo.png" onclick="ShowHomePage();">
                 <a href="#" id="navhdr" class="loggedinUser"></a>
             </div>
@@ -52,7 +52,7 @@
                                         <label for="txtGPNo">GP No.</label>
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <input onkeypress="return blockSpecialChar(event)" id="txtGPNo1" class="form-control" type="text" maxlength="14" autofocus>
+                                        <input id="txtGPNo1" class="form-control" type="text" maxlength="14" autofocus>
                                     </div>
                                     <!--<div class="col-xs-2 NoPadding">
                                         <input id="txtGPNo2" class="form-control" type="number" style="text-align:right;" onkeyup="ChkMaxLength(this, '4');">
@@ -63,11 +63,10 @@
                                 <div class="col-xs-6 col-form-label">                                    
                                         <label class="checkbox-inline"><input type="checkbox" id="chkManual" onchange="PutGPno()">Manual</label>                                    
                                 </div>
-                                <div class="form-group col-xs-6 col-sm-4 col-md-4 NoPadding">
+                                <div class="form-group col-xs-4 col-sm-4 col-md-4 NoPadding">
                                     <input type="button" id="btnGet" class="form-control ButtonColor" value="Get Status" onclick="GetGPStatus();">
                                 </div>
-                                <div class="form-group col-xs-12 col-sm-4 col-md-4">
-                                    <span id="spnValMsg"></span>
+                                <div class="form-group col-xs-2 col-sm-4 col-md-4">
                                 </div>
                             </div>
                         </form>
@@ -95,7 +94,7 @@
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-6 col-form-label">
-                                        <label for="txtReleasedAWB">Released/Pending BULK</label>
+                                        <label for="txtReleasedAWB">Released/Pending Bulk</label>
                                     </div>
                                     <div class="col-xs-3 NoPadding">
                                         <input id="txtReleasedAWB" class="form-control" type="number" style="text-align:right;" onkeyup="ChkMaxLength(this, '4');" disabled>
@@ -208,7 +207,7 @@
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-6 col-form-label">
-                                        <label id="lblBulk">BULK</label>
+                                        <label id="lblBulk">Bulk</label>
                                     </div>
                                     <div class="col-xs-6 NoPadding">
                                         <select class="form-control" id="ddlBulk" onchange="ChangeULDBulkToRelease($('#ddlBulk').find('option:selected').val(), 'T')">
@@ -236,7 +235,7 @@
                     <input type="button" id="btnReleaseULD" class="form-control ButtonColor" value="Release ULD" onclick="ShowReleaseULDGrid();">
                 </div>
                 <div class="form-group col-xs-6 col-sm-3 col-md-3">
-                    <input type="button" id="btnReleaseBulk" class="form-control ButtonColor" value="Release BULK" onclick="ShowReleaseBulkGrid();">
+                    <input type="button" id="btnReleaseBulk" class="form-control ButtonColor" value="Release Bulk" onclick="ShowReleaseBulkGrid();">
                 </div>
                 <div class="form-group col-xs-6 col-sm-3 col-md-3">
                     <input type="button" id="btnClear" class="form-control ButtonColor" value="Clear" onclick="clearAll();">

@@ -7,8 +7,6 @@ var FlightSeqNo;
 var strUldToRelease;
 var strBulkToRelease;
 
-var companyCode = window.localStorage.getItem('SHED_AIRPORT_CITY');
-
 
 $(function () {
 
@@ -27,31 +25,15 @@ $(function () {
     if (m.toString().length < Number(2))
         m = '0' + m;
     var y = formattedDate.getFullYear();
-    var date = 'OO' + y.toString() + m.toString() + d.toString();
+    var date = 'O' + y.toString() + m.toString() + d.toString();
     $('#txtGPNo1').val(date);
 
     strUldToRelease = '';
     strBulkToRelease = '';
 
-
-    $("input").keyup(function () {
-        var string = $(this).val();
-        // var string = $('#txtOrigin').val();
-        if (string.match(/[`!₹£•√Π÷×§∆€¥¢©®™✓π@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
-            /*$('#txtOrigin').val('');*/
-            $(this).val('');
-            return true;    // Contains at least one special character or space
-        } else {
-            return false;
-        }
-
-    });
-
 });
 
 function GetGPStatus() {
-
-    console.log('company name: ', window.localStorage.getItem('SHED_AIRPORT_CITY'));
 
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
@@ -68,26 +50,14 @@ function GetGPStatus() {
     $('#txtPendingAWB').val('');
 
     if ($('#txtGPNo1').val() == "") {
-        // errmsg = "Please enter GP No.";
-        $('#spnValMsg').text('Please enter GP No.').css('color', 'red');
-      //  clearAll();
-       // $.alert('Please enter GP No.');
-        $('#txtGPNo1').val('');
-        $('#txtGPNo1').focus();
+        errmsg = "Please enter GP No.";
+        clearAll();
+        $.alert(errmsg);
         return;
-    } else {
-        $('#spnValMsg').text('');
     }
 
-    //if ($('#txtGPNo1').val().length != '14' && this.companyCode == 'BLR') {
-    //    errmsg = "Please enter valid GP No for BLR.";
-    //    clearAll();
-    //    $.alert(errmsg);
-    //    return;
-    //}
-
-    //if ($('#txtGPNo1').val().length != '13' && this.companyCode == 'tst') {
-    //    errmsg = "Please enter valid GP No for Test.";
+    //if ($('#txtGPNo1').val().length != '13') {
+    //    errmsg = "Please enter valid GP No.";
     //    clearAll();
     //    $.alert(errmsg);
     //    return;
@@ -115,19 +85,14 @@ function GetGPStatus() {
                 response = response.d;
                 var xmlDoc = $.parseXML(response);
 
-                console.log('just to see the respone: ', xmlDoc);
-
                 $(xmlDoc).find('Table').each(function () {
 
                     if ($(this).find('Status').text() != 'S') {
-                        // $.alert($(this).find('StrMessage').text());
-                        $('#spnValMsg').text($(this).find('StrMessage').text()).css('color', 'red');
+                        $.alert($(this).find('StrMessage').text());
                         $('#txtReleasedULD').val('');
                         $('#txtPendingULD').val('');
                         $('#txtReleasedAWB').val('');
                         $('#txtPendingAWB').val('');
-                    } else {
-                        $('#spnValMsg').text('');
                     }
                 });
 
@@ -321,43 +286,31 @@ function ReleaseULDBulk(flag) {
 
     if (flag == 'U') {
         if ($('#ddlULD').find('option:selected').text() == "" || $('#ddlULD').find('option:selected').text() == "Select") {
-            //errmsg = "ULD not selected";
-            //$.alert(errmsg);
-            $('#spnValMsg').text('ULD not selected').css('color', 'red');
+            errmsg = "ULD not selected";
+            $.alert(errmsg);
             return;
-        } else {
-            $('#spnValMsg').text('');
         }
     }
 
     if (flag == 'T') {
         if ($('#ddlBulk').find('option:selected').text() == "" || $('#ddlBulk').find('option:selected').text() == "Select") {
-            //errmsg = "Bulk not selected";
-            //$.alert(errmsg);
-            $('#spnValMsg').text('Bulk not selected').css('color', 'red');
+            errmsg = "Bulk not selected";
+            $.alert(errmsg);
             return;
-        } else {
-            $('#spnValMsg').text('');
         }
     }
 
     if ($('#txtGPNo1').val() == "") {
-        //errmsg = "Please enter GP No.";
-        //$.alert(errmsg);
-        $('#spnValMsg').text('Please enter GP No.').css('color', 'red');
+        errmsg = "Please enter GP No.";
+        $.alert(errmsg);
         return;
-    } else {
-        $('#spnValMsg').text('');
     }
 
-    if ($('#txtGPNo1').val().length != '14') {
-        //errmsg = "Please enter valid GP No.";
-        //$.alert(errmsg);
-        $('#spnValMsg').text('Please enter valid GP No.').css('color', 'red');
-        return;
-    } else {
-        $('#spnValMsg').text('');
-    }
+    //if ($('#txtGPNo1').val().length != '13') {
+    //    errmsg = "Please enter valid GP No.";
+    //    $.alert(errmsg);
+    //    return;
+    //}
 
     if (flag == 'U')
         var ULDseqNo = $('#ddlULD').find('option:selected').val();
@@ -393,16 +346,14 @@ function ReleaseULDBulk(flag) {
 
                 $(xmlDoc).find('Table').each(function () {
 
-                    // $.alert($(this).find('StrMessage').text());
-                    $('#spnValMsg').text($(this).find('StrMessage').text()).css('color', 'green');
+                    $.alert($(this).find('StrMessage').text());
                 });
 
                 $(xmlDoc).find('Table').each(function () {
 
                     if ($(this).find('Status').text() == 'S')
                         GetGPStatus();
-                    $.alert($(this).find('StrMessage').text());
-                });
+                });                
 
                 if (flag == 'U')
                     GetULDsToRelease();
@@ -422,23 +373,16 @@ function ReleaseULDBulk(flag) {
 function ShowReleaseULDGrid() {
 
     if ($('#txtGPNo1').val() == "") {
-        //errmsg = "Please enter GP No.";
-        //$.alert(errmsg);
-        $('#spnValMsg').text('Please enter GP No.').css('color', 'red');
+        errmsg = "Please enter GP No.";
+        $.alert(errmsg);
         return;
-    } else {
-        $('#spnValMsg').text('');
     }
 
-    if ($('#txtGPNo1').val().length != '14') {
-        //errmsg = "Please enter valid GP No.";
-        //$.alert(errmsg);
-        $('#spnValMsg').text('Please enter valid GP No.').css('color', 'red');
-        return;
-
-    } else {
-        $('#spnValMsg').text('');
-    }
+    //if ($('#txtGPNo1').val().length != '13') {
+    //    errmsg = "Please enter valid GP No.";
+    //    $.alert(errmsg);
+    //    return;
+    //}
 
     GetULDsToRelease();
 
@@ -450,23 +394,16 @@ function ShowReleaseULDGrid() {
 function ShowReleaseBulkGrid() {
 
     if ($('#txtGPNo1').val() == "") {
-        //errmsg = "Please enter GP No.";
-
-        //$.alert(errmsg);
-        $('#spnValMsg').text('Please enter GP No.').css('color', 'red');
+        errmsg = "Please enter GP No.";
+        $.alert(errmsg);
         return;
-    } else {
-        $('#spnValMsg').text('');
     }
 
-    if ($('#txtGPNo1').val().length != '14') {
-        //errmsg = "Please enter valid GP No.";
-        //$.alert(errmsg);
-        $('#spnValMsg').text('Please enter valid GP No.').css('color', 'red');
-        return;
-    } else {
-        $('#spnValMsg').text('');
-    }
+    //if ($('#txtGPNo1').val().length != '13') {
+    //    errmsg = "Please enter valid GP No.";
+    //    $.alert(errmsg);
+    //    return;
+    //}
 
     GetBULKToRelease();
 
@@ -642,7 +579,7 @@ function ChangeULDBulkToRelease(UldBulSeqNo, type) {
 
                 FltSeqNo = $(this).find('FlightSeqNo').text();
                 FltOffPoint = $(this).find('RoutePoint').text();
-
+                
                 GetAWBDetailsForULD(UldBulSeqNo, FltSeqNo, FltOffPoint, 'T')
 
             }
@@ -666,8 +603,6 @@ function clearAll() {
     $('#ddlBulk').empty();
     $('#divAddTestLocation').empty();
     html = '';
-    $('#spnValMsg').text('');
-
 }
 
 
@@ -683,7 +618,7 @@ function PutGPno() {
         if (m.toString().length < Number(2))
             m = '0' + m;
         var y = formattedDate.getFullYear();
-        var date = 'OO' + y.toString() + m.toString() + d.toString();
+        var date = 'O' + y.toString() + m.toString() + d.toString();
         $('#txtGPNo1').val(date);
         $('#txtGPNo1').focus();
 

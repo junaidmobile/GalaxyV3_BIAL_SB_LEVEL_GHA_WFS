@@ -28,7 +28,82 @@ $(function () {
     $("#rdoForwarding").click(function () {
         rdoForwardingChecked();
     });
+
+    ImportDataList();
 });
+
+
+function ImportDataList() {
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: CMSserviceURL + "ImportDataList",
+            data: JSON.stringify({ 'pi_strQueryType': 'I', 'pi_strUserName': UserName, 'pi_strSession': '' }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;                
+                $("body").mLoading('hide');
+                response = response.d;
+
+                var str = response;
+                autoLocationArray = new Array();
+
+                // This will return an array with strings "1", "2", etc.
+                autoLocationArray = str.split(",");
+                console.log(autoLocationArray)
+                $("#txtNewLoc").autocomplete({
+                    source: autoLocationArray,
+                    minLength: 1,
+                    select: function (event, ui) {
+                        log(ui.item ?
+                          "Selected: " + ui.item.label :
+                          "Nothing selected, input was " + this.value);
+                    },
+                    open: function () {
+                        $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+                    },
+                    close: function () {
+                        $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+                    }
+                });
+
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+}
+
+
+function log(message) {
+    $("<div>").text(message).prependTo("#log");
+    $("#log").scrollTop(0);
+}
 
 
 function rdoIntlMovementChecked() {

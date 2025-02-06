@@ -21,7 +21,9 @@
 buildscript {
     repositories {
         google()
+         maven { url "https://repo.grails.org/grails/core/" }
         jcenter()
+        
     }
 
     // Switch the Android Gradle plugin version requirement depending on the

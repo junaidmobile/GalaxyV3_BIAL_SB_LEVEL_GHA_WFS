@@ -39,7 +39,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#" id="navhdrName" style="text-align:right;padding-left: 50px;"></a>
+                <a class="navbar-brand" href="#" id="navhdrName" style="text-align:right;"></a>
                 <img class="navbarImage" src="images/Logo.png" onclick="ShowHomePage();">
                 <a href="#" id="navhdr" class="loggedinUser"></a>
             </div>
@@ -53,21 +53,36 @@
             <div id="divMode">
                 <div>
                     <div class="row" style="border-radius: 25px">
-                        <div id="divExportMenu" class="col-xs-6 col-sm-6 col-md-6" style="padding-right: 5px;display:none;">
+                        <div class="col-xs-6 col-sm-6 col-md-6" style="padding-right: 5px;">
                             <div>
-                                <img src="images/Import_green.png" style="width: 100%; box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); border-radius: 10px;" onclick="DisplayScreen('Import');" />
+                                <img src="images/Import_green.png" style="width:100%;" onclick="DisplayScreen('Import');" />
                             </div>
                         </div>
-                        <div id="divImportMenu" class="col-xs-6 col-sm-6 col-md-6" style="padding-left: 5px; display: none;">
+                        <div class="col-xs-6 col-sm-6 col-md-6" style="padding-left: 5px;">
                             <div>
-                                <img src="images/Export_grey.png" style="width: 100%; box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); border-radius: 10px;" onclick="DisplayScreen('Export');" />
+                                <img src="images/Export_grey.png" style="width:100%;" onclick="DisplayScreen('Export');" />
                             </div>
                         </div>
-                        <div id="divVTMenu" class="col-xs-6 col-sm-6 col-md-6" style=" padding-left: 15px; padding-right: 0px; display: none;">
+
+                    </div>
+                    <div class="row" style="border-radius: 25px">
+                        <!--<div class="col-xs-6 col-sm-6 col-md-6" style="padding-right: 5px;">
                             <div>
-                                <img src="images/truck.png" style="width: 97%; margin-top: 10px; border: solid thin #000; box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); border-radius: 10px; " onclick="DisplayScreen('VT');" />
+                                <img src="images/sipment.svg" style="width:100%;" onclick="DisplayScreen('Import');" />
                             </div>
-                        </div>
+                            <span>Inventory Reconciliation</span>
+                        </div>-->
+
+                        <!--<div class="col-xs-6 col-sm-6 col-md-6" style="margin-left: 17px;text-align:center; margin-top: 10px; padding-left: 15px; padding-right: 0px; border: solid thin #000; box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); border-radius: 10px; " ">
+                            <div>
+                                <img src="images/unitization.svg" style="width: 40%;" onclick="DisplayScreen('VT');" />
+                                
+                            </div>
+                            <span style="font-size:larger;">Inventory Management </span>
+                            
+                        </div>-->
+
+
                     </div>
                 </div>
             </div>

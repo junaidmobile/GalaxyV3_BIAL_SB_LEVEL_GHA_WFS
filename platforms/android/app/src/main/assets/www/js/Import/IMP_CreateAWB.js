@@ -48,9 +48,7 @@ function GetCommodityList() {
     });
 }
 
-function getULDtext() {
 
-}
 
 
 function GetULDDetails() {

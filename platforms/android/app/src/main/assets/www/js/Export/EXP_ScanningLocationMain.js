@@ -1,20 +1,5 @@
 ﻿var ClickedDiv_EXP = "";
-document.addEventListener("pause", onPause, false);
-document.addEventListener("resume", onResume, false);
-document.addEventListener("menubutton", onMenuKeyDown, false);
 
-function onPause() {
-
-    HHTLogout();
-}
-
-function onResume() {
-    HHTLogout();
-}
-
-function onMenuKeyDown() {
-    HHTLogout();
-}
 $(function () {
 
     if (window.localStorage.getItem("RoleExpVehicleTracking") == '0') {

@@ -21,17 +21,6 @@
     <link href="css/dialog.css" rel="stylesheet" />
     <link href="css/alert.mob.css" rel="stylesheet" />
     <script src="js/Export/Exp_ExportQuery.js"></script>
-    <style>
-        table, th, td {
-            border: 1px solid black;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 3px;
-            font-size: 13px;
-        }
-    </style>
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top" id="navbar">
@@ -42,7 +31,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#" id="navhdrName" style="text-align:right;padding-left: 50px;"></a>
+                <a class="navbar-brand" href="#" id="navhdrName" style="text-align:right;"></a>
                 <img class="navbarImage" src="images/Logo.png" onclick="ShowHomePage();">
                 <a href="#" id="navhdr" class="loggedinUser"></a>
             </div>
@@ -58,116 +47,76 @@
                     <div class="form-body">
                         <form>
                             <div class="row form-group">
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" id="drRadiobtn" style="border: solid thin lightgray;padding: 5px;">
+                                    <div class="col-xs-6 col-form-label">
+                                        <!--<input type="radio" name="VctNo" id="chkHWABNo" value="HAWB" checked="checked" />
+                                <label id="lblHAWBNo" for="chkHWABNo">Consol</label>-->
+                                        <label class="radio-inline" style="line-height: 1.7;">
+                                            <input type="radio" id="chkAWBNo" checked="" name="VctNo" autocomplete="off">AWB No.
+                                        </label>
+                                    </div>
+                                    <div class="col-xs-6 col-form-label">
+                                        <!--<input type="radio" name="VctNo" id="chkMPSNo" value="MPS" />
+                                <label id="lblMPSNo" for="chkMPSNo">MPS No.</label>-->
+                                        <label class="radio-inline" style="line-height: 1.7;">
+                                            <input type="radio" id="chkScanID" name="VctNo" autocomplete="off">Scan ID
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" style="margin-top:10px;">
                                     <div class="col-xs-6 col-form-label">
                                         <label id="lblAWBNo" for="txtAWBNo">AWB No</label>
+                                        <label id="lblScanID" for="txtAWBNo" style="display:none;">Scan ID</label>
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <input id="txtAWBNo" class="form-control" type="number" style="text-align:right;" autofocus onkeyup="ChkMaxLength(this, '11'); onKeyUpAWBNo();">
+                                        <input id="txtAWBNo" class="form-control" type="text" style="text-align:right;" autofocus onkeyup="ChkMaxLength(this, '20');onChangeLenthCheckForScanID();">
                                     </div>
                                 </div>
 
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" style="margin-top:10px;display:none;" id="divAWBNo">
                                     <div class="col-xs-6 col-form-label">
-                                        <label id="lblSBill" for="txtSBILLNo">S. BILL No.</label>
-                                        <!--<font color="red">*</font>-->
+                                        <label id="lblAWBNo" for="txtAWBNo">AWB No</label>
+
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <!--<input id="txtSBILLNo" class="form-control" type="number" style="text-align:right;" autofocus onkeyup="ChkMaxLength(this, '11');">-->
-                                        <select class="form-control" id="ddlSBNo">
-
-                                        </select>
-                                    </div>
-                                    <div class="col-xs-12 NoPadding">
-                                        <span id="spnErrorMsg"></span>
+                                        <input disabled id="txtAWBNoOnly" class="form-control" type="text" style="text-align:right;" autofocus onkeyup="ChkMaxLength(this, '20');">
                                     </div>
                                 </div>
-
+                                <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                            <div class="col-xs-6 col-form-label">
+                                <label id="lblHAWB" for="txtHAWB">HAWB No</label>
+                            </div>
+                            <div class="col-xs-6 NoPadding">
+                                <select class="form-control" id="ddlHAWB">
+                                    <option value="0">Select</option>
+                                </select>
+                            </div>
+                        </div>-->
                             </div>
 
                             <div class="row form-group" style="margin-top:10px;">
                                 <div class="form-group col-xs-6 col-sm-4 col-md-4">
-                                    <input type="button" id="btnClear" class="form-control ButtonColor" value="Clear" onclick="clearBeforePopulate();">
+                                    <input type="button" id="btnClear" class="form-control ButtonColor" value="Clear" onclick="clearBeforePopulate()">
                                 </div>
                                 <div class="form-group col-xs-6 col-sm-4 col-md-4">
-                                    <input type="button" id="btnGetDetail" class="form-control ButtonColor" value="Get Details" onclick="checkDropdownlenth(); ">
+                                    <input type="button" id="btnExit" class="form-control ButtonColor" value="Exit" onclick="window.location.href = 'EXP_Dashboard.html'">
                                 </div>
+                                <!--<div class="form-group col-xs-6 col-sm-4 col-md-4">
+                            <input type="button" id="btnGetDetail" class="form-control ButtonColor" value="Get Details" onclick="GetShipmentStatus()">
+                        </div>-->
                             </div>
-                            
-                            <div class="row form-group" style="margin-top:10px;">
-                               
-                                <div class="form-group col-xs-6 col-sm-4 col-md-4">
-                                    <input type="button" id="btnExit" class="form-control ButtonColor"
-                                           value="Exit" onclick="window.location.href = 'EXP_Dashboard.html'">
-                                </div>
-                            </div>
-                            <!-- <div>
-                                <table style="width:100%">
-                                    <tr>
-                                      <th>Events Name</th>
-                                      <th>Date/Time</th>
-                                      <th>User Name</th>
-                                    </tr>
-                                    <tr>
-                                      <td>TSP</td>
-                                      <td>DD-MM-YY HH:MM</td>
-                                      <td></td>
-                                    </tr>
-                                    <tr>
-                                      <td>TDG</td>
-                                      <td></td>
-                                      <td></td>
-                                    </tr>
-                                    <tr>
-                                      <td>BINNING</td>
-                                      <td></td>
-                                      <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>LEO</td>
-                                        <td></td>
-                                        <td></td>
-                                      </tr>
-                                      <tr>
-                                        <td>SCREENING</td>
-                                        <td></td>
-                                        <td></td>
-                                      </tr>
-                                      <tr>
-                                        <td>BAG</td>
-                                        <td></td>
-                                        <td></td>
-                                      </tr>
-                                      <tr>
-                                        <td>UNITIZATION</td>
-                                        <td></td>
-                                        <td></td>
-                                      </tr>
-                                      <tr>
-                                        <td>AIRSIDE GATE PASS</td>
-                                        <td></td>
-                                        <td></td>
-                                      </tr>
-                                      <tr>
-                                        <td>AIRSIDE RELEASE</td>
-                                        <td></td>
-                                        <td></td>
-                                      </tr>
-                                  </table>
-                            </div> -->
                         </form>
                     </div>
                 </div>
             </div>
 
-
             <div id="divAddLocation">
 
             </div>
-            <div id="temp">
-                <br />
-            </div>
+
+          
 
         </div>
     </div>

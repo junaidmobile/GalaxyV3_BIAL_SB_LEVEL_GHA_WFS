@@ -33,101 +33,12 @@
     <link href="css/alert.mob.css" rel="stylesheet" />
     <script src="js/amplify.min.js"></script>
     <script src="js/Import/IMP_CheckAWB.js"></script>
-    <style>
-        td.foo:nth-child(7n+1) {
-            background-color: rgb(177,112,136);
-            color: white;
-            padding: 3px;
-            text-align: center;
-        }
 
-        td.foo:nth-child(7n+2) {
-            background-color: rgb(27,81,141);
-            color: white;
-            padding: 3px;
-            text-align: center;
-        }
-
-        td.foo:nth-child(7n+3) {
-            background-color: rgb(13,150,68);
-            color: white;
-            padding: 3px;
-            text-align: center;
-        }
-
-        td.foo:nth-child(7n+4) {
-            background-color: rgb(35,29,31);
-            color: white;
-            padding: 3px;
-            text-align: center;
-        }
-
-        td.foo:nth-child(7n+5) {
-            background-color: rgb(157,124,43);
-            color: white;
-            padding: 3px;
-            text-align: center;
-        }
-
-        td.foo:nth-child(7n+6) {
-            background-color: rgb(14,76,166);
-            color: white;
-            padding: 3px;
-            text-align: center;
-        }
-
-        td.foo:nth-child(7n+7) {
-            background-color: rgb(206,84,209);
-            color: white;
-            padding: 3px;
-            text-align: center;
-        }
-
-        td.foo:nth-child(7n+8) {
-            background-color: rgb(143,74,219);
-            color: white;
-            padding: 3px;
-            text-align: center;
-        }
-
-        td.foo:nth-child(7n+9) {
-            background-color: rgb(198,139,74);
-            color: white;
-            padding: 3px;
-            text-align: center;
-        }
-
-        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
-            font-size: 12px;
-        }
-
-        .table {
-            margin-bottom: 0px !important;
-            margin-top: 5px;
-        }
-        .blink_me {
-            animation: blinker 1s linear infinite;
-            background-color: yellow;
-            padding: 15px;
-            text-align: center;
-            line-height: 50px;
-            font-weight:bolder
-        }
-
-        @keyframes blinker {
-            50% {
-                opacity: 0;
-            }
-        }
-
-        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
-            vertical-align: inherit;
-        }
-    </style>
 </head>
 
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top" id="navbar">
+
         <div class="container-fluid">
             <div class="navbar-header" style="background-color:#065da1;">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" id="btnnavbar"
@@ -136,16 +47,21 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#" id="navhdrName" style="text-align:right;padding-left: 50px;"></a>
+                <a class="navbar-brand" href="#" id="navhdrName" style="text-align:right;"></a>
                 <img class="navbarImage" src="images/Logo.png" onclick="ShowHomePage();">
-                <a href="#" id="navhdr" class="loggedinUser"></a>
+                <!--<a href="#" id="navhdr" class="loggedinUser"></a>-->
+
+                <select id="ddlLocation" style="padding-left: 15px;width:20%;background-color: #065da1;color: #fff; border: solid thin #fff;"></select>
+
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
 
             </div>
         </div>
+
     </nav>
     <div class="container-fluid" style="margin-top:63px;">
+
         <div class="panel-body">
             <div class="panel panel-widget forms-panel form-grids widget-shadow">
                 <div class="forms">
@@ -173,12 +89,31 @@
                                     </div>
                                     <div class="col-xs-6 NoPadding">
                                         <label id="txtFltNo"></label>&nbsp;&nbsp;<label id="txtFltDate"></label>
-
-
                                         <!--<input id="txtFltNo" class="form-control" type="text" style="text-align:right;"
                                                disabled>-->
                                     </div>
+
+                                    <div class="col-xs-6 col-form-label">
+                                        <label id="" for="txtFlightManpower" class="control-label labelFont">
+                                            Flight Manpower
+                                        </label>
+                                    </div>
+                                    <div class="col-xs-6 NoPadding">
+                                        <!--<input value="0" id="txtFlightManpower" class="form-control" type="text" style="text-align:right;">-->
+                                        <label id="txtFlightManpower"></label>
+                                    </div>
+
                                 </div>
+                                <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-6 col-form-label">
+                                        <label id="lblULDNo" for="txtFlightManpower" class="control-label labelFont">
+                                            Flight Manpower
+                                        </label>
+                                    </div>
+                                    <div class="col-xs-6 NoPadding">
+                                        <input value="0" id="txtFlightManpower" class="form-control" type="text" style="text-align:right;">
+                                    </div>
+                                </div>-->
                                 <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-6 col-form-label">
                                         <label for="txtFltDate">Flight Date</label>
@@ -219,15 +154,28 @@
                                     <div style="padding-left: 0px;" class="col-xs-6 col-form-label">
 
                                     </div>
-                                    <div class="col-xs-6 NoPadding">
+                                    <div class="col-xs-6 NoPadding" style="margin-top:5px;">
                                         <input type="button" id="btnModify"
                                                class="form-control ButtonColor" value="BULK/ULD Complete" onclick="UpdateImportULDClose()">
                                     </div>
                                 </div>
                                 <label id="successMsg"></label>
-                                <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                <!--<div class="col-xs-12 NoPadding">
                                     <label id="successMsg"></label>
                                 </div>-->
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" style="margin-top:5px;">
+                                    <div style="padding-left: 0px;" class="col-xs-6 col-form-label">
+                                        <label id="lblUldManpower" for="txtUldManpower" class="control-label labelFont">
+                                            Uld Manpower
+                                        </label>
+                                    </div>
+                                    <div class="col-xs-4 NoPadding">
+                                        <input id="txtUldManpower" onblur="goToAWBNoTextBox();" class="form-control" type="text" style="text-align:right;">
+                                    </div>
+                                    <div class="col-xs-2 NoPadding">
+                                        <input type="button" id="btnULDManPower" class="form-control ButtonColor" value="Save" onclick="SaveULDManpowerDetails();">
+                                    </div>
+                                </div>
                             </div>
                             <div class="row" id="divNormalCargo" style="box-shadow: 0 -1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);padding:5px;margin-bottom:5px;background-color: lightgoldenrodyellow;">
 
@@ -257,6 +205,7 @@
                                         </select>
                                     </div>
                                 </div>
+
                             </div>
 
                             <div class="row" id="divNormalCargoHawb" style="box-shadow: 0 -1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);padding:5px;margin-bottom:5px;background-color: lightgoldenrodyellow;">
@@ -268,7 +217,7 @@
                                     </div>
                                     <div class="col-xs-6 NoPadding">
                                         <!--<input type="text" id="txtScanHAWBNo" class="form-control" maxlength="11">-->
-                                        <input type="text" id="hawbLists" class="form-control" maxlength="11">
+                                        <input type="text" autocomplete="off" id="hawbLists" class="form-control" >
                                     </div>
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
@@ -286,6 +235,21 @@
                                         </select>
                                         <!--<input class="form-control" id="hawbLists" style="display: none;">-->
                                     </div>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" id="txtRemark">
+                                    <!--<div style="padding-left: 0px;" class="col-xs-6 col-form-label">
+                                        <label id="lblRemark" for="txtRemark" class="control-label labelFont">
+                                            Remark
+                                        </label>
+                                    </div>-->
+                                    <!--<div class="col-xs-6 NoPadding" >-->
+                                    <!--<textarea disabled class="form-control" id="txtRemark">
+
+                                    </textarea>-->
+                                    <!--<span id="txtRemark"  class="control-label labelFont">
+
+                                    </span>-->
+                                    <!--</div>-->
                                 </div>
                             </div>
 
@@ -346,32 +310,13 @@
                             <div class="row" id="divArrivedPkgs">
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                    <!--<div class="col-xs-3 col-form-label">
-                                        <label id="lblSHCCode" for="lblSHCCode" class="control-label labelFont">
-                                            SHC Code
-                                        </label>
-                                    </div>-->
-                                    <!--<div class="col-xs-1  ButtonColor" style="display: flex; justify-content: center; align-items: center;">
-                                        <span style="font-size: 20px;" class="glyphicon glyphicon-pencil "></span>
-                                    </div>-->
-
-                                    <div class="col-xs-12 NoPadding" ">
-                                        <table class="table" id="TextBoxDiv">
-                                           
-                                        </table>
-                                    </div>
-                                </div>
-
-
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-6 col-form-label">
                                         <label id="lblULDNo" for="txtULDNo" class="control-label labelFont">
                                             Group Id.
                                         </label>
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <input type="text" id="txtScanGroupId" class="form-control" oninput="checkSpecialChar();" maxlength="14" onkeyup="ChkMaxLength(this, '14'); onFocusGroupId()" onblur="checkLocation(); onFocusGroupId();">
+                                        <input type="number" id="txtScanGroupId" class="form-control" onkeyup="ChkMaxLength(this, '14'); onFocusGroupId()" onblur="checkLocation(); onFocusGroupId();">
                                     </div>
                                 </div>
 
@@ -458,7 +403,7 @@
                                     </div>
                                     <div class="col-xs-6 NoPadding">
                                         <select class="form-control" id="ddlDamageType">
-                                            <option value="0">Select</option>'
+                                            <!--<option>Select</option>'-->
                                         </select>
                                     </div>
                                 </div>
@@ -471,8 +416,8 @@
                                                    onclick="EnableFoundCargo()">Found Cargo
                                         </label>
                                     </div>
-                                    <div class="col-xs-3 col-form-label" style="display:none;">
-                                        <label class="checkbox-inline">
+                                    <div class="col-xs-3 col-form-label">
+                                        <label class="checkbox-inline" style="display:none;">
                                             <input type="checkbox" id="chkModify"
                                                    onclick="">Modify
                                         </label>
@@ -530,6 +475,3 @@
 </script>
 
 </html>
-
-
-

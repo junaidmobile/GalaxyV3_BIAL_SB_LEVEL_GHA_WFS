@@ -2,8 +2,7 @@
 
 var GHAImportFlightserviceURL = window.localStorage.getItem("GHAImportFlightserviceURL");
 var AirportCity = window.localStorage.getItem("SHED_AIRPORT_CITY");
-var companyCode = window.localStorage.getItem("companyCode");
-var UserID = window.localStorage.getItem("UserID");
+
 var html;
 var flightSeqNo;
 var flightPrefix;
@@ -12,25 +11,8 @@ var flightDate;
 var flightULDId;
 var flagRdoAll = 'A';
 var strXmlStore;
-var _flightPrefix = '';
-var _flightNo = '';
-var _flightDate = '';
+
 $(function () {
-
-    //var formattedDate = new Date();
-    //var d = formattedDate.getDate();
-    //if (d.toString().length < Number(2))
-    //    d = '0' + d;
-    //var m = formattedDate.getMonth();
-    //m += 1;  // JavaScript months are 0-11
-    //if (m.toString().length < Number(2))
-    //    m = '0' + m;
-    //var y = formattedDate.getFullYear();
-    //var t = formattedDate.getTime();
-    //var date = m.toString() + '/' + d.toString() + '/' + y.toString();
-
-    //newDate = y.toString() + '-' + m.toString() + '-' + d.toString();
-    //$('#txtFlightDate').val(newDate);
 
     if (window.localStorage.getItem("RoleIMPFlightCheck") == '0') {
         window.location.href = 'IMP_Dashboard.html';
@@ -46,30 +28,11 @@ $(function () {
         m = '0' + m;
     var y = formattedDate.getFullYear();
     var date = y.toString() + '-' + m.toString() + '-' + d.toString();
-
-
-    // $('#txtFlightDate').val(date);
-
-
-
-
-
-    //var now = new Date();
-
-    //var day = ("0" + now.getDate()).slice(-2);
-    //var month = ("0" + (now.getMonth() + 1)).slice(-2);
-
-    //var today = now.getFullYear() + "-" + (month) + "-" + (day);
-
-    //$('#txtFlightDate').val(today);
-
-    _flightPrefix = amplify.store("flightPrefix");
-    _flightNo = amplify.store("flightNo");
-    _flightDate = amplify.store("flightDate");
-
     $('#txtIGMYear').val(y);
 
-    if ((_flightPrefix != undefined && _flightPrefix != '') && (_flightNo != undefined && _flightNo != '') && (_flightDate != undefined && _flightDate != '')) {
+    $('#txtFlightDate').val(date);
+
+    if (amplify.store("flightPrefix") != '' && amplify.store("flightNo") != '' && amplify.store("flightDate") != '') {
         $("#txtFlightPrefix").val(amplify.store("flightPrefix"));
         $("#txtFlightNo").val(amplify.store("flightNo"));
         $("#txtFlightDate").val(amplify.store("flightDate"));
@@ -99,21 +62,7 @@ $(function () {
     //    flagRdoAll = 'S';
     //    ViewFlightRelatedDetails();
     //});
-    $('#btnATA').attr('disabled', 'disabled');
 
-
-    $("input").keyup(function () {
-        var string = $(this).val();
-        // var string = $('#txtOrigin').val();
-        if (string.match(/[`!₹£•√Π÷×§∆€¥¢©®™✓π@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
-            /*$('#txtOrigin').val('');*/
-            $(this).val('');
-            return true;    // Contains at least one special character or space
-        } else {
-            return false;
-        }
-
-    });
 });
 
 function NexttoULDDetails() {
@@ -138,43 +87,8 @@ function NexttoULDDetails() {
     amplify.store("flightNo", flightNo)
     amplify.store("flightDisplayDate", flightDate)
     amplify.store("flightDate", $("#txtFlightDate").val())
+    amplify.store("txtFlightManpower", $("#txtFlightManpower").val())
     window.location.href = 'IMP_CheckAWB.html';
-}
-
-
-function checkDisabled() {
-
-    var IGMNo = $('#txtIGMNo').val();
-    var IGMYear = $("#txtIGMYear").val();
-    var FlightPrefix = $("#txtFlightPrefix").val();
-    var FlightNo = $("#txtFlightNo").val();
-    var FlightDate;
-    if (IGMNo == "" || IGMYear == "") {
-        if (FlightPrefix == "" || FlightNo == "" || $('#txtFlightDate').val() == "") {
-
-            errmsg = "Please enter IGM No. & IGM Yr. or </br> Flight No. & Flight Date</br>";
-            $.alert(errmsg);
-
-            //$("#btnGetDetail").attr('disabled', 'disabled');
-            //$("#btnView").attr('disabled', 'disabled');
-
-            return;
-        } else {
-            //$("#btnGetDetail").removeAttr('disabled');
-            //$("#btnView").removeAttr('disabled');
-        }
-
-        if (IGMYear != "") {
-            if (IGMYear.length < Number(4)) {
-                errmsg = "Please enter valid IGM year";
-                $.alert(errmsg);
-                return;
-            }
-        }
-    } else {
-        //$("#btnGetDetail").removeAttr('disabled');
-        //$("#btnView").removeAttr('disabled');
-    }
 }
 
 
@@ -183,8 +97,6 @@ function GetFlightDetails() {
     $('#divMainDetails').show();
     $('#divFlightInfo').hide();
     $('#divFlightInfo').empty();
-    $('#lblFlightStatus').text('');
-    $('#lblFlightStatusError').text('');
     html = '';
 
     var inputxml = "";
@@ -192,12 +104,7 @@ function GetFlightDetails() {
     var IGMYear = $("#txtIGMYear").val();
     var FlightPrefix = $("#txtFlightPrefix").val();
     var FlightNo = $("#txtFlightNo").val();
-
-    //var date = $('#txtFlightDate').val();
-    //var newdate = date.split("-").reverse().join("-");
-    //var FlightDate = newdate;
-
-    var FlightDate = $('#txtFlightDate').val();// $("#year").val() + '-' + $("#month").val() + '-' + $("#day").val();
+    var FlightDate;
 
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
 
@@ -205,17 +112,9 @@ function GetFlightDetails() {
 
     if (IGMNo == "" || IGMYear == "") {
         if (FlightPrefix == "" || FlightNo == "" || $('#txtFlightDate').val() == "") {
-
             errmsg = "Please enter IGM No. & IGM Yr. or </br> Flight No. & Flight Date</br>";
             $.alert(errmsg);
-
-            //  $("#btnGetDetail").attr('disabled', 'disabled');
-            // $("#btnView").attr('disabled', 'disabled');
-
             return;
-        } else {
-            //  $("#btnGetDetail").removeAttr('disabled');
-            //  $("#btnView").removeAttr('disabled');
         }
 
         if (IGMYear != "") {
@@ -225,24 +124,21 @@ function GetFlightDetails() {
                 return;
             }
         }
-    } else {
-        //$("#btnGetDetail").removeAttr('disabled');
-        //$("#btnView").removeAttr('disabled');
     }
 
-    //if ($('#txtFlightDate').val().length > 0) {
-    //    var formattedDate = new Date($('#txtFlightDate').val());
-    //    var d = formattedDate.getDate();
-    //    if (d.toString().length < Number(2))
-    //        d = '0' + d;
-    //    var m = formattedDate.getMonth();
-    //    m += 1;  // JavaScript months are 0-11
-    //    if (m.toString().length < Number(2))
-    //        m = '0' + m;
-    //    var y = formattedDate.getFullYear();
+    if ($('#txtFlightDate').val().length > 0) {
+        var formattedDate = new Date($('#txtFlightDate').val());
+        var d = formattedDate.getDate();
+        if (d.toString().length < Number(2))
+            d = '0' + d;
+        var m = formattedDate.getMonth();
+        m += 1;  // JavaScript months are 0-11
+        if (m.toString().length < Number(2))
+            m = '0' + m;
+        var y = formattedDate.getFullYear();
 
-    //    FlightDate = m + "/" + d + "/" + y;
-    //}
+        FlightDate = m + "/" + d + "/" + y;
+    }
 
     if (IGMNo != "" && IGMYear != "") {
         inputxml = '<Root><IGMNO>' + IGMNo + '</IGMNO><IGMYear>' + IGMYear + '</IGMYear><FlightAirline></FlightAirline><FlightNo></FlightNo><FlightDate></FlightDate><AirportCity>' + AirportCity + '</AirportCity></Root>';
@@ -273,78 +169,24 @@ function GetFlightDetails() {
 
                 clearBeforePopulate();
                 var xmlDoc = $.parseXML(str);
-                console.log(xmlDoc)
                 $(xmlDoc).find('Table1').each(function (index) {
                     if (index == 0) {
                         flightSeqNo = $(this).find('FlightSeqNo').text();
 
                         if (flightSeqNo == 0) {
-                            // $.alert('Flight not found!');
-                            $('#lblFlightStatusError').text('Flight not found!').css('color', 'red');
+                            $.alert('Flight not found!');
                             return;
                         }
                         else
                             $("#btnNext").removeAttr("disabled");
 
-                        $('#lblFlightStatusError').text('');
-
                         $('#txtIGMNo').val($(this).find('CustomRef').text());
                         flightPrefix = $(this).find('FlightAirline').text();
                         flightNo = $(this).find('FlightNo').text();
                         flightDate = $(this).find('DisplaySTA').text();
-                        FlightDate = $(this).find('FlightDate').text();
                         $('#txtFlightPrefix').val($(this).find('FlightAirline').text());
                         $('#txtFlightNo').val($(this).find('FlightNo').text());
-
-
-                        var date = FlightDate;
-                        var newdate = date.split("-").reverse().join("-");
-
-                        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-                        ];
-
-                        var d = new Date(date);
-
-                        _Mont = monthNames[d.getMonth()]
-
-                        DD = FlightDate.split("-")[2];
-                        MM = FlightDate.split("-")[1];
-                        YY = FlightDate.split("-")[0];
-
-
-                        var ulddate = DD + '-' + _Mont + '-' + YY;
-                        $('#txtFlightDate').val(ulddate);
-
-                        //var date = $(this).find('FlightDate').text();
-                        //var newdate = FlightDate.split("-").reverse().join("-");
-                        ////  var FlightDate = newdate;
-                        //$('#txtFlightDate').val(FlightDate);
-                        //var $datepicker = $(this).find('FlightDate').text();
-                        //$datepicker.datepicker();
-                        //$datepicker.datepicker(
-                        //    'setDate', new Date()
-                        //    );
-
-
-
-                        //YY = FlightDate.split("-")[0];
-                        //MM = FlightDate.split("-")[1];
-                        //DD = FlightDate.split("-")[2];
-
-
-                        //$("#year").val(YY);
-                        //$("#month").val(MM);
-                        //$("#day").val(DD);
-
-
-
-
-
-                        //fData = flightDate.replace(/[^A-Z0-9]/ig, "-");
-
-                        //$('#txtFlightDate').val(fData);
-
+                        $('#txtFlightDate').val($(this).find('FlightDate').text());
                         $('#txtTotCnts').val($(this).find('AWBCount').text());
                         $('#txtManiPieces').val($(this).find('NPX').text());
                         $('#txtReceivePieces').val($(this).find('NPR').text());
@@ -353,35 +195,8 @@ function GetFlightDetails() {
                         $('#txtShortPieces').val($(this).find('ShortLanded').text());
                         $('#txtExcessPieces').val($(this).find('ExcessLanded').text());
                         $('#txtDamagePieces').val($(this).find('DamagePkgs').text());
-
-
-                        //if ($(this).find('FlightStatus').text() == 'Arrived') {
-                        //    $('#lblFlightStatus').text('Flight Status:' + ' ' + $(this).find('FlightStatus').text());
-                        //    $('#lblFlightStatusError').text('');
-                        //} else {
-                        //    $('#lblFlightStatusError').text('Flight Status:' + ' ' + $(this).find('FlightStatus').text());
-                        //    $('#lblFlightStatus').text('');
-                        //}
-
-                        if ($(this).find('FlightStatus').text() == 'Arrived') {
-                            $('#lblFlightStatus').text('Flight Status:' + ' ' + $(this).find('FlightStatus').text()).css('color', 'green');
-                            // $('#lblFlightStatus').text('');
-                            $('#btnATA').attr('disabled', 'disabled');
-                        }
-                        else if ($(this).find('FlightStatus').text() == 'Not Arrived') {
-                            $('#lblFlightStatus').text('Flight Status:' + ' ' + $(this).find('FlightStatus').text()).css('color', 'red');
-                            $('#btnATA').removeAttr('disabled');
-                        }
-                        else {
-                            $('#lblFlightStatus').text('Flight Status:' + ' ' + $(this).find('FlightStatus').text()).css('color', 'green');
-                            $('#btnATA').attr('disabled', 'disabled');
-                        }
-
-                        if ($(this).find('FlightStatus').text() == 'Finalized') {
-                            $("#btnFinalize").attr('disabled', 'disabled');
-                        } else {
-                            $("#btnFinalize").removeAttr("disabled");
-                        }
+                        $('#txtFlightManpower').val($(this).find('Manpower').text());
+                        $('#lblFlightStatus').text('Flight Status:' + ' ' + $(this).find('FlightStatus').text());
 
                         var statusNext = $(this).find('IsNext').text();
                         if (statusNext == 'Y')
@@ -415,14 +230,15 @@ function GetFlightDetails() {
 
 function ViewFlightRelatedDetails() {
 
-
+    $('#divMainDetails').hide();
+    $('#divFlightInfo').show();
 
     var inputxml = "";
     var IGMNo = $('#txtIGMNo').val();
     var IGMYear = $("#txtIGMYear").val();
     var FlightPrefix = $("#txtFlightPrefix").val();
     var FlightNo = $("#txtFlightNo").val();
-    var FlightDate = $('#txtFlightDate').val();// $("#year").val() + '-' + $("#month").val() + '-' + $("#day").val();
+    var FlightDate;
     var FlightArrived;
 
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
@@ -445,22 +261,19 @@ function ViewFlightRelatedDetails() {
         }
     }
 
-    //if ($('#txtFlightDate').val().length > 0) {
-    //    var formattedDate = new Date($('#txtFlightDate').val());
-    //    var d = formattedDate.getDate();
-    //    if (d.toString().length < Number(2))
-    //        d = '0' + d;
-    //    var m = formattedDate.getMonth();
-    //    m += 1;  // JavaScript months are 0-11
-    //    if (m.toString().length < Number(2))
-    //        m = '0' + m;
-    //    var y = formattedDate.getFullYear();
+    if ($('#txtFlightDate').val().length > 0) {
+        var formattedDate = new Date($('#txtFlightDate').val());
+        var d = formattedDate.getDate();
+        if (d.toString().length < Number(2))
+            d = '0' + d;
+        var m = formattedDate.getMonth();
+        m += 1;  // JavaScript months are 0-11
+        if (m.toString().length < Number(2))
+            m = '0' + m;
+        var y = formattedDate.getFullYear();
 
-    //    FlightDate = m + "/" + d + "/" + y;
-    //}
-
-    $('#divMainDetails').hide();
-    $('#divFlightInfo').show();
+        FlightDate = m + "/" + d + "/" + y;
+    }
 
     if (flagRdoAll == '')
         flagRdoAll = 'A';
@@ -476,7 +289,7 @@ function ViewFlightRelatedDetails() {
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: 'POST',
-            url: GHAImportFlightserviceURL + "GetImportFlightCheckView_V2",
+            url: GHAImportFlightserviceURL + "GetImportFlightCheckView",
             data: JSON.stringify({ 'InputXML': inputxml }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -515,22 +328,16 @@ function ViewFlightRelatedDetails() {
                     html += '<label for="sizeSmall">Short/Unscanned</label>'
                     html += '</div>'
 
-                    // html += "<table id='tblNews' border='1' style='width:200%;table-layout:fixed;word-break:break-word;border-color: white;margin-top: 2%;'>";
-                    html += "<table id='tblNews' class='table table-bordered table-striped'>";
+                    html += "<table id='tblNews' border='1' style='width:200%;table-layout:fixed;word-break:break-word;border-color: white;margin-top: 2%;'>";
                     html += "<thead><tr>";
-                    html += "<th  style='background-color:rgb(208, 225, 244);text-align:left;'>ULD No.</th>";
-                    html += "<th  style='background-color:rgb(208, 225, 244);text-align:left;'>AWB No.</th>";
-                    //html += "<th  style='background-color:rgb(208, 225, 244);text-align:left;'>HAWB No.</th>";
-                    html += "<th  style='background-color:rgb(208, 225, 244);text-align:left;'>Total (pcs.)</th>";
-                    html += "<th  style='background-color:rgb(208, 225, 244);text-align:left;'>Scanned (pcs.)</th>";
-                    html += "<th  style='background-color:rgb(208, 225, 244);text-align:left;'>Damaged (pcs.)</th>";
+                    html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>ULD No.</th>";
+                    html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>AWB No.</th>";
+                    html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>HAWB No.</th>";
+                    html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>Total</th>";
+                    html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>Scanned</th>";
+                    html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>Damaged</th>";
                     html += "</tr></thead>";
                     html += "<tbody>";
-
-
-
-
-
 
                     var xmlDoc = $.parseXML(str);
 
@@ -539,64 +346,23 @@ function ViewFlightRelatedDetails() {
                         flightSeqNo = $(this).find('FlightSeqNo').text();
 
                         if (flightSeqNo == 0) {
-                            // $.alert('Flight not found!');
-                            $('#lblFlightStatusError').text('Flight not found!').css('color', 'red');
+                            $.alert('Flight not found!');
                             return;
-                        } else {
-                            $('#lblFlightStatusError').text('');
                         }
 
                         $('#txtIGMNo').val($(this).find('IGMNo').text());
                         flightPrefix = $(this).find('FlightAirline').text();
                         flightNo = $(this).find('FlightNo').text();
                         flightDate = $(this).find('DisplaySTA').text();
+
+                        dateformt = flightDate.split("-").reverse().join("-");
+
                         FlightArrived = $(this).find('IsNext').text();
                         $('#txtFlightPrefix').val($(this).find('FlightAirline').text());
                         $('#txtFlightNo').val($(this).find('FlightNo').text());
-                        FlightDate = $(this).find('STA').text();
-                        // $('#txtFlightDate').val(FlightDate);
-
-                        // sta = $(this).find('STA').text();
-
-                        //YY = FlightDate.split("-")[0];
-                        //MM = FlightDate.split("-")[1];
-                        //DD = FlightDate.split("-")[2];
-
-                        //$("#year").val(YY);
-                        //$("#month").val(MM);
-                        //$("#day").val(DD);
-
-                        //var newdate = FlightDate.split("-").reverse().join("-");
-
-                        //$('#txtFlightDate').val(newdate);
-
-                        var date = FlightDate;
-                        var newdate = date.split("-").reverse().join("-");
-
-                        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-                        ];
-
-                        var d = new Date(newdate);
-
-                        _Mont = monthNames[d.getMonth()]
-
-                        YY = FlightDate.split("-")[2];
-                        MM = FlightDate.split("-")[1];
-                        DD = FlightDate.split("-")[0];
-
-
-                        var ulddate = DD + '-' + _Mont + '-' + YY;
-                        $('#txtFlightDate').val(ulddate);
+                        $('#txtFlightDate').val(dateformt);
 
                         $('#lblFlightStatus').text('Flight Status:' + ' ' + $(this).find('Status').text());
-
-                        if ($(this).find('FlightStatus').text() == 'Finalized') {
-                            $("#btnFinalize").attr('disabled', 'disabled');
-                        } else {
-                            $("#btnFinalize").removeAttr("disabled");
-                        }
-
                     });
 
                     $(xmlDoc).find('Table1').each(function (index) {
@@ -655,17 +421,17 @@ function AddTableLocationAWB(UldNo, AwbNo, HawbNo, Total, Scanned, Damaged, Flig
     else
         html += "<tr>";
 
-    html += "<td >" + UldNo + "</td>";
+    html += "<td height='30' style='background: rgb(224, 243, 215);padding-left: 4px;font-size:14px'align='left'>" + UldNo + "</td>";
 
-    html += "<td >" + AwbNo + "</td>";
+    html += "<td height='30' style='background: rgb(224, 243, 215);padding-left: 4px;font-size:14px'align='left'>" + AwbNo + "</td>";
 
-    // html += "<td >" + HawbNo + "</td>";
+    html += "<td height='30' style='background: rgb(224, 243, 215);padding-left: 4px;font-size:14px'align='center'>" + HawbNo + "</td>";
 
-    html += "<td style='text-align:right;'>" + Total + "</td>";
+    html += "<td height='30' style='background: rgb(224, 243, 215);padding-left: 4px;font-size:14px'align='left'>" + Total + "</td>";
 
-    html += "<td style='text-align:right;'>" + Scanned + "</td>";
+    html += "<td height='30' style='background: rgb(224, 243, 215);padding-left: 4px;font-size:14px'align='left'>" + Scanned + "</td>";
 
-    html += "<td style='text-align:right;'>" + Damaged + "</td>";
+    html += "<td height='30' style='background: rgb(224, 243, 215);padding-left: 4px;font-size:14px'align='center'>" + Damaged + "</td>";
 
     html += "</tr>";
 }
@@ -708,42 +474,11 @@ function SelectedFlightInfo(a) {
 
 
 function clearALL() {
-
-    $('#lblFlightStatusError').text('');
     $('#txtIGMNo').val('');
     //$('#txtIGMYear').val('');
     $('#txtFlightPrefix').val('');
     $('#txtFlightNo').val('');
-    // $('#txtFlightDate').val('');
-    //var formattedDate = new Date();
-    //var d = formattedDate.getDate();
-    //if (d.toString().length < Number(2))
-    //    d = '0' + d;
-    //var m = formattedDate.getMonth();
-    //m += 1;  // JavaScript months are 0-11
-    //if (m.toString().length < Number(2))
-    //    m = '0' + m;
-    //var y = formattedDate.getFullYear();
-    //var date = y.toString() + '-' + m.toString() + '-' + d.toString();
-
-
-    //$('#txtFlightDate').val(date);
-
-
-    let date = new Date();
-    const day = date.toLocaleString('default', { day: '2-digit' });
-    const month = date.toLocaleString('default', { month: 'short' });
-    const year = date.toLocaleString('default', { year: 'numeric' });
-    var today = day + '-' + month + '-' + year;
-    $('#txtFlightDate').val(today);
-
-    $("#txtFlightDate").datepicker({
-        shortYearCutoff: 1,
-        changeMonth: true,
-        changeYear: true,
-        dateFormat: 'dd-M-yy'
-    });
-
+    $('#txtFlightDate').val('');
     $('#txtTotCnts').val('');
     $('#txtManiPieces').val('');
     $('#txtReceivePieces').val('');
@@ -823,224 +558,3 @@ function ClearFields() {
 //    });
 //}
 
-
-function FlightATA_V4() {
-
-
-
-    $('#lblFlightStatus').text('');
-    $('#lblFlightStatusError').text('');
-    var inputxml = "";
-    var IGMNo = $('#txtIGMNo').val();
-    var IGMYear = $("#txtIGMYear").val();
-    var FlightPrefix = $("#txtFlightPrefix").val();
-    var FlightNo = $("#txtFlightNo").val();
-    var ATAFlightDateTime = $("#txtFlightATA").val();
-    var ATATime = $("#txtFlightTime").val();
-
-
-    const myArrayTime = ATATime.split(":");
-    var ATAHours = myArrayTime[0];
-    var ATAMins = myArrayTime[1];
-    //var date = $('#txtFlightDate').val();
-    //var newdate = date.split("-").reverse().join("-");
-    //var FlightDate = newdate;
-
-    var FlightDate = $('#txtFlightDate').val();// $("#year").val() + '-' + $("#month").val() + '-' + $("#day").val();
-
-    var connectionStatus = navigator.onLine ? 'online' : 'offline'
-
-    var errmsg = "";
-
-    if (IGMNo == "" || IGMYear == "") {
-        if (FlightPrefix == "" || FlightNo == "" || $('#txtFlightDate').val() == "") {
-
-            errmsg = "Please enter IGM No. & IGM Yr. or </br> Flight No. & Flight Date</br>";
-            $.alert(errmsg);
-
-            //  $("#btnGetDetail").attr('disabled', 'disabled');
-            // $("#btnView").attr('disabled', 'disabled');
-
-            return;
-        } else {
-            //  $("#btnGetDetail").removeAttr('disabled');
-            //  $("#btnView").removeAttr('disabled');
-        }
-
-        if (IGMYear != "") {
-            if (IGMYear.length < Number(4)) {
-                errmsg = "Please enter valid IGM year";
-                $.alert(errmsg);
-                return;
-            }
-        }
-    } else {
-        //$("#btnGetDetail").removeAttr('disabled');
-        //$("#btnView").removeAttr('disabled');
-    }
-
-    //if ($('#txtFlightDate').val().length > 0) {
-    //    var formattedDate = new Date($('#txtFlightDate').val());
-    //    var d = formattedDate.getDate();
-    //    if (d.toString().length < Number(2))
-    //        d = '0' + d;
-    //    var m = formattedDate.getMonth();
-    //    m += 1;  // JavaScript months are 0-11
-    //    if (m.toString().length < Number(2))
-    //        m = '0' + m;
-    //    var y = formattedDate.getFullYear();
-
-    //    FlightDate = m + "/" + d + "/" + y;
-    //}
-
-    inputxml = '<Root><FlightSeqNo>' + flightSeqNo + '</FlightSeqNo><ATA>' + ATAFlightDateTime + '</ATA><AirportCity>' + AirportCity + '</AirportCity><ATAHours>' + ATAHours + '</ATAHours><ATAMins>' + ATAMins + '</ATAMins><CustomRef>' + IGMNo + '</CustomRef><AirTypeCode>' + AirportCity + '</AirTypeCode><CompanyCode>' + companyCode + '</CompanyCode><UserID>' + UserID + '</UserID></Root >';
-
-
-    if (errmsg == "" && connectionStatus == "online") {
-        $.ajax({
-            type: "POST",
-            url: GHAImportFlightserviceURL + "FlightATA_V4",
-            data: JSON.stringify({
-                'InputXML': inputxml,
-            }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            beforeSend: function doStuff() {
-                //$('.dialog-background').css('display', 'block');
-                $('body').mLoading({
-                    text: "Please Wait..",
-                });
-            },
-            success: function (response) {
-                $("body").mLoading('hide');
-                var str = response.d
-                var xmlDoc = $.parseXML(str);
-                console.log(xmlDoc)
-                $(xmlDoc).find('Table').each(function (index) {
-                    var Status = $(this).find('Status').text();
-                    var StrMessage = $(this).find('StrMessage').text();
-
-                    if (Status == 'E') {
-                        $('#lblFlightStatusError').text(StrMessage).css('color', 'red');
-
-                    } else {
-                        $('#lblFlightStatusError').text(StrMessage).css('color', 'green');
-                        $('#btnNext').attr('disabled', 'disabled');
-                        $('#btnATA').attr('disabled', 'disabled');
-                    }
-                });
-            },
-            error: function (msg) {
-                $("body").mLoading('hide');
-                $.alert('Data could not be loaded');
-            }
-        });
-        return false;
-    }
-    else if (connectionStatus == "offline") {
-        $("body").mLoading('hide');
-        $.alert('No Internet Connection!');
-    }
-    else if (errmsg != "") {
-        $("body").mLoading('hide');
-        $.alert(errmsg);
-    }
-    else {
-        $("body").mLoading('hide');
-    }
-}
-
-
-function FinalizeFlight() {
-    navigator.notification.confirm("Some of the shipments are pending for acceptance, Do you want to continue?", onconfirm, 'Confirm', ['Yes', 'No']);
-}
-
-function onconfirm(buttonIndex) {
-    if (parseInt(_finNPX) != parseInt(_finNPR)) {
-        if (buttonIndex == 1) {
-            FlightFinalize_V4();
-        }
-    } else {
-        FlightFinalize_V4();
-    }
-}
-
-
-function FlightFinalize_V4() {
-
-    // clearPiecesInfoOnGet();
-    //if ($("#txtScanAWBNo").val() == '') {
-    //    return;
-    //}
-    $('#lblFlightStatus').text('');
-    $('#lblFlightStatusError').text('');
-
-    var inputxml = "";
-
-    var connectionStatus = navigator.onLine ? 'online' : 'offline'
-
-    var errmsg = "";
-
-
-    //inputxml = '<Root><FlightSeqNo>' + flightSeqNo + '</FlightSeqNo><UlDSeqNo></UlDSeqNo><AirportCity>' + AirportCity + '</AirportCity></Root>';
-
-    inputxml = '<Root><FltSeqNo>' + flightSeqNo + '</FltSeqNo><AirportCity>' + AirportCity + '</AirportCity><UserId>' + UserId + '</UserId></Root>';
-
-
-    if (errmsg == "" && connectionStatus == "online") {
-        $.ajax({
-            type: "POST",
-            url: GHAImportFlightserviceURL + "FlightFinalize_V4",
-            data: JSON.stringify({
-                'InputXML': inputxml,
-            }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            beforeSend: function doStuff() {
-                $('body').mLoading({
-                    text: "Loading..",
-                });
-            },
-            success: function (Result) {
-                $("body").mLoading('hide');
-                $('#ddlDamageType').empty();
-                Result = Result.d;
-                var xmlDoc = $.parseXML(Result);
-
-                xmlDamageType = xmlDoc;
-
-                $(xmlDoc).find('Table').each(function (index) {
-                    var Status = $(this).find('Status').text();
-                    var StrMessage = $(this).find('StrMessage').text();
-
-                    if (Status == 'E') {
-                        $('#lblFlightStatus').text(StrMessage).css('color', 'red');
-
-                    } else {
-                        $('#lblFlightStatus').text(StrMessage).css('color', 'green');
-                        $('#btnNext').attr('disabled', 'disabled');
-                    }
-                });
-
-
-            },
-            error: function (msg) {
-                $("body").mLoading('hide');
-                var r = jQuery.parseJSON(msg.responseText);
-                $.alert(r.Message);
-            }
-        });
-        return false;
-    }
-    else if (connectionStatus == "offline") {
-        $("body").mLoading('hide');
-        $.alert('No Internet Connection!');
-    }
-    else if (errmsg != "") {
-        $("body").mLoading('hide');
-        $.alert(errmsg);
-    }
-    else {
-        $("body").mLoading('hide');
-    }
-}

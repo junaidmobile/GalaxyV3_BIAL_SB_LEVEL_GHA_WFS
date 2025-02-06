@@ -8,11 +8,6 @@
         #APPHeader, #APPFooter {
             background-color: #065da1;
         }
-
-        .disableDiv {
-            pointer-events: none;
-            background: #ccc !important;
-        }
     </style>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="scripts/platformOverrides.js"></script>
@@ -44,21 +39,17 @@
             width: 49%;
             height: 10%;
             border: 1px solid #065da1;
-            background: #fbf7f7;
             margin-bottom: 2%;
+            background: #fbf7f7;
+            vertical-align: middle;
+            text-align: center;
             border-radius: 5px;
             box-shadow: 5px 5px 2px #888888;
-            /*width: 48%;
-            height: 12%;
-            border: 1px solid #000;
-            margin-bottom: 3%;
-            background: white;
-            box-shadow: 5px 5px 2px #888888;*/
         }
 
         .Centerlbl {
             position: relative;
-            top: 50%;
+            top: 35%;
             transform: translateY(-50%);
             vertical-align: middle;
             text-align: center;
@@ -82,7 +73,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#" id="navhdrName" style="text-align:right;padding-left: 50px;"></a>
+                <a class="navbar-brand" href="#" id="navhdrName" style="text-align:right;"></a>
                 <img class="navbarImage" src="images/Logo.png" onclick="ShowHomePage();">
                 <a href="#" id="navhdr" class="loggedinUser"></a>
             </div>
@@ -131,153 +122,71 @@
             <label class="control-label labelFont" style="color:#337ab7;">Euro Pallet Acceptance</label>
         </center>
     </div>-->
-        <!--<div class="dividediv" style="float:left;" onclick="RedirectPage('EXP_ScanningLocationMain.html');">
-        <center class="Centerlbl">
-            <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Vehicle Tracking</label>
-        </center>
-    </div>-->
-        <!--<div class="panel-body">
-        <div class="panel panel-widget forms-panel form-grids widget-shadow">
-            <div class="forms">
-                <div class="form-body">
-
-                    <div class="row" id="divEuroPalletAcceptance" onclick="RedirectPage('EXP_EuroPalletAcceptance.html');">
-                        <div class="col-xs-2 NoPadding" style="color: #337ab7;text-align:left;">
-                            <i class="glyphicon glyphicon-chevron-right"></i>
-                        </div>
-                        <div class="col-xs-8 col-form-label">
-                            <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Cargo Acceptance</label>
-                        </div>
-                        <div class="col-xs-2 NoPadding" style="color: #337ab7;text-align:right;">
-                            <i class="glyphicon glyphicon-chevron-right"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="panel-body">
-        <div class="panel panel-widget forms-panel form-grids widget-shadow">
-            <div class="forms">
-                <div class="form-body">
-                    <div class="row" id="divDocumentAcceptance" onclick="RedirectPage('EXP_DocumentAcceptance.html');">
-                        <div class="col-xs-10 col-form-label">
-                            <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Document Acceptance</label>
-                        </div>
-                        <div style="color: #337ab7;text-align:right;" class="col-xs-2 NoPadding">
-                            <i class="glyphicon glyphicon-chevron-right"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>-->
-        <div class="dividediv" id="divShipmentDeclaration" style="float: left;" onclick="RedirectPage('EXP_ShipmentDeclaration.html');">
+        <div class="dividediv" style="float:left;" onclick="RedirectPage('EXP_ScanningLocationMain.html');">
             <center class="Centerlbl">
-                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Shipment Declaration</label>
+                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Vehicle Tracking</label>
             </center>
         </div>
-
-        <div class="dividediv" id="divCargoAcceptance" style="float: right;" onclick="RedirectPage('EXP_EuroPalletAcceptance.html');">
+        <div class="dividediv" style="float:right;" onclick="RedirectPage('EXP_EuroPalletAcceptance.html?TDG=TDG');">
             <center class="Centerlbl">
-                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Cargo Acceptance</label>
+                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">TDG Acceptance</label>
             </center>
         </div>
-        <!--<div class="dividediv" id="divDocumentAcceptance" style="float:right;" onclick="RedirectPage('EXP_DocumentAcceptance.html');">
-        <center class="Centerlbl">
-            <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Document Acceptance</label>
-        </center>
-    </div>-->
-        <!--<div class="dividediv" id="divDockInDockOutStatus" style="float:right;" onclick="RedirectPage('EXP_DockInDockOutStatus.html');">
-        <center class="Centerlbl">
-            <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Dock In/Dock Out Status</label>
-        </center>
-    </div>-->
-
-        <div class="dividediv" id="divBinning" style="float: left; display: none;" onclick="RedirectPage('EXP_Binning.html');">
+        <div class="dividediv" style="float:left;" onclick="RedirectPage('EXP_Binning.html');">
             <center class="Centerlbl">
                 <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Binning</label>
             </center>
         </div>
-        <div class="dividediv" id="divChangeOfAWB" style="float: right; display: none;" onclick="RedirectPage('EXP_AWBRegularization.html');">
+        <div class="dividediv" style="float:right;" onclick="RedirectPage('EXP_MomentofShipment.html');">
             <center class="Centerlbl">
-                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Change Of AWB</label>
+                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Internal/Exam Movement</label>
             </center>
         </div>
-        <div class="dividediv" id="divExpTSP" style="float: left; display: none;" onclick="RedirectPage('EXP_TSP.html');">
-            <center class="Centerlbl">
-                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">TSP</label>
-            </center>
-        </div>
-
-        <!--<div class="dividediv" id="divInternalExamMovement" style="float:right;" onclick="RedirectPage('EXP_MomentofShipment.html');">
-        <center class="Centerlbl">
-            <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Internal/Exam Movement</label>
-        </center>
-    </div>-->
-        <div class="dividediv" id="divChecklist" style="float: right; display: none;" onclick="RedirectPage('EXP_Checklist.html');">
-            <center class="Centerlbl">
-                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Checklist</label>
-            </center>
-        </div>
-        <!--<div class="dividediv" id="divSecurityScreening" style="float: left;" onclick="RedirectPage('EXP_SecurityScreening.html');">
-        <center class="Centerlbl">
-            <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Security Screening</label>
-        </center>
-    </div>-->
-        <!--<div class="dividediv" id="divBackToTown" style="float: right;" onclick="RedirectPage('EXP_BackToTown.html');">
-        <center class="Centerlbl">
-            <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Back To Town</label>
-        </center>
-    </div>-->
-        <div class="dividediv" id="divUnitization" style="float: left; display: none;" onclick="RedirectPage('EXP_Unitization.html');">
+        <div class="dividediv" style="float:left;" onclick="RedirectPage('EXP_Unitization.html');">
             <center class="Centerlbl">
                 <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Unitization</label>
             </center>
         </div>
-        <div class="dividediv" id="divGPRelease" style="float: right; display: none;" onclick="RedirectPage('EXP_AirsideRelease_Search.html');">
+        <div class="dividediv" style="float:right;" onclick="RedirectPage('EXP_AirsideRelease.html');">
             <center class="Centerlbl">
-                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">GP Release</label>
+                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Airside Release</label>
             </center>
         </div>
-        <div class="dividediv" id="divLabelPrint" style="float: left; display: none;" onclick="RedirectPage('EXP_GenerateBarcode.html');">
-            <center class="Centerlbl">
-                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Label Print</label>
-            </center>
-        </div>
-        <div class="dividediv" id="divRemoveOffloadShipment" style="float: right; display: none;" onclick="RedirectPage('EXP_OffloadULDShipment.html');">
-            <center class="Centerlbl">
-                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Remove/Offload Shipment</label>
-            </center>
-        </div>
-        <!--<div class="dividediv" id="divAirsideRelease" style="float:left;" onclick="RedirectPage('EXP_AirsideRelease.html');">
-        <center class="Centerlbl">
-            <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Airside Release</label>
-        </center>
-    </div>-->
-        <div class="dividediv" id="divExportQuery" style="float: left; display: none;" onclick="RedirectPage('EXP_ExportQuery.html');">
+        <div class="dividediv" style="float:left;" onclick="RedirectPage('EXP_ExportQuery.html');">
             <center class="Centerlbl">
                 <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Export Query</label>
             </center>
         </div>
-
-
-
-
-
-
-        <!--<div class="dividediv" style="float:right;" onclick="RedirectPage('EXP_VCTCheck.html');">
-        <center class="Centerlbl">
-            <label class="control-label labelFont" style="color:#337ab7;font-size:15px">VCT Check</label>
-        </center>
-    </div>-->
-        <!--<div class="dividediv" style="float:left;" onclick="RedirectPage('EXP_DocumentUpload.html');">
-        <center class="Centerlbl">
-            <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Document Upload</label>
-        </center>
-    </div>-->
+        <div class="dividediv" style="float:right;" onclick="RedirectPage('EXP_VCTCheck.html');">
+            <center class="Centerlbl">
+                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">VCT Check</label>
+            </center>
+        </div>
+        <div class="dividediv" style="float:left;" onclick="RedirectPage('EXP_DocumentUpload.html');">
+            <center class="Centerlbl">
+                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Document Upload</label>
+            </center>
+        </div>
+        <div class="dividediv" style="float:right;" onclick="RedirectPage('EXP_SecurityScreening.html');">
+            <center class="Centerlbl">
+                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Security Screening</label>
+            </center>
+        </div>
+        <div class="dividediv" style="float:left;" onclick="RedirectPage('EXP_Checklist.html');">
+            <center class="Centerlbl">
+                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Checklist</label>
+            </center>
+        </div>
+        <div class="dividediv" style="float:right;" onclick="RedirectPage('EXP_Inventory_Management.html');">
+            <center class="Centerlbl">
+                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Inventory Management </label>
+            </center>
+        </div>
+        <div class="dividediv" style="float:left;" onclick="RedirectPage('EXP_ULDInternal.html');">
+            <center class="Centerlbl">
+                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Locate ULD </label>
+            </center>
+        </div>
         <!--<div class="dividediv" style="float:left;" onclick="RedirectPage('EXP_VCTAcceptance.html');">
         <center class="Centerlbl">
             <label class="control-label labelFont" style="color:#337ab7;">VCT Acceptance</label>

@@ -8,11 +8,6 @@
         #APPHeader, #APPFooter {
             background-color: #065da1;
         }
-
-        .disableDiv {
-            pointer-events: none;
-            background: #ccc !important;
-        }
     </style>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="scripts/platformOverrides.js"></script>
@@ -78,7 +73,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#" id="navhdrName" style="text-align:right;padding-left: 50px;"></a>
+                <a class="navbar-brand" href="#" id="navhdrName" style="text-align:right;"></a>
                 <img class="navbarImage" src="images/Logo.png" onclick="ShowHomePage();">
                 <a href="#" id="navhdr" class="loggedinUser"></a>
             </div>
@@ -134,8 +129,7 @@
         </div>
     </div>-->
     <div class="container-fluid" style="width: 100%;height: 100%;margin-top:63px;">
-
-        <div class="dividediv" id="divULDAcceptance" style="float: left; display: none;" onclick="RedirectPage('IMP_ULDAcceptance.html');">
+        <div class="dividediv" style="float:left;" onclick="RedirectPage('IMP_ULDAcceptance.html');">
             <center class="Centerlbl">
                 <label class="control-label labelFont" style="color:#337ab7;font-size:15px">
                     ULD
@@ -143,67 +137,130 @@
                 </label>
             </center>
         </div>
-        <div class="dividediv" id="divFlightCheck" style="float: right; display: none;" onclick="RedirectPage('IMP_FlightCheck.html');">
+
+        <div class="dividediv" style="float:right;" onclick="RedirectPage('IMP_FlightCheck.html');">
             <center class="Centerlbl">
                 <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Flight Check</label>
             </center>
         </div>
-        <div class="dividediv" id="divRecordDamage" style="float: left; display: none;" onclick="RedirectPage('IMP_RecordDamage.html');">
+        <!--<div class="dividediv" style="float:right;" onclick="RedirectPage('IMP_CheckAWB.html');">
             <center class="Centerlbl">
-                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Record Damage </label>
+                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Check AWB</label>
+            </center>
+        </div>-->
+        <div class="dividediv" style="float:right;" onclick="RedirectPage('IMP_Segregation.html');">
+            <center class="Centerlbl">
+                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Segregation</label>
             </center>
         </div>
-
-        <div class="dividediv" id="divBinning" style="float: right; display: none;" onclick="RedirectPage('IMP_Binning.html');">
+        <div class="dividediv" style="float:left;" onclick="RedirectPage('IMP_Binning.html');">
             <center class="Centerlbl">
                 <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Binning</label>
             </center>
         </div>
-        <div class="dividediv" id="divSplitGroup" style="float: left; display: none;" onclick="RedirectPage('IMP_Examination.html');">
+        <div class="dividediv" style="float:right;" onclick="RedirectPage('IMP_InternalMovement.html');">
             <center class="Centerlbl">
-                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Split Group </label>
+                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Internal Movement</label>
             </center>
         </div>
-        <div class="dividediv" id="divTSP" style="float: right; display: none;" onclick="RedirectPage('IMP_TSP.html');">
+        <div class="dividediv" style="float:left;" onclick="RedirectPage('IMP_ForwardingBackwarding.html');">
             <center class="Centerlbl">
-                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">TSP</label>
+                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Forward & Backward</label>
             </center>
         </div>
-        <div class="dividediv" id="divWDORetrieval" style="float: left; display: none;" onclick="RedirectPage('IMP_WDO_Retrieval.html');">
-            <center class="Centerlbl">
-                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">WDO Retrieval</label>
+        <!--<div class="dividediv" style="float:left;" onclick="RedirectPage('IMP_ShipmentForwarding.html');">
+            <center class="Centerlbl2Line">
+                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Shipment Sent For Custom Exam</label>
             </center>
         </div>
-        <!--<div class="dividediv " style="float:right;" onclick="RedirectPage('IMP_OutOfWarehouse.html');">
-        <center class="Centerlbl">
-            <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Out Of Warehouse </label>
-        </center>
-    </div>-->
-        <div class="dividediv" id="divWDORelease" style="float: right; display: none;" onclick="RedirectPage('IMP_GoodsDelivery.html');">
+        <div class="dividediv" style="float:right;" onclick="RedirectPage('IMP_ShipmentBackwarding.html');">
+            <center class="Centerlbl2Line">
+                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Shipment Back From Custom Exam</label>
+            </center>
+        </div>-->
+        <div class="dividediv" style="float:right;" onclick="RedirectPage('IMP_FinalDelivery.html');">
             <center class="Centerlbl">
-                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">WDO Release</label>
+                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Final Delivery</label>
             </center>
         </div>
-
-
-        <div class="dividediv" id="divImportQuery" style="float: left; display: none;" onclick="RedirectPage('IMP_ShipmentStatus.html');">
+        <div class="dividediv" style="float:left;" onclick="RedirectPage('IMP_ShipmentStatus.html');">
             <center class="Centerlbl">
                 <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Import Query</label>
             </center>
         </div>
+        <!--<div class="dividediv" style="float:right;" onclick="RedirectPage('IMP_VCTCheck.html');">
+            <center class="Centerlbl">
+                <label class="control-label labelFont" style="color:#337ab7;">VCT Check</label>
+            </center>
+        </div>-->
+        <div class="dividediv" style="float:right;" onclick="RedirectPage('IMP_DocumentUpload.html');">
+            <center class="Centerlbl">
+                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Document Upload</label>
+            </center>
+        </div>
 
+        <div class="dividediv" style="float:left;" onclick="RedirectPage('IMP_OutOfWarehouse.html');">
+            <center class="Centerlbl">
+                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Out Of Warehouse</label>
+            </center>
+        </div>
 
+        <div class="dividediv" style="float: right;" onclick="RedirectPage('IMP_GatePassLineup.html');">
+            <center class="Centerlbl">
+                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Gate Pass Line-Up</label>
+            </center>
+        </div>
 
-
-        <!--<div class="dividediv " style="float:left;" onclick="RedirectPage('IMP_Examination.html');">
-        <center class="Centerlbl">
-            <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Split Group </label>
-        </center>
-    </div>-->
-
-
-
-
+        <div class="dividediv" style="float:left;" onclick="RedirectPage('IMP_Examination.html');">
+            <center class="Centerlbl">
+                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Split Group ID</label>
+            </center>
+        </div>
+        <div class="dividediv" style="float:right;" onclick="RedirectPage('IMP_RecordDamage.html');">
+            <center class="Centerlbl">
+                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Record Damage </label>
+            </center>
+        </div>
+        <div class="dividediv" style="float:left;" onclick="RedirectPage('IMP_Inventory_Management.html');">
+            <center class="Centerlbl">
+                <label class="control-label labelFont" style="color:#337ab7;font-size:15px">Inventory Management </label>
+            </center>
+        </div>
+        <!--<div class="dividediv" style="float:right;" onclick="RedirectPage('IMP_ScanningLocationMain.html');">
+            <center class="Centerlbl">
+                <label class="control-label labelFont" style="color:#337ab7;">Scanning Location</label>
+            </center>
+        </div>-->
+        <!--<div class="dividediv" style="float:right;" onclick="RedirectPage('IMP_WDOoperations.html');">
+            <center class="Centerlbl">
+                <label class="control-label labelFont" style="color:#337ab7;">WDO Operations</label>
+            </center>
+        </div>
+        <div class="dividediv" style="float:left;" onclick="RedirectPage('IMP_RecordDamage.html');">
+            <center class="Centerlbl">
+                <label class="control-label labelFont" style="color:#337ab7;">Record Damage</label>
+            </center>
+        </div>
+        <div class="dividediv" style="float:right;" onclick="RedirectPage('IMP_RecordDiscrepancy.html');">
+            <center class="Centerlbl">
+                <label class="control-label labelFont" style="color:#337ab7;">Record Discrepancy</label>
+            </center>
+        </div>
+        <div class="dividediv" style="float:left;" onclick="RedirectPage('IMP_ShipmentArrival.html');">
+            <center class="Centerlbl">
+                <label class="control-label labelFont" style="color:#337ab7;">Shipment Arrival</label>
+            </center>
+        </div>
+        <div class="dividediv" style="float:right;" onclick="RedirectPage('IMP_CreateAWB.html');">
+            <center class="Centerlbl">
+                <label class="control-label labelFont" style="color:#337ab7;">Create AWB</label>
+            </center>
+        </div>
+        <div class="dividediv" style="float:left;" onclick="RedirectPage('IMP_AWBLocation.html');">
+            <center class="Centerlbl">
+                <label class="control-label labelFont" style="color:#337ab7;">AWB Location</label>
+            </center>
+        </div>-->
     </div>
     <div>
         <footer class="footer" style="color: white; font-size :12px; background-color:#0967b0;">

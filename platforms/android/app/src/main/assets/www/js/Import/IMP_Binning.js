@@ -1,11 +1,8 @@
 ﻿var CMSserviceURL = window.localStorage.getItem("CMSserviceURL");
 var GHAImportFlightserviceURL = window.localStorage.getItem("GHAImportFlightserviceURL");
-var GHAExportFlightserviceURL = window.localStorage.getItem("GHAExportFlightserviceURL");
 var AirportCity = window.localStorage.getItem("SHED_AIRPORT_CITY");
 var UserID = window.localStorage.getItem("UserID");
-var companyCode = window.localStorage.getItem("companyCode");
 var UserName = window.localStorage.getItem("UserName");
-var PreferredLanguage = window.localStorage.getItem("PreferredLanguage");
 var SelectedHawbId;
 var SelectedHawbIdCMS;
 var SelectedHawbNo;
@@ -19,169 +16,28 @@ var Hawbid;
 var GHAhawbid;
 var IsFlightFinalized;
 var GHAflightSeqNo;
-var _FlightSeqNo;
-var _MAWBNo;
-var _HAWBNo;
-var _LocId;
-var _HAWBId;
-var _LocCode;
-var _LocPieces;
-var _IGMNo;
-var _GroupId;
-var _Remarks;
-var CMSGHAFlag;
-var _SBId;
-var autoLocationArray;
+
 $(function () {
 
     if (window.localStorage.getItem("RoleIMPBinning") == '0') {
         window.location.href = 'IMP_Dashboard.html';
     }
-
-    document.addEventListener('deviceready', AddLocation, false);
+    AddLocation();
+   // document.addEventListener('deviceready', AddLocation, false);
     //document.addEventListener('deviceready', AddingTestLocation, false);
-
-    ImportDataList();
-
-    //var stringos = 'ECC~N,PER~N,GEN~N,DGR~Y,HEA~N,AVI~N,BUP~Y,EAW~N,EAP~Y';
-
-    //SHCSpanHtml(stringos);
-
-    $("input").keyup(function () {
-        var string = $(this).val();
-        // var string = $('#txtOrigin').val();
-        if (string.match(/[`!₹£•√Π÷×§∆€¥¢©®™✓@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
-            /*$('#txtOrigin').val('');*/
-            $(this).val('');
-            return true;    // Contains at least one special character or space
-        } else {
-            return false;
-        }
-
-    });
-
+  //  ImportDataList();
 });
 
-function CheckEmpty() {
-
-    if ($('#txtGroupId').val() != '' && $('#txtLocation').val() != '') {
-        $('#btnMoveDetail').removeAttr('disabled');
-    } else {
-        $('#btnMoveDetail').attr('disabled', 'disabled');
-        return;
-    }
-
-}
-
-function SHCSpanHtml(newSHC) {
-    var spanStr = "<tr class=''>";
-    var newSpanSHC = newSHC.split(',');
-    var filtered = newSpanSHC.filter(function (el) {
-        return el != "";
-    });
-
-    for (var n = 0; n < filtered.length; n++) {
-        var blink = filtered[n].split('~');
-
-        if (filtered[n].indexOf('~') > -1) {
-            if (blink[1] == 'Y' && filtered[n] != '~Y') {
-                spanStr += "<td class='blink_me'>" + blink[0] + "</td>";
-                console.log(filtered[n])
-            }
-        }
-
-        if (filtered[n].indexOf('~') > -1) {
-            if (blink[1] == 'N' && filtered[n] != '~N') {
-                spanStr += "<td class='foo'>" + blink[0] + "</td>";
-                console.log(filtered[n])
-            }
-        }
-    }
-    spanStr += "</tr>";
-
-    $("#TextBoxDiv").html(spanStr);
-    return spanStr;
-
-}
-
-function checkSpecialChar() {
-    var string = $('#txtGroupId').val();
-    if (string.match(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
-        $('#txtGroupId').val('');
-        return true;    // Contains at least one special character or space
-    } else {
-        return false;
-    }
-}
-
-function GetHAWBDetailsForMAWB() {
-    $('#divVCTDetail').hide();
-    $('#divVCTDetail').empty();
-    $('#TextBoxDiv').empty();
-    IsFlightFinalized = '';
-    GHAMawbid = '';
-    Hawbid = '';
-    GHAhawbid = '';
-    IsFlightFinalized = '';
-    GHAflightSeqNo = '';
-    html = '';
-    $('#spnErrormsg').text('');
-    //$('#txtOrigin').val('');
-    //$('#txtDestination').val('');
-    //$('#txtTotalPkg').val('');
-    //$('#txtCommodity').val('');
-    //$('#divAddTestLocation').empty();
-
-    //var list = new Array();
-    //var uniqueIgms = [];
-
-    //$('#ddlHAWB').empty();
-    //var newOption = $('<option></option>');
-    //newOption.val(0).text('Select');
-    //newOption.appendTo('#ddlHAWB');
-
-    //$('#ddlIGM').empty();
-    //var newOption = $('<option></option>');
-    //newOption.val(0).text('Select');
-    //newOption.appendTo('#ddlIGM');
-
+function ImportDataList() {
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
-
-    var MAWBNo = '';// $('#txtAWBNo').val();
-    var txtGroupId = $('#txtGroupId').val();
-    var txtLocation = $('#txtLocation').val();
-
-    if (txtGroupId == '') {
-        return;
-    } else {
-        $('#txtLocation').focus();
-    }
-
-    //if ($('#txtGroupId').val() != '' && $('#txtLocation').val() != '') {
-    //    $('#btnMoveDetail').removeAttr('disabled');
-    //} else {
-    //    $('#btnMoveDetail').attr('disabled', 'disabled');
-    //    return;
-    //}
-
-
-    //if (MAWBNo.length != '11') {
-    //    if (MAWBNo.length != '13') {
-    //        errmsg = "Please enter valid AWB No.";
-    //        $.alert(errmsg);
-    //        // $('#txtAWBNo').val('');
-    //        return;
-    //    }
-    //}
-    var InputXML = '<Root><GroupId>' + $('#txtGroupId').val() + '</GroupId><AirportCity>' + AirportCity + '</AirportCity><Culture>' + PreferredLanguage + '</Culture><UserID>1</UserID></Root>';
 
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: 'POST',
-            url: GHAImportFlightserviceURL + "GetLocationDetailsV3",
-            data: JSON.stringify({ 'InputXML': InputXML }),
+            url: CMSserviceURL + "ImportDataList",
+            data: JSON.stringify({ 'pi_strQueryType': 'I', 'pi_strUserName': UserName, 'pi_strSession': '' }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function doStuff() {
@@ -190,144 +46,44 @@ function GetHAWBDetailsForMAWB() {
                 });
             },
             success: function (response) {
-                //debugger;
+                //debugger;                
                 $("body").mLoading('hide');
                 response = response.d;
-                //var str = response.d;
-                var xmlDoc = $.parseXML(response);
 
+                var str = response;
+               // autoLocationArray = new Array();
 
-                //$('#divVCTDetail').html('');
-                //$('#divVCTDetail').empty();
-                console.log(xmlDoc);
-                $(xmlDoc).find('Table').each(function () {
-                    //var outMsg = $(this).find('OutMsg').text(); //added on 17/06
-                    //var Status = $(this).find('Status').text();
-                    //var StrMessage = $(this).find('StrMessage').text();
+                // This will return an array with strings "1", "2", etc.
+               // autoLocationArray = str.split(",");
+                var suggestionList = str.split(",");
+                for (var i = 0; i < 200; i++) {
+                    suggestionList.push({
+                        label: 'item' + i,
+                        value: i
+                    });
+                }
+                // console.log(suggestionList);
 
-                    //console.log('check outmsg here: ', outMsg);
+                var info = suggestionList.slice(Math.max(suggestionList.length - 1000, 0));
 
-                    ////if (outMsg == 'Shipment information does not exists') { //added on 17/06
-                    ////    $.alert(outMsg);
-                    ////}
+                //console.log(info);
 
-                    //if (outMsg != '') {
-                    //    $('#spnErrormsg').text(outMsg).css('color', 'red');
-                    //    $('#btnMoveDetail').attr('disabled', 'disabled');
-                    //    $('#divVCTDetail').hide();
-                    //    $('#divVCTDetail').empty();
-                    //    $('#txtGroupId').val('');
-                    //    $('#txtGroupId').focus();
-
-                    //} else {
-                    //    $('#spnErrormsg').text('');
-                    //    $('#btnMoveDetail').removeAttr('disabled');
-                    //}
-
-                    ////if (Status == 'E') {
-                    ////    $("#spnMsg").text('');
-                    ////    $("#spnMsg").text(StrMessage).css({ 'color': TxtColor });
-                    ////    //$('#divVCTDetail').empty();
-                    ////    //$('#divVCTDetail').hide();
-                    ////    html = '';
-                    ////    return true;
-                    ////}
-
-                    var status = $(this).find('Status').text();
-
-                    if (status == 'E') {
-                        $.alert($(this).find('OutMsg').text()).css('color', 'red');
-                        clearALL();
-                        $(".alert_btn_ok").click(function () {
-                            $('#txtGroupId').focus();
-                        });
-                        return true;
+                $("#txtLocation_0").autocomplete({
+                    source: info,
+                    minLength: 1,
+                    select: function (event, ui) {
+                        log(ui.item ?
+                          "Selected: " + ui.item.label :
+                          "Nothing selected, input was " + this.value);
+                    },
+                    open: function () {
+                        $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+                    },
+                    close: function () {
+                        $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
                     }
                 });
 
-                if (response != null && response != "") {
-                    $('#divVCTDetail').hide();
-                    $('#tblNewsForGatePass').empty();
-                    html = '';
-
-                    //html += '<table id="tblNewsForGatePass" border="1" style="width:100%;table-layout:fixed;word-break:break-word;border-color: white;margin-top: 2%;">';
-                    //html += '<thead>';
-                    //html += '<tr>';
-                    //html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center">Group Id</th>';
-                    //html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center">Peices</th>';
-                    //html += '<th height="30" style="background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px" align="center">Cancel</th>';
-                    //html += '</tr>';
-                    //html += '</thead>';
-                    //html += '<tbody>';
-
-                    html += '<table id="tblNewsForGatePass" class="table table-striped table-bordered">';
-                    html += '<thead>';
-                    html += '<tr>';
-                    html += '<th style="background-color:rgb(208, 225, 244);">MAWB No.</th>';
-                    html += '<th style="background-color:rgb(208, 225, 244);">HAWB No.</th>';
-                    // html += '<th style="background-color:rgb(208, 225, 244);">SB No.</th>';
-                    // html += '<th style="background-color:rgb(208, 225, 244);">Remark</th>';
-                    html += '<th style="background-color:rgb(208, 225, 244);">NOP</th>';
-                    html += '</tr>';
-                    html += '</thead>';
-                    html += '<tbody>';
-
-                    var xmlDoc = $.parseXML(response);
-                    var flag = '0';
-                    $(xmlDoc).find('Table1').each(function (index) {
-                        $('#lblMessage').text('');
-                        //var Status = $(this).find('Status').text();
-                        //var StrMessage = $(this).find('StrMessage').text();
-                        //if (Status == 'E') {
-                        //    $.alert(StrMessage);
-                        //    $('#divULDNumberDetails').empty();
-                        //    $('#divULDNumberDetails').hide();
-                        //    html = '';
-                        //    return;
-                        //}
-
-                        flag = '1';
-
-                        _MAWBNo = $(this).find('AWBNO').text();
-                        _HAWBNo = $(this).find('HAWBNO').text();
-                        _LocId = $(this).find('LocationId').text();
-                        _HAWBId = $(this).find('HAWBId').text();
-                        _LocCode = $(this).find('LocCode').text();
-                        _LocPieces = $(this).find('NOP').text();
-                        _SBId = $(this).find('SBId').text();
-                        _GroupId = $(this).find('GroupId').text();
-                        _Remarks = $(this).find('Remarks').text();
-                        _IsOutOfWarehouse = $(this).find('IsOutOfWarehouse').text();
-                        CMSGHAFlag = $(this).find('CMSGHAFlag').text();
-                        _FlightSeqNo = $(this).find('FlightSeqNo').text();
-                        SBNO = $(this).find('SBNO').text();
-
-                        NOG = $(this).find('NOG').text();
-
-
-                        var newSHC = $(this).find('SHCCodes').text();
-                        $("#TextBoxDiv").empty();
-                        SHCSpanHtml(newSHC);
-
-                        $('#txtLocationShow').val(_LocCode);
-                        $('#txtNOG').val(NOG);
-                        $('#txtRemark').val(_Remarks);
-
-                        VCTNoDetails(_MAWBNo, _HAWBNo, SBNO, _Remarks, _LocPieces);
-                    });
-                    html += "</tbody></table>";
-                    $('#divVCTDetail').show();
-                    $('#divVCTDetail').append(html);
-                    //if (_GroupId != '') {
-                    //    $('#divVCTDetail').show();
-                    //    $('#divVCTDetail').append(html);
-                    //}
-
-
-                } else {
-                    errmsg = 'VCT No. does not exists.';
-                    $.alert(errmsg);
-                }
             },
             error: function (msg) {
                 //debugger;
@@ -350,21 +106,125 @@ function GetHAWBDetailsForMAWB() {
     }
 }
 
-function grplength() {
-    if ($('#txtGroupId').val().length == 14) {
-        $('#txtLocation').focus();
-    }
+
+function log(message) {
+    $("<div>").text(message).prependTo("#log");
+    $("#log").scrollTop(0);
 }
 
-function VCTNoDetails(MAWBNo, HAWBNo, SBNo, Remarks, LocPieces) {
 
-    html += '<tr>';
-    html += '<td style="background: rgb(224, 243, 215);">' + MAWBNo + '</td>';
-    html += '<td style="background: rgb(224, 243, 215);">' + HAWBNo + '</td>';
-    //  html += '<td style="background: rgb(224, 243, 215);">' + SBNo + '</td>';
-    // html += '<td style="background: rgb(224, 243, 215);">' + Remarks + '</td>';
-    html += '<td style="background: rgb(224, 243, 215);">' + LocPieces + '</td>';
-    html += '</tr>';
+function GetHAWBDetailsForMAWB() {
+
+    IsFlightFinalized = '';
+    GHAMawbid = '';
+    Hawbid = '';
+    GHAhawbid = '';
+    IsFlightFinalized = '';
+    GHAflightSeqNo = '';
+    html = '';
+
+    $('#txtOrigin').val('');
+    $('#txtDestination').val('');
+    $('#txtTotalPkg').val('');
+    $('#txtCommodity').val('');
+    $('#divAddTestLocation').empty();
+
+    var list = new Array();
+    var uniqueIgms = [];
+
+    $('#ddlHAWB').empty();
+    var newOption = $('<option></option>');
+    newOption.val(0).text('Select');
+    newOption.appendTo('#ddlHAWB');
+
+    $('#ddlIGM').empty();
+    var newOption = $('<option></option>');
+    newOption.val(0).text('Select');
+    newOption.appendTo('#ddlIGM');
+
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+    var errmsg = "";
+
+    var MAWBNo = $('#txtAWBNo').val();
+
+    if (MAWBNo == '') {
+        return;
+    }
+
+    if (MAWBNo.length != '11') {
+        if (MAWBNo.length != '13') {
+            errmsg = "Please enter valid AWB No.";
+            $.alert(errmsg);
+            // $('#txtAWBNo').val('');
+            return;
+        }
+    }
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: 'POST',
+            url: CMSserviceURL + "GetHAWBNumbersForMAWBNumber_PDA",
+            data: JSON.stringify({ 'pi_strMAWBNo': MAWBNo, 'pi_strHAWBNo': '', 'pi_strAirport': AirportCity, 'pi_strEvent': 'A' }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function doStuff() {
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
+            success: function (response) {
+                //debugger;                
+                $("body").mLoading('hide');
+                response = response.d;
+                var xmlDoc = $.parseXML(response);
+
+                $(xmlDoc).find('Table').each(function () {
+
+                    var outMsg = $(this).find('Status').text();
+
+                    if (outMsg == 'E') {
+                        $.alert($(this).find('StrMessage').text());
+                        return;
+                    }
+                    else {
+
+                        var HawbNo = $(this).find('HAWBNo').text();
+
+                        if (HawbNo != '') {
+
+                            var HAWBId;
+                            var HAWBNos;
+
+                            HAWBId = $(this).find('HAWBNo').text();
+                            HAWBNos = HawbNo;
+
+                            var newOption = $('<option></option>');
+                            newOption.val(HAWBId).text(HAWBNos);
+                            newOption.appendTo('#ddlHAWB');
+                        }
+                    }
+                });
+
+            },
+            error: function (msg) {
+                //debugger;
+                $("body").mLoading('hide');
+                var r = jQuery.parseJSON(msg.responseText);
+                $.alert(r.Message);
+            }
+        });
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
 }
 
 function GetIGMDetails() {
@@ -471,107 +331,64 @@ function GetIGMDetails() {
     }
 }
 
+function GetMovementDetails() {
 
-function ImportDataList() {
-    var connectionStatus = navigator.onLine ? 'online' : 'offline'
-    var errmsg = "";
+    IsFlightFinalized = '';
+    //$("#btnSubmit").removeAttr("disabled");
 
+    html = '';
 
-    if (errmsg == "" && connectionStatus == "online") {
-        $.ajax({
-            type: 'POST',
-            url: GHAImportFlightserviceURL + "ImportDataList",
-            data: JSON.stringify({ 'pi_strQueryType': 'I' }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            beforeSend: function doStuff() {
-                $('body').mLoading({
-                    text: "Loading..",
-                });
-            },
-            success: function (response) {
-                //debugger;                
-                $("body").mLoading('hide');
-                response = response.d;
+    $('#txtOrigin').val('');
+    $('#txtDestination').val('');
+    $('#txtTotalPkg').val('');
+    $('#txtCommodity').val('');
+    $('#divAddTestLocation').empty();
 
-                var str = response;
-                autoLocationArray = new Array();
-
-                // This will return an array with strings "1", "2", etc.
-                autoLocationArray = str.split(",");
-                console.log(autoLocationArray)
-                $("#txtLocation").autocomplete({
-                    source: autoLocationArray,
-                    minLength: 1,
-                    select: function (event, ui) {
-                        log(ui.item ?
-                            "Selected: " + ui.item.label :
-                            "Nothing selected, input was " + this.value);
-                    },
-                    open: function () {
-                        $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
-                    },
-                    close: function () {
-                        $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
-                    }
-                });
-
-            },
-            error: function (msg) {
-                //debugger;
-                $("body").mLoading('hide');
-                var r = jQuery.parseJSON(msg.responseText);
-                $.alert(r.Message);
-            }
-        });
-    }
-    else if (connectionStatus == "offline") {
-        $("body").mLoading('hide');
-        $.alert('No Internet Connection!');
-    }
-    else if (errmsg != "") {
-        $("body").mLoading('hide');
-        $.alert(errmsg);
-    }
-    else {
-        $("body").mLoading('hide');
-    }
-}
-
-function log(message) {
-    $("<div>").text(message).prependTo("#log");
-    $("#log").scrollTop(0);
-}
-
-function GetMovementDetailsFromGHA() {
-
-
-    $("#btnSubmit").removeAttr("disabled");
-
+    //clearBeforePopulate();
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
 
     var AWBNo = $('#txtAWBNo').val();
     var HAWBNo = $("#ddlHAWB option:selected").text();
+    var IgmId = $("#ddlIGM option:selected").val();
     var IgmNo = $("#ddlIGM option:selected").text();
+    SelectedHawbId = $("#ddlHAWB option:selected").val();
 
-    var IgmVal = $("#ddlIGM option:selected").val();
+    if (AWBNo == '') {
+        errmsg = "Please enter AWB No.";
+        $.alert(errmsg);
+        return;
+    }
 
     if (HAWBNo == 'Select') {
         HAWBNo = '';
     }
 
-    SelectedHawbId = $("#ddlHAWB option:selected").val();
+    if (IgmNo == 'Select' || IgmNo == '') {
+        errmsg = "Please select IGM</br>";
+        $.alert(errmsg);
+        return;
+    }
 
-    //var inputXML = '<Root><MAWBID>' + GHAMawbid + '</MAWBID><HAWBID>' + SelectedHawbId + '</HAWBID><IGMNo>' + IgmNo + '</IGMNo><FlightSeqNo>' + GHAflightSeqNo + '</FlightSeqNo><UserId>' + window.localStorage.getItem("UserID") + '</UserId><AirportCity>' + AirportCity + '</AirportCity></Root>';
+    if (IgmId.match("^G")) {
+        IsFlightFinalized = 'false';
+        GetMovementDetailsFromGHA();
+        return;
+    }
 
-    var inputXML = '<Root><AWBNo>' + AWBNo + '</AWBNo><HouseNo>' + HAWBNo + '</HouseNo><IGMNo>' + IgmVal + '</IGMNo><UserId>' + window.localStorage.getItem("UserID") + '</UserId><AirportCity>' + AirportCity + '</AirportCity></Root>';
+    if (IgmId.match("^C")) {
+        IsFlightFinalized = 'true';
+    }
+    //if (IsFlightFinalized == 'false') {
+
+    //    return;
+    //}
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: 'POST',
-            url: GHAImportFlightserviceURL + "GetBinningLocPkgDetails",
-            data: JSON.stringify({ 'InputXML': inputXML }),
+            url: CMSserviceURL + "GetLocationDetails_PDA",
+            data: JSON.stringify({ 'pi_intIGMNo': IgmNo, 'pi_intIGMyear': '', 'pi_strMAWBNo': AWBNo, 'pi_strHAWBNo': HAWBNo }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function doStuff() {
@@ -587,174 +404,66 @@ function GetMovementDetailsFromGHA() {
 
                 strXmlStore = str;
 
+                if (str != null && str != "") {
 
-            },
-            error: function (msg) {
-                $("body").mLoading('hide');
-                var r = jQuery.parseJSON(msg.responseText);
-                $.alert(r.Message);
-            }
-        });
-    }
-    else if (connectionStatus == "offline") {
-        $("body").mLoading('hide');
-        $.alert('No Internet Connection!');
-    }
-    else if (errmsg != "") {
-        $("body").mLoading('hide');
-        $.alert(errmsg);
-    }
-    else {
-        $("body").mLoading('hide');
-    }
-}
+                    html = '';
 
+                    html = "<table id='tblNews' border='1' style='width:100%;table-layout:fixed;word-break:break-word;border-color: white;margin-top: 2%;'>";
+                    html += "<thead><tr>";
+                    html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>Location</th>";
+                    html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>Binned Pkgs.</th>";
+                    html += "</tr></thead>";
+                    html += "<tbody>";
 
+                    var xmlDoc = $.parseXML(str);
 
-function GetMovementDetails() {
+                    $(xmlDoc).find('Table').each(function (index) {
 
-    IsFlightFinalized = '';
-    $("#btnSubmit").removeAttr("disabled");
+                        var outMsg = $(this).find('OutMsg').text();
 
-    html = '';
+                        if (outMsg != '') {
+                            $.alert(outMsg);
+                            return;
+                        }
 
-    $('#divAddTestLocation').empty();
+                        var location;
 
-    //clearBeforePopulate();
-    var connectionStatus = navigator.onLine ? 'online' : 'offline'
-    var errmsg = "";
+                        location = $(this).find('LocCode').text().toUpperCase();
+                        locPieces = $(this).find('LocPieces').text();
 
-    var AWBNo = $('#txtAWBNo').val();
-    var HAWBNo = $("#ddlHAWB option:selected").text();
-    var IgmId = $("#ddlIGM option:selected").val();
-    var IgmNo = $("#ddlIGM option:selected").text();
+                        $('#txtOrigin').val($(this).find('Origin').text());
+                        $('#txtDestination').val($(this).find('Destination').text());
+                        
+                        
+                        AddTableLocation(location, locPieces);
 
+                        if (index == 0) {
+                            $('#txtTotalPkg').val($(this).find('LocationStatus').text());
+                            $('#txtCommodity').val($(this).find('Commodity').text());
+                            Hawbid = $(this).find('HAWBId').text();
+                        }
 
+                        SelectedHawbIdCMS = $(this).find('HAWBId').text();
 
-    //SelectedHawbId = $("#ddlHAWB option:selected").val();
+                        var remainingPieces = $(this).find('RemainingPieces').text().substr(0, $(this).find('RemainingPieces').text().indexOf('/'));
+                        
+                        if (remainingPieces == 0) {
+                            $("#btnSubmit").attr("disabled", "disabled");
+                        } else {
+                            $("#btnSubmit").removeAttr("disabled");
+                        }
+                           
+                    });
 
-    var txtGroupId = $("#txtGroupId").val().toUpperCase();
-    if ($("#txtGroupId").val() == '') {
-        errmsg = "Please enter groupId.";
-        $.alert(errmsg);
-        return;
-    }
+                    html += "</tbody></table>";
 
-    var txtLocation = $("#txtLocation").val().toUpperCase();
-    if ($("#txtLocation").val() == '') {
-        errmsg = "Please enter location.";
-        $.alert(errmsg);
-        return;
-    }
-
-    //if (HAWBNo == 'Select') {
-    //    HAWBNo = '';
-    //}
-
-    //if (IgmNo == 'Select' || IgmNo == '') {
-    //    errmsg = "Please select IGM</br>";
-    //    $.alert(errmsg);
-    //    return;
-    //}
-
-    //if (IgmId.match("^G")) {
-    //    IsFlightFinalized = 'false';
-    //    GetMovementDetailsFromGHA();
-    //    return;
-    //}
-
-    //if (IgmId.match("^C")) {
-    //    IsFlightFinalized = 'true';
-    //}
-    //if (IsFlightFinalized == 'false') {
-
-    //    return;
-    //}
-
-    //if (CMSGHAFlag == 'G') {
-    //    SaveForwardDetailsForGHA();
-    //    return;
-    //}
-
-
-    var InputXML = '<Root><LocationId>' + _LocId + '</LocationId><LocCode>' + $("#txtLocation").val() + '</LocCode><NOP>' + _LocPieces + '</NOP><AirportCity>' + AirportCity + '</AirportCity><Culture>' + PreferredLanguage + '</Culture><UserID>' + UserID + '</UserID></Root>';
-
-
-
-    if (errmsg == "" && connectionStatus == "online") {
-        $.ajax({
-            type: 'POST',
-            url: GHAImportFlightserviceURL + "SaveWHInternalMovementV3",
-            data: JSON.stringify({
-                'InputXML': InputXML
-            }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            beforeSend: function doStuff() {
-                //$('.dialog-background').css('display', 'block');
-                $('body').mLoading({
-                    text: "Loading..",
-                });
-            },
-            success: function (response) {
-                //debugger;
-                $("body").mLoading('hide');
-                response = response.d;
-                //var str = response.d;
-                var xmlDoc = $.parseXML(response);
-                console.log(xmlDoc)
-                $(xmlDoc).find('Table').each(function (index) {
-
-                    var Status = $(this).find('Status').text();
-                    var OutMsg = $(this).find('OutMsg').text();
-                    var ColorCode = $(this).find('ColorCode').text();
-
-                    if (Status != 'S') {
-                        $('#spnErrormsg').text(OutMsg).css('color', 'red');
-                        //if (OutMsg == 'Location details updated successfully') {
-                        //    $('#spnErrormsg').text(OutMsg).css('color', ColorCode);
-                        //} else {
-                        //    $('#spnErrormsg').text(OutMsg).css('color', 'red');
-                        //}
-                        //  $('#btnMoveDetail').attr('disabled', 'disabled');
-                        // $('#divVCTDetail').hide();
-                        // $('#tblNewsForGatePass').empty();
-                        $('#txtLocation').val('');
-                        $('#txtGroupId').val('');
-                        $('#txtLocation').val('');
-                        $('#txtLocationShow').val('');
-                        $('#txtNOG').val('');
-                        $('#txtRemark').val('');
-                        $('#divVCTDetail').hide();
-                        $('#divAddTestLocation').empty();
-                        $('#txtGroupId').focus();
-                        $('#btnMoveDetail').attr('disabled', 'disabled');
-                        $("#TextBoxDiv").empty();
-                    } else {
-                        $('#spnErrormsg').text(OutMsg).css('color', 'green');
-                        // $('#spnErrormsg').text('');
-                        $('#txtLocation').val('');
-                        $('#txtGroupId').val('');
-                        $('#txtLocation').val('');
-                        $('#txtLocationShow').val('');
-                        $('#txtNOG').val('');
-                        $('#txtRemark').val('');
-                        $('#divVCTDetail').hide();
-                        $('#divAddTestLocation').empty();
-                        $('#txtGroupId').focus();
-                        $('#btnMoveDetail').attr('disabled', 'disabled');
-                        $("#TextBoxDiv").empty();
-                        // $('#btnMoveDetail').removeAttr('disabled');
-                    }
-
-
-                });
-
-                //setTimeout(function () {
-
-                //    GetHAWBDetailsForMAWB();
-                //}, 6000);
-
+                    if (locPieces != '0' && locPieces != '')
+                        $('#divAddTestLocation').append(html);
+                }
+                else {
+                    errmsg = 'Shipment does not exists';
+                    $.alert(errmsg);
+                }
 
             },
             error: function (msg) {
@@ -780,7 +489,7 @@ function GetMovementDetails() {
 function GetMovementDetailsFromGHA() {
 
 
-    $("#btnSubmit").removeAttr("disabled");
+    //$("#btnSubmit").removeAttr("disabled");
 
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
@@ -920,6 +629,22 @@ function SaveForwardDetails() {
     var location = $('#txtLocation_0').val().toUpperCase();
     var BinnPckgs = $('#txtBinnPkgs_0').val();
 
+    //if ($('#txtAWBNo').val() == '') {
+    //    errmsg = "Please enter AWB No.</br>";
+    //    $.alert(errmsg);
+    //    return;
+    //}
+    //if ($('#ddlIGM').val() == '0') {
+    //    errmsg = "Please select IGM No.</br>";
+    //    $.alert(errmsg);
+    //    return;
+    //}
+    //if ($('#txtTotalPkg').val() == '') {
+    //    errmsg = "Please get details</br>";
+    //    $.alert(errmsg);
+    //    return;
+    //}
+   
     if (location == '') {
         errmsg = "Please enter location</br>";
         $.alert(errmsg);
@@ -961,7 +686,9 @@ function SaveForwardDetails() {
             url: CMSserviceURL + "SaveLocationDetails_PDA",
             data: JSON.stringify({
                 'pi_intIGMNo': IgmNo, 'pi_intHAWBNo': SelectedHawbIdCMS,
-                'pi_strLocation': location, 'pi_intLocPieces': BinnPckgs, 'pi_strUserName': window.localStorage.getItem("UserName"),
+                'pi_strLocation': location, 'pi_intLocPieces': BinnPckgs,
+                'pi_strUserName': window.localStorage.getItem("UserName"),
+                'pi_strGroupId': $('#txtGroupID').val()
             }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -977,6 +704,8 @@ function SaveForwardDetails() {
 
                 $('#txtLocation_0').val('');
                 $('#txtBinnPkgs_0').val('');
+                $('#txtGroupID').val('');
+                
                 GetMovementDetails();
             },
             error: function (msg) {
@@ -990,14 +719,14 @@ function SaveForwardDetails() {
 }
 
 function SaveForwardDetailsForGHA() {
-    debugger
+
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
 
     var AWBNo = $('#txtAWBNo').val();
 
-    if ($('#txtGroupId').val() == '') {
-        errmsg = "Please enter Group Id.";
+    if (AWBNo == '') {
+        errmsg = "Please enter AWB No.";
         $.alert(errmsg);
         return;
     }
@@ -1005,16 +734,17 @@ function SaveForwardDetailsForGHA() {
     var IgmId = $("#ddlIGM option:selected").val();
     SelectedHawbNo = $("#ddlHAWB option:selected").text();
 
-
+    var location = $('#txtLocation_0').val().toUpperCase();
+    var BinnPckgs = $('#txtBinnPkgs_0').val();
 
     //var inputXML = '<Root><MAWBID>' + GHAMawbid + '</MAWBID><HAWBID>' + GHAhawbid + '</HAWBID><IGMNo>' + IgmNo + '</IGMNo><FlightSeqNo>' + GHAflightSeqNo + '</FlightSeqNo><LocCode>' + location + '</LocCode><NOP>' + BinnPckgs + '</NOP><Weight></Weight><LocId></LocId><UserId>' + window.localStorage.getItem("UserID") + '</UserId><AirportCity>' + AirportCity + '</AirportCity></Root>';
 
-    var inputXML = '<Root><AWBNo>' + _MAWBNo + '</AWBNo><HouseNo>' + _HAWBNo + '</HouseNo><IGMNo>' + _IGMNo + '~' + _FlightSeqNo + '</IGMNo><LocCode>' + $('#txtLocation').val().toUpperCase() + '</LocCode><LocId>' + _LocId + '</LocId><NOP>' + _LocPieces + '</NOP><UserId>' + UserID + '</UserId><AirportCity>' + AirportCity + '</AirportCity><GroupID>' + $('#txtGroupId').val().toUpperCase() + '</GroupID></Root>';
+    var inputXML = '<Root><AWBNo>' + AWBNo + '</AWBNo><HouseNo>' + SelectedHawbNo + '</HouseNo><IGMNo>' + IgmId + '</IGMNo><LocCode>' + location + '</LocCode><LocId>-1</LocId><NOP>' + BinnPckgs + '</NOP><UserId>' + window.localStorage.getItem("UserID") + '</UserId><AirportCity>' + AirportCity + '</AirportCity><GroupID>' + $('#txtGroupID').val() + '</GroupID></Root>';
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: "POST",
-            url: GHAImportFlightserviceURL + "SaveBinningV2",
+            url: GHAImportFlightserviceURL + "SaveBinning",
             data: JSON.stringify({ 'InputXML': inputXML }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -1038,10 +768,9 @@ function SaveForwardDetailsForGHA() {
                         $.alert('Success');
                 });
 
-                $('#txtLocation').val('');
-                //$('#txtBinnPkgs_0').val('');
-                //  GetMovementDetailsFromGHA();
-                GetHAWBDetailsForMAWB();
+                $('#txtLocation_0').val('');
+                $('#txtBinnPkgs_0').val('');
+                GetMovementDetailsFromGHA();
             },
             error: function (msg) {
                 $("body").mLoading('hide');
@@ -1065,7 +794,7 @@ function AddLocation() {
         LocCount = no;
     }
     var str = "";
-    str = '<div id="loc_' + LocCount + '" class="row panel panel-widget forms-panel form-grids widget-shadow" style="margin-top:5px;">'
+    str = '<div id="loc_' + LocCount + '" class="row" style="margin-top:5px;">'
     str += '<div class="row">'
     str += '<div class="col-xs-12">'
     str += '<a>'
@@ -1119,17 +848,21 @@ function AddLocation() {
 }
 
 function clearALL() {
-    $('#txtGroupId').val('');
-    $('#txtLocation').val('');
-    $('#txtLocationShow').val('');
-    $('#txtNOG').val('');
-    $('#txtRemark').val('');
-    $('#divVCTDetail').hide();
+    $('#txtGroupID').val('');
+    $('#txtOrigin').val('');
+    $('#txtDestination').val('');
+    $('#txtAWBNo').val('');
+    $('#txtCommodity').val('');
+    $('#txtTotalPkg').val('');
+    $('#txtLocation_0').val('');
+    $('#txtArea_0').val('');
+    $('#txtTerminal_0').val('');
+    $('#txtBinnPkgs_0').val('');
     $('#divAddTestLocation').empty();
-    $('#txtGroupId').focus();
-    $('#spnErrormsg').text('');
-    $('#btnMoveDetail').attr('disabled', 'disabled');
-    $("#TextBoxDiv").empty();
+    $('#ddlIGM').val(0);
+    $('#ddlHAWB').val(0);
+    $('#txtAWBNo').focus();
+
 }
 
 function ClearIGM() {
@@ -1166,10 +899,8 @@ function ClearError(ID) {
 }
 
 $(function () {
-    //$("#txtBCDate").datepicker({
-    //    dateFormat: "dd/mm/yy"
-    //});
-    //$("#txtBCDate").datepicker().datepicker("setDate", new Date());
+    $("#txtBCDate").datepicker({
+        dateFormat: "dd/mm/yy"
+    });
+    $("#txtBCDate").datepicker().datepicker("setDate", new Date());
 });
-
-

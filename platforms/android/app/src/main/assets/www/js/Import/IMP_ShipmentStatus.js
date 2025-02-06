@@ -1,12 +1,5 @@
 ﻿
 var CMSserviceURL = window.localStorage.getItem("CMSserviceURL");
-var GHAImportFlightserviceURL = window.localStorage.getItem("GHAImportFlightserviceURL");
-var AirportCity = window.localStorage.getItem("SHED_AIRPORT_CITY");
-var UserID = window.localStorage.getItem("UserID");
-var companyCode = window.localStorage.getItem("companyCode");
-var UserName = window.localStorage.getItem("UserName");
-var AWB_Number = localStorage.getItem('AWB_Number');
-var HAWB_Number = localStorage.getItem('HAWB_Number');
 var SelectedHawbId;
 var IGMno;
 var strXmlStore;
@@ -14,7 +7,6 @@ var locPieces;
 var html;
 var FromLoc;
 var Hawbid;
-var sendID;
 
 $(function () {
 
@@ -55,13 +47,12 @@ function GetHAWBDetailsForMAWB() {
     //    $('#txtAWBNo').val('');
     //    return;
     //}
-    var InputXML = '<Root><AWBNumber>' + $('#txtAWBNo').val() + '</AWBNumber><HouseNo></HouseNo><ShipmentId></ShipmentId><IGMNo></IGMNo><CompanyCode>' + companyCode + '</CompanyCode><UserId>' + UserID + '</UserId><AirportCity>' + AirportCity + '</AirportCity></Root>';
-   // $("#txtAWBNo").blur();
+
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: 'POST',
-            url: GHAImportFlightserviceURL + "GetEventDetails",
-            data: JSON.stringify({ 'InputXML': InputXML }),
+            url: CMSserviceURL + "GetHAWBNumbersForMAWBNumberHistory_PDA",
+            data: JSON.stringify({ 'pi_strMAWBNo': MAWBNo }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function doStuff() {
@@ -73,79 +64,47 @@ function GetHAWBDetailsForMAWB() {
                 //debugger;                
                 $("body").mLoading('hide');
                 response = response.d;
-                console.log(response);
                 var xmlDoc = $.parseXML(response);
 
                 $(xmlDoc).find('Table').each(function () {
-                    Status = $(this).find('Status').text();
-                    StrMessage = $(this).find('StrMessage').text();
 
-                    if (Status == 'E') {
-                        $("#spnErrorMSG").text(StrMessage).css('color', 'red');
-                        $("#txtAWBNo").val('');
-                      //  $("#txtAWBNo").focus();
+                    var outMsg = $(this).find('OutMsg').text();
+
+                    if (outMsg != '') {
+                        $.alert(outMsg);
                         return;
-                    } else {
-                        $("#spnErrorMSG").text('');
+                    }
+                    else {                      
+
+                        var HawbNo = $(this).find('HAWBNo').text();
+                        var HAWBId = $(this).find('HAWBId').text();
+
+                        Hawbid = HAWBId;
+
+                        if (HawbNo != '') {
+
+                            var newOption = $('<option></option>');
+                            newOption.val(HAWBId).text(HawbNo);
+                            newOption.appendTo('#ddlHAWB');
+                        }
+
+                        igmList.push($(this).find('IGMNo').text());                        
                     }
                 });
 
-                $(xmlDoc).find('Table1').each(function () {
+                var uniqueIGMs = [];
 
-                    var HouseNo = $(this).find('HouseNo').text();
-                    var IMPAWBROWID = $(this).find('IMPAWBROWID').text();
-                    sendID = IMPAWBROWID;
-                    var newOption = $('<option></option>');
-                    newOption.val(IMPAWBROWID).text(HouseNo);
-                    newOption.appendTo('#ddlHAWB');
-
-                    //var outMsg = $(this).find('OutMsg').text();
-
-                    //if (outMsg != '') {
-                    //    //$.alert(outMsg);
-                    //    $("#spnErrorMSG").text(outMsg).css('color', 'red');
-                    //    return;
-                    //}
-                    //else {
-                    //    $("#spnErrorMSG").text('');
-                    //    var HawbNo = $(this).find('HAWBNo').text();
-                    //    var HAWBId = $(this).find('HAWBId').text();
-
-                    //    Hawbid = HAWBId;
-
-                    //    if (HawbNo != '') {
-
-                    //        var newOption = $('<option></option>');
-                    //        newOption.val(HAWBId).text(HawbNo);
-                    //        newOption.appendTo('#ddlHAWB');
-                    //    }
-
-                    //    igmList.push($(this).find('IGMNo').text());
-                    //}
+                $.each(igmList, function (i, el) {
+                    if ($.inArray(el, uniqueIGMs) === -1) uniqueIGMs.push(el);
                 });
 
-                //var uniqueIGMs = [];
-
-                //$.each(igmList, function (i, el) {
-                //    if ($.inArray(el, uniqueIGMs) === -1) uniqueIGMs.push(el);
-                //});
-
-                //var i;
-                //for (i = 0; i < uniqueIGMs.length; ++i) {
-                //    // do something with `substr[i]`
-                //    var newOption = $('<option></option>');
-                //    newOption.val(uniqueIGMs[i]).text(uniqueIGMs[i]);
-                //    newOption.appendTo('#ddlIGM');
-                //}
-
-                $(xmlDoc).find('Table2').each(function () {
-                    ShipmentId = $(this).find('ShipmentId').text();
-                    IGMNo = $(this).find('IGMNo').text();
+                var i;
+                for (i = 0; i < uniqueIGMs.length; ++i) {
+                    // do something with `substr[i]`
                     var newOption = $('<option></option>');
-                    newOption.val(ShipmentId).text(IGMNo);
+                    newOption.val(uniqueIGMs[i]).text(uniqueIGMs[i]);
                     newOption.appendTo('#ddlIGM');
-
-                });
+                }
 
             },
             error: function (msg) {
@@ -168,14 +127,11 @@ function GetHAWBDetailsForMAWB() {
         $("body").mLoading('hide');
     }
 }
-//function onkeyupAWBNo() {
-//    if ($('#txtAWBNo').val().length == 11) {
-//        GetHAWBDetailsForMAWB();
-//    }
-//}
+
+
 function GetShipmentDetails() {
 
-
+       
 
     //clearBeforePopulate();
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
@@ -184,71 +140,29 @@ function GetShipmentDetails() {
     var AWBNo = $('#txtAWBNo').val();
     var HAWBNo = $("#ddlHAWB option:selected").text();
     var IgmNo = $("#ddlIGM option:selected").text();
-
     SelectedHawbId = $("#ddlHAWB option:selected").val();
-    //if ($('#ddlHAWB > option').length > 1) {
-    //    if ($("#ddlHAWB option:selected").val() == '0') {
-    //        $("#spnErrorMSG").text("Please select HAWB No.").css('color', 'red');
-    //        return;
-    //    } else {
-    //        $("#spnErrorMSG").text('');
-    //    }
-
-    //} else {
-    //    $("#spnErrorMSG").text('');
-    //}
-    if (SelectedHawbId == '0') {
-
-        SelectedHawbId = Hawbid;
-
-    }
 
     if (AWBNo == '') {
-        //errmsg = "Please enter AWB No.";
-        //$.alert(errmsg);
-        $("#spnErrorMSG").text("Please enter AWB No.").css('color', 'red');
+        errmsg = "Please enter AWB No.";
+        $.alert(errmsg);
         return;
-    } else {
-        $("#spnErrorMSG").text('');
     }
 
     if (HAWBNo == 'Select') {
         HAWBNo = '';
     }
 
-    //if ($('#ddlIGM').val() == '0' && $('#ddlIGM option').length > 1) {
-    //    //errmsg = "Please select IGM</br>";
-    //    //$.alert(errmsg);
-    //    $("#spnErrorMSG").text("Please select IGM No.").css('color', 'red');
-    //    return;
-    //} else {
-    //    $("#spnErrorMSG").text('');
-    //}
-
-    if ($('#ddlIGM > option').length > 1) {
-        if ($("#ddlIGM option:selected").val() == '0') {
-            $("#spnErrorMSG").text("Please select IGM No.").css('color', 'red');
-            return;
-        } else {
-            $("#spnErrorMSG").text('');
-        }
-
-    } else {
-        $("#spnErrorMSG").text('');
+    if ($('#ddlIGM').val() == '0' && $('select#ddlIGM option').length > 1) {
+        errmsg = "Please select IGM</br>";
+        $.alert(errmsg);
+        return;
     }
-    
-    if ($('#ddlIGM > option').length > 1) {
-        var InputXML = '<Root><AWBNumber>' + $('#txtAWBNo').val() + '</AWBNumber><HouseNo>' + HAWBNo + '</HouseNo><ShipmentId>' + $('#ddlIGM').val() + '</ShipmentId><IGMNo>' + $("#ddlIGM option:selected").text() + '</IGMNo><CompanyCode>' + companyCode + '</CompanyCode><UserId>' + UserID + '</UserId><AirportCity>' + AirportCity + '</AirportCity></Root>';
-    } else {
-        var InputXML = '<Root><AWBNumber>' + $('#txtAWBNo').val() + '</AWBNumber><HouseNo>' + HAWBNo + '</HouseNo><ShipmentId>' + sendID + '</ShipmentId><IGMNo></IGMNo><CompanyCode>' + companyCode + '</CompanyCode><UserId>' + UserID + '</UserId><AirportCity>' + AirportCity + '</AirportCity></Root>';
-    }
-
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: 'POST',
-            url: GHAImportFlightserviceURL + "GetEventDetails",
-            data: JSON.stringify({ 'InputXML': InputXML }),
+            url: CMSserviceURL + "GetShipmentStatus_PDA",
+            data: JSON.stringify({ 'pi_intIGMid': IgmNo, 'pi_intHAWBId': SelectedHawbId }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function doStuff() {
@@ -261,9 +175,9 @@ function GetShipmentDetails() {
                 //debugger;
                 $("body").mLoading('hide');
                 var str = response.d;
-                console.log(str);
+
                 strXmlStore = str;
-                $('#divAddTestLocation').empty();
+
                 if (str != null && str != "") {
 
                     $('#divAddTestLocation').empty();
@@ -279,167 +193,20 @@ function GetShipmentDetails() {
 
                     var xmlDoc = $.parseXML(str);
 
-                    $(xmlDoc).find('Table3').each(function (index) {
+                    $(xmlDoc).find('Table1').each(function (index) {
 
-                        var event = $(this).find('Eventname').text().toUpperCase();
-                        var date = $(this).find('EventDateTime').text().toUpperCase();
-                        var user = $(this).find('Username').text().toUpperCase();
+                        var event = $(this).find('EventName').text().toUpperCase();
+                        var date = $(this).find('Dt').text().toUpperCase();
+                        var user = $(this).find('UserName').text().toUpperCase();
 
                         AddTableLocation(event, date, user);
-
+                        
                     });
 
                     html += "</tbody></table>";
 
                     if (locPieces != '0')
                         $('#divAddTestLocation').append(html);
-                }
-                else {
-                    errmsg = 'Shipment does not exists';
-                    $.alert(errmsg);
-                }
-
-            },
-            error: function (msg) {
-                $("body").mLoading('hide');
-                var r = jQuery.parseJSON(msg.responseText);
-                $.alert(r.Message);
-            }
-        });
-    }
-    else if (connectionStatus == "offline") {
-        $("body").mLoading('hide');
-        $.alert('No Internet Connection!');
-    }
-    else if (errmsg != "") {
-        $("body").mLoading('hide');
-        $.alert(errmsg);
-    }
-    else {
-        $("body").mLoading('hide');
-    }
-}
-
-function grtIGMBYHOUSE(hwabrowid) {
-
-
-
-    //clearBeforePopulate();
-    var connectionStatus = navigator.onLine ? 'online' : 'offline'
-    var errmsg = "";
-
-    var AWBNo = $('#txtAWBNo').val();
-    var HAWBNo = $("#ddlHAWB option:selected").text();
-    var IgmNo = $("#ddlIGM option:selected").text();
-
-    SelectedHawbId = $("#ddlHAWB option:selected").val();
-    //if ($('#ddlHAWB > option').length > 1) {
-    //    if ($("#ddlHAWB option:selected").val() == '0') {
-    //        $("#spnErrorMSG").text("Please select HAWB No.").css('color', 'red');
-    //        return;
-    //    } else {
-    //        $("#spnErrorMSG").text('');
-    //    }
-
-    //} else {
-    //    $("#spnErrorMSG").text('');
-    //}
-    //if (SelectedHawbId == '0') {
-
-    //    SelectedHawbId = Hawbid;
-
-    //}
-
-    if (AWBNo == '') {
-        //errmsg = "Please enter AWB No.";
-        //$.alert(errmsg);
-        $("#spnErrorMSG").text("Please enter AWB No.").css('color', 'red');
-        return;
-    } else {
-        $("#spnErrorMSG").text('');
-    }
-
-    if (HAWBNo == 'Select') {
-        HAWBNo = '';
-    }
-
-    //if ($('#ddlIGM').val() == '0' && $('#ddlIGM option').length > 1) {
-    //    //errmsg = "Please select IGM</br>";
-    //    //$.alert(errmsg);
-    //    $("#spnErrorMSG").text("Please select IGM No.").css('color', 'red');
-    //    return;
-    //} else {
-    //    $("#spnErrorMSG").text('');
-    //}
-
-    //if ($("#ddlIGM option:selected").text() == 'Select') {
-    //    $("#spnErrorMSG").text("Please select IGM No.").css('color', 'red');
-    //    return;
-    //} else {
-    //    $("#spnErrorMSG").text('');
-    //}
-
-    var InputXML = '<Root><AWBNumber>' + $('#txtAWBNo').val() + '</AWBNumber><HouseNo>' + HAWBNo + '</HouseNo><ShipmentId>' + hwabrowid + '</ShipmentId><IGMNo></IGMNo><CompanyCode>' + companyCode + '</CompanyCode><UserId>' + UserID + '</UserId><AirportCity>' + AirportCity + '</AirportCity></Root>';
-
-
-    if (errmsg == "" && connectionStatus == "online") {
-        $.ajax({
-            type: 'POST',
-            url: GHAImportFlightserviceURL + "GetEventDetails",
-            data: JSON.stringify({ 'InputXML': InputXML }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            beforeSend: function doStuff() {
-                //$('.dialog-background').css('display', 'block');
-                $('body').mLoading({
-                    text: "Loading..",
-                });
-            },
-            success: function (response) {
-                //debugger;
-                $("body").mLoading('hide');
-                var str = response.d;
-                console.log(str);
-                strXmlStore = str;
-                $('#divAddTestLocation').empty();
-                if (str != null && str != "") {
-
-                    $('#divAddTestLocation').empty();
-                    html = '';
-
-                    html = "<table id='tblNews' border='1' style='width:100%;table-layout:fixed;word-break:break-word;border-color: white;margin-top: 2%;'>";
-                    html += "<thead><tr>";
-                    html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>Event</th>";
-                    html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>Date</th>";
-                    html += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center'font-weight:'bold'>User</th>";
-                    html += "</tr></thead>";
-                    html += "<tbody>";
-
-                    var xmlDoc = $.parseXML(str);
-
-                    $(xmlDoc).find('Table3').each(function (index) {
-
-                        var event = $(this).find('Eventname').text().toUpperCase();
-                        var date = $(this).find('EventDateTime').text().toUpperCase();
-                        var user = $(this).find('Username').text().toUpperCase();
-
-                        AddTableLocation(event, date, user);
-
-                    });
-                    $('#ddlIGM').empty();
-                    $(xmlDoc).find('Table2').each(function () {
-                        ShipmentId = $(this).find('ShipmentId').text();
-                        IGMNo = $(this).find('IGMNo').text();
-                        var newOption = $('<option></option>');
-                        newOption.val(ShipmentId).text(IGMNo);
-                        newOption.appendTo('#ddlIGM');
-
-                    });
-
-                    html += "</tbody></table>";
-
-                    //if (locPieces != '0')
-                    //    $('#divAddTestLocation').append(html);
                 }
                 else {
                     errmsg = 'Shipment does not exists';
@@ -481,15 +248,12 @@ function AddTableLocation(event, date, user) {
 }
 
 function clearBeforePopulate() {
-    $('#txtAWBNo').val('');
-    $('#txtAWBNo').focus();
-    $('#ddlHAWB').val('0');
-    $('#ddlIGM').val('0');
+    $('#txtFlightNo').val('');
+    $('#txtFlightDate').val('');
+    $('#txtRcvPkgs').val('');
     $('#txtRcvWt').val('');
     $('#txtLoc').val('');
-    $('#spnErrorMSG').text('');
-    $('#divAddTestLocation').empty();
-
+    $('#txtStatus').val('');
 }
 
 function ClearError(ID) {

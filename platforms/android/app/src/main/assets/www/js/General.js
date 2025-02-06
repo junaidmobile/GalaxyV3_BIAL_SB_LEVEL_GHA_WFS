@@ -1,48 +1,20 @@
 ﻿//var WebServiceUrl = "http://10.22.3.205/GalaxyService/GalaxyService.asmx/";  //LOCAL PC
 var WebServiceUrl = "http://10.22.3.222/GalaxyMobAppService/GalaxyService.asmx/";  //Local 
-var GHAserviceURL = window.localStorage.getItem("GHAserviceURL");
-var UserId = window.localStorage.getItem("UserID");
-var deviceUUID = window.localStorage.getItem("deviceUUID");
+
 
 (function () {
     document.addEventListener("deviceready", LoadNavBar, false);
 })();
-
-$(function () {
-    LoadNavBar();
-    $('input').attr('autocomplete', 'off');
-
-
-
-
-    //setTimeout(function () {
-
-    //    // window.localStorage.clear();
-    //    HHTLogout();
-
-    //}, 600000);
-    // 600000
-
-    //$('input').on('input', function (event) {
-    //    var string = $('input').val();
-    //    if (string.match(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
-    //        alert('y');
-    //        $('input').val('');
-    //        return true;    // Contains at least one special character or space
-    //    } else {
-    //        return false;
-    //    }
-    //});
-});
-
 function ShowHomePage() {
     window.location.href = "GalaxyHome.html";
 }
+$(function () {
+    LoadNavBar();
+})
 function LoadNavBar() {
     $('#myNavbar').load("NavBar.html");
     var UName = window.localStorage.getItem("Uname");
     var userName = UName != null ? UName.toUpperCase() : UName;
-
 
     if (userName != null && userName.length > Number(8))
         $('#navhdr').html(userName.substring(0, 8));
@@ -61,15 +33,11 @@ function LoadNavBar() {
     else if (window.location.pathname.split("/").pop() == "EXP_DocumentUpload.html") {
         $('#navhdrName').html("Document Upload");
     }
-
     else if (window.location.href.split("/").pop() == "EXP_EuroPalletAcceptance.html") {
-        $('#navhdrName').html("Cargo Acceptance");
+        $('#navhdrName').html("TDG Accept.");
     }
-    //else if (window.location.href.split("/").pop() == "EXP_EuroPalletAcceptance.html?TDG=TDG") {
-    //    $('#navhdrName').html("TDG Acceptance");
-    //}
-    else if (window.location.href.split("/").pop() == "EXP_TDGAcceptance2.html") {
-        $('#navhdrName').html("Cargo Acceptance");
+    else if (window.location.href.split("/").pop() == "EXP_EuroPalletAcceptance.html?TDG=TDG") {
+        $('#navhdrName').html("TDG Accept.");
     }
     else if (window.location.pathname.split("/").pop() == "EXP_ExportQuery.html") {
         $('#navhdrName').html("Export Query");
@@ -88,6 +56,9 @@ function LoadNavBar() {
     }
     else if (window.location.pathname.split("/").pop() == "EXP_Unitization.html") {
         $('#navhdrName').html("Unitization");
+    }
+    else if (window.location.pathname.split("/").pop() == "EXP_ViewClosedUB.html") {
+        $('#navhdrName').html("View Closed ULD/BULK");
     }
     else if (window.location.pathname.split("/").pop() == "EXP_VCTCheck.html") {
         $('#navhdrName').html("VCT Check");
@@ -158,9 +129,6 @@ function LoadNavBar() {
     else if (window.location.pathname.split("/").pop() == "IMP_ShipmentStatus.html") {
         $('#navhdrName').html("Import Query");
     }
-    else if (window.location.pathname.split("/").pop() == "IMP_Examination.html") {
-        $('#navhdrName').html("Split Group");
-    }
     else if (window.location.pathname.split("/").pop() == "IMP_VCTCheck.html") {
         $('#navhdrName').html("VCT Check");
     }
@@ -181,65 +149,28 @@ function LoadNavBar() {
     }
     else if (window.location.pathname.split("/").pop() == "IMP_AWBLocation.html") {
         $('#navhdrName').html("AWB Location");
-    } else if (window.location.pathname.split("/").pop() == "IMP_DockInDockOutStatus.html") {
-        $('#navhdrName').html("Dock In/Dock Out Status");
+    }
+    else if (window.location.pathname.split("/").pop() == "EXP_FWBDetails.html") {
+        $('#navhdrName').html("FWB Details");
     }
     else if (window.location.pathname.split("/").pop() == "IMP_OutOfWarehouse.html") {
         $('#navhdrName').html("Out Of Warehouse");
     }
-    else if (window.location.pathname.split("/").pop() == "IMP_GoodsDelivery.html") {
-        $('#navhdrName').html("Release");
-
-    } else if (window.location.pathname.split("/").pop() == "EXP_DockInDockOutStatus.html") {
-        $('#navhdrName').html("Dock In/Dock Out Status");
-    }
-    else if (window.location.pathname.split("/").pop() == "IMP_ULDAcceptance.html") {
-        $('#navhdrName').html("ULD Acceptance");
-    }
-    else if (window.location.pathname.split("/").pop() == "EXP_DocumentAcceptance.html") {
-        $('#navhdrName').html("Document Acceptance");
-    }
-    else if (window.location.pathname.split("/").pop() == "EXP_ShipmentDeclaration.html") {
-        $('#navhdrName').html("Shipment Declaration");
-    }
-    else if (window.location.pathname.split("/").pop() == "EXP_AWBRegularization.html") {
-        $('#navhdrName').html("Change Of AWB");
-    }
-    else if (window.location.pathname.split("/").pop() == "EXP_TSP.html") {
-        $('#navhdrName').html("TSP");
+    else if (window.location.pathname.split("/").pop() == "IMP_Examination.html") {
+        $('#navhdrName').html("Split Group ID");
     }
     else if (window.location.pathname.split("/").pop() == "EXP_SecurityScreening.html") {
         $('#navhdrName').html("Security Screening");
     }
-
-    else if (window.location.pathname.split("/").pop() == "EXP_BackToTown.html") {
-        $('#navhdrName').html("Back To Town");
+    else if (window.location.pathname.split("/").pop() == "IMP_GatePassLineup.html") {
+        $('#navhdrName').html("Gate Pass Line-Up");
     }
-
-    else if (window.location.pathname.split("/").pop() == "EXP_OffloadULDShipment.html") {
-        $('#navhdrName').html("Remove/Offload Shipment");
+    else if (window.location.pathname.split("/").pop() == "IMP_ULDAcceptance.html") {
+        $('#navhdrName').html("ULD Acceptance");
     }
-    else if (window.location.pathname.split("/").pop() == "IMP_TSP.html") {
-        $('#navhdrName').html("TSP");
-    }
-
-    else if (window.location.pathname.split("/").pop() == "EXP_AirsideRelease_Search.html") {
-        $('#navhdrName').html("GP Release");
-    }
-    else if (window.location.pathname.split("/").pop() == "EXP_GatePassDetails.html") {
-        $('#navhdrName').html("GP Release");
-    }
-    else if (window.location.pathname.split("/").pop() == "IMP_WDO_Retrieval.html") {
-        $('#navhdrName').html("WDO Retrieval");
-    }
-    else if (window.location.pathname.split("/").pop() == "EXP_GenerateBarcode.html") {
-        $('#navhdrName').html("Label Print");
-    }
-
-
 }
 function NumberOnly(e) {
-    e.target.value = e.target.value.replace(/[^0-9\.]/g, '');
+    e.target.value = e.target.value.replace(/[^0-9]/g, '');
     return false;
 }
 function ChkMaxLength(txt, len) {
@@ -272,59 +203,3 @@ function ChkMaxLength(txt, len) {
 //    destinationType: Camera.DestinationType.FILE_URI
 //});
 
-function HHTLogout() {
-
-    var connectionStatus = navigator.onLine ? 'online' : 'offline'
-    var errmsg = "";
-    if (errmsg == "" && connectionStatus == "online") {
-        $.ajax({
-            type: 'POST',
-            url: GHAserviceURL + "HHTLogoutV",
-            data: JSON.stringify({
-                Value1: UserId,
-                Value2: deviceUUID,
-            }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            beforeSend: function doStuff() {
-                //$('.dialog-background').css('display', 'block');
-                $('body').mLoading({
-                    text: "Loading..",
-                });
-            },
-            success: function (response) {
-
-                $("body").mLoading('hide');
-                var str = response.d;
-                var xmlDoc = $.parseXML(str);
-                console.log(xmlDoc)
-                window.location.href = "Login.html";
-                window.localStorage.clear();
-            },
-            error: function (msg) {
-                $("body").mLoading('hide');
-                var r = jQuery.parseJSON(msg.responseText);
-                //alert("Message: " + r.Message);
-                $.alert(r.Message);
-            }
-        });
-    }
-    else if (connectionStatus == "offline") {
-        $("body").mLoading('hide');
-        $.alert('No Internet Connection!');
-    }
-    else if (errmsg != "") {
-        $("body").mLoading('hide');
-        $.alert(errmsg);
-    }
-    else {
-        $("body").mLoading('hide');
-    }
-}
-
-
-function blockSpecialChar(e) {
-    var k;
-    document.all ? k = e.keyCode : k = e.which;
-    return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
-}

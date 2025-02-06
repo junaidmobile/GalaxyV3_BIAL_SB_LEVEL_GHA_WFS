@@ -3,10 +3,6 @@ var GHAImportFlightserviceURL = window.localStorage.getItem("GHAImportFlightserv
 var AirportCity = window.localStorage.getItem("SHED_AIRPORT_CITY");
 var UserID = window.localStorage.getItem("UserID");
 var UserName = window.localStorage.getItem("UserName");
-var companyCode = window.localStorage.getItem("companyCode");
-var PreferredLanguage = window.localStorage.getItem("PreferredLanguage");
-var GHAImportFlightserviceURL = window.localStorage.getItem("GHAImportFlightserviceURL");
-var GHAExportFlightserviceURL = window.localStorage.getItem("GHAExportFlightserviceURL");
 var SelectedHawbId;
 var SelectedHawbIdCMS;
 var SelectedHawbNo;
@@ -41,46 +37,8 @@ $(function () {
 
     // document.addEventListener('deviceready', AddLocation, false);
     //document.addEventListener('deviceready', AddingTestLocation, false);
-    ImportDataList();
-
-    $("input").keyup(function () {
-        var string = $(this).val();
-        // var string = $('#txtOrigin').val();
-        if (string.match(/[`!₹£•√Π÷×§∆€¥¢©®™✓π@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
-            /*$('#txtOrigin').val('');*/
-            $(this).val('');
-            return true;    // Contains at least one special character or space
-        } else {
-            return false;
-        }
-
-    });
-
+  //  ImportDataList();
 });
-
-
-function checkSpecialChartxtNewGroupId() {
-    var string = $('#txtNewGroupId').val();
-    if (string.match(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
-        $('#txtNewGroupId').val('');
-        return true;    // Contains at least one special character or space
-    } else {
-        return false;
-    }
-}
-
-
-function checkSpecialChar() {
-    var string = $('#txtGroupId').val();
-    if (string.match(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
-        $('#txtGroupId').val('');
-        return true;    // Contains at least one special character or space
-    } else {
-        return false;
-    }
-}
-
-
 
 //function CheckEmpty() {
 
@@ -102,13 +60,13 @@ function checkSpecialChar() {
 //}
 
 function gatePassChangeFocus() {
-    if ($('#txtNewGroupId').val().length == 20) {
+    if ($('#txtNewGroupId').val().length == 14) {
         $('#txtPieces').focus();
     }
 }
 
 function gateGroupID() {
-    if ($('#txtGroupId').val().length == 20) {
+    if ($('#txtGroupId').val().length == 14) {
         $('#txtNewGroupId').focus();
         GetHAWBDetailsForMAWB();
     }
@@ -124,6 +82,16 @@ function piecesChangeFocus() {
 function GetHAWBDetailsForMAWBOnSearchButton() {
     $('#divVCTDetail').hide();
     $('#divVCTDetail').empty();
+
+    $('#txtNewGroupId').val('');
+    $('#txtPieces').val('');
+    $('#txtLocation').val('');
+    $('#txtRemark').val('');
+    $('#divVCTDetail').hide();
+    $('#divAddTestLocation').empty();
+    $('#txtGroupId').focus();
+    $('#spnErrormsg').text('');
+
     IsFlightFinalized = '';
     GHAMawbid = '';
     Hawbid = '';
@@ -151,13 +119,12 @@ function GetHAWBDetailsForMAWBOnSearchButton() {
     //    return;
     //}
 
-    var inputXML = '<Root><GroupId>' + $('#txtGroupId').val() + '</GroupId><CompanyCode>' + companyCode + '</CompanyCode><UserId>' + UserID + '</UserId><AirportCity>' + AirportCity + '</AirportCity><Culture>' + PreferredLanguage + '</Culture></Root>';
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: 'POST',
-            url: GHAImportFlightserviceURL + "GetLocationDetailByGroupId",
-            data: JSON.stringify({ 'InputXML': inputXML }),
+            url: CMSserviceURL + "GetLocationDetailFromGroupId",
+            data: JSON.stringify({ 'pi_strGroupId': txtGroupId }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function doStuff() {
@@ -184,12 +151,14 @@ function GetHAWBDetailsForMAWBOnSearchButton() {
                     console.log(Status);
 
                     if (Status == 'E') {
-                        $('#spnErrormsg').text(StrMessage).css('color', 'red');
-
-
+                        $('#txtGroupId').val('');
+                        $("#txtGroupId").focus('')
                         $('#divVCTDetail').hide();
                         $('#divSplitField').hide();
                         $('#divVCTDetail').empty();
+                        $('#spnErrormsg').text(StrMessage).css('color', 'red');
+
+                        
 
                     } else {
                         $('#spnErrormsg').text('');
@@ -280,6 +249,16 @@ function GetHAWBDetailsForMAWBOnSearchButton() {
 function GetHAWBDetailsForMAWB() {
     $('#divVCTDetail').hide();
     $('#divVCTDetail').empty();
+
+    $('#txtNewGroupId').val('');
+    $('#txtPieces').val('');
+    $('#txtLocation').val('');
+    $('#txtRemark').val('');
+    $('#divVCTDetail').hide();
+    $('#divAddTestLocation').empty();
+
+    $('#spnErrormsg').text('');
+
     IsFlightFinalized = '';
     GHAMawbid = '';
     Hawbid = '';
@@ -305,13 +284,11 @@ function GetHAWBDetailsForMAWB() {
     }
 
 
-    var inputXML = '<Root><GroupId>' + $('#txtGroupId').val() + '</GroupId><CompanyCode>' + companyCode + '</CompanyCode><UserId>' + UserID + '</UserId><AirportCity>' + AirportCity + '</AirportCity><Culture>' + PreferredLanguage + '</Culture></Root>';
-
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: 'POST',
-            url: GHAImportFlightserviceURL + "GetLocationDetailByGroupId",
-            data: JSON.stringify({ 'InputXML': inputXML }),
+            url: CMSserviceURL + "GetLocationDetailFromGroupId",
+            data: JSON.stringify({ 'pi_strGroupId': txtGroupId }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function doStuff() {
@@ -339,7 +316,8 @@ function GetHAWBDetailsForMAWB() {
 
                     if (Status == 'E') {
                         $('#spnErrormsg').text(StrMessage).css('color', 'red');
-
+                        $("#txtGroupId").val('')
+                        $("#txtGroupId").focus('')
 
                         $('#divVCTDetail').hide();
                         $('#divSplitField').hide();
@@ -390,23 +368,8 @@ function GetHAWBDetailsForMAWB() {
                         _IsOutOfWarehouse = $(this).find('IsOutOfWarehouse').text();
                         CMSGHAFlag = $(this).find('CMSGHAFlag').text();
                         _FlightSeqNo = $(this).find('FlightSeqNo').text();
+
                         NOG = $(this).find('NOG').text();
-
-                        //                    <OutMsg />
-                        //<MAWBNo>12540003013</MAWBNo>
-                        //<HAWBNo />
-                        //<LocId>3369</LocId>
-                        //<HAWBId>5243</HAWBId>
-                        //<LocCode>ECOL3</LocCode>
-                        //<LocPieces>8</LocPieces>
-                        //<IGMNo>96578</IGMNo>
-                        //<GroupId>GRP098761</GroupId>
-                        //<Remarks />
-                        //<IsOutOfWarehouse>false</IsOutOfWarehouse>
-                        //<NOG>COCONUT</NOG>
-                        //<FlightSeqNo>4224</FlightSeqNo>
-
-
 
 
                         $('#txtLocationShow').val(_LocCode);
@@ -526,11 +489,6 @@ function SplitGroupId() {
     }
 
     var txtLocation = $("#txtLocation").val().toUpperCase();
-    var totalPieces = Number(_LocPieces) - Number(_LocNewPieces);
-
-    var inputXML = '<Root><GroupId>' + $("#txtGroupId").val() + '</GroupId><NewGroupId>' + $("#txtNewGroupId").val() + '</NewGroupId><OldGroupPieces>' + totalPieces + '</OldGroupPieces><NewGroupPieces>' + _LocNewPieces + '</NewGroupPieces><NewLocation>' + $("#txtLocation").val() + '</NewLocation><ShipRowId>' + _HAWBId + '</ShipRowId><LOCID>' + _LocId + '</LOCID><CompanyCode>' + companyCode + '</CompanyCode><UserId>' + UserID + '</UserId><AirportCity>' + AirportCity + '</AirportCity><Culture>' + PreferredLanguage + '</Culture></Root>';
-
-
     if ($("#txtLocation").val() == '') {
         //errmsg = "Please enter location.";
         //$.alert(errmsg);
@@ -543,13 +501,38 @@ function SplitGroupId() {
 
 
 
+    // if (CMSGHAFlag == 'G') {
+    //     SaveForwardDetailsForGHA();
+    //     return;
+    // }
+
+    var totalPieces = Number(_LocPieces) - Number(_LocNewPieces);
+
+    // console.log('pi_strGroupId' + '=' + txtGroupId,
+    //             'pi_intGroupPieces' + '=' + totalPieces,
+    //             'pi_strNewGroupId' + '=' + txtNewGroupId,
+    //             'pi_intNewGroupPieces' + '=' + _LocNewPieces,
+    //             'pi_strNewLocation' + '=' + txtLocation,
+    //             'pi_intHAWBId' + '=' + _HAWBId,
+    //             'pi_intIGMNo' + '=' + _IGMNo,
+    //              'pi_strApplication' + '=' + 'H',
+    //             'pi_strUserId' + '=' + UserName);
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
             type: 'POST',
-            url: GHAImportFlightserviceURL + "SplitGroupId",
+            url: CMSserviceURL + "SplitGroupId",
             data: JSON.stringify({
-                'InputXML': inputXML,
+                'pi_strGroupId': txtGroupId,
+                'pi_intGroupPieces': totalPieces,
+                'pi_strNewGroupId': txtNewGroupId,
+                'pi_intNewGroupPieces': _LocNewPieces,
+                'pi_strNewLocation': txtLocation,
+                'pi_intHAWBId': _HAWBId,
+                'pi_intIGMNo': _IGMNo,
+                'pi_strApplication': 'H',
+                'pi_strUserId': UserName,
+                'pi_strUserName': UserName
 
             }),
             contentType: "application/json; charset=utf-8",
@@ -572,16 +555,14 @@ function SplitGroupId() {
                     var ColorCode = $(this).find('ColorCode').text();
 
                     if (OutMsg != '') {
-                        $('#spnErrormsg').text(OutMsg).css('color', ColorCode);
-                        $('#txtNewGroupId').focus();
+                        //  $('#spnErrormsg').text(OutMsg).css('color', ColorCode);
+                        $.alert(OutMsg).css('color', ColorCode);
+                        $('#txtGroupId').focus();
                         $('#txtNewGroupId').val('');
+                        $('#txtGroupId').val('');
                         $('#txtPieces').val('');
                         $('#txtLocation').val('');
-                        $('#txtGroupId').val('');
-                        $('#txtGroupId').focus();
-                        $('#tblNewsForGatePass').empty();
-
-
+                        GetHAWBDetailsForMAWB();
                     } else {
                         $('#spnErrormsg').text('');
                     }
@@ -589,9 +570,9 @@ function SplitGroupId() {
 
                 });
 
-                // setTimeout(function () {
-                //     GetHAWBDetailsForMAWB();
-                // }, 6000);
+                //setTimeout(function () {
+                //    GetHAWBDetailsForMAWB();
+                //}, 6000);
 
 
             },
@@ -678,7 +659,7 @@ function ImportDataList() {
         $.ajax({
             type: 'POST',
             url: CMSserviceURL + "ImportDataList",
-            data: JSON.stringify({ 'pi_strQueryType': 'I' }),
+            data: JSON.stringify({ 'pi_strQueryType': 'I','pi_strUserName' :UserName,'pi_strSession':''}),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function doStuff() {
@@ -692,18 +673,28 @@ function ImportDataList() {
                 response = response.d;
 
                 var str = response;
-                autoLocationArray = new Array();
+                //autoLocationArray = new Array();
 
-                // This will return an array with strings "1", "2", etc.
-                autoLocationArray = str.split(",");
-                console.log(autoLocationArray)
+                //// This will return an array with strings "1", "2", etc.
+                //autoLocationArray = str.split(",");
+                //console.log(autoLocationArray)
+                var suggestionList = str.split(",");
+                for (var i = 0; i < 200; i++) {
+                    suggestionList.push({
+                        label: 'item' + i,
+                        value: i
+                    });
+                }
+              //  console.log(suggestionList);
+                var info = suggestionList.slice(Math.max(suggestionList.length - 1000, 0))
                 $("#txtLocation").autocomplete({
-                    source: autoLocationArray,
+                    source: info,
                     minLength: 1,
+                    delay: 700,
                     select: function (event, ui) {
                         log(ui.item ?
-                            "Selected: " + ui.item.label :
-                            "Nothing selected, input was " + this.value);
+                          "Selected: " + ui.item.label :
+                          "Nothing selected, input was " + this.value);
                     },
                     open: function () {
                         $(this).removeClass("ui-corner-all").addClass("ui-corner-top");

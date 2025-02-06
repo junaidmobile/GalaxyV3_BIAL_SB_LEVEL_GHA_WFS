@@ -4,7 +4,7 @@ var GHAImportFlightserviceURL = window.localStorage.getItem("GHAImportFlightserv
 var AirportCity = window.localStorage.getItem("SHED_AIRPORT_CITY");
 var FlightSeqNo;
 var SegId;
-
+var UserId = window.localStorage.getItem("UserID");
 $(function () {
 
     if (window.localStorage.getItem("RoleIMPSegregation") == '0') {
@@ -12,7 +12,7 @@ $(function () {
     }
 
     $('#txtIGMYear').val((new Date()).getFullYear());
-
+    ImportDeStuffingZoneList();
 });
 
 function GetHAWBDetailsForMAWB() {
@@ -181,7 +181,10 @@ function GetSegregationDetails() {
                     var outMsg = $(this).find('Status').text();
 
                     if (outMsg == 'E') {
-                        $.alert($(this).find('StrMessage').text());                        
+                        $.alert($(this).find('StrMessage').text());
+                        $('#txtAWBNo').val('');
+                        $('#txtIGMNo').val('');
+                        
                         return;
                     }
                 });
@@ -214,6 +217,66 @@ function GetSegregationDetails() {
     }
 }
 
+
+
+
+function ImportDeStuffingZoneList() {
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+
+    var errmsg = "";
+
+    inputxml = '<Root><ShedCode>BRD</ShedCode><AirportCity>' + AirportCity + '</AirportCity><UserId>' + UserId + '</UserId></Root>';
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: "POST",
+            //url: GHAImportFlightserviceURL + "GetImportHouseDetails",
+            url: GHAImportFlightserviceURL + "ImportDeStuffingZoneList",
+            data: JSON.stringify({
+                'InputXML': inputxml,
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (Result) {
+                Result = Result.d;
+                var xmlDoc = $.parseXML(Result);
+
+                $(xmlDoc).find('Table1').each(function () {
+
+                    LOC_CODE = $(this).find('LOC_CODE').text();
+                    LOC_DESC = $(this).find('LOC_DESC').text();
+
+
+                    var newOption = $('<option></option>');
+                    newOption.val(LOC_CODE).text(LOC_DESC);
+                    newOption.appendTo('#ddlLocation');
+
+
+                });
+
+            },
+            error: function (msg) {
+                $("body").mLoading('hide');
+                $.alert('Data could not be loaded');
+            }
+        });
+        return false;
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+
+
+}
+
 function SaveSegregationDetails() {
 
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
@@ -227,7 +290,13 @@ function SaveSegregationDetails() {
         return;
     }
 
-    var inputXML = '<Root><FlightSeqNo>' + FlightSeqNo + '</FlightSeqNo><ID>' + SegId + '</ID><UserId>' + window.localStorage.getItem("UserID") + '</UserId><AirportCity>' + AirportCity + '</AirportCity></Root>';
+    if ($('#ddlLocation').val() == "-1") {
+        errmsg = "Please select zone";
+        $.alert(errmsg);
+        return;
+    }
+
+    var inputXML = '<Root><FlightSeqNo>' + FlightSeqNo + '</FlightSeqNo><ID>' + SegId + '</ID><UserId>' + window.localStorage.getItem("UserID") + '</UserId><AirportCity>' + AirportCity + '</AirportCity><LocCode>' + $('#ddlLocation').val() + '</LocCode></Root>';
     console.log(inputXML);
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({
@@ -246,10 +315,20 @@ function SaveSegregationDetails() {
                 $("body").mLoading('hide');
                 response = response.d;
                 var xmlDoc = $.parseXML(response);
-
+               
                 $(xmlDoc).find('Table').each(function () {
+                    Status = $(this).find('Status').text();
+                    if (Status == 'E') {
+                        $.alert($(this).find('StrMessage').text());
+                    }
+                    
+                });
 
-                    $.alert($(this).find('StrMessage').text());
+                $(xmlDoc).find('Table1').each(function () {
+                    Status = $(this).find('Status').text();
+                    if (Status == 'S') {
+                        $.alert($(this).find('StrMessage').text());
+                    }
                 });
             },
             error: function (msg) {

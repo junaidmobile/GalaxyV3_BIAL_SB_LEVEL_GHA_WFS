@@ -9,12 +9,12 @@
 
 
 //WFS UAT INTL
-//var GHAImportFlightserviceURL = 'https://wfsuat.kalelogistics.com/Galaxy/services/hhtImpservices.asmx/';
-//var GHAExportFlightserviceURL = 'https://wfsuat.kalelogistics.com/Galaxy/services/hhtExpservices.asmx/';
+var GHAImportFlightserviceURL = 'https://wfsuat.kalelogistics.com/Galaxy/services/hhtImpservices.asmx/';
+var GHAExportFlightserviceURL = 'https://wfsuat.kalelogistics.com/Galaxy/services/hhtExpservices.asmx/';
 
 //WFS LIVE INTL
-var GHAImportFlightserviceURL = 'https://galaxy.wfsblr.com/Galaxy/services/hhtImpservices.asmx/';
-var GHAExportFlightserviceURL = 'https://galaxy.wfsblr.com/Galaxy/services/hhtExpservices.asmx/';
+//var GHAImportFlightserviceURL = 'https://galaxy.wfsblr.com/Galaxy/services/hhtImpservices.asmx/';
+//var GHAExportFlightserviceURL = 'https://galaxy.wfsblr.com/Galaxy/services/hhtExpservices.asmx/';
 
 var deviceUUID;
 var encryptedUUID;

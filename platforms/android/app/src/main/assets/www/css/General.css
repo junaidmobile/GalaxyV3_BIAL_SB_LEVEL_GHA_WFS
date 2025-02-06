@@ -42,7 +42,7 @@
     text-align: right;
     font-size: x-small;
     font-family: Arial;
-    color: white;
+    color: lightgreen;
 }
 
 .form-controlForButtons {
@@ -140,8 +140,7 @@ legend.scheduler-border {
 .ButtonColor {
     background-color: #abc823;
     /*height: 36px;*/
-    /*border-radius: 10px;*/
-    text-transform:capitalize;
+    border-radius: 3px;
 }
 
 .navbarImage {
@@ -259,8 +258,6 @@ label {
 .ButtonColor {
     background-color: #bcd233;
     color: white;
-    height: 30px;
-    text-transform: capitalize;
 }
 
 .col-form-label {
@@ -292,8 +289,4 @@ body {
 
 input {
     text-transform: uppercase;
-}
-
-.select2 {
-    width: 100% !important;
 }

@@ -13,8 +13,7 @@
     <link href="css/sticky-footer.css" rel="stylesheet" />
     <script src="scripts/LoadingModel.js"></script>
     <script src="scripts/LoaderShow-Hide.js"></script>
-    <script src="bootstrap-3.3.7-dist/js/jquery-ui.min.js"></script>
-    <link href="bootstrap-3.3.7-dist/css/jquery-ui.css" rel="stylesheet" />
+    <script src="scripts/Login.js"></script>
     <script src="scripts/dialog.js"></script>
     <script src="js/General.js"></script>
     <link href="css/General.css" rel="stylesheet" />
@@ -24,48 +23,10 @@
     <link href="css/alert.mob.css" rel="stylesheet" />
     <script src="js/amplify.min.js"></script>
     <script src="js/Import/IMP_FlightCheck.js"></script>
-
-
-
     <style type="text/css">
         input[type="radio"] {
             margin: 0 2px 0 10px;
         }
-
-
-        hr {
-            margin-top: 0px;
-            margin-bottom: 0px;
-            border: 0;
-            border-top: 1px solid #555;
-        }
-
-        h6 {
-            overflow: hidden;
-            text-align: center;
-            padding: 0px;
-        }
-
-            h6:before,
-            h6:after {
-                background-color: #555;
-                content: "";
-                display: inline-block;
-                height: 1px;
-                position: relative;
-                vertical-align: middle;
-                width: 50%;
-            }
-
-            h6:before {
-                right: 0.5em;
-                margin-left: -50%;
-            }
-
-            h6:after {
-                left: 0.5em;
-                margin-right: -50%;
-            }
     </style>
 </head>
 <body>
@@ -77,7 +38,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#" id="navhdrName" style="text-align:right;padding-left: 50px;"></a>
+                <a class="navbar-brand" href="#" id="navhdrName" style="text-align:right;"></a>
                 <img class="navbarImage" src="images/Logo.png" onclick="ShowHomePage();">
                 <a href="#" id="navhdr" class="loggedinUser"></a>
             </div>
@@ -94,114 +55,63 @@
                         <form>
                             <div class="row form-group">
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                    <div class="col-xs-4 col-form-label">
+                                    <div class="col-xs-6 col-form-label">
                                         <label id="lblIGMNo" for="txtIGMNo" class="control-label labelFont">IGM No./Year</label>
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-4 NoPadding">
                                         <input type="number" id="txtIGMNo" onkeyup="ChkMaxLength(this, '7'); NumberOnly(event);" class="form-control" autofocus style="text-align:right;">
                                     </div>
-                                    <div class="col-xs-4 NoPadding">
-                                        <input type="number" id="txtIGMYear" onkeyup="ChkMaxLength(this, '4'); NumberOnly(event);" class="form-control">
+                                    <div class="col-xs-2 NoPadding">
+                                        <input type="number" id="txtIGMYear" onkeyup="ChkMaxLength(this, '4'); NumberOnly(event);" class="form-control" style="text-align:right;">
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                <h6>OR</h6>
+                            <div class="row form-group">
+                                <div class="form-group col-xs-4 col-sm-4 col-md-4 col-xs-offset-4 col-sm-offset-4 col-md-offset-4">
+                                    <label id="lblBCNo" for="txtBCNo" class="control-label labelFont">OR</label>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                    <div class="col-xs-4 col-form-label">
+                                    <div class="col-xs-6 col-form-label">
                                         <label id="lblFlightNo" for="txtFlightNo" class="control-label">Flight No.</label>
                                         <font color="red">*</font>
                                     </div>
-                                    <div class="col-xs-4 NoPadding ClearFields">
+                                    <div class="col-xs-3 NoPadding ClearFields">
                                         <input type="text" id="txtFlightPrefix" class="form-control" maxlength="3">
                                     </div>
-                                    <div class="col-xs-4 NoPadding ClearFields">
-                                        <input type="text" id="txtFlightNo" class="form-control" style="text-align:right;" onkeyup="ChkMaxLength(this, '5');">
+                                    <div class="col-xs-3 NoPadding ClearFields">
+                                        <input type="number" id="txtFlightNo" class="form-control" style="text-align:right;" onkeyup="ChkMaxLength(this, '5'); NumberOnly(event);">
                                     </div>
 
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                    <div class="col-xs-4 col-form-label">
+                                    <div class="col-xs-6 col-form-label">
                                         <label id="lblFlightNo" for="txtFlightDate" class="control-label">Flight Date</label>
                                         <font color="red">*</font>
                                     </div>
-
-                                    <!--<div class="col-xs-2 NoPadding">
-                                        <select class="form-control" id="day"></select>
-
-                                    </div>
-                                    <div class="col-xs-3 NoPadding">
-                                        <select class="form-control" id="month"></select>
-                                    </div>
-
-                                    <div class="col-xs-3 NoPadding">
-                                        <select class="form-control" id="year"></select>
-                                    </div>-->
-                                    <div class="col-xs-8 NoPadding ClearFields">
-
-                                        <input type="text" style="text-transform: none;"
-                                               id="txtFlightDate" class="form-control"
-                                               title="Date">
-
+                                    <div class="col-xs-6 NoPadding ClearFields">
+                                        <input type="date" id="txtFlightDate" class="form-control" title="Date">
                                     </div>
                                 </div>
                             </div>
-
-
-
 
                             <div class="row" style="margin-top:5px;">
                                 <div class="form-group col-xs-4 col-sm-4 col-md-4">
                                     <input type="button" id="btnClear" class="form-control ButtonColor" value="Clear" onclick="clearALL()">
                                 </div>
                                 <div class="form-group col-xs-4 col-sm-4 col-md-4">
-                                    <input type="button" id="btnView" class="form-control ButtonColor" value="View" onclick="ViewFlightRelatedDetails()">
+                                    <input type="button" id="btnClear" class="form-control ButtonColor" value="View" onclick="ViewFlightRelatedDetails()">
                                 </div>
                                 <div class="form-group col-xs-4 col-sm-4 col-md-4">
                                     <input type="button" id="btnGetDetail" class="form-control ButtonColor" value="Get" onclick="GetFlightDetails();">
                                 </div>
                             </div>
 
-                            <div class="row" style="margin-top:10px;">
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                    <div class="col-xs-4 col-form-label">
-                                        <label id="lblFlightNoATA" for="txtFlightATA" class="control-label">ATA</label>
-                                        <font color="red">*</font>
-                                    </div>
-
-                                    <div class="col-xs-5 NoPadding ClearFields">
-                                        <!--<input type="datetime-local" id="txtFlightATA" class="form-control">-->
-                                        <input type="date" style="text-transform: none;"
-                                               id="txtFlightATA" class="form-control"
-                                               title="Date">
-                                    </div>
-                                    <div class="col-xs-3 NoPadding ClearFields">
-                                        <!--<input type="datetime-local" id="txtFlightATA" class="form-control">-->
-                                        <input type="time" style="text-transform: none;"
-                                               id="txtFlightTime" class="form-control"
-                                               title="Time">
-                                    </div>
-                                </div>
-
-
-
-                                <div class="form-group col-xs-6 col-sm-6 col-md-6 " style="margin-top:10px;">
-                                    <input type="button" id="btnATA" class="form-control ButtonColor" value="Record ATA" onclick="FlightATA_V4()">
-                                </div>
-
-                                <div class="form-group col-xs-6 col-sm-6 col-md-6 " style="margin-top:10px;">
-                                    <input type="button" id="btnFinalize" class="form-control ButtonColor" value="Finalize Flight" onclick="FlightFinalize_V4();" disabled>
-                                </div>
-
-                            </div>
-
-                            <font size="2" id="lblFlightStatus" style="font-weight: bold;color:green;"></font>
-                            <font size="2" id="lblFlightStatusError" style="font-weight: bold;color:red;"></font>
+                            <font color="red" size="2" id="lblFlightStatus" style="font-weight: bold"></font>
                         </form>
                     </div>
                 </div>
@@ -221,7 +131,7 @@
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-6 col-form-label">
-                                        <label id="lblManiPieces" for="txtManiPieces" class="control-label">Tot. Manifest. NoP</label>
+                                        <label id="lblManiPieces" for="txtManiPieces" class="control-label">Tot. Manifest. Pkgs.</label>
                                     </div>
                                     <div class="col-xs-6 NoPadding ClearFields">
                                         <input type="text" id="txtManiPieces" class="form-control" disabled style="text-align:right;">
@@ -231,7 +141,7 @@
                             <div class="row">
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-6 col-form-label">
-                                        <label id="lblReceivePieces" for="txtReceivePieces" class="control-label">Tot. Received NoP</label>
+                                        <label id="lblReceivePieces" for="txtReceivePieces" class="control-label">Tot. Rcved. Pkgs.</label>
 
                                     </div>
                                     <div class="col-xs-6 NoPadding ClearFields">
@@ -258,7 +168,7 @@
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-6 col-form-label">
-                                        <label id="lblShortPieces" for="txtShortPieces" class="control-label">Tot. Short land NoP</label>
+                                        <label id="lblShortPieces" for="txtShortPieces" class="control-label">Tot. Short land Pkgs.</label>
                                     </div>
                                     <div class="col-xs-6 NoPadding ClearFields">
                                         <input type="text" id="txtShortPieces" class="form-control" disabled style="text-align:right;">
@@ -268,7 +178,7 @@
                             <div class="row">
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-6 col-form-label">
-                                        <label id="lblExcessPieces" for="txtExcessPieces" class="control-label">Tot. Exc. landed NoP</label>
+                                        <label id="lblExcessPieces" for="txtExcessPieces" class="control-label">Tot. Exc. landed Pkgs.</label>
                                     </div>
                                     <div class="col-xs-6 NoPadding ClearFields">
                                         <input type="text" id="txtExcessPieces" class="form-control" disabled style="text-align:right;">
@@ -280,6 +190,14 @@
                                     </div>
                                     <div class="col-xs-6 NoPadding ClearFields">
                                         <input type="text" id="txtDamagePieces" class="form-control" disabled style="text-align:right;">
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-6 col-form-label">
+                                        <label id="lblDamagePieces" for="txtDamagePieces" class="control-label">Flight Manpower </label>&nbsp;<font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-6 NoPadding ClearFields">
+                                        <input type="text" id="txtFlightManpower" class="form-control" style="text-align:right;">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -317,117 +235,6 @@
     </div>
 </body>
 <script language="javascript" type="text/javascript">
-
     $('#RightsReserved').text(' \xA9 Kale Logistics Solutions Private Limited. ' + (new Date).getFullYear().toString());
-    $(document).ready(function () {
-        //var now = new Date();
-
-        //var day = ("0" + now.getDate()).slice(-2);
-        //var month = ("0" + (now.getMonth() + 1)).slice(-2);
-
-        //var today = (day) + "-" + (month) + "-" + now.getFullYear();
-
-        //$('#txtFlightDate').val(today);
-
-        //$("#txtFlightDate").datepicker({
-        //    shortYearCutoff: 1,
-        //    changeMonth: true,
-        //    changeYear: true,
-        //    dateFormat: 'dd-mm-yy',
-
-        //});
-
-        let date = new Date();
-        const day = date.toLocaleString('default', { day: '2-digit' });
-        const month = date.toLocaleString('default', { month: 'short' });
-        const year = date.toLocaleString('default', { year: 'numeric' });
-        var today = day + '-' + month + '-' + year;
-        $('#txtFlightDate').val(today);
-
-        $("#txtFlightDate").datepicker({
-            shortYearCutoff: 1,
-            changeMonth: true,
-            changeYear: true,
-            dateFormat: 'dd-M-yy',
-
-        });
-
-
-
-        var date1 = new Date();
-
-        var day1 = date1.getDate(),
-            month1 = date1.getMonth() + 1,
-            year1 = date1.getFullYear(),
-            hour1 = date1.getHours(),
-            min1 = date1.getMinutes();
-
-        month1 = (month1 < 10 ? "0" : "") + month1;
-        day1 = (day1 < 10 ? "0" : "") + day1;
-        hour1 = (hour1 < 10 ? "0" : "") + hour1;
-        min1 = (min1 < 10 ? "0" : "") + min1;
-
-        var today1 = year1 + "-" + month1 + "-" + day1,
-            displayTime = hour1 + ":" + min1;
-
-        $('#txtFlightTime').val(displayTime);
-        $('#txtFlightATA').val(today1);
-
-        //        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        //"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-        //        ];
-        //        let qntYears = 4;
-        //        let selectYear = $("#year");
-        //        let selectMonth = $("#month");
-        //        let selectDay = $("#day");
-        //        let currentYear = new Date().getFullYear();
-
-        //        for (var y = 0; y < qntYears; y++) {
-        //            let date = new Date(currentYear);
-        //            let yearElem = document.createElement("option");
-        //            yearElem.value = currentYear
-        //            yearElem.textContent = currentYear;
-        //            selectYear.append(yearElem);
-        //            currentYear--;
-        //        }
-
-        //        for (var m = 0; m < monthNames.length; m++) {
-        //            let month = monthNames[m];
-        //            let monthElem = document.createElement("option");
-        //            monthElem.value = m + 1;
-        //            monthElem.textContent = month;
-        //            selectMonth.append(monthElem);
-        //        }
-
-        //        var d = new Date();
-        //        var month = d.getMonth();
-        //        var year = d.getFullYear();
-        //        var day = d.getDate();
-
-        //        selectYear.val(year);
-        //        selectYear.on("change", AdjustDays);
-        //        selectMonth.val(month + 1);
-        //        selectMonth.on("change", AdjustDays);
-
-        //        AdjustDays();
-        //        selectDay.val(day)
-
-        //        function AdjustDays() {
-        //            var year = selectYear.val();
-        //            var month = parseInt(selectMonth.val()) + 1;
-        //            selectDay.empty();
-
-        //            //get the last day, so the number of days in that month
-        //            var days = new Date(year, month, 0).getDate();
-
-        //            //lets create the days of that month
-        //            for (var d = 1; d <= days; d++) {
-        //                var dayElem = document.createElement("option");
-        //                dayElem.value = d;
-        //                dayElem.textContent = d;
-        //                selectDay.append(dayElem);
-        //            }
-        //        }
-    });
 </script>
 </html>

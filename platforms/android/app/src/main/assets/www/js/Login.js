@@ -1,45 +1,46 @@
 ﻿
-//BAIL QA INTL
-var GHAImportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3dom/services/HHTImpServices.asmx/';
-var GHAExportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3dom/services/hhtExpservices.asmx/';
+//UAT
+var GHAserviceURL = 'https://uatwww.cargocel.in/galaxy/Services/HHTImpServices.asmx/';
+var GHAImportFlightserviceURL = 'https://uatwww.cargocel.in/galaxy/Services/HHTImpServices.asmx/';
+var GHAExportFlightserviceURL = 'https://uatwww.cargocel.in/galaxy/Services/HHTExpServices.asmx/';
+var CMSserviceURL = 'https://uatwww.cargocel.in/CELEBIHHTWebservices/CMS_WS_PDA.asmx/';
 
 
-//BAIL UAT INTL
-//var GHAImportFlightserviceURL = 'https://galaxyuat.kalelogistics.com/GalaxyV3DOM/Services/HHTimpServices.asmx/';
-//var GHAExportFlightserviceURL = 'https://galaxyuat.kalelogistics.com/GalaxyV3DOM/Services/HHTExpServices.asmx/';
+//UAT Client
+//var GHAserviceURL = 'http://52.172.181.171/Galaxy/Services/HHTImpServices.asmx/';
+//var GHAImportFlightserviceURL = 'http://52.172.181.171/Galaxy/services/HHTImpServices.asmx/';
+//var GHAExportFlightserviceURL = 'http://52.172.181.171/Galaxy/Services/HHTExpServices.asmx/';
+//var CMSserviceURL = 'http://52.172.181.171/CELEBICMSHHT/CMS_WS_PDA.asmx/';
 
-//var GHAImportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3/services/HHTImpServices.asmx/';
-//var GHAExportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3/services/hhtExpservices.asmx/';
+//QA link
 
-
-//var GHAImportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3_Dev/Services/HHTImpServices.asmx/';
-//var GHAExportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/GalaxyV3_Dev/Services/HHTExpServices.asmx/';
-
-
-
-//WFS QA
-//var GHAImportFlightserviceURL = 'https://wfsuat.kalelogistics.com/Galaxy/services/hhtImpservices.asmx/';
-//var GHAExportFlightserviceURL = 'https://wfsuat.kalelogistics.com/Galaxy/services/hhtExpservices.asmx/';
+// var GHAserviceURL = 'https://galaxyqa.kalelogistics.com/Galaxy/services/hhtimpservices.asmx/';
+// var GHAImportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/Galaxy/services/hhtimpservices.asmx/';
+// var GHAExportFlightserviceURL = 'https://galaxyqa.kalelogistics.com/Galaxy/services/hhtexpservices.asmx/';
+// var CMSserviceURL = 'https://galaxyqa.kalelogistics.com/CELEBICMSHHT/CMS_WS_PDA.asmx/';
 
 
-//WFS UAT INTL
-//var GHAImportFlightserviceURL = 'https://wfsuat.kalelogistics.com/Galaxy/services/hhtImpservices.asmx/';
-//var GHAExportFlightserviceURL = 'https://wfsuat.kalelogistics.com/Galaxy/services/hhtExpservices.asmx/';
+//Live link
 
-//WFS LIVE INTL
-//var GHAImportFlightserviceURL = 'https://galaxy.wfsblr.com/Galaxy/services/hhtImpservices.asmx/';
-//var GHAExportFlightserviceURL = 'https://galaxy.wfsblr.com/Galaxy/services/hhtExpservices.asmx/';
+//var GHAserviceURL = 'https://www.cargocel.in/GalaxyGHA/services/hhtImpservices.asmx/';
+//var GHAImportFlightserviceURL = 'https://www.cargocel.in/GalaxyGHA/services/hhtImpservices.asmx/';
+//var GHAExportFlightserviceURL = 'https://www.cargocel.in/GalaxyGHA/services/hhtExpservices.asmx/';
+//var CMSserviceURL = 'https://www.cargocel.in/GalaxyCMS/HHTWebservice/CMS_WS_Pda.asmx/';
 
-var deviceUUID;
-var encryptedUUID;
+
+//var CMSserviceURL = 'https://www.cargocel.in/GalaxyCMS/HHTWebService_Screening_Test/CMS_WS_PDA.asmx/';
+
+
+// New server
+//var GHAserviceURL = 'https://www.celebiaviation.in/GalaxyGHA/services/hhtImpservices.asmx/';
+//var GHAImportFlightserviceURL = 'https://www.celebiaviation.in/GalaxyGHA/services/hhtImpservices.asmx/';
+//var GHAExportFlightserviceURL = 'https://www.celebiaviation.in/GalaxyGHA/services/hhtExpservices.asmx/';
+//var CMSserviceURL = 'https://www.celebiaviation.in/GalaxyCMS/Webservice/CMS_WS_PDA.asmx/';
+
+
 document.addEventListener("deviceready", SetRememberLogin, false);
 document.addEventListener("backbutton", exitFromApp, false);
-
-var allData;
-
 $(function () {
-    $('#txtUserName').val('');
-    $('#txtPassword').val('');
     //$(":text").addClear();
     //$(":password").addClear();
     //$('input[type=text]').addClear();
@@ -57,52 +58,7 @@ $(function () {
     clearStorageExcept(['UserName', 'Password', 'IsRememberChecked']);
 
     SetRememberLogin();
-
-
-    //// var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
-    //var string = $('input').val();
-
-    //alert(string)
-    //if (string.match(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
-    //    alert('S')
-    //    return true;
-    //} else {
-    //    alert('N')
-    //    return false;
-    //}
-
-
 });
-
-
-function userNameCheckSpecialChar() {
-    var string = $('#txtUserName').val();
-    if (string.match(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
-        $('#txtUserName').val('');
-        return true;    // Contains at least one special character or space
-    } else {
-        return false;
-    }
-}
-
-function ProcessLogin1() {
-
-    //window.localStorage.setItem("UserID", '1');
-    //window.localStorage.setItem("UserName", 'kale');
-    //window.localStorage.setItem("companyCode", 'BUD');
-    //window.localStorage.setItem("SHED_AIRPORT_CITY", 'BUD');
-    //window.localStorage.setItem("SHED_CODE", 'BUD');
-
-    //window.localStorage.setItem("GHAserviceURL", GHAserviceURL);
-    //window.localStorage.setItem("GHAImportFlightserviceURL", GHAImportFlightserviceURL);
-    //window.localStorage.setItem("GHAExportFlightserviceURL", GHAExportFlightserviceURL);
-    ////window.localStorage.setItem("CargoWorksServiceURL", CargoWorksServiceURL);
-    //window.localStorage.setItem("CMSserviceURL", CMSserviceURL);
-    //window.localStorage.setItem("CMSserviceURL", CMSserviceURL);
-
-    //window.location = "GalaxyHome.html";
-
-}
 
 function ProcessLogin() {
     //window.location = "GalaxyHome.html";
@@ -119,19 +75,17 @@ function ProcessLogin() {
     if (Uname == null || Uname == "") {
         errmsg = errmsg + 'Please enter user id.<br/>';
         $.alert(errmsg);
-        HideLoader();
-        return;
+        return false;
     }
 
     if (Pass == null || Pass == "") {
         errmsg = errmsg + 'Please enter password.';
         $.alert(errmsg);
-        HideLoader();
-        return;
+        return false;
     }
 
 
-    //  SetLoginRolesRights(Uname);
+    // SetLoginRolesRights(Uname);
 
     if (Uname != null && Uname != "" && Pass != null && Pass != "" && connectionStatus == "online") {
         $.ajax({
@@ -141,53 +95,41 @@ function ProcessLogin() {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (response) {
-                console.log('Details got via login: ', response);
                 HideLoader();
                 var str = response.d;
                 if (str != null && str != "" && str != "<NewDataSet />") {
-                    flagValid = '0';
+
                     var xmlDoc = $.parseXML(str);
-                    console.log('Details got via login: ', xmlDoc);
+
                     $(xmlDoc).find('Table').each(function (index) {
-                        flagValid = '1';
                         window.localStorage.setItem("UserID", $(this).find('Userid').text());
                         window.localStorage.setItem("UserName", $(this).find('User_Name').text());
                         window.localStorage.setItem("companyCode", $(this).find('CompanyCode').text());
                         window.localStorage.setItem("SHED_AIRPORT_CITY", $(this).find('SHED_AIRPORT_CITY').text());
                         window.localStorage.setItem("SHED_CODE", $(this).find('SHED_CODE').text());
-                        window.localStorage.setItem("PreferredLanguage", $(this).find('PreferredLanguage').text());
 
                         window.localStorage.setItem("GHAserviceURL", GHAserviceURL);
                         window.localStorage.setItem("GHAImportFlightserviceURL", GHAImportFlightserviceURL);
                         window.localStorage.setItem("GHAExportFlightserviceURL", GHAExportFlightserviceURL);
                         //window.localStorage.setItem("CargoWorksServiceURL", CargoWorksServiceURL);
-
+                        window.localStorage.setItem("CMSserviceURL", CMSserviceURL);
+                        window.localStorage.setItem("CMSserviceURL", CMSserviceURL);
 
                         window.location = "GalaxyHome.html";
                     });
 
-                    if (flagValid == '0') {
-                        HideLoader();
-                        errmsg = errmsg + 'Invalid username and/or password.';
-                        $.alert(errmsg);
-                    }
-
                 }
                 else {
-                    if (flagValid == '0') {
-                        HideLoader();
-                        errmsg = errmsg + 'Invalid username and/or password.';
-                        $.alert(errmsg);
-                    }
-
+                    HideLoader();
+                    errmsg = errmsg + 'Invalid username and/or password.';
+                    $.alert(errmsg);
                 }
             },
             error: function (msg) {
                 HideLoader();
                 var r = jQuery.parseJSON(msg.responseText);
                 alert("Message: " + r.Message);
-                // $.alert("Login failed due to some error");
-            }
+            },
         });
 
 
@@ -252,7 +194,7 @@ function SetRememberLogin() {
             if (connectionStatus == 'online') {
             }
             else {
-                $.tips('You are offline. Please contact Admin.');
+                $.tips('You are offline. Please contact IT helpdesk at +918860130401, 01125601027 </br>Email: ithelpdesk@celebiaviation.in');
             }
         }, 3000);
     }
@@ -441,10 +383,11 @@ function SetLoginRolesRights() {
                     $.alert(errmsg);
                 }
             },
-            error: function (msg) {
-                HideLoader();
-                //var r = jQuery.parseJSON(msg.responseText);
-                //alert("Message: " + r.Message);                
+            error: function (xhr, textStatus, errorThrown) {
+                $("body").mLoading('hide');
+                //alert('Server not responding...');
+                console.log(xhr.responseText);
+                alert(xhr.responseText);
             }
         });
 
@@ -505,90 +448,4 @@ clearStorageExcept = function (exceptions) {
             localStorage.removeItem(key);
         }
     }
-}
-
-function viewPassword() {
-    var x = document.getElementById("txtPassword");
-    if (x.type === "password") {
-        $(".zmdi-eye").show();
-        $(".zmdi-eye-off").hide();
-        x.type = "text";
-    } else {
-        $(".zmdi-eye").hide();
-        $(".zmdi-eye-off").show();
-        x.type = "password";
-    }
-}
-
-function ProcessLoginCORVI() {
-    //window.location = "GalaxyHome.html";
-    //return;
-
-
-
-    var connectionStatus = navigator.onLine ? 'online' : 'offline'
-
-
-
-    //  SetLoginRolesRights(Uname);
-
-    if (connectionStatus == "online") {
-        $.ajax({
-            type: 'POST',
-            url: 'https://lms.balmerlawrie.co.in/MobapiLive/MobileAPI/' + "Login",
-            data: JSON.stringify({ "UserId": "HCL", "Password": "HCL@123", "IdentityCode": "BLL1244" }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (response) {
-                console.log('Details got via login: ', response);
-                HideLoader();
-                var str = response.d;
-                if (str != null && str != "" && str != "<NewDataSet />") {
-
-                    var xmlDoc = $.parseXML(str);
-                    console.log('Details got via login: ', xmlDoc);
-                    $(xmlDoc).find('Table').each(function (index) {
-                        window.localStorage.setItem("UserID", $(this).find('Userid').text());
-                        window.localStorage.setItem("UserName", $(this).find('User_Name').text());
-                        window.localStorage.setItem("companyCode", $(this).find('CompanyCode').text());
-                        window.localStorage.setItem("SHED_AIRPORT_CITY", $(this).find('SHED_AIRPORT_CITY').text());
-                        window.localStorage.setItem("SHED_CODE", $(this).find('SHED_CODE').text());
-                        window.localStorage.setItem("PreferredLanguage", $(this).find('PreferredLanguage').text());
-
-                        window.localStorage.setItem("GHAserviceURL", GHAserviceURL);
-                        window.localStorage.setItem("GHAImportFlightserviceURL", GHAImportFlightserviceURL);
-                        window.localStorage.setItem("GHAExportFlightserviceURL", GHAExportFlightserviceURL);
-                        //window.localStorage.setItem("CargoWorksServiceURL", CargoWorksServiceURL);
-
-
-                        window.location = "GalaxyHome.html";
-                    });
-
-                }
-                else {
-                    HideLoader();
-                    errmsg = 'Invalid username and/or password.';
-                    $.alert(errmsg);
-                }
-            },
-            error: function (msg) {
-                HideLoader();
-                var r = jQuery.parseJSON(msg.responseText);
-                alert("Message: " + r.Message);
-                // $.alert("Login failed due to some error");
-            }
-        });
-
-
-        //window.location = "GalaxyHome.html";
-
-        //if (Uname == "VENKATAS" && Pass == "123") {
-        //    window.location = "GalaxyHome.html";
-        //}
-    }
-    else if (connectionStatus == "offline") {
-        HideLoader();
-        $.alert('No Internet Connection!');
-    }
-
 }

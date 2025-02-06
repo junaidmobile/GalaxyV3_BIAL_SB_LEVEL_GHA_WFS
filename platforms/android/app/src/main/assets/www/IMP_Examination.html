@@ -69,8 +69,8 @@
                                     </div>
                                     <div class="col-xs-6 NoPadding">
                                         <input id="txtGroupId"
-                                                autofocus class="form-control" 
-                                               type="text" oninput="checkSpecialChar();" onkeyup="ChkMaxLength(this, '14');" maxlength="14" onblur="GetHAWBDetailsForMAWB()">
+                                               autofocus class="form-control"
+                                               type="number"  onkeyup="ChkMaxLength(this, '14');    gateGroupID();" onblur="    GetHAWBDetailsForMAWB()">
                                     </div>
                                 </div>
                                 <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" style="display:none;">
@@ -99,8 +99,6 @@
                 </div>
             </div>
 
-
-
             <div id="divVCTDetail">
             </div>
 
@@ -124,7 +122,7 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <input id="txtNewGroupId" maxlength="14" class="form-control" type="text" oninput="checkSpecialChartxtNewGroupId();" onkeyup="ChkMaxLength(this, '14');">
+                                        <input id="txtNewGroupId" class="form-control" type="number" onkeyup="ChkMaxLength(this, '14'); gatePassChangeFocus();">
                                     </div>
                                     <div class="col-xs-6 col-form-label" style="padding-top: 2%;">
                                         <label id="lblPieces" for="">Pieces</label>
@@ -138,7 +136,7 @@
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <input id="txtLocation"  class="form-control"
+                                        <input id="txtLocation" class="form-control"
                                                type="text" maxlength="15">
                                     </div>
                                 </div>
@@ -163,19 +161,21 @@
                                 <span id="spnErrormsg"></span>
                             </div>
 
+                            <div class="row form-group">
+                                <div class="form-group col-xs-6 col-sm-6 col-md-6" style="margin-top:15px">
+                                    <input type="button" id="btnExcLanded" class="form-control ButtonColor" value="Exit" onclick="window.location.href = 'IMP_Dashboard.html'">
+                                </div>
+                                <div class="form-group col-xs-6 col-sm-6 col-md-6" style="margin-top:15px">
+                                    <input type="button" id="btnClear" class="form-control ButtonColor" value="Clear" onclick="clearALL()">
+                                </div>
+                                <div id="divAddTestLocation">
+
+                                </div>
+                            </div>
+
                         </form>
                     </div>
                 </div>
-            </div>
-
-            <div class="form-group col-xs-6 col-sm-6 col-md-6" style="margin-top:15px">
-                <input type="button" id="btnExcLanded" class="form-control ButtonColor" value="Exit" onclick="window.location.href = 'IMP_Dashboard.html'">
-            </div>
-            <div class="form-group col-xs-6 col-sm-6 col-md-6" style="margin-top:15px">
-                <input type="button" id="btnClear" class="form-control ButtonColor" value="Clear" onclick="clearALL()">
-            </div>
-            <div id="divAddTestLocation">
-
             </div>
         </div>
     </div>

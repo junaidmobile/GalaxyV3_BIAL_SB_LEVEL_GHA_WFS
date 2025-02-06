@@ -6,9 +6,9 @@ function OnPageLoad() {
     var Query = window.location.search;
     var TDG = Query.split('&')[0].split('=')[1];
     if ((TDG != "" )&& (TDG != undefined)) {
-        $('#navhdrName').html("Cargo Acceptance");
+        $('#navhdrName').html("TDG Accept.");
     }
     else {
-        $('#navhdrName').html("Cargo Acceptance");
+        $('#navhdrName').html("TDG Accept.");
     }
 }

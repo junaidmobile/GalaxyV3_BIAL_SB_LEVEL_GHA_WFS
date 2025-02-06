@@ -6,7 +6,7 @@ var OldLocationPieces;
 var strXmlStore;
 var locPieces;
 var html;
-
+var intAwbId;
 $(function () {
 
     if (window.localStorage.getItem("RoleExpIntlMvmt") == '0') {
@@ -162,6 +162,7 @@ function GetEWRNo() {
 
                         EWRval = $(this).find('EWRNo').text();
                         EWRno = $(this).find('EWRNo').text();
+                        intAwbId = $(this).find('AWBId').text();
 
                         var newOption = $('<option></option>');
                         newOption.val(EWRval).text(EWRno);
@@ -230,7 +231,7 @@ function GetShipmentLocation() {
         $.ajax({
             type: 'POST',
             url: CMSserviceURL + "GetShipmentLocationDetailsInternalMovement_PDA",
-            data: JSON.stringify({ 'pi_strMAWBNo': AWBNo, 'pi_strEWRNo': EWRNo }),
+            data: JSON.stringify({ 'pi_strMAWBNo': AWBNo, 'pi_strEWRNo': EWRNo, 'pi_intAwbId': intAwbId }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             beforeSend: function doStuff() {

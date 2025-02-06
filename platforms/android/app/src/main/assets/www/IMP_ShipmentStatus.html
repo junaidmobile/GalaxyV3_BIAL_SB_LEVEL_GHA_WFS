@@ -24,7 +24,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top" id="navbar">
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="navbar">        
         <div class="container-fluid">
             <div class="navbar-header" style="background-color:#065da1;">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" id="btnnavbar" data-target="#myNavbar">
@@ -32,14 +32,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#" id="navhdrName" style="text-align:right;padding-left: 50px;"></a>
+                <a class="navbar-brand" href="#" id="navhdrName" style="text-align:right;"></a>
                 <img class="navbarImage" src="images/Logo.png" onclick="ShowHomePage();">
                 <a href="#" id="navhdr" class="loggedinUser"></a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
 
             </div>
-        </div>
+        </div> 
     </nav>
     <div class="container-fluid" style="margin-top:63px;">
         <div class="panel-body">
@@ -50,27 +50,26 @@
                             <div class="row form-group">
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-6 col-form-label">
-                                        <label id="lblAWBNo" for="txtAWBNo">AWB No.</label>
+                                        <label id="lblAWBNo" for="txtAWBNo">AWB No</label>
                                         <font color="red">*</font>
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <input id="txtAWBNo" onkeyup="onkeyupAWBNo(); ChkMaxLength(this, '11');" class="form-control" 
-                                               type="number" style="text-align:right;" onblur="GetHAWBDetailsForMAWB()" autofocus >
+                                        <input id="txtAWBNo" class="form-control" type="text" style="text-align:right;" onblur="GetHAWBDetailsForMAWB()" autofocus maxlength="11">
                                     </div>
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-6 col-form-label">
-                                        <label id="lblHAWB" for="txtHAWB">HAWB No.</label>
+                                        <label id="lblHAWB" for="txtHAWB">HAWB No</label>
                                     </div>
                                     <div class="col-xs-6 NoPadding">
-                                        <select onchange="grtIGMBYHOUSE($('#ddlHAWB').val())" class="form-control" id="ddlHAWB">
+                                        <select class="form-control" id="ddlHAWB">
                                             <option value="0">Select</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
                                     <div class="col-xs-6 col-form-label">
-                                        <label id="lblIGM" for="ddlIGM">IGM No.</label>
+                                        <label id="lblIGM" for="ddlIGM">IGM No</label>
                                     </div>
                                     <div class="col-xs-6 NoPadding">
                                         <select class="form-control" id="ddlIGM">
@@ -78,29 +77,14 @@
                                         </select>
                                     </div>
                                 </div>
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
-                                    <span id="spnErrorMSG"></span>
-                                </div>
-                            </div>
+                            </div>                            
                             <div class="row form-group" style="margin-top:10px;">
-
-                                <div class="form-group col-xs-6 col-sm-4 col-md-4">
-                                    <input type="button" id="btnClear" class="form-control ButtonColor" value="Clear" onclick="clearBeforePopulate();">
-                                </div>
-
-                              
-                                <div class="form-group col-xs-6 col-sm-4 col-md-4">
-                                    <input type="button" id="btnGetDetail" class="form-control ButtonColor" value="Get Details" onclick="GetShipmentDetails()">
-                                </div>
-                            </div>
-
-                            <div class="row form-group" style="margin-top:10px;">
-
                                 <div class="form-group col-xs-6 col-sm-4 col-md-4">
                                     <input type="button" id="btnExit" class="form-control ButtonColor" value="Exit" onclick="window.location.href = 'IMP_Dashboard.html'">
                                 </div>
-                               
+                                <div class="form-group col-xs-6 col-sm-4 col-md-4">
+                                    <input type="button" id="btnGetDetail" class="form-control ButtonColor" value="Get Details" onclick="GetShipmentDetails()">
+                                </div>
                             </div>
                         </form>
                     </div>
