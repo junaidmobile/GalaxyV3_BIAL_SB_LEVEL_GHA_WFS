@@ -40,6 +40,7 @@ var autoLocationArray;
 var PermitNo;
 var _ulddSQ;
 var uldComing;
+var SignAutoUpload;
 $(function () {
 
     if (window.localStorage.getItem("RoleIMPBinning") == '0') {
@@ -172,12 +173,22 @@ function ExportAirside_Search_V3_Onblur() {
 
                     var Status = $(this).find('Status').text();
                     var StrMessage = $(this).find('StrMessage').text();
-
+                    SignAutoUpload = $(this).find('SignAutoUpload').text();
                     if (Status == 'E') {
                         //  $.alert(StrMessage).css('color', 'red');
                         $("#errorMsg").text(StrMessage).css({ 'color': 'red' });
                         // clearALL();
                         return true;
+                    }
+
+                    if (SignAutoUpload == 'Y') {
+                        $("#tblCISF").show();
+                        $("#tblAirlineRep").hide();
+                        $("#divCustomerandSecurityStaff").hide();
+                    } else {
+                        $("#tblCISF").show();
+                        $("#tblAirlineRep").show();
+                        $("#divCustomerandSecurityStaff").show();
                     }
                 });
 
@@ -366,10 +377,12 @@ function ExportAirside_Search_V3_Onblur() {
                 if (response != null && response != "") {
                     BULKflag = 0;
                     html3 = '';
-                    html3 += " <table border='1' style='width:100%;table-layout:fixed;word-break:break-word;border-color: white;margin-top: 2%;'>";
+                    html3 += " <table id='tblBulBT' border='1' style='width:100%;table-layout:fixed;word-break:break-word;border-color: white;margin-top: 2%;'>";
                     html3 += "<tr>";
-                    html3 += "<td style='font-size: 14px;' colspan='2'>BULK Details</td>";
+                    html3 += "<td style='font-size: 14px;' colspan='2'>ULD/BT Details</td>";
                     html3 += "<tr>";
+
+                    html3 += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px;text-align: center;' align='center' font-weight:'bold'><input id='allCheckBoxCheck'  type='checkbox' value=''></th>";
                     html3 += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center' font-weight:'bold'>Trolley No.</th>";
                     html3 += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center' font-weight:'bold'>AWB No.</th>";
                     html3 += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center' font-weight:'bold' > No.of Packages</th >";
@@ -378,7 +391,7 @@ function ExportAirside_Search_V3_Onblur() {
                     html3 += "<th height='30' style='background-color:rgb(208, 225, 244);padding: 3px 3px 3px 0px;font-size:14px' align='center' font-weight:'bold' > Priority</th >";
                     html3 += "</tr>";
                     html3 += "</thead>";
-                    html3 += "<tbody>";
+                    html3 += "<tbody id='tbodyCheckValues'>";
                     var xmlDoc = $.parseXML(response);
                     $(xmlDoc).find('Table6').each(function (index) {
                         BULKflag = 1;
@@ -391,8 +404,12 @@ function ExportAirside_Search_V3_Onblur() {
                         ULDSqNo = $(this).find('ULDSqNo').text();
                         PermitNo = $(this).find('PermitNo').text();
                         Priority = $(this).find('Priority').text();
+                        ULDType = $(this).find('ULDType').text();
+                        IsReleased = $(this).find('IsReleased').text();
+                        if (IsReleased == 'N') {
+                            fnBULKDetails(ULDNo, AWBNo, NOP, GrossWt, Screening, FltSqNo, ULDSqNo, PermitNo, Priority, ULDType);
 
-                        fnBULKDetails(ULDNo, AWBNo, NOP, GrossWt, Screening, FltSqNo, ULDSqNo, PermitNo, Priority);
+                        }
                     });
 
                     if (BULKflag == 1) {
@@ -400,6 +417,11 @@ function ExportAirside_Search_V3_Onblur() {
                         $('#divULDTrolley').show();
                         $('#divULDTrolley').append(html3);
                     }
+
+                    $('#allCheckBoxCheck').click(function () {
+                        var checked = $(this).prop('checked');
+                        $('#divULDTrolley').find('input:checkbox').prop('checked', checked);
+                    });
 
 
                 } else {
@@ -455,9 +477,10 @@ function fnPallets(ULDNo, Status) {
     html2 += "</tr>";
 }
 
-function fnBULKDetails(ULDNo, AWBNo, NOP, GrossWt, Screening, FltSqNo, ULDSqNo, PermitNo, Priority) {
+function fnBULKDetails(ULDNo, AWBNo, NOP, GrossWt, Screening, FltSqNo, ULDSqNo, PermitNo, Priority, ULDType) {
     html3 += "<tr>";
-    html3 += "<td height='30' style='background: rgb(224, 243, 215);padding-left: 4px;font-size:14px' align='left'>" + ULDNo + "</td>";
+    html3 += "<td height='30' style='background: rgb(224, 243, 215);padding-left: 4px;font-size:14px;text-align: center;' align='left'><input id='" + ULDSqNo + "' type='checkbox' name='" + FltSqNo + "' value='" + ULDType + "'></td>";
+    html3 += "<td height='30' style='background: rgb(224, 243, 215);padding-left: 4px;font-size:14px' align='left'>" + ULDNo + "</td > ";
     html3 += "<td height='30' style='background: rgb(224, 243, 215);padding-left: 4px;font-size:14px' align='left'>" + AWBNo + "</td>";
     html3 += "<td height='30' style='background: rgb(224, 243, 215);padding-left: 4px;font-size:14px' align='right'>" + NOP + "</td>";
     html3 += "<td height='30' style='background: rgb(224, 243, 215);padding-left: 4px;font-size:14px' align='right'>" + GrossWt + "</td>";
@@ -598,17 +621,17 @@ function ExportAirside_SignUpload_V3_1() {
                     var Status = $(this).find('Status').text();
                     var StrMessage = $(this).find('StrMessage').text();
 
-                    if (Status == 'E') {
-                        //  $.alert(StrMessage).css('color', 'red');
-                        $("#spnErrormsg").text(StrMessage).css({ 'color': 'red' });
-                        // clearALL();
-                        return true;
-                    } else {
-                        $("#spnErrormsg").text(StrMessage).css({ 'color': 'green' });
-                        // $("#txtCustomerName").val('');
+                    //if (Status == 'E') {
+                    //    //  $.alert(StrMessage).css('color', 'red');
+                    //    $("#spnErrormsg").text(StrMessage).css({ 'color': 'red' });
+                    //    // clearALL();
+                    //    return true;
+                    //} else {
+                    //    $("#spnErrormsg").text(StrMessage).css({ 'color': 'green' });
+                    //    // $("#txtCustomerName").val('');
 
-                        signaturePad.clear();
-                    }
+                    //    signaturePad.clear();
+                    //}
                 });
 
             },
@@ -695,17 +718,17 @@ function ExportAirside_SignUpload_V3_2() {
                     var Status = $(this).find('Status').text();
                     var StrMessage = $(this).find('StrMessage').text();
 
-                    if (Status == 'E') {
-                        //  $.alert(StrMessage).css('color', 'red');
-                        $("#spnErrormsg").text(StrMessage).css({ 'color': 'red' });
-                        // clearALL();
-                        return true;
-                    } else {
-                        $("#spnErrormsg").text(StrMessage).css({ 'color': 'green' });
-                        // $("#txtSecuirty").val('');
-                        signaturePad_2.clear();
+                    //if (Status == 'E') {
+                    //    //  $.alert(StrMessage).css('color', 'red');
+                    //    $("#spnErrormsg").text(StrMessage).css({ 'color': 'red' });
+                    //    // clearALL();
+                    //    return true;
+                    //} else {
+                    //    $("#spnErrormsg").text(StrMessage).css({ 'color': 'green' });
+                    //    // $("#txtSecuirty").val('');
+                    //    signaturePad_2.clear();
 
-                    }
+                    //}
                 });
 
             },
@@ -888,16 +911,16 @@ function ExportAirside_SignUpload_V3_4() {
                     var Status = $(this).find('Status').text();
                     var StrMessage = $(this).find('StrMessage').text();
 
-                    if (Status == 'E') {
-                        //  $.alert(StrMessage).css('color', 'red');
-                        $("#spnErrormsg").text(StrMessage).css({ 'color': 'red' });
-                        // clearALL();
-                        return true;
-                    } else {
-                        $("#spnErrormsg").text(StrMessage).css({ 'color': 'green' });
-                        //  $("#txtAirline").val('');
-                        signaturePad_3.clear();
-                    }
+                    //if (Status == 'E') {
+                    //    //  $.alert(StrMessage).css('color', 'red');
+                    //    $("#spnErrormsg").text(StrMessage).css({ 'color': 'red' });
+                    //    // clearALL();
+                    //    return true;
+                    //} else {
+                    //    $("#spnErrormsg").text(StrMessage).css({ 'color': 'green' });
+                    //    //  $("#txtAirline").val('');
+                    //    signaturePad_3.clear();
+                    //}
                 });
 
             },
@@ -930,8 +953,42 @@ function onExit() {
 }
 
 
+//var getAllrowsVal = [];
+//function getRowData() {
+//    arrayOfRows = '';
+//    var tblTotalPcs = document.getElementById('tblBulBT');
+
+//    for (var i = 1; i < tblTotalPcs.rows.length; i++) {
+
+//        var ULDSeqNo = tblTotalPcs.rows[i].cells[0].checked;
+//        var Remark = tblTotalPcs.rows[i].cells[1].innerText;
+
+//        LocXML = '<Rows><ULDSeqNo>' + ULDSeqNo + '</ULDSeqNo><ULDBulkRemark>' + Remark + '</<ULDBulkRemark></Rows>';
+//        console.log(LocXML)
+//        getAllrowsVal.push(LocXML);
+//        arrayOfRows = getAllrowsVal.join('');
+//    }
+
+//}
+
+
 function ReleaseULDBulk() {
 
+    var checked;
+    $('#divULDTrolley').each(function () {
+
+         checked = $(this).find("input[type='checkbox']:checked").length > 0;
+        if (!checked) {
+            $('#spnErrormsg').text('Please select at-least one ULD/BT').css('color', 'red');
+            return;
+        } else {
+            $('#spnErrormsg').text('');
+        }
+
+    });
+    if (checked == false) {
+        return;
+    }
     //if (flag == 'U') {
     //    if ($('#ddlULD').find('option:selected').text() == "" || $('#ddlULD').find('option:selected').text() == "Select") {
     //        //errmsg = "ULD not selected";
@@ -977,12 +1034,32 @@ function ReleaseULDBulk() {
     //if (flag == 'T')
     //    var ULDseqNo = $('#ddlBulk').find('option:selected').val();
 
+    var ULDBTValue = [];
+    var uldandBT = '';
+    $('#tbodyCheckValues').each(function () {
+        $(this).find("input[type='checkbox']:checked").each(function () {
+            /* var id = $(this).attr('id');*/
+            ULDBTValue.push("<ULD><ULDSeqNo>" + $(this).attr('id') + "</ULDSeqNo><FltSqNo>" + $(this).attr('name') + "</FltSqNo><ULDType>" + $(this).attr('value') + "</ULDType></ULD>");
+            // collectionOfULDBTNo += "<ULDSeqNo>" + ULDBTValue + "</ULDSeqNo>";
+        });
+
+    });
+
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
 
     //var inputXML = '<Root><ULDSeqNo>' + ULDseqNo + '</ULDSeqNo><AirportCity>' + AirportCity + '</AirportCity></Root>';
+    uldandBT = ULDBTValue.toString().replace(/,/g, "");
+    var inputXML = '<Root><GPNo>' + GPNumberForSave + '</GPNo>' + uldandBT + ' <AirportCity>' + AirportCity + '</AirportCity><ULDType>' + uldComing + '</ULDType><UserId>' + UserId + '</UserId><ULDBulkRemark>' + $('#txtULDBulkRemark').val() + '</ULDBulkRemark></Root>';
 
-    var inputXML = '<Root><GPNo>' + GPNumberForSave + '</GPNo><ULDSeqNo>' + _ulddSQ + '</ULDSeqNo><AirportCity>' + AirportCity + '</AirportCity><ULDType>' + uldComing + '</ULDType><UserId>' + UserId + '</UserId></Root>';
+    if (SignAutoUpload == 'Y') {
+        ExportAirside_SignUpload_V3_4();
+    } else {
+        ExportAirside_SignUpload_V3_1();
+        ExportAirside_SignUpload_V3_2();
+        ExportAirside_SignUpload_V3_3();
+        ExportAirside_SignUpload_V3_4();
+    }
 
     if (errmsg == "" && connectionStatus == "online") {
         $.ajax({

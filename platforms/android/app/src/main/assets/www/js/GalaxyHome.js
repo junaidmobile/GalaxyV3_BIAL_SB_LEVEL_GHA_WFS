@@ -4,6 +4,7 @@ var CompanyCode = window.localStorage.getItem("companyCode");
 var SHEDCODE = window.localStorage.getItem("SHED_CODE");
 var PreferredLanguage = window.localStorage.getItem("PreferredLanguage");
 var GHAExportFlightserviceURL = window.localStorage.getItem("GHAExportFlightserviceURL");
+var AppVersion = window.localStorage.getItem("AppVersion");
 var ParentChildId;
 var xmlDocForClickSet;
 var ClientName = window.localStorage.getItem("ClientName");
@@ -97,7 +98,7 @@ function DisplayScreen(Mode) {
 
 function GetMenuRolesRights() {
 
-    InputXML = '<Root><ParentChildId>0</ParentChildId><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + CompanyCode + '</CompanyCode><Userid>' + UserId + '</Userid><Culture>' + PreferredLanguage + '</Culture></Root>';
+    InputXML = '<Root><ParentChildId>0</ParentChildId><AirportCity>' + AirportCity + '</AirportCity><CompanyCode>' + CompanyCode + '</CompanyCode><Userid>' + UserId + '</Userid><Culture>' + PreferredLanguage + '</Culture><AppVersion>' + AppVersion + '</AppVersion></Root>';
 
     var connectionStatus = navigator.onLine ? 'online' : 'offline'
     var errmsg = "";
@@ -129,10 +130,15 @@ function GetMenuRolesRights() {
 
                 $(xmlDoc).find('Table').each(function (index) {
                     Status = $(this).find('Status').text();
-                    StrMessage = $(this).find('StrMessage').text();
+                    StrMessage = $(this).find('OutMsg').text();
+                    //  loginVersion = $(this).find('loginVersion').text();
+
+
                     if (Status == 'E') {
-
-
+                        $.alert(StrMessage);
+                        $(".alert_btn_ok").click(function () {
+                            window.location = "Login.html";
+                        });
                     }
                 });
 

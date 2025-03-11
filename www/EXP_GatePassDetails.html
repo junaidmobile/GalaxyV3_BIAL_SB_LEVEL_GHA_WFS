@@ -1,31 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <!--<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=0">
-    <script type="text/javascript" src="cordova.js"></script>
-    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
-    <script src="bootstrap-3.3.7-dist/js/jquery-1.12.0.min.js"></script>
-    <link href="bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet" />
-    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
-    <script src="scripts/jquery-ui.js"></script>
-    <link rel="stylesheet" href="css/jquery-ui.css">
-    <link href="css/index_signiturepad.css" rel="stylesheet" />
-    <link href="css/style.css" rel="stylesheet" />
-    <link href="css/sticky-footer.css" rel="stylesheet" />
-    <script src="scripts/LoadingModel.js"></script>
-    <script src="scripts/LoaderShow-Hide.js"></script>
-    <script src="js/signature_pad.umd.js"></script>
-    <script src="scripts/dialog.js"></script>
-    <script src="js/General.js"></script>
-    <script src="js/JsBarcode.all.min.js"></script>
-    <link href="css/General.css" rel="stylesheet" />
-    <script src="scripts/alert.mob.js"></script>
-    <link href="css/Loader.css" rel="stylesheet" />
-    <link href="css/dialog.css" rel="stylesheet" />
-    <link href="css/alert.mob.css" rel="stylesheet" />
-    <script src="js/Export/EXP_GatePassDetails.js"></script>-->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=0">
     <link href="bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -187,6 +163,35 @@
             margin-top: 5px;
             width: 50%;
         }
+
+        input[type="checkbox"] {
+            appearance: none;
+            border: 3px solid #065da1;
+            width: 20px;
+            height: 20px;
+            content: none;
+            outline: none;
+            margin: 0;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        }
+
+            input[type="checkbox"]:checked {
+                appearance: none;
+                outline: none;
+                padding: 0;
+                content: none;
+                border: none;
+            }
+
+                input[type="checkbox"]:checked::before {
+                    position: absolute;
+                    color: orangered !important;
+                    content: "\00A0\2713\00A0" !important;
+                    border: 1px solid #065da1;
+                    font-weight: bolder;
+                    font-size: 15px;
+                    border: 1px solid #065da1;
+                }
     </style>
 </head>
 <body>
@@ -279,9 +284,20 @@
 
                             </div>
 
-                            <!-- <div class="form-group col-xs-6 col-sm-6 col-md-6 NoPadding">
+                            <div class="form-group col-xs-3 col-sm-6 col-md-6 NoPadding" id="divULDBulkRemark">
 
-                                    <table>
+                                <label for="txtULDBulkRemark">Remark</label>
+
+                            </div>
+                            <div class="form-group col-xs-9 col-sm-9 col-md-9 NoPadding" id="divULDBulkRemark">
+
+                                <textarea class="form-control" id="txtULDBulkRemark"></textarea>
+
+                            </div>
+
+                            <div class="form-group col-xs-6 col-sm-6 col-md-6 NoPadding" id="divCustomerandSecurityStaff">
+
+                                <table>
 
                                     <tr>
                                         <td>
@@ -300,9 +316,9 @@
                                     </tr>
                                     <tr>
 
-                                        <td>
+                                        <!--<td>
                                             <button type="button" style="margin-top: 1em; margin-left: 55px;" onclick="ExportAirside_SignUpload_V3_1();"> <span class="	glyphicon glyphicon-floppy-disk"></span></button>
-                                        </td>
+                                        </td>-->
                                     </tr>
 
 
@@ -325,23 +341,23 @@
                                     </tr>
                                     <tr>
 
-                                        <td>
+                                        <!--<td>
                                             <button type="button" style="margin-top: 1em; margin-left: 55px;" onclick="ExportAirside_SignUpload_V3_3();"> <span class="glyphicon glyphicon-floppy-disk"></span></button>
 
-                                        </td>
+                                        </td>-->
                                     </tr>
 
                                 </table>
 
-                            </div>-->
+                            </div>
 
                             <div class="form-group col-xs-3 col-sm-3 col-md-3 NoPadding">
                             </div>
                             <div class="form-group col-xs-6 col-sm-6 col-md-6 NoPadding">
 
-                                <table>
+                                <table id="tblAirlineRep">
 
-                                    <!--<tr>
+                                    <tr>
                                         <td>
                                             <em style="font-size: 11px;"> Sign of Airline Rep.</em>
                                         </td>
@@ -358,14 +374,14 @@
                                     </tr>
                                     <tr>
 
-                                        <td>
+                                        <!--<td>
                                             <button type="button" style="margin-top: 1em; margin-left: 55px;" onclick="ExportAirside_SignUpload_V3_2();"> <span class="glyphicon glyphicon-floppy-disk"></span></button>
 
-                                        </td>
-                                    </tr>-->
+                                        </td>-->
+                                    </tr>
 
                                 </table>
-                                <table>
+                                <table id="tblCISF">
 
                                     <tr>
                                         <td>
@@ -384,10 +400,10 @@
                                     </tr>
                                     <tr>
 
-                                        <td>
+                                        <!--<td>
                                             <button type="button" style="margin-top: 1em; margin-left: 55px;" onclick="ExportAirside_SignUpload_V3_4();"> <span class="glyphicon glyphicon-floppy-disk"></span></button>
 
-                                        </td>
+                                        </td>-->
                                     </tr>
 
                                 </table>

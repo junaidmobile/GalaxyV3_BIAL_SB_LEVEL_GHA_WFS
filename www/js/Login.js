@@ -8,12 +8,18 @@
 var GHAImportFlightserviceURL = 'https://galaxyuat.kalelogistics.com/GalaxyV3DOM/Services/HHTimpServices.asmx/';
 var GHAExportFlightserviceURL = 'https://galaxyuat.kalelogistics.com/GalaxyV3DOM/Services/HHTExpServices.asmx/';
 
+//NMI UAT INTL
+//var GHAImportFlightserviceURL = 'https://adaniuat.kalelogistics.com/GHAAdaniIntlUATNMI/services/hhtImpservices.asmx/';
+//var GHAExportFlightserviceURL = 'https://adaniuat.kalelogistics.com/GHAAdaniIntlUATNMI/services/HHTExpServices.asmx/';
+
 
 //BAIL LIVE INTL
 //var GHAImportFlightserviceURL = 'https://dom.mabcargoedi.com/GalaxyV3Dom/services/hhtImpservices.asmx/';
 //var GHAExportFlightserviceURL = 'https://dom.mabcargoedi.com/GalaxyV3Dom/services/hhtExpservices.asmx/';
 
-
+//NMI UAT INTL
+//var GHAImportFlightserviceURL = 'https://adaniuat.kalelogistics.com/GHAAdaniIntlUATNMINew/services/hhtImpservices.asmx/';
+//var GHAExportFlightserviceURL = 'https://adaniuat.kalelogistics.com/GHAAdaniIntlUATNMINew/services/hhtExpservices.asmx/';
 
 var deviceUUID;
 var encryptedUUID;
@@ -68,7 +74,7 @@ $(function () {
     if (GHAImportFlightserviceURL == 'https://dom.mabcargoedi.com/GalaxyV3Dom/services/hhtImpservices.asmx/') {
         $('#spnVerionNo').text('LIVE');
     }
-    
+
 
 });
 
@@ -135,6 +141,7 @@ function ProcessLogin() {
         $.ajax({
             type: 'POST',
             url: GHAImportFlightserviceURL + "GetLoginUserDetails",
+            // data: JSON.stringify({ 'LoginName': Uname, 'Password': Pass, "AppVersion": $('#lblAppVerion').text() }),
             data: JSON.stringify({ 'LoginName': Uname, 'Password': Pass }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -158,8 +165,9 @@ function ProcessLogin() {
                         window.localStorage.setItem("GHAserviceURL", GHAserviceURL);
                         window.localStorage.setItem("GHAImportFlightserviceURL", GHAImportFlightserviceURL);
                         window.localStorage.setItem("GHAExportFlightserviceURL", GHAExportFlightserviceURL);
+                        window.localStorage.setItem("AppVersion", $('#lblAppVerion').text());
                         //window.localStorage.setItem("CargoWorksServiceURL", CargoWorksServiceURL);
-
+                        
 
                         window.location = "GalaxyHome.html";
                     });
